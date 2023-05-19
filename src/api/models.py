@@ -12,6 +12,7 @@ class User(db.Model):
 
 class Employee(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    hr_number = db.Column(db.Integer)
     first_name = db.Column(db.String(50))
     last_name = db.Column(db.String(50))
     company_email = db.Column(db.String(100))
@@ -76,13 +77,14 @@ class Customer(db.Model):
     user = db.relationship('User', back_populates='customer', uselist=False)
     machines = db.relationship('Machine', back_populates='customer')
 
+
 class Occurrence(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     ticket_id = db.Column(db.Integer, db.ForeignKey('ticket.id'), nullable=False)
     malfunction_id = db.Column(db.Integer, db.ForeignKey('malfunction.id'), nullable=False)
     solution_id = db.Column(db.Integer, db.ForeignKey('solution.id'), nullable=False)
     ticket = db.relationship('Ticket', back_populates='occurrences')
-    tags = db.relationship('Tag', back_populates='occurrence')
+    tags = db.relationship('TagOccurrence', back_populates='occurrence')
     malfunction = db.relationship('Malfunction', back_populates='occurrences')
     solution = db.relationship('Solution', back_populates='occurrences')
 
@@ -98,10 +100,16 @@ class Machine(db.Model):
 
 class Tag(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    tag_name = db.Column(db.String(50))  
-    occurrence_id = db.Column(db.Integer, db.ForeignKey('occurrence.id'))
-    occurrence = db.relationship('Occurrence', back_populates='tags')
+    tag_name = db.Column(db.String(50))
+    occurrences = db.relationship('TagOccurrence', back_populates='tag')
 
+
+class TagOccurrence(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    tag_id = db.Column(db.Integer, db.ForeignKey('tag.id'), nullable=False)
+    occurrence_id = db.Column(db.Integer, db.ForeignKey('occurrence.id'), nullable=False)
+    tag = db.relationship('Tag', back_populates='occurrences')
+    occurrence = db.relationship('Occurrence', back_populates='tags')
 
 class Malfunction(db.Model):
     id = db.Column(db.Integer, primary_key=True)
