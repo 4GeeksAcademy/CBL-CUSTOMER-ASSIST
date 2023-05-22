@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import { Context } from "../store/appContext";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 
 export const Login = () => {
@@ -10,9 +10,10 @@ export const Login = () => {
     const navigate = useNavigate();
 
     const userLogin = async () => {
-        const response = await actions.login(email, password);
-        response === true ? navigate("/") : console.log("Algo de errado que não está bem");
+        actions.login(email, password);
     }
+
+    if (store.token && store.token != "" && store.token != undefined) navigate('/dashboard');
 
     return (
         <div className="container mt-5">
