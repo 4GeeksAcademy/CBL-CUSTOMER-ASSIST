@@ -10,8 +10,8 @@ export const Login = () => {
     const navigate = useNavigate();
 
     const userLogin = async () => {
-        await actions.login(email, password);
-        navigate("/")
+        const response = await actions.login(email, password);
+        response === true ? navigate("/") : console.log("Algo de errado que não está bem");
     }
 
     return (

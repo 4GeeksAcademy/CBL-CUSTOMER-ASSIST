@@ -25,6 +25,8 @@ def create_token():
     email = request.json.get("email", None)
     password = request.json.get("password", None)
 
+    print(email, password)
+
     customer = Customer.query.filter_by(email=email, password=password).first()
     employee = Employee.query.filter_by(
         company_email=email, password=password).first()
