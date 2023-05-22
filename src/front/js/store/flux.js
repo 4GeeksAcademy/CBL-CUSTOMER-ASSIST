@@ -19,10 +19,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 				});
 				if (response.ok) {
 					const data = await response.json();
-					console.log("cheguei à resposta ok")
-					console.log(data)
-					// localStorage.setItem("token", data.token);
-					// setStore({ token: data.token })
+					sessionStorage.setItem("token", data.access_token);
+					setStore({ token: data.access_token })
 					return true;
 				}
 			}
