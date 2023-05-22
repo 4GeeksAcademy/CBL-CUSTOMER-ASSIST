@@ -3,10 +3,10 @@ import { BrowserRouter, Route, Router, Routes } from "react-router-dom";
 import { Login } from "./pages/login";
 import { Home } from "./pages/home";
 import { Single } from "./pages/single";
-import { EmployeeReg } from "./pages/employeeRed";
-import { CustomerReg } from "./pages/customerReg";
+import { EmployeeReg } from "./pages/admin/employeeReg";
+import { CustomerReg } from "./pages/admin/customerReg";
 import injectContext from "./store/appContext";
-import { Dashboard } from "./pages/dashboard";
+import { Dashboard } from "./pages/admin/dashboard";
 
 import { Navbar } from "./component/navbar";
 import { Sidebar } from "./component/sidebar";
@@ -22,14 +22,12 @@ const Layout = () => {
             <BrowserRouter basename={basename}>
 
                 <Navbar />
+                <Sidebar />
                 <Routes>
                     <Route element={<Login />} path="/login" />
                     <Route element={<Home />} path="/" />
                     <Route element={<Single />} path="/single/:theid" />
                     <Route element={<h1>Not found!</h1>} />
-                </Routes>
-                <Sidebar />
-                <Routes>
                     <Route element={<Dashboard />} path="/dashboard" />
                     <Route element={<CustomerReg />} path="/customer-create" />
                     <Route element={<EmployeeReg />} path="/technician-create" />

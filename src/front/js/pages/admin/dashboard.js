@@ -1,5 +1,5 @@
 import React from "react";
-import "../../styles/home.css";
+import "../../../styles/home.css";
 
 
 
@@ -16,10 +16,6 @@ export const Dashboard = () => {
                     <h5>Technician</h5>
                     <h5>Status</h5>
                     <h5>Priority</h5>
-
-
-
-
                 </div>
             </div>
         </>
