@@ -21,6 +21,7 @@ export const Login = () => {
             </div>
             <div className="border p-5 col-sm-12 col-md-8 col-lg-8 mx-auto ">
                 <h2 className="mb-3 text-center">Login into your account</h2>
+
                 <div className="mb-3">
                     <label htmlFor="formGroupExampleInput" className="form-label">Email</label>
                     <input type="text" className="form-control" id="formGroupExampleInput" placeholder="Email"

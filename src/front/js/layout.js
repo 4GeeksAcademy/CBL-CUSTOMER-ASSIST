@@ -6,6 +6,7 @@ import { Single } from "./pages/single";
 import { EmployeeReg } from "./pages/employeeRed";
 import { CustomerReg } from "./pages/customerReg";
 import injectContext from "./store/appContext";
+import { Dashboard } from "./pages/dashboard";
 
 import { Navbar } from "./component/navbar";
 import { Sidebar } from "./component/sidebar";
@@ -29,6 +30,7 @@ const Layout = () => {
                 </Routes>
                 <Sidebar />
                 <Routes>
+                    <Route element={<Dashboard />} path="/dashboard" />
                     <Route element={<CustomerReg />} path="/customer-create" />
                     <Route element={<EmployeeReg />} path="/technician-create" />
                 </Routes>
