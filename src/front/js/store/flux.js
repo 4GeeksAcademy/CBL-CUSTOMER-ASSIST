@@ -38,6 +38,12 @@ const getState = ({ getStore, getActions, setStore }) => {
 				catch (error) {
 					console.log("There has been an error login in!")
 				}
+			},
+
+			logout: () => {
+				sessionStorage.removeItem('token');
+				console.log("Login out")
+				setStore({ token: null });
 			}
 		}
 	};
