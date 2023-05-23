@@ -22,17 +22,15 @@ const Layout = () => {
             <BrowserRouter basename={basename}>
 
                 <Navbar />
+                <Sidebar />
                 <Routes>
                     <Route element={<Login />} path="/login" />
                     <Route element={<Home />} path="/" />
                     <Route element={<Single />} path="/single/:theid" />
-                    <Route element={<h1>Not found!</h1>} />
-                </Routes>
-                <Sidebar />
-                <Routes>
                     <Route element={<Dashboard />} path="/dashboard" />
                     <Route element={<CustomerReg />} path="/customer-create" />
                     <Route element={<EmployeeReg />} path="/technician-create" />
+                    <Route element={<h1>Not found!</h1>} />
                 </Routes>
             </BrowserRouter>
         </div>
