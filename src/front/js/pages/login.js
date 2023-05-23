@@ -10,10 +10,9 @@ export const Login = () => {
     const navigate = useNavigate();
 
     const userLogin = async () => {
-        actions.login(email, password);
+        const response = await actions.login(email, password);
+        if (response) navigate("/dashboard");
     }
-
-    if (store.token && store.token != "" && store.token != undefined) navigate('/dashboard');
 
     return (
         <div className="container mt-5">

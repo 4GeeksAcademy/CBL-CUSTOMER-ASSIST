@@ -7,7 +7,7 @@ export const Dashboard = () => {
 
     useEffect(() => {
         actions.getMessage();
-    });
+    }, []);
     return (
         <>
             <div className="container my-3">

@@ -2,7 +2,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
 			token: null,
-			user: {}
+			user: {},
+			message: null
 		},
 		actions: {
 			syncTokenFromSessionStorage: () => {
@@ -23,7 +24,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				};
 				try {
 					// const response = await fetch(process.env.BACKEND_URL + "/api/login", {
-					const response = await fetch("https://cl4ud3pt-friendly-memory-6xrqpvq6vjx354r4-3001.preview.app.github.dev/" + "api/token", opts);
+					const response = await fetch(process.env.BACKEND_URL + "api/token", opts);
 					if (response.status !== 200) {
 						alert("There has been some error!");
 						return false;
@@ -46,17 +47,22 @@ const getState = ({ getStore, getActions, setStore }) => {
 				setStore({ token: null });
 			},
 
-			getMessage: () => {
-				const store = getStore().token;
+			getMessage: async () => {
+				const token = getStore().token;
 				const opts = {
 					headers: {
-						"Authorization": "Bearer " + store.token
+						"Authorization": "Bearer " + token
 					}
 				}
-				fetch(process.env.BACKEND_URL + "api/hello", opts)
-					.then(resp => resp.json())
-					.then(data => setStore({ "message": data.message }))
-					.catch(error => console.log("Error loading message from backend", error));
+				const response = await fetch(process.env.BACKEND_URL + "api/hello", opts);
+				if (response.status != 200) {
+					alert("Something went wrong with your authorization!");
+					return false;
+				}
+
+				const data = await response.json();
+				setStore({ "message": data.message });
+				console.log(getStore().message);
 			}
 		}
 	};
