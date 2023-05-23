@@ -1,9 +1,13 @@
-import React from "react";
+import React, { useEffect, useContext } from "react";
+import { Context } from "../store/appContext";
 import "../../styles/home.css";
 
-
-
 export const Dashboard = () => {
+    const { store, actions } = useContext(Context);
+
+    useEffect(() => {
+        actions.getMessage();
+    });
     return (
         <>
             <div className="container my-3">
@@ -16,10 +20,6 @@ export const Dashboard = () => {
                     <h5>Technician</h5>
                     <h5>Status</h5>
                     <h5>Priority</h5>
-
-
-
-
                 </div>
             </div>
         </>
