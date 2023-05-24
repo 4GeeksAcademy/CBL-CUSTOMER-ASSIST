@@ -73,13 +73,14 @@ def intervention_type_initialize():
         db.session.commit()
 
 # Machine table
-def machine_initialize():
-    if len(Machine.query.all()) == 0:  
-        with open ("src/table_initial_values/machine_initialization.json") as file:
-            data = json.load(file)
-        machines = [Machine(**item) for item in data]
-        db.session.bulk_save_objects(machines)
-        db.session.commit()
+# def machine_initialize():
+#     if len(Machine.query.all()) == 0:  
+#         with open ("src/table_initial_values/machine_initialization.json") as file:
+#             data = json.load(file)
+#         machines = [Machine(**item) for item in data]
+#         print("###################################")
+#         # db.session.bulk_insert_mappings(machines)
+#         # db.session.commit()
 
 
 # generate sitemap with all your endpoints
