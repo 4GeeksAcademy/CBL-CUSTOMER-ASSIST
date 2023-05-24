@@ -96,7 +96,8 @@ class Occurrence(db.Model):
 
 
 class Machine(db.Model):
-    serial_number = db.Column(db.String(50), primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
+    serial_number = db.Column(db.String(50),nullable=False)
     model = db.Column(db.String(50))
     im109 = db.Column(db.String(50))
     customer_id = db.Column(db.Integer, db.ForeignKey(
