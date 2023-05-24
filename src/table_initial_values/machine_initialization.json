@@ -1,47 +1,27 @@
 [
     {
-        "serial_number": "AA0101"
-    },
-    {
-        "model": "CC63"
-    },
-    {
+        "serial_number": "AA0101",
+        "model": "CC63",
         "im109": "101"
     },
     {
-        "serial_number": "AA0102"
-    },
-    {
-        "model": "CC100"
-    },
-    {
+        "serial_number": "AA0102",
+        "model": "CC100",
         "im109": "102"
     },
     {
-        "serial_number": "AA0103"
-    },
-    {
-        "model": "CC160"
-    },
-    {
+        "serial_number": "AA0103",
+        "model": "CC160",
         "im109": "103"
     },
     {
-        "serial_number": "BB0104"
-    },
-    {
-        "model": "CC250"
-    },
-    {
+        "serial_number": "BB0104",
+        "model": "CC250",
         "im109": "104"
     },
     {
-        "serial_number": "CA0105"
-    },
-    {
-        "model": "DM400"
-    },
-    {
+        "serial_number": "CA0105",
+        "model": "DM400",
         "im109": "356"
     }
 ]
