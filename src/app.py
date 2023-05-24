@@ -7,11 +7,12 @@ from flask_migrate import Migrate
 from flask_swagger import swagger
 from flask_cors import CORS
 from api.utils import APIException, generate_sitemap
-from api.models import db
+from api.models import db, StatusValue, InterventionType
 from api.routes import api
 from api.admin import setup_admin
 from api.commands import setup_commands
 from flask_jwt_extended import JWTManager
+import json
 
 #from models import Person
 
@@ -52,10 +53,36 @@ app.register_blueprint(api, url_prefix='/api')
 def handle_invalid_usage(error):
     return jsonify(error.to_dict()), error.status_code
 
+# TABLE VALUES INITIALIZATION
+# StatusValue table
+def status_value_initialize():
+    if len(StatusValue.query.all()) == 0:    
+        with open ("src/table_initial_values/status_value_initialization.json") as file:
+            data = json.load(file)
+        statuses = [StatusValue(**item) for item in data]
+        db.session.bulk_save_objects(statuses)
+        db.session.commit()
+
+# InterventionType table
+def intervention_type_initialize():
+    if len(InterventionType.query.all()) == 0:  
+        with open ("src/table_initial_values/intervention_type_initialization.json") as file:
+            print("#################")
+            data = json.load(file)
+            print(data)
+        types = [InterventionType(**item) for item in data]
+        db.session.bulk_save_objects(types)
+        db.session.commit()
+
+
 # generate sitemap with all your endpoints
 @app.route('/')
 def sitemap():
     if ENV == "development":
+        # table values initialization
+        status_value_initialize()
+        intervention_type_initialize()
+
         return generate_sitemap(app)
     return send_from_directory(static_file_dir, 'index.html')
 
