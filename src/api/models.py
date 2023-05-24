@@ -56,17 +56,17 @@ class Ticket(db.Model):
     customer_id = db.Column(db.Integer, db.ForeignKey(
         'customer.id'), nullable=False)
     machine_serial_number = db.Column(db.String(50), db.ForeignKey(
-        'machine.serial_number'), nullable=False)
+        'machine.serial_number'), nullable=True)
     status_id = db.Column(db.Integer, db.ForeignKey(
-        'status_value.id'), nullable=False)
+        'status_value.id'), nullable=True)
     intervention_type_id = db.Column(db.Integer, db.ForeignKey(
-        'intervention_type.id'), nullable=False)
-    open_ticket_time = db.Column(db.DateTime)
-    leave_manufacturer_time = db.Column(db.DateTime)
-    closed_ticket_time = db.Column(db.DateTime)
-    vehicle_license_plate = db.Column(db.String(20))
-    km_on_leave = db.Column(db.Integer)
-    km_on_arrival = db.Column(db.Integer)
+        'intervention_type.id'), nullable=True)
+    open_ticket_time = db.Column((db.DateTime), nullable=False)
+    leave_manufacturer_time = db.Column((db.DateTime),nullable=True)
+    closed_ticket_time = db.Column((db.DateTime),nullable=True)
+    vehicle_license_plate = db.Column(db.String(20),nullable=True)
+    km_on_leave = db.Column(db.Integer,nullable=True)
+    km_on_arrival = db.Column(db.Integer,nullable=True)
     ticket_employee_relation = db.relationship(
         'TicketEmployersRelation', backref='ticket', lazy='dynamic')
     occurrences = db.relationship('Occurrence', backref='ticket')
