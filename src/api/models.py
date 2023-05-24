@@ -98,10 +98,10 @@ class Occurrence(db.Model):
 class Machine(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     serial_number = db.Column(db.String(50),nullable=False)
-    model = db.Column(db.String(50))
-    im109 = db.Column(db.String(50))
+    model = db.Column(db.String(50), nullable=False)
+    im109 = db.Column(db.String(50), nullable=True)
     customer_id = db.Column(db.Integer, db.ForeignKey(
-        'customer.id'), nullable=False)
+        'customer.id'), nullable=True)
     tickets = db.relationship('Ticket', backref='machine')
 
 
