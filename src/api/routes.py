@@ -2,24 +2,25 @@
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
 from flask import Flask, request, jsonify, url_for, Blueprint
-from api.models import db, User, Customer, Employee
+from api.models import db, User, Customer, Employee, Ticket
 from api.utils import generate_sitemap, APIException
 from flask_jwt_extended import create_access_token
 from flask_jwt_extended import get_jwt_identity
 from flask_jwt_extended import jwt_required
+import datetime
 
 api = Blueprint('api', __name__)
 
 
-@api.route('/hello', methods=['GET'])
-@jwt_required()
-def get_hello():
+# @api.route('/hello', methods=['GET'])
+# @jwt_required()
+# def get_hello():
 
-    response_body = {
-        "message": "Hello! I'm a message that came from the backend"
-    }
+#     response_body = {
+#         "message": "Hello! I'm a message that came from the backend"
+#     }
 
-    return jsonify(response_body), 200
+#     return jsonify(response_body), 200
 
 @api.route('/token', methods=['POST'])
 def create_token():
@@ -39,4 +40,40 @@ def create_token():
         return jsonify({"msg": "Bad username or password"}), 401
 
     return jsonify(access_token=access_token), 200
+
+@api.route('/tickets', methods=['POST'])
+# @jwt_required()
+def create_ticket():
+    # customer_email = get_jwt_identity()
+    customer= Customer.query.filter_by(email= "k@gmail.com").first()
+    # customer = Customer.query.filter_by(email=customer_email).first()
+    # if not customer:
+    #     return jsonify({"msg": "Customer does not exist"}), 404
+    print(customer)
+    ticket = Ticket()
+    ticket.customer_id = customer.id
+    # ticket.machine_serial_number = request.json.get("machine_serial_number")
+    # ticket.status_id = request.json.get("status_id")
+    # ticket.intervention_type_id = request.json.get("intervention_type_id")
+    # ticket.vehicle_license_plate = request.json.get("vehicle_license_plate")
+    # ticket.km_on_leave = request.json.get("km_on_leave")
+    ticket.open_ticket_time = datetime.datetime.now()
+    db.session.add(ticket)
+    db.session.commit()
+
+    return jsonify({"msg": "Ticket created successfully"}), 201
+
+@api.route('/updateprofile', methods=['PUT'])
+# @jwt_required()
+def updateProfile():
+    body= request.json
+    print(body)
+    test = Customer.query.filter_by(email=body["email"]).update(dict(email=body["new_email"]))
+    #do that for every single column of 
+    db.session.commit()
+
+
+    
+    return jsonify({"text": "hi"})
+    
 
