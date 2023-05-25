@@ -90,6 +90,24 @@ def employee_initialize():
         db.session.bulk_save_objects(employees)
         db.session.commit()
 
+# Customer table
+def customer_initialize():
+    if len(Customer.query.all()) == 0:  
+        with open ("src/table_initial_values/customer_initialization.json") as file:
+            data = json.load(file)
+        customers = [Customer(**item) for item in data]
+        db.session.bulk_save_objects(customers)
+        db.session.commit()
+
+# User table
+def user_initialize():
+    if len(User.query.all()) == 0:  
+        with open ("src/table_initial_values/user_initialization.json") as file:
+            data = json.load(file)
+        users = [User(**item) for item in data]
+        db.session.bulk_save_objects(users)
+        db.session.commit()
+
 # generate sitemap with all your endpoints
 @app.route('/')
 def sitemap():
