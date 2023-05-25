@@ -3,7 +3,7 @@ import { Context } from "../../store/appContext";
 import { Navigate, useNavigate } from "react-router-dom";
 
 
-export const CustomerReg = () => {
+export const CreateNewCustomer = () => {
     const { store, actions } = useContext(Context);
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -15,7 +15,7 @@ export const CustomerReg = () => {
 
     const navigate = useNavigate();
 
-    const registerNewUser = async () => {
+    const sendNewCustomer = async () => {
         const response = await fetch(process.env.BACKEND_URL + "/api/user", {
             method: "POST",
             headers: {
@@ -96,9 +96,9 @@ export const CustomerReg = () => {
             </div>
             <div className="row">
                 <div className="mb-3 p-3 col-sm-12 col-md-8 col-lg-8 mx-auto">
-                    <label htmlFor="formGroupExampleInput8" className="form-label">Machine List</label>
+                    <label htmlFor="inputState" className="form-label">Machine List</label>
                     <select id="inputState" className="form-select">
-                        <option selected>Choose...</option>
+                        <option>Choose...</option>
                         <option>...</option>
                     </select>
                     {/* onChange={(e) => {
@@ -153,7 +153,7 @@ export const CustomerReg = () => {
             </div> */}
 
             <div className="d-flex justify-content-center mt-3">
-                <button className="btn btn-primary " onClick={() => registerNewUser()}>Submit</button>
+                <button className="btn btn-primary " onClick={() => sendNewCustomer()}>Submit</button>
             </div>
 
         </div>

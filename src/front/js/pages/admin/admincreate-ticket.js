@@ -3,7 +3,7 @@ import "../../../styles/home.css";
 
 
 
-export const CreateTicket = () => {
+export const AdminCreateTicket = () => {
     return (
         <>
             <div className="container my-3">

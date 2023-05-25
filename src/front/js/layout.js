@@ -3,10 +3,11 @@ import { BrowserRouter, Route, Router, Routes } from "react-router-dom";
 import { Login } from "./pages/login";
 import { Home } from "./pages/home";
 import { Single } from "./pages/single";
-import { EmployeeReg } from "./pages/admin/employeeReg";
-import { CustomerReg } from "./pages/admin/customerReg";
+import { AdminCreateTicket } from "./pages/admin/admincreate-ticket";
+import { CreateNewCustomer } from "./pages/admin/customer-create";
 import injectContext from "./store/appContext";
 import { Dashboard } from "./pages/admin/dashboard";
+import { CustomerCreateTicket } from "./pages/customer/create-ticket";
 
 import { Navbar } from "./component/navbar";
 import { Sidebar } from "./component/sidebar";
@@ -29,8 +30,10 @@ const Layout = () => {
                     <Route element={<Single />} path="/single/:theid" />
                     <Route element={<h1>Not found!</h1>} />
                     <Route element={<Dashboard />} path="/dashboard" />
-                    <Route element={<CustomerReg />} path="/customer-create" />
-                    <Route element={<EmployeeReg />} path="/technician-create" />
+                    <Route element={<CustomerCreateTicket />} path="/customer/create/ticket" />
+                    <Route element={<AdminCreateTicket />} path="/admin/create/ticket" />
+                    <Route element={<CreateNewCustomer />} path="/admin/create/customer" />
+
                 </Routes>
             </BrowserRouter>
         </div>

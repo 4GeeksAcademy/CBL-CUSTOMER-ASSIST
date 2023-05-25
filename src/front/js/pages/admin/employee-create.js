@@ -3,7 +3,7 @@ import { Context } from "../../store/appContext";
 import { Navigate, useNavigate } from "react-router-dom";
 
 
-export const EmployeeReg = () => {
+export const EmployeeCreate = () => {
     const { store, actions } = useContext(Context);
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
