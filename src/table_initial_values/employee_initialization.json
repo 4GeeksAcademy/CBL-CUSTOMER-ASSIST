@@ -1,0 +1,17 @@
+[
+    {
+        "id" : 1,
+        "company_email": "admin1@email.com",
+        "password": "admin1"
+    },
+    {
+        "id" : 2,
+        "company_email": "engineer1@email.com",
+        "password": "engineer1"
+    },
+    {
+        "id" : 3,
+        "company_email": "technician1@email.com",
+        "password": "technician1"
+    }
+]
