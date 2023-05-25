@@ -1,17 +1,17 @@
 [
     {
-        "id" : 1,
-        "company_email": "admin1@email.com",
+        "id": 1,
+        "email": "admin1@email.com",
         "password": "admin1"
     },
     {
-        "id" : 2,
-        "company_email": "engineer1@email.com",
+        "id": 2,
+        "email": "engineer1@email.com",
         "password": "engineer1"
     },
     {
-        "id" : 3,
-        "company_email": "technician1@email.com",
+        "id": 3,
+        "email": "technician1@email.com",
         "password": "technician1"
     }
 ]

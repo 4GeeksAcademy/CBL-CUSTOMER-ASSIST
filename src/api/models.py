@@ -15,7 +15,7 @@ class Employee(db.Model):
     hr_number = db.Column(db.Integer)
     first_name = db.Column(db.String(50))
     last_name = db.Column(db.String(50))
-    company_email = db.Column(db.String(100))
+    email = db.Column(db.String(100))
     company_role = db.Column(db.String(50))
     password = db.Column(db.String(128))
     user = db.relationship('User', backref='employee', uselist=False)
