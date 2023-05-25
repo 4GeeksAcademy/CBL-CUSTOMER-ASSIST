@@ -116,6 +116,9 @@ def sitemap():
         status_value_initialize()
         intervention_type_initialize()
         machine_initialize()
+        employee_initialize()
+        customer_initialize()
+        user_initialize()
 
         return generate_sitemap(app)
     return send_from_directory(static_file_dir, 'index.html')
