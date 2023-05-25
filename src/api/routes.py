@@ -33,9 +33,9 @@ def create_token():
     employee = Employee.query.filter_by(
         company_email=email, password=password).first()
     if customer:
-        access_token = create_access_token(identity=customer.email)
+        access_token = create_access_token(identity=customer)
     elif employee:
-        access_token = create_access_token(identity=employee.company_email)
+        access_token = create_access_token(identity=employee)
     else:
         return jsonify({"msg": "Bad username or password"}), 401
 
