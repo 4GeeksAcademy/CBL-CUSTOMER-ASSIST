@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: bd87beb6b8bb
+Revision ID: d81b05a01021
 Revises: 
-Create Date: 2023-05-19 19:13:08.242702
+Create Date: 2023-05-25 12:44:49.150175
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'bd87beb6b8bb'
+revision = 'd81b05a01021'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -22,6 +22,7 @@ def upgrade():
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('company_name', sa.String(length=100), nullable=True),
     sa.Column('email', sa.String(length=100), nullable=True),
+    sa.Column('password', sa.String(length=50), nullable=True),
     sa.Column('contact_phone', sa.String(length=20), nullable=True),
     sa.Column('contact_person', sa.String(length=100), nullable=True),
     sa.PrimaryKeyConstraint('id')
@@ -62,12 +63,13 @@ def upgrade():
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('machine',
+    sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('serial_number', sa.String(length=50), nullable=False),
-    sa.Column('model', sa.String(length=50), nullable=True),
+    sa.Column('model', sa.String(length=50), nullable=False),
     sa.Column('im109', sa.String(length=50), nullable=True),
-    sa.Column('customer_id', sa.Integer(), nullable=False),
+    sa.Column('customer_id', sa.Integer(), nullable=True),
     sa.ForeignKeyConstraint(['customer_id'], ['customer.id'], ),
-    sa.PrimaryKeyConstraint('serial_number')
+    sa.PrimaryKeyConstraint('id')
     )
     op.create_table('user',
     sa.Column('id', sa.Integer(), nullable=False),
@@ -81,10 +83,10 @@ def upgrade():
     op.create_table('ticket',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('customer_id', sa.Integer(), nullable=False),
-    sa.Column('machine_serial_number', sa.String(length=50), nullable=False),
-    sa.Column('status_id', sa.Integer(), nullable=False),
-    sa.Column('intervention_type_id', sa.Integer(), nullable=False),
-    sa.Column('open_ticket_time', sa.DateTime(), nullable=True),
+    sa.Column('machine_id', sa.Integer(), nullable=True),
+    sa.Column('status_id', sa.Integer(), nullable=True),
+    sa.Column('intervention_type_id', sa.Integer(), nullable=True),
+    sa.Column('open_ticket_time', sa.DateTime(), nullable=False),
     sa.Column('leave_manufacturer_time', sa.DateTime(), nullable=True),
     sa.Column('closed_ticket_time', sa.DateTime(), nullable=True),
     sa.Column('vehicle_license_plate', sa.String(length=20), nullable=True),
@@ -92,7 +94,7 @@ def upgrade():
     sa.Column('km_on_arrival', sa.Integer(), nullable=True),
     sa.ForeignKeyConstraint(['customer_id'], ['customer.id'], ),
     sa.ForeignKeyConstraint(['intervention_type_id'], ['intervention_type.id'], ),
-    sa.ForeignKeyConstraint(['machine_serial_number'], ['machine.serial_number'], ),
+    sa.ForeignKeyConstraint(['machine_id'], ['machine.id'], ),
     sa.ForeignKeyConstraint(['status_id'], ['status_value.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
