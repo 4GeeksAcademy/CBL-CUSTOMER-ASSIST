@@ -26,9 +26,11 @@ export const CustomerMachineList = () => {
     }
 
     const saveMachine = (selected) => {
-        const selectedMachine = machineData.map((select) => select.Machine);
+        const selectedMachine = selected.map((select) => select.Machine);
         setMachine(selectedMachine)
+
     }
+
 
     return (
         <div className="container">
@@ -50,11 +52,11 @@ export const CustomerMachineList = () => {
 
                 <div className="border rounded p-4 flex-fill">
                     <ul>
-                        {machine.length > 0 ? machine.map((object, index) => (
-                            <li key={index}>
-                                {object}
+                        {machine && Object.entries(machine).map(([key, value]) => (
+                            <li key={key}>
+                                {key}: {value}
                             </li>
-                        )) : null}
+                        ))}
                     </ul>
                 </div>
             </div>
