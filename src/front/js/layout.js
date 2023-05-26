@@ -3,10 +3,12 @@ import { BrowserRouter, Route, Router, Routes } from "react-router-dom";
 import { Login } from "./pages/login";
 import { Home } from "./pages/home";
 import { Single } from "./pages/single";
-import { EmployeeReg } from "./pages/employeeRed";
-import { CustomerReg } from "./pages/customerReg";
+import { AdminCreateTicket } from "./pages/admin/admin-create-ticket";
+import { CreateNewCustomer } from "./pages/admin/admin-create-customer";
 import injectContext from "./store/appContext";
-import { Dashboard } from "./pages/dashboard";
+import { Dashboard } from "./pages/admin/dashboard";
+import { CustomerCreateTicket } from "./pages/customer/customer-create-ticket";
+import { CustomerMachineList } from "./pages/customer/customer-machine-list";
 
 import { Navbar } from "./component/navbar";
 import { Sidebar } from "./component/sidebar";
@@ -27,10 +29,13 @@ const Layout = () => {
                     <Route element={<Login />} path="/login" />
                     <Route element={<Home />} path="/" />
                     <Route element={<Single />} path="/single/:theid" />
-                    <Route element={<Dashboard />} path="/dashboard" />
-                    <Route element={<CustomerReg />} path="/customer-create" />
-                    <Route element={<EmployeeReg />} path="/technician-create" />
                     <Route element={<h1>Not found!</h1>} />
+                    <Route element={<Dashboard />} path="/dashboard" />
+                    <Route element={<CustomerCreateTicket />} path="/customer/create/ticket" />
+                    <Route element={<AdminCreateTicket />} path="/admin/create/ticket" />
+                    <Route element={<CreateNewCustomer />} path="/admin/create/customer" />
+                    <Route element={<CustomerMachineList />} path="/customer/machine/list" />
+
                 </Routes>
             </BrowserRouter>
         </div>
