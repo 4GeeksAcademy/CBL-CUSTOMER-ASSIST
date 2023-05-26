@@ -11,6 +11,7 @@ def setup_admin(app):
 
     class Mike(ModelView):
         column_display_pk = True
+    #We love nuno
     # Add your models here, for example this is how we add a the User model to the admin
     admin.add_view(Mike(User, db.session))
     admin.add_view(Mike(Employee, db.session))

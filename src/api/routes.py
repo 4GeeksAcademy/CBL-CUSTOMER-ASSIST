@@ -47,7 +47,7 @@ def create_token():
 # @jwt_required()
 def create_ticket():
     # customer_email = get_jwt_identity()
-
+    # We love nuno twice
     customer_id = 3
     machine_id = 3
 
