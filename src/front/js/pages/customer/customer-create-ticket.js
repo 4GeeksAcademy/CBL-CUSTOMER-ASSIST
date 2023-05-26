@@ -12,7 +12,7 @@ export const CustomerCreateTicket = () => {
     const [machineOptions, setMachineOptions] = useState(machineData);
 
     const createTicket = async () => {
-        const response = await fetch(process.env.BACKEND_URL + "/api/user", {
+        const response = await fetch(process.env.BACKEND_URL + "/api/", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
