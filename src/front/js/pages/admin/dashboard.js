@@ -1,10 +1,8 @@
 import React from "react";
 import "../../../styles/home.css";
 
-
-
 export const Dashboard = () => {
-    return (
+  return (
         <>
             <div className="container my-3">
                 <div >

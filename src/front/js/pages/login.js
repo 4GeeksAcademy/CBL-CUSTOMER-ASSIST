@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import { Context } from "../store/appContext";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 
 export const Login = () => {
@@ -10,8 +10,8 @@ export const Login = () => {
     const navigate = useNavigate();
 
     const userLogin = async () => {
-        await actions.login(email, password);
-        navigate("/")
+        const response = await actions.login(email, password);
+        if (response) navigate("/dashboard");
     }
 
     return (
