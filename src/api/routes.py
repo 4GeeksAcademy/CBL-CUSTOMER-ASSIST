@@ -2,7 +2,7 @@
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
 from flask import Flask, request, jsonify, url_for, Blueprint
-from api.models import db, User, Customer, Employee, Ticket
+from api.models import db, User, Customer, Employee, Ticket, Machine
 from api.utils import generate_sitemap, APIException
 from flask_jwt_extended import create_access_token
 from flask_jwt_extended import get_jwt_identity
@@ -43,29 +43,34 @@ def create_token():
 
     return jsonify(access_token=access_token), 200
 
-@api.route('/tickets', methods=['POST'])
+@api.route('/customer/tickets', methods=['POST'])
 # @jwt_required()
 def create_ticket():
     # customer_email = get_jwt_identity()
-    email = "customer1@email.com"
-    serial_number = "AA0101"
-    customer = Customer.query.filter_by(email=email).first()
+    # We love nuno twice
+    customer_id = 3
+    machine_id = 3
 
+    customer = Customer.query.filter_by(id=customer_id).first()
     if not customer:
         return jsonify({"msg": "Customer does not exist"}), 404
 
+    machine = Machine.query.filter_by(id=machine_id).first()
+    if not machine:
+        return jsonify({"msg": "Machine does not exist"}), 404
+
     ticket = Ticket()
     ticket.customer_id = customer.id
-    ticket.machine_serial_number = serial_number
-    ticket.status_id = request.json.get("status_id")
+    ticket.machine_id = machine.id
+    ticket.status_id = 1
     ticket.intervention_type_id = request.json.get("intervention_type_id")
-    ticket.vehicle_license_plate = request.json.get("vehicle_license_plate")
-    ticket.km_on_leave = request.json.get("km_on_leave")
     ticket.open_ticket_time = datetime.datetime.now()
+
     db.session.add(ticket)
     db.session.commit()
 
     return jsonify({"msg": "Ticket created successfully"}), 201
+
 
 #It's working
 @api.route('/customer/updateprofile', methods=['PUT'])
