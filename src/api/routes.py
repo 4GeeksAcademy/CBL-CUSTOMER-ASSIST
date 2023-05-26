@@ -78,7 +78,9 @@ def create_ticket():
 def updateProfile():
     body = request.json
 
-    customer = Customer.query.filter_by(email=body["email"]).first()
+    customer_id = 1  # Assuming the client provides the customer ID
+
+    customer = Customer.query.get(customer_id)  # Fetch the customer based on the provided ID
     if customer:
         # Update the fields based on the provided data
         if "new_email" in body:
