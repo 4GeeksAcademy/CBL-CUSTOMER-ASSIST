@@ -4,16 +4,10 @@ import { Multiselect } from 'multiselect-react-dropdown';
 
 export const CustomerMachineList = () => {
     const navigate = useNavigate();
-    const [machine, setMachine] = useState(null)
+    const [machine, setMachine] = useState({})
     const [search, setSearch] = useState(null)
-    const machineData = [{ Machine: 'A Machine 1', id: 1 }, { Machine: 'B Machine 2', id: 2 }, { Machine: 'C Machine 3', id: 3 }, { Machine: 'Z Machine 3', id: 4 }];
+    const machineData = [{ Machine: 'A Machine 1', Name: "Smasher", id: 1 }, { Machine: 'B Machine 2', Name: "Braker", id: 2 }, { Machine: 'C Machine 3', Name: "Cutter", id: 3 }, { Machine: 'Z Machine 3', Name: "Slicer", id: 4 }];
     const [machineOptions, setMachineOptions] = useState(machineData);
-
-
-    useEffect(() => {
-
-    }, [search])
-
 
     const fetchMachine = async (id) => {
         const response = await fetch(process.env.BACKEND_URL + "/api/${id}");
@@ -26,8 +20,8 @@ export const CustomerMachineList = () => {
     }
 
     const saveMachine = (selected) => {
-        const selectedMachie = selected.map((select) => select.Machine);
-        setMachine(selectedMachie)
+        const selectedMachine = selected.map((select) => select.Machine);
+        setMachine(selectedMachine)
     }
 
     return (
@@ -48,14 +42,16 @@ export const CustomerMachineList = () => {
 
                 <div className="me-3"><h5>Description:</h5></div>
 
-                <div className="border rounded p-5 flex-fill"></div>
-                <ul>
-                    {/* {search.map((object) => (
-                        <li key={object.id} onClick={() => fetchMachine(object)}>
-                            {object.name}
-                        </li>
-                    ))} */}
-                </ul>
+                <div className="border rounded p-4 flex-fill">
+                    <ul>
+                        {machine && Object.entries(machine).map(([key, value]) => (
+                            <li key={key}>
+                                {key}: {value}
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+
             </div>
 
 

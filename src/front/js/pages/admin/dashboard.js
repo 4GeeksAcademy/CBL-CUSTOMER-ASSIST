@@ -1,14 +1,8 @@
-import React, { useEffect, useContext } from "react";
-import { Context } from "../../store/appContext";
+import React from "react";
 import "../../../styles/home.css";
 
 export const Dashboard = () => {
-    const { store, actions } = useContext(Context);
-
-    useEffect(() => {
-        actions.getMessage();
-    }, []);
-    return (
+  return (
         <>
             <div className="container my-3">
                 <div >
