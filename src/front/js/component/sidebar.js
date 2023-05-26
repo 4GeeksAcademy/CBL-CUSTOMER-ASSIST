@@ -16,28 +16,30 @@ export const Sidebar = () => {
 
                 <SideNav.Toggle />
                 <SideNav.Nav defaultSelected="tickets">
-                    {/* TICKET */}
+                    {/********* TICKET *********/}
                     <NavItem eventKey="tickets">
                         <NavIcon><i className="fa-solid fa-ticket" style={{ fontSize: "1.5em" }}></i></NavIcon>
                         <NavText>Ticket</NavText>
                         <NavItem eventKey="dashboard">
                             <NavText>Dashboard</NavText>
                         </NavItem>
-                        <NavItem eventKey="ticket-create">
+                        {/* Customer creates a ticket below */}
+                        <NavItem eventKey="customer/create/ticket">
                             <NavText>Create Ticket</NavText>
                         </NavItem>
-                        <NavItem eventKey="ticket-history">
-                            <NavText>Ticket History</NavText>
+                        <NavItem eventKey="customer/machine/list">
+                            <NavText>Machine List</NavText>
                         </NavItem>
                         <NavItem eventKey="ticket-search">
                             <NavText>Search</NavText>
                         </NavItem>
                     </NavItem>
-                    {/* CUSTOMER */}
+                    {/********* CUSTOMER  *********/}
                     <NavItem eventKey="customer">
                         <NavIcon><i className="fa-solid fa-user" style={{ fontSize: "1.5em" }}></i></NavIcon>
                         <NavText>Customer</NavText>
-                        <NavItem eventKey="customer-create">
+                        {/* Admin creates a new customer below */}
+                        <NavItem eventKey="admin/create/customer">
                             <NavText>Create Customer</NavText>
                         </NavItem>
                         <NavItem eventKey="customer-edit">
@@ -47,7 +49,7 @@ export const Sidebar = () => {
                             <NavText>Search</NavText>
                         </NavItem>
                     </NavItem>
-                    {/* TECHNICIAN */}
+                    {/********* TECHNICIAN *********/}
                     <NavItem eventKey="technician">
                         <NavIcon><i className="fa-solid fa-user-tie" style={{ fontSize: "1.5em" }}></i></NavIcon>
                         <NavText>Technician</NavText>
@@ -61,7 +63,7 @@ export const Sidebar = () => {
                             <NavText>Search</NavText>
                         </NavItem>
                     </NavItem>
-                    {/* ADMIN */}
+                    {/********* ADMIN *********/}
                     <NavItem eventKey="admin">
                         <NavIcon><i className="fa-solid fa-user-gear" style={{ fontSize: "1.5em" }}></i></NavIcon>
                         <NavText>Admin</NavText>
