@@ -27,8 +27,8 @@ export const Sidebar = () => {
                         <NavItem eventKey="customer/create/ticket">
                             <NavText>Create Ticket</NavText>
                         </NavItem>
-                        <NavItem eventKey="ticket-history">
-                            <NavText>Ticket History</NavText>
+                        <NavItem eventKey="customer/machine/list">
+                            <NavText>Machine List</NavText>
                         </NavItem>
                         <NavItem eventKey="ticket-search">
                             <NavText>Search</NavText>

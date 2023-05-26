@@ -1,10 +1,13 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
+import { Multiselect } from 'multiselect-react-dropdown';
 
-export const MachineList = () => {
+export const CustomerMachineList = () => {
     const navigate = useNavigate();
     const [machine, setMachine] = useState(null)
-    const [search, setSearch] = useState([])
+    const [search, setSearch] = useState(null)
+    const machineData = [{ Machine: 'A Machine 1', id: 1 }, { Machine: 'B Machine 2', id: 2 }, { Machine: 'C Machine 3', id: 3 }, { Machine: 'Z Machine 3', id: 4 }];
+    const [machineOptions, setMachineOptions] = useState(machineData);
 
 
     useEffect(() => {
@@ -22,6 +25,11 @@ export const MachineList = () => {
         }
     }
 
+    const saveMachine = (selected) => {
+        const selectedMachie = selected.map((select) => select.Machine);
+        setMachine(selectedMachie)
+    }
+
     return (
         <div className="container">
             <div className="border-bottom mb-4 mt-3">
@@ -31,26 +39,22 @@ export const MachineList = () => {
             <div>
                 <div className="mb-3 p-3 col-sm-12 col-md-8 col-lg-8 mx-auto d-flex ">
 
-                    <input type="text" {/*onChange={search}*/} placeholder="Search object" />
-
-                    <select id="inputState" className="form-select">
-                        <option>Machines...</option>
-                        <option>...</option>
-                    </select>
-                    {/* onChange={() => {
-                       fetchMachine(id) 
-                    }} /> */}
+                    <h5 className="me-3 mt-2">Machine:</h5>
+                    <Multiselect options={machineOptions} displayValue="Machine" placeholder="Select machine"
+                        onSelect={saveMachine} onRemove={saveMachine} />
                 </div>
             </div>
             <div className="d-flex">
+
                 <div className="me-3"><h5>Description:</h5></div>
+
                 <div className="border rounded p-5 flex-fill"></div>
                 <ul>
-                    {search.map((object) => (
+                    {/* {search.map((object) => (
                         <li key={object.id} onClick={() => fetchMachine(object)}>
                             {object.name}
                         </li>
-                    ))}
+                    ))} */}
                 </ul>
             </div>
 

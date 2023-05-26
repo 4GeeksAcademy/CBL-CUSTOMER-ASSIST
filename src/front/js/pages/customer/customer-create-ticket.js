@@ -8,7 +8,7 @@ export const CustomerCreateTicket = () => {
     const [machine, setMachine] = useState(null)
     const [support, setSupport] = useState("")
     const navigate = useNavigate();
-    const machineData = [{ Machine: 'A Machine 1', id: 1 }, { Machine: 'B Machine 2', id: 2 }, { Machine: 'C Machine 3', id: 3 }];
+    const machineData = [{ Machine: 'A Machine 1', id: 1 }, { Machine: 'B Machine 2', id: 2 }, { Machine: 'C Machine 3', id: 3 }, { Machine: 'Z Machine 3', id: 4 }];
     const [machineOptions, setMachineOptions] = useState(machineData);
 
     const createTicket = async () => {
