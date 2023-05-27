@@ -78,7 +78,7 @@ def create_ticket():
 def updateProfile():
     body = request.json
 
-    customer_id = 1  # Assuming the client provides the customer ID
+    customer_id = 3 # Assuming the client provides the customer ID
 
     customer = Customer.query.get(customer_id)  # Fetch the customer based on the provided ID
     if customer:
