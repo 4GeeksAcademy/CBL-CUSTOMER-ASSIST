@@ -94,6 +94,7 @@ def create_ticket():
         return jsonify(ticket_list), 200
 
 #It's working
+#qwe
 @api.route('/customer/updateprofile', methods=['PUT'])
 # @jwt_required()
 def updateProfile():
