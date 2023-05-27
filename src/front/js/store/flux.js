@@ -4,7 +4,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 			token: null,
 			user: {},
 			message: null,
-			machineList: []
+			machineList: [],
+			interventionType: []
 		},
 		actions: {
 			syncTokenFromSessionStorage: () => {
@@ -85,6 +86,27 @@ const getState = ({ getStore, getActions, setStore }) => {
 				console.log(data);
 				setStore({ "machineList": data.machines });
 				console.log(getStore().machineList);
+			},
+
+			getInterventionType: async () => {
+				console.log('getInterventionType');
+				const token = getStore().token;
+				const opts = {
+					method: "GET",
+					headers: {
+						"Authorization": "Bearer " + token
+					}
+				}
+				const response = await fetch(process.env.BACKEND_URL + "api/interventiontype", opts);
+				if (response.status != 200) {
+					alert("Something went wrong with your authorization!");
+					return false;
+				}
+
+				const data = await response.json();
+				console.log(data.intervention_type);
+				setStore({ "interventionType": data.intervention_type });
+				console.log(getStore().interventionType);
 			}
 		}
 	};
