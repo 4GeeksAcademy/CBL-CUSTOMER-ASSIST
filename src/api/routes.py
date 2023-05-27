@@ -43,36 +43,58 @@ def create_token():
 
     return jsonify(access_token=access_token), 200
 
-@api.route('/customer/tickets', methods=['POST'])
+@api.route('/customer/tickets', methods=['POST', 'GET'])
 # @jwt_required()
 def create_ticket():
-    # customer_email = get_jwt_identity()
-    # We love nuno twice
-    customer_id = 3
-    machine_id = 3
+    if request.method == 'POST':
+        # customer_email = get_jwt_identity()
+        # We love nuno twice
+        customer_id = 3
+        machine_id = 3
 
-    customer = Customer.query.filter_by(id=customer_id).first()
-    if not customer:
-        return jsonify({"msg": "Customer does not exist"}), 404
+        customer = Customer.query.filter_by(id=customer_id).first()
+        if not customer:
+            return jsonify({"msg": "Customer does not exist"}), 404
 
-    machine = Machine.query.filter_by(id=machine_id).first()
-    if not machine:
-        return jsonify({"msg": "Machine does not exist"}), 404
+        machine = Machine.query.filter_by(id=machine_id).first()
+        if not machine:
+            return jsonify({"msg": "Machine does not exist"}), 404
 
-    ticket = Ticket()
-    ticket.customer_id = customer.id
-    ticket.machine_id = machine.id
-    ticket.status_id = 1
-    ticket.intervention_type_id = request.json.get("intervention_type_id")
-    ticket.open_ticket_time = datetime.datetime.now()
+        ticket = Ticket()
+        ticket.customer_id = customer.id
+        ticket.machine_id = machine.id
+        ticket.status_id = 1
+        ticket.intervention_type_id = request.json.get("intervention_type_id")
+        ticket.open_ticket_time = datetime.datetime.now()
 
-    db.session.add(ticket)
-    db.session.commit()
+        db.session.add(ticket)
+        db.session.commit()
 
-    return jsonify({"msg": "Ticket created successfully"}), 201
+        return jsonify({"msg": "Ticket created successfully"}), 201
 
+    elif request.method == 'GET':
+        # customer_email = get_jwt_identity()
+        # Assuming you want to retrieve tickets for customer with ID 3
+        customer_id = 3
+
+        tickets = Ticket.query.filter_by(customer_id=customer_id).all()
+        ticket_list = []
+        for ticket in tickets:
+            ticket_data = {
+                "ticket_id": ticket.id,
+                "customer_id": ticket.customer_id,
+                "machine_id": ticket.machine_id,
+                "status_id": ticket.status_id,
+                "intervention_type_id": ticket.intervention_type_id,
+                "open_ticket_time": ticket.open_ticket_time.strftime("%Y-%m-%d %H:%M:%S"),
+                # Add more ticket details as needed
+            }
+            ticket_list.append(ticket_data)
+
+        return jsonify(ticket_list), 200
 
 #It's working
+#qwe
 @api.route('/customer/updateprofile', methods=['PUT'])
 # @jwt_required()
 def updateProfile():
@@ -99,5 +121,6 @@ def updateProfile():
         return jsonify({"message": "Profile updated successfully"})
     else:
         return jsonify({"error": "Customer not found"})
+    
 
 
