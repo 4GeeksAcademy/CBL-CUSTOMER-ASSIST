@@ -3,7 +3,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 		store: {
 			token: null,
 			user: {},
-			message: null
+			message: null,
+			machineList: [],
+			interventionType: []
 		},
 		actions: {
 			syncTokenFromSessionStorage: () => {
@@ -63,6 +65,48 @@ const getState = ({ getStore, getActions, setStore }) => {
 				const data = await response.json();
 				setStore({ "message": data.message });
 				console.log(getStore().message);
+			},
+
+			getMachineList: async (customerId) => {
+				console.log('getMachineList');
+				const token = getStore().token;
+				const opts = {
+					method: "GET",
+					headers: {
+						"Authorization": "Bearer " + token
+					}
+				}
+				const response = await fetch(process.env.BACKEND_URL + "api/machinelist/" + customerId, opts);
+				if (response.status != 200) {
+					alert("Something went wrong with your authorization!");
+					return false;
+				}
+
+				const data = await response.json();
+				console.log(data);
+				setStore({ "machineList": data.machines });
+				console.log(getStore().machineList);
+			},
+
+			getInterventionType: async () => {
+				console.log('getInterventionType');
+				const token = getStore().token;
+				const opts = {
+					method: "GET",
+					headers: {
+						"Authorization": "Bearer " + token
+					}
+				}
+				const response = await fetch(process.env.BACKEND_URL + "api/interventiontype", opts);
+				if (response.status != 200) {
+					alert("Something went wrong with your authorization!");
+					return false;
+				}
+
+				const data = await response.json();
+				console.log(data.intervention_type);
+				setStore({ "interventionType": data.intervention_type });
+				console.log(getStore().interventionType);
 			}
 		}
 	};

@@ -104,9 +104,11 @@ def create_ticket():
         customer_id = 3
         machine_id = 3
 
+
         customer = Customer.query.filter_by(id=customer_id).first()
         if not customer:
             return jsonify({"msg": "Customer does not exist"}), 404
+
 
         machine = Machine.query.filter_by(id=machine_id).first()
         if not machine:
