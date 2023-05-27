@@ -9,6 +9,12 @@ export const CustomerMachineList = () => {
     const machineData = [{ Machine: 'A Machine 1', Name: "Smasher", id: 1 }, { Machine: 'B Machine 2', Name: "Braker", id: 2 }, { Machine: 'C Machine 3', Name: "Cutter", id: 3 }, { Machine: 'Z Machine 3', Name: "Slicer", id: 4 }];
     const [machineOptions, setMachineOptions] = useState(machineData);
 
+
+    // useEffect(() => {
+
+    // }, [search])
+
+
     const fetchMachine = async (id) => {
         const response = await fetch(process.env.BACKEND_URL + "/api/${id}");
         if (response.ok) {
@@ -22,7 +28,9 @@ export const CustomerMachineList = () => {
     const saveMachine = (selected) => {
         const selectedMachine = selected.map((select) => select.Machine);
         setMachine(selectedMachine)
+
     }
+
 
     return (
         <div className="container">
@@ -51,7 +59,6 @@ export const CustomerMachineList = () => {
                         ))}
                     </ul>
                 </div>
-
             </div>
 
 
