@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Multiselect } from 'multiselect-react-dropdown';
 
 export const CustomerMachineList = () => {
+
     const [machine, setMachine] = useState({});
     const [arrMachine, setArrMachine] = useState([]);
 
@@ -17,9 +18,6 @@ export const CustomerMachineList = () => {
         setMachine(selectedMachine);
         console.log(machine);
     };
-
-
-
 
     return (
         <div className="container">
@@ -46,6 +44,7 @@ export const CustomerMachineList = () => {
                 </div>
 
                 <div className="border rounded p-4 flex-fill">
+
                     <div>
                         {machine.length > 0 ? Object.values(machine).map((item, i) => (
                             <div key={i}>
@@ -69,6 +68,7 @@ export const CustomerMachineList = () => {
                             </div>
                         )) : ""}
                     </div>
+
                 </div>
             </div>
         </div>

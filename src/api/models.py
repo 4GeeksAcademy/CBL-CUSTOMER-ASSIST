@@ -56,7 +56,7 @@ class Ticket(db.Model):
     customer_id = db.Column(db.Integer, db.ForeignKey(
         'customer.id'), nullable=False)
     machine_id = db.Column(db.Integer, db.ForeignKey(
-        'machine.id'), nullable=True)
+        'machine.id'), nullable=False)
     status_id = db.Column(db.Integer, db.ForeignKey(
         'status_value.id'), nullable=True)
     intervention_type_id = db.Column(db.Integer, db.ForeignKey(

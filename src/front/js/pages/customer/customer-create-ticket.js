@@ -1,14 +1,18 @@
 import React, { useContext, useState } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
-import { Multiselect } from 'multiselect-react-dropdown';
+import Select from 'react-select';
 
 export const CustomerCreateTicket = () => {
-    const [contact, setContact] = useState("")
     const [description, setDescription] = useState("")
     const [machine, setMachine] = useState(null)
-    const [support, setSupport] = useState("")
+    const [intervention, setIntervention] = useState("")
     const navigate = useNavigate();
-    const machineData = [{ Machine: 'A Machine 1', id: 1 }, { Machine: 'B Machine 2', id: 2 }, { Machine: 'C Machine 3', id: 3 }, { Machine: 'Z Machine 3', id: 4 }];
+    const machineData = [
+        { label: 'A Machine 1', value: 1 },
+        { label: 'B Machine 2', value: 2 },
+        { label: 'C Machine 3', value: 3 },
+        { label: 'Z Machine 3', value: 4 }
+    ];
     const [machineOptions, setMachineOptions] = useState(machineData);
 
     const createTicket = async () => {
@@ -18,8 +22,8 @@ export const CustomerCreateTicket = () => {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                contact: contact,
-                support: support,
+
+                intervention: intervention,
                 description: description,
                 machine: machine
             })
@@ -29,9 +33,9 @@ export const CustomerCreateTicket = () => {
         }
     }
 
-    const saveMachine = (selected) => {
-        const selectedMachie = selected.map((select) => select.Machine);
-        setMachine(selectedMachie)
+    const selectMachine = (machineObject) => {
+        const machineChoice = machineObject;
+        setMachine(machineChoice)
     }
 
     return (
@@ -40,41 +44,33 @@ export const CustomerCreateTicket = () => {
                 <h1>Create Ticket</h1>
             </div>
 
-            {/* Support type and contact person */}
+            {/* Support type  */}
             <div className="d-flex justify-content-evenly pb-4 border-bottom mb-4">
                 <div>
                     <div className="d-flex ">
-                        <div className="mt-2 me-2" ><h5>Select:</h5></div>
+                        <div className="mt-2 me-2" ><h5>Intervention Type:</h5></div>
                         <div>
-                            <select className="form-select" value={support} onChange={e => setSupport(e.target.value)}>
+                            <select className="form-select" value={intervention} onChange={e => setIntervention(e.target.value)}>
                                 <option></option>
-                                <option>Option 1</option>
-                                <option>Option 2</option>
-                                <option>Option 3</option>
+                                <option>Assistance</option>
+                                <option>Maintenance</option>
                             </select>
                         </div>
 
                     </div>
                 </div>
-                <div>
-                    <div className="d-flex">
-                        <label className="mt-2 me-2" htmlFor="formGroupExampleInput1"><h5>Contact:</h5></label>
-                        {/* <label htmlFor="formGroupExampleInput1" className="form-label me-3 mt-1">Contact Person</label> */}
-                        <input type="text" className="form-control" id="formGroupExampleInput1" placeholder="Contact Person"
-                            onChange={(e) => {
-                                setContact(e.target.value)
-                            }} />
-                    </div>
-                </div>
             </div>
 
             {/* Select Machine */}
-            <div>
-                <div className="mb-3 p-3 col-sm-12 col-md-8 col-lg-8 mx-auto d-flex ">
+            <div className="border-bottom mb-5">
+                <div className="mb-3 p-3 col-sm-12 col-md-8 col-lg-8 mx-auto d-flex  ">
 
                     <h5 className="me-3 mt-2">Machine:</h5>
-                    <Multiselect options={machineOptions} displayValue="Machine" placeholder="Select machine"
-                        onSelect={saveMachine} onRemove={saveMachine} />
+                    <Select
+                        options={machineOptions}
+                        valueKey={machine}
+                        placeholder="Select machine"
+                        onChange={selectMachine} />
 
                 </div>
             </div>
