@@ -1,6 +1,6 @@
 <mxfile host="65bd71144e">
     <diagram name="Página-1" id="bCabtzZe-On4UlTafJGf">
-        <mxGraphModel dx="33" dy="510" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+        <mxGraphModel dx="33" dy="114" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>
@@ -118,7 +118,7 @@
                 </mxCell>
                 <mxCell id="4MJQGTbwfi2Cli83ThLc-59" value="map" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];labelBorderColor=default;" parent="4MJQGTbwfi2Cli83ThLc-58" vertex="1" connectable="0">
                     <mxGeometry x="-0.1264" relative="1" as="geometry">
-                        <mxPoint as="offset"/>
+                        <mxPoint x="34" y="-1" as="offset"/>
                     </mxGeometry>
                 </mxCell>
                 <mxCell id="4MJQGTbwfi2Cli83ThLc-60" value="On entering page will display all customer machines" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=default;fillColor=none;labelBorderColor=none;" parent="1" vertex="1">
