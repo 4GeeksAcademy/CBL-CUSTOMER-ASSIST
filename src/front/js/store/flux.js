@@ -15,6 +15,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 
 			login: async (email, password) => {
+				console.log("actions: login")
 				const opts = {
 					method: "POST",
 					headers: {
@@ -67,8 +68,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 				console.log(getStore().message);
 			},
 
-			getMachineList: async (customerId) => {
-				console.log('getMachineList');
+			getMachineList: async () => {
+				console.log('action: getMachineList');
 				const token = getStore().token;
 				const opts = {
 					method: "GET",
@@ -76,20 +77,20 @@ const getState = ({ getStore, getActions, setStore }) => {
 						"Authorization": "Bearer " + token
 					}
 				}
-				const response = await fetch(process.env.BACKEND_URL + "api/machinelist/" + customerId, opts);
+				const response = await fetch(process.env.BACKEND_URL + "api/machinelist", opts);
 				if (response.status != 200) {
 					alert("Something went wrong with your authorization!");
 					return false;
 				}
 
 				const data = await response.json();
-				console.log(data);
+				console.log("action machineList return: ", data);
 				setStore({ "machineList": data.machines });
 				console.log(getStore().machineList);
 			},
 
 			getInterventionType: async () => {
-				console.log('getInterventionType');
+				console.log('action: getInterventionType');
 				const token = getStore().token;
 				const opts = {
 					method: "GET",
@@ -102,14 +103,14 @@ const getState = ({ getStore, getActions, setStore }) => {
 					alert("Something went wrong with your authorization!");
 					return false;
 				}
-
 				const data = await response.json();
 				console.log(data.intervention_type);
 				setStore({ "interventionType": data.intervention_type });
 				console.log(getStore().interventionType);
 			},
 
-			createCustomerTicket: async (machineId, interventionId, description) => {
+			customerCreateTicket: async (machineId, interventionId, description) => {
+				console.log("action: createCustomerTicket");
 				const token = getStore().token;
 				const opts = {
 					method: "POST",
