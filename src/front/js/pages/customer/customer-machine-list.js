@@ -3,27 +3,25 @@ import { Multiselect } from 'multiselect-react-dropdown';
 import { Context } from "../../store/appContext";
 
 export const CustomerMachineList = () => {
-    const [machine, setMachine] = useState({});
-    const [arrMachine, setArrMachine] = useState([]);
+    const { store, actions } = useContext(Context)
+    const [machine, setMachine] = useState(store.machineList);
+    // Delete test objects below
     const machineData = [
         { id: 1, name: 'Z Machine', age: 25 },
         { id: 2, name: 'B Mchine', age: 30 },
         { id: 3, name: 'K Machine', age: 35 },
     ];
-    const [machineOptions] = useState(machineData);
-    const { store, actions } = useContext(Context)
+    const [machineOptions] = useState(store.machineList);
     const [machineVar, setMachineVar] = useState([])
 
     useEffect(() => {
         if (Object.keys(machine).length === 0) setMachineVar(machineOptions)
         else setMachineVar(machine)
-
     }, [machine])
 
     const saveMachine = (selected) => {
         const selectedMachine = selected.map((select) => select);
         setMachine(selectedMachine);
-        console.log(machine);
     };
 
     return (
