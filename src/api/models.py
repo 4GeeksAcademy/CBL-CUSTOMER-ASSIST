@@ -30,6 +30,10 @@ class InterventionType(db.Model):
     tickets = db.relationship('Ticket', backref='intervention_type')
 
 
+    def serialize(self):
+        return {"id": self.id, "name": self.name}
+
+
 class StatusValue(db.Model):
     # __tablename__ = 'status_value'
     id = db.Column(db.Integer, primary_key=True)
@@ -103,6 +107,12 @@ class Machine(db.Model):
     customer_id = db.Column(db.Integer, db.ForeignKey(
         'customer.id'), nullable=True)
     tickets = db.relationship('Ticket', backref='machine')
+
+    def __repr__(self):
+        return f"<Machine {self.model}>"
+
+    def serialize(self):
+        return {"id": self.id, "serial_number": self.serial_number, "model": self.model, "im109": self.im109}
 
 
 class Tag(db.Model):

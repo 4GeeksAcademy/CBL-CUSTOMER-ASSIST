@@ -46,38 +46,41 @@ def create_token():
 @api.route('/customer/create/ticket', methods=['POST'])
 @jwt_required()
 def create_ticket():
-    current_customer_email = get_jwt_identity()
-    customer = Customer.query.filter_by(email=current_customer_email).one_or_none()
-  
-    if not customer:
-        return jsonify({"error": "Customer not found!"}), 404
+    try:
+        current_customer_email = get_jwt_identity()
+        customer = Customer.query.filter_by(email=current_customer_email).one_or_none()
+    
+        if not customer:
+            return jsonify({"error": "Customer not found!"}), 404
 
-    machine_id = request.json.get("machine_id", None)
-    intervention_id = request.json.get("intervention_id", None)
-    description = request.json.get("description", None)
+        machine_id = request.json.get("machine_id", None)
+        intervention_id = request.json.get("intervention_id", None)
+        description = request.json.get("description", None)
 
-    ticket = Ticket()
-    ticket.customer_id = customer.id
-    ticket.machine_id = machine_id
-    ticket.status_id = 1
-    ticket.intervention_type_id = intervention_id
-    ticket.open_ticket_time = datetime.datetime.now()
-    db.session.add(ticket)
-    db.session.commit()
+        ticket = Ticket()
+        ticket.customer_id = customer.id
+        ticket.machine_id = machine_id
+        ticket.status_id = 1
+        ticket.intervention_type_id = intervention_id
+        ticket.open_ticket_time = datetime.datetime.now()
+        db.session.add(ticket)
+        db.session.flush()
+        
+        malfunction = Malfunction()
+        malfunction.description = description
+        db.session.add(malfunction)
+        db.session.flush()
+        
+        occurrence = Occurrence()
+        occurrence.ticket_id = ticket.id
+        occurrence.malfunction_id = malfunction.id
+        db.session.add(occurrence)
+        db.session.flush()
+        db.session.commit()
 
-    malfunction = Malfunction()
-    malfunction.description = description
-    db.session.add(malfunction)
-    db.session.commit()
-
-    occurrence = Occurrence()
-    occurrence.ticket_id = ticket.id
-    occurrence.malfunction_id = malfunction.id
-    db.session.add(occurrence)
-    db.session.commit()
-
-    return jsonify({"msg": "Ticket created successfully"}), 201
-
+        return jsonify({"msg": "Ticket created successfully"}), 201
+    except Exception:
+        return jsonify({"msg": "Exception"}), 400
 
 #It's working
 @api.route('/customer/updateprofile', methods=['PUT'])
@@ -121,14 +124,14 @@ def get_intervention_types():
     }
     return jsonify(response_body), 200
 
-@api.route('machinelist/<int:customer_id>', methods=['GET'])
+@api.route('/machinelist', methods=['GET'])
 @jwt_required()
-def get_machines(customer_id):
+def get_machines():
     current_customer_email = get_jwt_identity()
     customer = Customer.query.filter_by(email=current_customer_email).one_or_none()
 
-    if customer and customer.id == customer_id:
-        machines = Machine.query.filter_by(customer_id=customer_id).all()
+    if customer:
+        machines = Machine.query.filter_by(customer_id=customer.id).all()
     
     if not machines:
         return jsonify({"error": "No machines for that customer!"}), 404

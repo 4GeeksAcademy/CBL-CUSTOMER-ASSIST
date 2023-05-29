@@ -1,42 +1,30 @@
-import React, { useContext, useState } from "react";
-import { Navigate, useNavigate } from "react-router-dom";
-import Select from 'react-select';
+import React, { useContext, useState, useEffect } from "react";
+import { Context } from "../../store/appContext";
+import { useNavigate } from "react-router-dom";
 
 export const CustomerCreateTicket = () => {
+    const { store, actions } = useContext(Context);
     const [description, setDescription] = useState("")
-    const [machine, setMachine] = useState(null)
-    const [intervention, setIntervention] = useState("")
+    const [machineID, setMachineID] = useState(null)
+    const [interventionID, setInterventionID] = useState(null)
     const navigate = useNavigate();
-    const machineData = [
-        { label: 'A Machine 1', value: 1 },
-        { label: 'B Machine 2', value: 2 },
-        { label: 'C Machine 3', value: 3 },
-        { label: 'Z Machine 3', value: 4 }
-    ];
-    const [machineOptions, setMachineOptions] = useState(machineData);
 
     const createTicket = async () => {
-        const response = await fetch(process.env.BACKEND_URL + "/api/", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-
-                intervention: intervention,
-                description: description,
-                machine: machine
-            })
-        });
-        if (response.ok) {
-            navigate("")
+        const response = await actions.customerCreateTicket(machineID, interventionID, description);
+        if (response) {
+            alert("Ticket created!");
+            navigate("/");
         }
+        if (!response) {
+            alert("Error");
+        }
+
     }
 
-    const selectMachine = (machineObject) => {
-        const machineChoice = machineObject;
-        setMachine(machineChoice)
-    }
+    useEffect(() => {
+        actions.getInterventionType();
+        actions.getMachineList();
+    }, [])
 
     return (
         <div className="container">
@@ -50,10 +38,15 @@ export const CustomerCreateTicket = () => {
                     <div className="d-flex ">
                         <div className="mt-2 me-2" ><h5>Intervention Type:</h5></div>
                         <div>
-                            <select className="form-select" value={intervention} onChange={e => setIntervention(e.target.value)}>
-                                <option></option>
-                                <option>Assistance</option>
-                                <option>Maintenance</option>
+                            <select className="form-select" onChange={e => setInterventionID(e.target.value)}>
+                                <option>Select option</option>
+                                {store.interventionType.length > 0
+                                    ? store.interventionType.map((type) => {
+                                        return <option key={type.id} value={type.id} >{type.name}</option>
+                                    })
+                                    :
+                                    <option>Loading...</option>
+                                }
                             </select>
                         </div>
 
@@ -62,16 +55,20 @@ export const CustomerCreateTicket = () => {
             </div>
 
             {/* Select Machine */}
-            <div className="border-bottom mb-5">
-                <div className="mb-3 p-3 col-sm-12 col-md-8 col-lg-8 mx-auto d-flex  ">
-
+            <div>
+                <div className="mb-3 p-3 col-sm-12 col-md-8 col-lg-8 mx-auto d-flex ">
                     <h5 className="me-3 mt-2">Machine:</h5>
-                    <Select
-                        options={machineOptions}
-                        valueKey={machine}
-                        placeholder="Select machine"
-                        onChange={selectMachine} />
-
+                    <div>
+                        <select className="form-select" onChange={e => setMachineID(e.target.value)}>
+                            {store.machineList.length > 0
+                                ?
+                                store.machineList.map((machine) => {
+                                    return <option key={machine.id} value={machine.id}>{machine.model + " - " + machine.serial_number}</option>
+                                })
+                                : <option>Loading machine list...</option>
+                            }
+                        </select>
+                    </div>
                 </div>
             </div>
 
