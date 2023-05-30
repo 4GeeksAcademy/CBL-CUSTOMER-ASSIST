@@ -6,7 +6,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 			message: null,
 			customerTickets: [],
 			machineList: [],
-			interventionType: []
+			interventionType: [],
+			tickets: []
 		},
 		actions: {
 			syncTokenFromSessionStorage: () => {
@@ -139,6 +140,33 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.log("There has been an error login in!")
 				}
 			},
+
+			getTickets: async () => {
+				console.log("action: getTickets");
+				const token = getStore().token;
+				const opts = {
+					method: "GET",
+					headers: {
+						"Content-Type": "application/json",
+						"Authorization": "Bearer " + token
+					}
+				};
+				try {
+					const response = await fetch(process.env.BACKEND_URL + "api/ticketlist", opts);
+					if (response.status !== 200) {
+						alert("There has been some error!");
+						return false;
+					}
+					console.log("Getting to response");
+					const data = await response.json();
+					console.log("This came from the backend", data);
+					setStore({ "tickets": data.machines });
+					return true;
+				}
+				catch (error) {
+					console.log("There has been an error login in!", error)
+				}
+			}
 		}
 	};
 };

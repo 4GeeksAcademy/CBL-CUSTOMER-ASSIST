@@ -21,7 +21,7 @@ api = Blueprint('api', __name__)
 #     }
 
 #     return jsonify(response_body), 200
-#works
+# works
 
 
 @api.route('/token', methods=['POST'])
@@ -35,6 +35,7 @@ def create_token():
     employee = Employee.query.filter_by(
         email=email, password=password).first()
     if customer:
+        print(customer)
         access_token = create_access_token(identity=customer.email)
     elif employee:
         access_token = create_access_token(identity=employee.email)
@@ -43,13 +44,15 @@ def create_token():
 
     return jsonify(access_token=access_token), 200
 
+
 @api.route('/customer/create/ticket', methods=['POST'])
 @jwt_required()
 def create_ticket():
     try:
         current_customer_email = get_jwt_identity()
-        customer = Customer.query.filter_by(email=current_customer_email).one_or_none()
-    
+        customer = Customer.query.filter_by(
+            email=current_customer_email).one_or_none()
+
         if not customer:
             return jsonify({"error": "Customer not found!"}), 404
 
@@ -65,12 +68,12 @@ def create_ticket():
         ticket.open_ticket_time = datetime.datetime.now()
         db.session.add(ticket)
         db.session.flush()
-        
+
         malfunction = Malfunction()
         malfunction.description = description
         db.session.add(malfunction)
         db.session.flush()
-        
+
         occurrence = Occurrence()
         occurrence.ticket_id = ticket.id
         occurrence.malfunction_id = malfunction.id
@@ -82,15 +85,18 @@ def create_ticket():
     except Exception:
         return jsonify({"msg": "Exception"}), 400
 
-#It's working
-@api.route('/customer/updateprofile', methods=['PUT'])
+# It's working
+
+
+@api.route('/customer/update/profile', methods=['PUT'])
 # @jwt_required()
 def updateProfile():
     body = request.json
 
-    customer_id = 3 # Assuming the client provides the customer ID
+    customer_id = 3  # Assuming the client provides the customer ID
 
-    customer = Customer.query.get(customer_id)  # Fetch the customer based on the provided ID
+    # Fetch the customer based on the provided ID
+    customer = Customer.query.get(customer_id)
     if customer:
         # Update the fields based on the provided data
         if "new_email" in body:
@@ -124,19 +130,41 @@ def get_intervention_types():
     }
     return jsonify(response_body), 200
 
+
 @api.route('/machinelist', methods=['GET'])
 @jwt_required()
 def get_machines():
     current_customer_email = get_jwt_identity()
-    customer = Customer.query.filter_by(email=current_customer_email).one_or_none()
+    customer = Customer.query.filter_by(
+        email=current_customer_email).one_or_none()
 
     if customer:
         machines = Machine.query.filter_by(customer_id=customer.id).all()
-    
+
     if not machines:
         return jsonify({"error": "No machines for that customer!"}), 404
 
     response_body = {
         "machines": [machine.serialize() for machine in machines]
+    }
+    return jsonify(response_body), 200
+
+
+@api.route('/ticketlist', methods=['GET'])
+@jwt_required()
+def get_tickets():
+    current_customer_email = get_jwt_identity()
+    customer = Customer.query.filter_by(
+        email=current_customer_email).one_or_none()
+
+    if customer:
+        print(customer.id)
+        tickets = Ticket.query.filter_by(customer_id=customer.id).all()
+
+    if not tickets:
+        return jsonify({"error": "No machines for that customer!"}), 404
+
+    response_body = {
+        "machines": [ticket.serialize() for ticket in tickets]
     }
     return jsonify(response_body), 200
