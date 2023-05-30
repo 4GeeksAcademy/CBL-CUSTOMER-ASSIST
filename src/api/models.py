@@ -29,7 +29,6 @@ class InterventionType(db.Model):
     name = db.Column(db.String(20))
     tickets = db.relationship('Ticket', backref='intervention_type')
 
-
     def serialize(self):
         return {"id": self.id, "name": self.name}
 
@@ -66,14 +65,23 @@ class Ticket(db.Model):
     intervention_type_id = db.Column(db.Integer, db.ForeignKey(
         'intervention_type.id'), nullable=True)
     open_ticket_time = db.Column((db.DateTime), nullable=False)
-    leave_manufacturer_time = db.Column((db.DateTime),nullable=True)
-    closed_ticket_time = db.Column((db.DateTime),nullable=True)
-    vehicle_license_plate = db.Column(db.String(20),nullable=True)
-    km_on_leave = db.Column(db.Integer,nullable=True)
-    km_on_arrival = db.Column(db.Integer,nullable=True)
+    leave_manufacturer_time = db.Column((db.DateTime), nullable=True)
+    closed_ticket_time = db.Column((db.DateTime), nullable=True)
+    vehicle_license_plate = db.Column(db.String(20), nullable=True)
+    km_on_leave = db.Column(db.Integer, nullable=True)
+    km_on_arrival = db.Column(db.Integer, nullable=True)
     ticket_employee_relation = db.relationship(
         'TicketEmployersRelation', backref='ticket', lazy='dynamic')
     occurrences = db.relationship('Occurrence', backref='ticket')
+
+    def serialize(self):
+        return {
+            "id": self.id,
+            "open_ticket_time": self.open_ticket_time,
+            "machine_id": self.machine_id,
+            "status_id": self.status_id,
+            "intervention_type_id": self.intervention_type_id
+        }
 
 
 class Customer(db.Model):
@@ -101,7 +109,7 @@ class Occurrence(db.Model):
 
 class Machine(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    serial_number = db.Column(db.String(50),nullable=False)
+    serial_number = db.Column(db.String(50), nullable=False)
     model = db.Column(db.String(50), nullable=False)
     im109 = db.Column(db.String(50), nullable=True)
     customer_id = db.Column(db.Integer, db.ForeignKey(

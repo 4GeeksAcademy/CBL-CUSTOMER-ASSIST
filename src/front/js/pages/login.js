@@ -14,6 +14,7 @@ export const Login = () => {
         if (response) {
             await actions.getInterventionType();
             await actions.getMachineList();
+            await actions.getTickets();
             navigate("/dashboard");
         }
 
