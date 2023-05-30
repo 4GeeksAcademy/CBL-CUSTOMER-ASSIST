@@ -20,7 +20,7 @@ export const Sidebar = () => {
                     <NavItem eventKey="tickets">
                         <NavIcon><i className="fa-solid fa-ticket" style={{ fontSize: "1.5em" }}></i></NavIcon>
                         <NavText>Ticket</NavText>
-                        <NavItem eventKey="dashboard">
+                        <NavItem eventKey="customer/dashboard">
                             <NavText>Dashboard</NavText>
                         </NavItem>
                         {/* Customer creates a ticket below */}
