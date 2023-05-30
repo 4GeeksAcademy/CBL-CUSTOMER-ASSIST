@@ -115,9 +115,9 @@ def sitemap():
         # table values initialization
         status_value_initialize()
         intervention_type_initialize()
+        customer_initialize()
         machine_initialize()
         employee_initialize()
-        customer_initialize()
         user_initialize()
 
         return generate_sitemap(app)

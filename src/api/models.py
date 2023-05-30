@@ -95,7 +95,7 @@ class Occurrence(db.Model):
     malfunction_id = db.Column(db.Integer, db.ForeignKey(
         'malfunction.id'), nullable=False)
     solution_id = db.Column(db.Integer, db.ForeignKey(
-        'solution.id'), nullable=False)
+        'solution.id'), nullable=True)
     tags_occurences = db.relationship('TagOccurrence', backref='occurrence')
 
 
