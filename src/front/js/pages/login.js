@@ -11,7 +11,13 @@ export const Login = () => {
 
     const userLogin = async () => {
         const response = await actions.login(email, password);
-        if (response) navigate("/dashboard");
+        if (response) {
+            await actions.getInterventionType();
+            await actions.getMachineList();
+            navigate("/dashboard");
+        }
+
+
     }
 
     return (
