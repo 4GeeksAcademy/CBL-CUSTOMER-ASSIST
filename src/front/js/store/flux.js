@@ -166,6 +166,33 @@ const getState = ({ getStore, getActions, setStore }) => {
 				catch (error) {
 					console.log("There has been an error login in!", error)
 				}
+			},
+
+			getUserProfile: async () => {
+				console.log("action: getUserProfile");
+				const token = getStore().token;
+				const opts = {
+					method: "GET",
+					headers: {
+						"Content-Type": "application/json",
+						"Authorization": "Bearer " + token
+					}
+				};
+				try {
+					const response = await fetch(process.env.BACKEND_URL + "api/user/profile", opts);
+					if (response.status !== 200) {
+						alert("There has been some error!");
+						return false;
+					}
+					console.log("Getting to response");
+					const data = await response.json();
+					console.log("This came from the backend", data);
+					setStore({ "userProfile": data.user_profile });
+					return true;
+				}
+				catch (error) {
+					console.log("There has been an error login in!", error)
+				}
 			}
 		}
 	};
