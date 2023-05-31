@@ -1,8 +1,9 @@
-  
+
 import os
 from flask_admin import Admin
-from .models import db, User, Employee, InterventionType, StatusValue, TicketEmployeesRelation, Ticket, Customer, Occurrence, Machine, Tag, TagOccurrence, Malfunction, Solution
+from .models import db, User, Employee, InterventionType, StatusValue, TicketEmployeesRelation, Ticket, Customer, Occurrence, Machine, Tag, TagOccurrence, Malfunction, Solution, UserType
 from flask_admin.contrib.sqla import ModelView
+
 
 def setup_admin(app):
     app.secret_key = os.environ.get('FLASK_APP_KEY', 'sample key')
@@ -11,7 +12,7 @@ def setup_admin(app):
 
     class Mike(ModelView):
         column_display_pk = True
-    #We love nuno
+    # We love nuno
     # Add your models here, for example this is how we add a the User model to the admin
     admin.add_view(Mike(User, db.session))
     admin.add_view(Mike(Employee, db.session))
@@ -26,6 +27,7 @@ def setup_admin(app):
     admin.add_view(Mike(TagOccurrence, db.session))
     admin.add_view(Mike(Malfunction, db.session))
     admin.add_view(Mike(Solution, db.session))
+    admin.add_view(Mike(UserType, db.session))
 
     # You can duplicate that line to add mew models
     # admin.add_view(ModelView(YourModelName, db.session))
