@@ -7,7 +7,8 @@ export const CustomerDashboard = () => {
 
     useEffect(() => {
         actions.getTickets()
-    }, [])
+
+    }, [store.tickets])
 
     return (
         <>

@@ -5,7 +5,6 @@ import { Context } from "../../store/appContext";
 export const CustomerMachineList = () => {
     const { store, actions } = useContext(Context)
     const [machine, setMachine] = useState(store.machineList);
-
     const [machineOptions] = useState(store.machineList);
     const [machineVar, setMachineVar] = useState([])
 

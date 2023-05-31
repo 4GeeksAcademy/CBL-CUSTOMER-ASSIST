@@ -21,10 +21,6 @@ export const CustomerCreateTicket = () => {
 
     }
 
-    useEffect(() => {
-        actions.getInterventionType();
-        actions.getMachineList();
-    }, [])
 
     return (
         <div className="container">
@@ -60,6 +56,7 @@ export const CustomerCreateTicket = () => {
                     <h5 className="me-3 mt-2">Machine:</h5>
                     <div>
                         <select className="form-select" onChange={e => setMachineID(e.target.value)}>
+                            <option>Select option</option>
                             {store.machineList.length > 0
                                 ?
                                 store.machineList.map((machine) => {
