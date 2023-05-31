@@ -170,6 +170,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 			getUserProfile: async () => {
 				console.log("action: getUserProfile");
+				console.log(token)
 				const token = getStore().token;
 				const opts = {
 					method: "GET",
