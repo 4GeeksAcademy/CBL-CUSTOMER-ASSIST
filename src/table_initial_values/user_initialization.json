@@ -1,26 +1,44 @@
 [
     {
         "id": 1,
-        "employee_id": 1
+        "email": "admin1@email.com",
+        "password": "admin1",
+        "user_type_id": 1,
+        "employee_id": "1"
     },
     {
         "id": 2,
-        "employee_id": 2
+        "email": "engineer1@email.com",
+        "password": "engineer1",
+        "user_type_id": 1,
+        "employee_id": "2"
     },
     {
         "id": 3,
-        "employee_id": 3
+        "email": "technician1@email.com",
+        "password": "technician1",
+        "user_type_id": 1,
+        "employee_id": "3"
     },
     {
         "id": 4,
-        "customer_id": 1
+        "email": "customer1@email.com",
+        "password": "customer1",
+        "user_type_id": 4,
+        "customer_id": "1"
     },
     {
         "id": 5,
-        "customer_id": 2
+        "email": "customer2@email.com",
+        "password": "customer2",
+        "user_type_id": 4,
+        "customer_id": "2"
     },
     {
         "id": 6,
-        "customer_id": 3
+        "email": "customer3@email.com",
+        "password": "customer3",
+        "user_type_id": 4,
+        "customer_id": "3"
     }
 ]
