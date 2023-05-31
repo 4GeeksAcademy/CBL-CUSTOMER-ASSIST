@@ -4,10 +4,9 @@ import { Context } from "../../store/appContext";
 
 export const CustomerDashboard = () => {
     const { store, actions } = useContext(Context)
-    const [ticketInfo, setTicketInfo] = useState([])
 
     useEffect(() => {
-
+        actions.getTickets()
     }, [])
 
     return (
@@ -19,7 +18,7 @@ export const CustomerDashboard = () => {
                 <div>
                     <h3>Tickets:</h3>
                 </div>
-                {store.ticket.length > 0 ? <Table striped bordered hover>
+                {store.tickets ? <Table striped bordered hover>
                     <thead>
                         <tr>
                             <th>#</th>
@@ -31,15 +30,15 @@ export const CustomerDashboard = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {/*loading bar maybe ? */}
-                        {store.ticket.map((item, i) => {
+                        {/*loading bar visual maybe ? */}
+                        {store.tickets.map((item, i) => {
                             return (
                                 <tr key={item.id}>
                                     <td>{i + 1}</td>
                                     <td>{item.open_ticket_time}</td>
                                     <td>{item.machine_id}</td>
                                     <td>{item.status_id}</td>
-                                    <td>{item.technician}</td>
+                                    <td>{"To be assigned"}</td>
                                     <td>{item.intervention_type_id}</td>
                                 </tr>)
                         })}

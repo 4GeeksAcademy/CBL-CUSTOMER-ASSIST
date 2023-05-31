@@ -5,12 +5,7 @@ import { Context } from "../../store/appContext";
 export const CustomerMachineList = () => {
     const { store, actions } = useContext(Context)
     const [machine, setMachine] = useState(store.machineList);
-    // Delete test objects below
-    const machineData = [
-        { id: 1, name: 'Z Machine', age: 25 },
-        { id: 2, name: 'B Mchine', age: 30 },
-        { id: 3, name: 'K Machine', age: 35 },
-    ];
+
     const [machineOptions] = useState(store.machineList);
     const [machineVar, setMachineVar] = useState([])
 
@@ -35,7 +30,7 @@ export const CustomerMachineList = () => {
                     <h5 className="me-3 mt-2">Machine:</h5>
                     <Multiselect
                         options={machineOptions}
-                        displayValue="name"
+                        displayValue="model"
                         placeholder="Select machine"
                         onSelect={saveMachine}
                         onRemove={saveMachine}
@@ -55,18 +50,16 @@ export const CustomerMachineList = () => {
                                     <div className="accordion-item">
                                         <h2 className="accordion-header">
                                             <button className="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target={`#panelsStayOpen-collapse-${item.id}`} aria-expanded="flase" aria-controls={`panelsStayOpen-collapse-${item.id}`}>
-                                                <p> {item.name}</p>
+                                                <p> {item.model}</p>
                                             </button>
                                         </h2>
                                         <div id={`panelsStayOpen-collapse-${item.id}`} className="accordion-collapse collapse">
                                             <div className="accordion-body">
-                                                <p>Name: {item.name}</p>
-                                                <p>Age: {item.age}</p>
                                                 <p>ID: {item.id}</p>
                                                 <p>Serial Number: {item.serial_number}</p>
                                                 <p>Model: {item.model} </p>
                                                 <p>im109: {item.im109} </p>
-                                                <p>Tickets: {item.tickets} </p>
+                                                <p>Tickets: { } </p>
                                             </div>
                                         </div>
                                     </div>
@@ -74,7 +67,6 @@ export const CustomerMachineList = () => {
                             </div>
                         ))}
                     </div>
-
                 </div>
             </div>
         </div>
