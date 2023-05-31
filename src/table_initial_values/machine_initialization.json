@@ -4,28 +4,28 @@
         "serial_number": "AA0101",
         "model": "CC63",
         "im109": "101",
-        "user": 4
+        "customer_id": 1
     },
     {
         "id": 2,
         "serial_number": "AA0102",
         "model": "CC100",
         "im109": "102",
-        "user": 4
+        "customer_id": 1
     },
     {
         "id": 3,
         "serial_number": "AA0103",
         "model": "CC160",
         "im109": "103",
-        "user": 4
+        "customer_id": 1
     },
     {
         "id": 4,
         "serial_number": "BB0104",
         "model": "CC250",
         "im109": "104",
-        "user": 4
+        "customer_id": 2
     },
     {
         "id": 5,
