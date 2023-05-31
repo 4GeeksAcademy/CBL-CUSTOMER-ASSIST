@@ -15,7 +15,7 @@ export const Login = () => {
             await actions.getInterventionType();
             await actions.getMachineList();
             await actions.getTickets();
-            navigate("/dashboard");
+            navigate("/customer/dashboard");
         }
 
 
