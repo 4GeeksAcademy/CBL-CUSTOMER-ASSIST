@@ -24,36 +24,33 @@ api = Blueprint('api', __name__)
 # works
 
 
-@api.route('/login', methods=['POST'])
+@api.route('/token', methods=['POST'])
 def create_token():
     email = request.json.get("email", None)
     password = request.json.get("password", None)
 
     print(email, password)
 
-    customer = Customer.query.filter_by(email=email, password=password).first()
-    employee = Employee.query.filter_by(
-        email=email, password=password).first()
-    if customer:
-        print(customer)
-        access_token = create_access_token(identity=customer.email)
-    elif employee:
-        access_token = create_access_token(identity=employee.email)
+    user = User.query.filter_by(email=email, password=password).first()
+   
+    if user:
+        access_token = create_access_token(identity=user.email)
     else:
         return jsonify({"msg": "Bad username or password"}), 401
 
-    return jsonify(access_token=access_token), 200
+    return jsonify({'access_token':access_token,'user_type':user.user_type_id}), 200
+
 
 
 @api.route('/customer/create/ticket', methods=['POST'])
 @jwt_required()
 def create_ticket():
     try:
-        current_customer_email = get_jwt_identity()
-        customer = Customer.query.filter_by(
-            email=current_customer_email).one_or_none()
+        current_user_email = get_jwt_identity()
+        user = User.query.filter_by(
+            email=current_user_email).one_or_none()
 
-        if not customer:
+        if not user:
             return jsonify({"error": "Customer not found!"}), 404
 
         machine_id = request.json.get("machine_id", None)
@@ -61,7 +58,7 @@ def create_ticket():
         description = request.json.get("description", None)
 
         ticket = Ticket()
-        ticket.customer_id = customer.id
+        ticket.customer_id = user.customer_id
         ticket.machine_id = machine_id
         ticket.status_id = 1
         ticket.intervention_type_id = intervention_id
@@ -134,12 +131,12 @@ def get_intervention_types():
 @api.route('/machinelist', methods=['GET'])
 @jwt_required()
 def get_machines():
-    current_customer_email = get_jwt_identity()
-    customer = Customer.query.filter_by(
-        email=current_customer_email).one_or_none()
+    current_user_email = get_jwt_identity()
+    user = User.query.filter_by(
+        email=current_user_email).one_or_none()
 
-    if customer:
-        machines = Machine.query.filter_by(customer_id=customer.id).all()
+    if user:
+        machines = Machine.query.filter_by(customer_id=user.customer_id).all()
 
     if not machines:
         return jsonify({"error": "No machines for that customer!"}), 404
@@ -153,13 +150,12 @@ def get_machines():
 @api.route('/ticketlist', methods=['GET'])
 @jwt_required()
 def get_tickets():
-    current_customer_email = get_jwt_identity()
-    customer = Customer.query.filter_by(
-        email=current_customer_email).one_or_none()
+    current_user_email = get_jwt_identity()
+    user = User.query.filter_by(
+        email=current_user_email).one_or_none()
 
-    if customer:
-        print(customer.id)
-        tickets = Ticket.query.filter_by(customer_id=customer.id).all()
+    if user:
+        tickets = Ticket.query.filter_by(customer_id=user.customer_id).all()
 
     if not tickets:
         return jsonify({"error": "No machines for that customer!"}), 404

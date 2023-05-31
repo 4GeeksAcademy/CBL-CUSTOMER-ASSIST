@@ -1,0 +1,15 @@
+[
+    {
+       "type":"admin"
+    },
+    {
+     "type":"engineer"
+    },
+    {
+        "type":"technician"
+       }
+       ,
+    {
+        "type":"customer"
+       }
+]

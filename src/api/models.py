@@ -89,7 +89,7 @@ class Customer(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     company_name = db.Column(db.String(100), nullable=False)
     phone = db.Column(db.String(20), nullable=False)
-    contact_person = db.Column(db.String(20), nullable=False)
+    contact_person = db.Column(db.String(20), nullable=True)
     address_1 = db.Column(db.String(100), nullable=False)
     address_2 = db.Column(db.String(100))
     zipcode = db.Column(db.Integer)

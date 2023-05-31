@@ -3,27 +3,27 @@
         "id": 1,
         "company_name": "Automotive Parts",
         "phone": 5551234567,
-        "address1": "123 Main Street",
-        "address2": "Building 789, 2nd Floor",
-        "zip": 12345,
+        "address_1": "123 Main Street",
+        "address_2": "Building 789, 2nd Floor",
+        "zipcode": 12345,
         "city": "New York"
     },
     {
         "id": 2,
         "company_name": "Forks and Knifes",
         "phone": 5559876543,
-        "address1": "456 Elm Avenue",
-        "address2": "Suite 100, 5th Floor",
-        "zip": 54321,
+        "address_1": "456 Elm Avenue",
+        "address_2": "Suite 100, 5th Floor",
+        "zipcode": 54321,
         "city": "Los Angeles"
     },
     {
         "id": 3,
         "company_name": "Animal Pills",
         "phone": 5552468139,
-        "address1": "789 Oak Street",
-        "address2": "Unit 456, 3rd Floor",
-        "zip": 98765,
+        "address_1": "789 Oak Street",
+        "address_2": "Unit 456, 3rd Floor",
+        "zipcode": 98765,
         "city": "Chicago"
     }
 ]

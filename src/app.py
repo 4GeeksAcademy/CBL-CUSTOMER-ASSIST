@@ -7,7 +7,7 @@ from flask_migrate import Migrate
 from flask_swagger import swagger
 from flask_cors import CORS
 from api.utils import APIException, generate_sitemap
-from api.models import db, StatusValue, InterventionType, Machine, Employee, Customer, User
+from api.models import db, StatusValue, InterventionType, Machine, Employee, Customer, User, UserType
 from api.routes import api
 from api.admin import setup_admin
 from api.commands import setup_commands
@@ -99,6 +99,14 @@ def customer_initialize():
         db.session.bulk_save_objects(customers)
         db.session.commit()
 
+def user_type_initialize():
+    if len(UserType.query.all()) == 0:  
+        with open ("src/table_initial_values/user_type_initialization.json") as file:
+            data = json.load(file)
+        user_type = [UserType(**item) for item in data]
+        db.session.bulk_save_objects(user_type)
+        db.session.commit()
+
 # User table
 def user_initialize():
     if len(User.query.all()) == 0:  
@@ -113,6 +121,7 @@ def user_initialize():
 def sitemap():
     if ENV == "development":
         # table values initialization
+        user_type_initialize()
         status_value_initialize()
         intervention_type_initialize()
         customer_initialize()
