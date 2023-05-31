@@ -7,8 +7,8 @@ export const CustomerDashboard = () => {
     const [ticketInfo, setTicketInfo] = useState([])
 
     useEffect(() => {
-        store.customerDashboardTicket
-    }, [store.customerDashboardTicket])
+
+    }, [])
 
     return (
         <>
@@ -17,38 +17,34 @@ export const CustomerDashboard = () => {
                     <h1 className="border-bottom mb-5">Dashboard</h1>
                 </div>
                 <div>
-                    <h4>Tickets:</h4>
+                    <h3>Tickets:</h3>
                 </div>
-                <Table striped bordered hover>
+                {store.ticket.length > 0 ? <Table striped bordered hover>
                     <thead>
                         <tr>
-                            <th></th>
+                            <th>#</th>
                             <th>Date</th>
                             <th>Machine</th>
                             <th>Status</th>
                             <th>Technician</th>
+                            <th>Intervention Type </th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>Mark</td>
-                            <td>Otto</td>
-                            <td>@mdo</td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>Jacob</td>
-                            <td>Thornton</td>
-                            <td>@fat</td>
-                        </tr>
-                        <tr>
-                            <td>3</td>
-                            <td colSpan={2}>Larry the Bird</td>
-                            <td>@twitter</td>
-                        </tr>
+                        {/*loading bar maybe ? */}
+                        {store.ticket.map((item, i) => {
+                            return (
+                                <tr key={item.id}>
+                                    <td>{i + 1}</td>
+                                    <td>{item.open_ticket_time}</td>
+                                    <td>{item.machine_id}</td>
+                                    <td>{item.status_id}</td>
+                                    <td>{item.technician}</td>
+                                    <td>{item.intervention_type_id}</td>
+                                </tr>)
+                        })}
                     </tbody>
-                </Table>
+                </Table> : <h5 className="p-3">You have no tickets..</h5>}
             </div>
         </>
     );
