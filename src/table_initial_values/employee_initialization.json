@@ -1,17 +1,17 @@
 [
     {
         "id": 1,
-        "email": "admin1@email.com",
-        "password": "admin1"
+        "firstName": "John",
+        "lastName": "Doe"
     },
     {
         "id": 2,
-        "email": "engineer1@email.com",
-        "password": "engineer1"
+        "firstName": "Alex",
+        "lastName": "Smith"
     },
     {
         "id": 3,
-        "email": "technician1@email.com",
-        "password": "technician1"
+        "firstName": "David",
+        "lastName": "Johnson"
     }
 ]
