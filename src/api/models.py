@@ -5,22 +5,23 @@ db = SQLAlchemy()
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    role = db.Column(db.String(20))
-    employee_id = db.Column(db.Integer, db.ForeignKey('employee.id'))
-    customer_id = db.Column(db.Integer, db.ForeignKey('customer.id'))
+    email = db.Column(db.String(100), nullable=False)
+    password = db.Column(db.String(100), nullable=False)
+    user_type_id = db.Column(db.Integer, db.ForeignKey('user_type.id'), nullable=False)
+    customer_id = db.Column(db.Integer, db.ForeignKey('customer.id'), nullable=True)
+    employee_id = db.Column(db.Integer, db.ForeignKey('employee.id'), nullable=True)
 
+class UserType(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    type = db.Column(db.String(50), nullable=False)
+    user= db.relationship('User', backref='user_type')
 
 class Employee(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    hr_number = db.Column(db.Integer)
-    first_name = db.Column(db.String(50))
-    last_name = db.Column(db.String(50))
-    email = db.Column(db.String(100))
-    company_role = db.Column(db.String(50))
-    password = db.Column(db.String(128))
-    user = db.relationship('User', backref='employee', uselist=False)
-    tickets = db.relationship(
-        'TicketEmployersRelation', backref='employee', lazy='dynamic')
+    first_name = db.Column(db.String(50), nullable=False)
+    last_name = db.Column(db.String(50), nullable=False)
+    user= db.relationship('User', backref='employee')
+    ticket_employee = db.relationship('TicketEmployeesRelation', backref='employee')
 
 
 class InterventionType(db.Model):
@@ -40,7 +41,7 @@ class StatusValue(db.Model):
     tickets = db.relationship('Ticket', backref='status')
 
 
-class TicketEmployersRelation(db.Model):
+class TicketEmployeesRelation(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     ticket_id = db.Column(db.Integer, db.ForeignKey(
         'ticket.id'), nullable=False)
@@ -71,7 +72,7 @@ class Ticket(db.Model):
     km_on_leave = db.Column(db.Integer, nullable=True)
     km_on_arrival = db.Column(db.Integer, nullable=True)
     ticket_employee_relation = db.relationship(
-        'TicketEmployersRelation', backref='ticket', lazy='dynamic')
+        'TicketEmployeesRelation', backref='ticket', lazy='dynamic')
     occurrences = db.relationship('Occurrence', backref='ticket')
 
     def serialize(self):
@@ -86,16 +87,17 @@ class Ticket(db.Model):
 
 class Customer(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    company_name = db.Column(db.String(100))
-    email = db.Column(db.String(100))
-    password = db.Column(db.String(50))
-    contact_phone = db.Column(db.String(20))
-    contact_person = db.Column(db.String(100))
-    user = db.relationship('User', backref='customer', uselist=False)
-    machines = db.relationship('Machine', backref='customer')
-    tickets = db.relationship('Ticket', backref='customer')
-
-
+    company_name = db.Column(db.String(100), nullable=False)
+    phone = db.Column(db.String(20), nullable=False)
+    contact_person = db.Column(db.String(20), nullable=False)
+    address_1 = db.Column(db.String(100), nullable=False)
+    address_2 = db.Column(db.String(100))
+    zipcode = db.Column(db.Integer)
+    city = db.Column(db.String(50), nullable=False)
+    user= db.relationship('User', backref='customer')
+    ticket= db.relationship('Ticket',backref='customer')
+    machine = db.relationship('Machine',backref='customer')
+    
 class Occurrence(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     ticket_id = db.Column(db.Integer, db.ForeignKey(
