@@ -1,7 +1,7 @@
   
 import os
 from flask_admin import Admin
-from .models import db, User, Employee, InterventionType, StatusValue, TicketEmployersRelation, Ticket, Customer, Occurrence, Machine, Tag, TagOccurrence, Malfunction, Solution
+from .models import db, User, Employee, InterventionType, StatusValue, TicketEmployeesRelation, Ticket, Customer, Occurrence, Machine, Tag, TagOccurrence, Malfunction, Solution
 from flask_admin.contrib.sqla import ModelView
 
 def setup_admin(app):
@@ -17,7 +17,7 @@ def setup_admin(app):
     admin.add_view(Mike(Employee, db.session))
     admin.add_view(Mike(InterventionType, db.session))
     admin.add_view(Mike(StatusValue, db.session))
-    admin.add_view(Mike(TicketEmployersRelation, db.session))
+    admin.add_view(Mike(TicketEmployeesRelation, db.session))
     admin.add_view(Mike(Ticket, db.session))
     admin.add_view(Mike(Customer, db.session))
     admin.add_view(Mike(Occurrence, db.session))
