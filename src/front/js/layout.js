@@ -1,16 +1,17 @@
 import React from "react";
+import injectContext from "./store/appContext";
 import { BrowserRouter, Route, Router, Routes } from "react-router-dom";
 import { Login } from "./pages/login";
 import { Home } from "./pages/home";
 import { Single } from "./pages/single";
 import { AdminCreateTicket } from "./pages/admin/admin-create-ticket";
 import { CreateNewCustomer } from "./pages/admin/admin-create-customer";
-import injectContext from "./store/appContext";
 import { CustomerDashboard } from "./pages/customer/customer-dashboard";
 import { CustomerCreateTicket } from "./pages/customer/customer-create-ticket";
 import { CustomerMachineList } from "./pages/customer/customer-machine-list";
 import { Navbar } from "./component/navbar";
 import { Sidebar } from "./component/sidebar";
+import { EditCustomerProfile } from "./pages/customer/customer-edit-profile";
 
 const Layout = () => {
     const basename = process.env.BASENAME || "";
@@ -34,6 +35,7 @@ const Layout = () => {
                     <Route element={<AdminCreateTicket />} path="/admin/create/ticket" />
                     <Route element={<CreateNewCustomer />} path="/admin/create/customer" />
                     <Route element={<CustomerMachineList />} path="/customer/machine/list" />
+                    <Route element={<EditCustomerProfile />} path="/edit/customer/profile" />
 
                 </Routes>
             </BrowserRouter>
