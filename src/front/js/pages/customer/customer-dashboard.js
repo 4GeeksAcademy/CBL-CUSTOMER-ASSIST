@@ -19,7 +19,7 @@ export const CustomerDashboard = () => {
                 <div>
                     <h3>Tickets:</h3>
                 </div>
-                {store.tickets ? <Table striped bordered hover>
+                {store.tickets.length > 0 ? <Table striped bordered hover>
                     <thead>
                         <tr>
                             <th>#</th>
@@ -44,7 +44,7 @@ export const CustomerDashboard = () => {
                                 </tr>)
                         })}
                     </tbody>
-                </Table> : <h5 className="p-3">You have no tickets..</h5>}
+                </Table> : <h5 className="p-3 border-top">You have no tickets..</h5>}
             </div>
         </>
     );
