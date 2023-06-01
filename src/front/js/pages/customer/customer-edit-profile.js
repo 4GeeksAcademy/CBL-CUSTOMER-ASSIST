@@ -10,7 +10,9 @@ export const EditCustomerProfile = () => {
     const [company, setCompany] = useState("");
     const [city, setCity] = useState("");
     const [phone, setPhone] = useState("");
-    const [address, setAddress] = useState("");
+    const [addressOne, setAddressOne] = useState("");
+    const [addressTwo, setAddressTwo] = useState("");
+    const [contactPerson, setContactPerson] = useState("");
     const [zip, setZip] = useState("");
 
     const navigate = useNavigate();
@@ -62,12 +64,21 @@ export const EditCustomerProfile = () => {
                                 setPassword(e.target.value)
                             }} />
                     </div>
-                    <div className="mb-2">
-                        <label htmlFor="formGroupExampleInput4" className="form-label">City</label>
-                        <input type="text" className="form-control" id="formGroupExampleInput4" placeholder="City"
-                            onChange={(e) => {
-                                setCity(e.target.value)
-                            }} />
+                    <div className="row">
+                        <div className="mb-2 col-6">
+                            <label htmlFor="formGroupExampleInput4" className="form-label">City</label>
+                            <input type="text" className="form-control" id="formGroupExampleInput4" placeholder="City"
+                                onChange={(e) => {
+                                    setCity(e.target.value)
+                                }} />
+                        </div>
+                        <div className="mb-2 col-6">
+                            <label htmlFor="formGroupExampleInput7" className="form-label">Zip</label>
+                            <input type="text" className="form-control" id="formGroupExampleInput7" placeholder="..."
+                                onChange={(e) => {
+                                    setZip(e.target.value)
+                                }} />
+                        </div>
                     </div>
                 </div>
                 <div className="col-6">
@@ -79,26 +90,40 @@ export const EditCustomerProfile = () => {
                             }} />
                     </div>
                     <div className="mb-2">
-                        <label htmlFor="formGroupExampleInput6" className="form-label">Address</label>
-                        <input type="text" className="form-control" id="formGroupExampleInput6" placeholder="1234 Main street"
+                        <label htmlFor="formGroupExampleInput" className="form-label">Contact Person</label>
+                        <input type="text" className="form-control" id="formGroupExampleInput" placeholder="Company"
                             onChange={(e) => {
-                                setAddress(e.target.value)
+                                setContactPerson(e.target.value)
                             }} />
                     </div>
                     <div className="mb-2">
-                        <label htmlFor="formGroupExampleInput7" className="form-label">Zip</label>
-                        <input type="text" className="form-control" id="formGroupExampleInput7" placeholder="..."
+                        <label htmlFor="formGroupExampleInput6" className="form-label">Address 1</label>
+                        <input type="text" className="form-control" id="formGroupExampleInput6" placeholder="123 Main Street"
                             onChange={(e) => {
-                                setZip(e.target.value)
+                                setAddressOne(e.target.value)
                             }} />
+                    </div>
+                    <div className="mb-2">
+                        <label htmlFor="formGroupExampleInput66" className="form-label">Address 2</label>
+                        <input type="text" className="form-control" id="formGroupExampleInput66" placeholder="Door number, floor"
+                            onChange={(e) => {
+                                setAddressTwo(e.target.value)
+                            }} />
+                    </div>
+
+                </div>
+                <div className="d-flex align-items-end flex-column mt-3">
+                    <div className="form-check">
+                        <input className="form-check-input me-2" type="checkbox" value="" id="flexCheckDefault" />
+                        <label className="form-check-label" for="flexCheckDefault">
+                            Edit Profile
+                        </label>
+                    </div>
+                    <div className="mt-2 ">
+                        <button className="btn btn-primary" style={{ width: "100px" }} onClick={() => sendNewCustomer()}>Submit</button>
                     </div>
                 </div>
             </div>
-
-            <div className="d-flex justify-content-center mt-3">
-                <button className="btn btn-primary " onClick={() => sendNewCustomer()}>Submit</button>
-            </div>
-
         </div>
     );
 };
