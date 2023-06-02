@@ -6,7 +6,8 @@ import { Navigate, useNavigate } from "react-router-dom";
 export const EditCustomerProfile = () => {
     const { store, actions } = useContext(Context);
     const [editProfile, setEditProfile] = useState(store.userProfile)
-    const [disabled, setDisabled] = useState(true);
+    const [disabled, setDisabled] = useState(false);
+    const [title, setTitle] = useState("Profile");
     // const [email, setEmail] = useState("");
     // const [password, setPassword] = useState("");
     // const [company, setCompany] = useState("");
@@ -24,6 +25,11 @@ export const EditCustomerProfile = () => {
 
     const toggleProfileEdit = () => {
         setDisabled(!disabled)
+    }
+
+    const toggleTitle = () => {
+        if (disabled === false) setTitle("Edit Profile");
+        else setTitle("Profile")
     }
 
     const sendNewCustomer = async () => {
@@ -49,7 +55,7 @@ export const EditCustomerProfile = () => {
 
     return (
         <div className="container mx-auto mt-5">
-            <h2 className="mb-3 text-center d-flex justify-content-center">Edit Profile</h2>
+            <h2 className="mb-3 text-center d-flex justify-content-center">{title}</h2>
             <div className="border p-5 col-sm-12 col-md-8 col-lg-8 mx-auto row">
                 <div className="col-6">
                     <div className="mb-2">
@@ -123,13 +129,13 @@ export const EditCustomerProfile = () => {
                 </div>
                 <div className="d-flex align-items-end flex-column mt-3">
                     <div className="form-check">
-                        <input className="form-check-input me-2" checked={disabled} onChange={toggleProfileEdit} type="checkbox" value="" id="flexCheckDefault" />
-                        <label className="form-check-label" for="flexCheckDefault">
+                        <input className="form-check-input me-2" checked={disabled} onChange={toggleProfileEdit} onClick={toggleTitle} type="checkbox" id="flexCheckDefault" />
+                        <label className="form-check-label" htmlFor="flexCheckDefault">
                             Edit Profile
                         </label>
                     </div>
                     <div className="mt-2 ">
-                        <button className="btn btn-primary" style={{ width: "100px" }} onClick={() => sendNewCustomer()}>Submit</button>
+                        <button disabled={!disabled} className="btn btn-primary" style={{ width: "100px" }} onClick={() => sendNewCustomer()}>Submit</button>
                     </div>
                 </div>
             </div>
