@@ -32,8 +32,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 			syncTokenFromSessionStorage: () => {
 				console.log("actions: syncTokenFromSessionStorage");
 				if (sessionStorage.getItem('token')) return setStore({ token: JSON.parse(sessionStorage.getItem('token')) });
-				// const token = sessionStorage.getItem('token');
-				// if (token && token != "" && token != undefined) setStore({ token: token });
 			},
 
 			syncMachineListFromSessionStorage: () => {
@@ -213,8 +211,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 					sessionStorage.setItem('tickets', JSON.stringify(data.tickets));
 					setStore({ "tickets": JSON.parse(sessionStorage.getItem('tickets')) });
 					console.log(getStore().tickets); // delete
-					// setStore({ "tickets": data.machines });
-					// return true;
 				}
 				catch (error) {
 					console.log("There has been an error login in!", error)
