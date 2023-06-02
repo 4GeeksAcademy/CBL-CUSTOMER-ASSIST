@@ -9,6 +9,7 @@ from flask_jwt_extended import get_jwt_identity
 from flask_jwt_extended import jwt_required
 import datetime
 
+
 api = Blueprint('api', __name__)
 
 
@@ -79,7 +80,10 @@ def create_ticket():
         db.session.commit()
 
         return jsonify({"msg": "Ticket created successfully"}), 201
-    except Exception:
+    except Exception as e :
+        print('we love nuno')
+        print(e.args)
+        print('fewnfbhuewbsjdfnsfhuig')
         return jsonify({"msg": "Exception"}), 400
 
 # It's working
@@ -90,7 +94,7 @@ def create_ticket():
 def updateProfile():
     body = request.json
 
-    customer_id = 3  # Assuming the client provides the customer ID
+    customer_id = 3  
 
     # Fetch the customer based on the provided ID
     customer = Customer.query.get(customer_id)
@@ -164,3 +168,55 @@ def get_tickets():
         "machines": [ticket.serialize() for ticket in tickets]
     }
     return jsonify(response_body), 200
+
+@api.route('/user/profile', methods=['GET'])
+@jwt_required()
+def get_user_profile():
+    current_user_email= get_jwt_identity()
+    user = User.query.filter_by( email = current_user_email).one_or_none()
+
+    if user:
+        if user.customer_id:
+           user_profile = Customer.query.get(user.customer_id).serialize()
+        elif user.employee_id:
+            user_profile = Employee.query.get(user.employee_id).serialize()
+    else:
+        return jsonify({"msg": "No user information found"}), 404
+
+    response_body ={ "user_profile":user_profile}
+    return jsonify(response_body), 200
+
+# @api.route('/user/profile', methods=['GET'])
+# def get_user_profile():
+#     email = "customer1@email.com"
+
+#     user = User.query.filter_by(email=email).first()
+
+#     if user:
+#         if user.customer_id:
+#             user_info = Customer.query.get(user.customer_id)
+#             user_profile = user_info.serialize()
+#             user_profile['user_type'] = user.user_type.type
+
+#         elif user.employee_id:
+#             user_info = Employee.query.get(user.employee_id)
+#             user_profile = user_info.serialize()
+#             user_profile['user_type'] = user.user_type.type
+
+#         else:
+#             print("No user info found for user:", user.id)
+#             return jsonify({"msg": "No user information found"}), 403
+
+#         print("User profile found:", user_profile)
+#         return jsonify({"user_profile": user_profile}), 200
+
+#     else:
+#         print("User not found for email:", email)
+#         return jsonify({"msg": "User doesn't exist."}), 403
+
+   
+
+
+        
+        
+     
