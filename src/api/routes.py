@@ -188,7 +188,7 @@ def get_user_profile():
 
 # @api.route('/user/profile', methods=['GET'])
 # def get_user_profile():
-#     email = request.args.get('email')
+#     email = "customer1@email.com"
 
 #     user = User.query.filter_by(email=email).first()
 
@@ -205,14 +205,14 @@ def get_user_profile():
 
 #         else:
 #             print("No user info found for user:", user.id)
-#             return jsonify({"msg": "No user information found"}), 404
+#             return jsonify({"msg": "No user information found"}), 403
 
 #         print("User profile found:", user_profile)
 #         return jsonify({"user_profile": user_profile}), 200
 
 #     else:
 #         print("User not found for email:", email)
-#         return jsonify({"msg": "User doesn't exist."}), 404
+#         return jsonify({"msg": "User doesn't exist."}), 403
 
    
 
