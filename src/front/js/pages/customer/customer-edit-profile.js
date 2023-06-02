@@ -1,21 +1,30 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../../store/appContext";
 import { Navigate, useNavigate } from "react-router-dom";
 
 
 export const EditCustomerProfile = () => {
     const { store, actions } = useContext(Context);
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [company, setCompany] = useState("");
-    const [city, setCity] = useState("");
-    const [phone, setPhone] = useState("");
-    const [addressOne, setAddressOne] = useState("");
-    const [addressTwo, setAddressTwo] = useState("");
-    const [contactPerson, setContactPerson] = useState("");
-    const [zip, setZip] = useState("");
-
+    const [editProfile, setEditProfile] = useState(store.userProfile)
+    const [disabled, setDisabled] = useState(true);
+    // const [email, setEmail] = useState("");
+    // const [password, setPassword] = useState("");
+    // const [company, setCompany] = useState("");
+    // const [city, setCity] = useState("");
+    // const [phone, setPhone] = useState("");
+    // const [addressOne, setAddressOne] = useState("");
+    // const [addressTwo, setAddressTwo] = useState("");
+    // const [contactPerson, setContactPerson] = useState("");
+    // const [zip, setZip] = useState("");
     const navigate = useNavigate();
+
+    useEffect(() => {
+        actions.getUserProfile()
+    }, [store.userProfile])
+
+    const toggleProfileEdit = () => {
+        setDisabled(!disabled)
+    }
 
     const sendNewCustomer = async () => {
         const response = await fetch(process.env.BACKEND_URL + "/api/user", {
@@ -44,77 +53,77 @@ export const EditCustomerProfile = () => {
             <div className="border p-5 col-sm-12 col-md-8 col-lg-8 mx-auto row">
                 <div className="col-6">
                     <div className="mb-2">
-                        <label htmlFor="formGroupExampleInput" className="form-label">Company</label>
-                        <input type="text" className="form-control" id="formGroupExampleInput" placeholder="Company"
+                        <label htmlFor="company" className="form-label">Company</label>
+                        <input type="text" disabled={!disabled} value={editProfile.company_name} className="form-control" id="company" placeholder="Company"
                             onChange={(e) => {
-                                setCompany(e.target.value)
+                                setEditProfile({ ...editProfile, company_name: e.target.value })
                             }} />
                     </div>
                     <div className="mb-2">
-                        <label htmlFor="formGroupExampleInput2" className="form-label">Email</label>
-                        <input type="text" className="form-control" id="formGroupExampleInput2" placeholder="Email"
+                        <label htmlFor="email" className="form-label">Email</label>
+                        <input type="text" disabled={!disabled} value={editProfile.user_info.email} className="form-control" id="email" placeholder="Email"
                             onChange={(e) => {
-                                setEmail(e.target.value)
+                                setEditProfile({ ...editProfile, user_info: { email: e.target.value } })
                             }} />
                     </div>
                     <div className="mb-2">
-                        <label htmlFor="formGroupExampleInput3" className="form-label">Password</label>
-                        <input type="password" className="form-control" id="formGroupExampleInput3" placeholder="Password"
+                        <label htmlFor="password" className="form-label">Password</label>
+                        <input type="password" disabled={!disabled} value={editProfile.user_info.password} className="form-control" id="password" placeholder="Password"
                             onChange={(e) => {
-                                setPassword(e.target.value)
+                                setEditProfile({ ...editProfile, user_info: { password: e.target.value } })
                             }} />
                     </div>
                     <div className="row">
                         <div className="mb-2 col-6">
-                            <label htmlFor="formGroupExampleInput4" className="form-label">City</label>
-                            <input type="text" className="form-control" id="formGroupExampleInput4" placeholder="City"
+                            <label htmlFor="city" className="form-label">City</label>
+                            <input type="text" disabled={!disabled} value={editProfile.city} className="form-control" id="city" placeholder="City"
                                 onChange={(e) => {
-                                    setCity(e.target.value)
+                                    setEditProfile({ ...editProfile, city: e.target.value })
                                 }} />
                         </div>
                         <div className="mb-2 col-6">
-                            <label htmlFor="formGroupExampleInput7" className="form-label">Zip</label>
-                            <input type="text" className="form-control" id="formGroupExampleInput7" placeholder="..."
+                            <label htmlFor="zip" className="form-label">Zip</label>
+                            <input type="text" disabled={!disabled} value={editProfile.zipcode} className="form-control" id="zip" placeholder="..."
                                 onChange={(e) => {
-                                    setZip(e.target.value)
+                                    setEditProfile({ ...editProfile, zipcode: e.target.value })
                                 }} />
                         </div>
                     </div>
                 </div>
                 <div className="col-6">
                     <div className="mb-2">
-                        <label htmlFor="formGroupExampleInput5" className="form-label">Phone Number</label>
-                        <input type="text" className="form-control" id="formGroupExampleInput5" placeholder="Phone Number"
+                        <label htmlFor="phoneNumber" className="form-label">Phone Number</label>
+                        <input type="text" disabled={!disabled} value={editProfile.phone} className="form-control" id="phoneNumber" placeholder="Phone Number"
                             onChange={(e) => {
-                                setPhone(e.target.value)
+                                setEditProfile({ ...editProfile, phone: e.target.value })
                             }} />
                     </div>
                     <div className="mb-2">
-                        <label htmlFor="formGroupExampleInput" className="form-label">Contact Person</label>
-                        <input type="text" className="form-control" id="formGroupExampleInput" placeholder="Company"
+                        <label htmlFor="contactPerson" className="form-label">Contact Person</label>
+                        <input type="text" disabled={!disabled} value={editProfile.contact_person} className="form-control" id="contactPerson" placeholder="Name"
                             onChange={(e) => {
-                                setContactPerson(e.target.value)
+                                setEditProfile({ ...editProfile, contact_person: e.target.value })
                             }} />
                     </div>
                     <div className="mb-2">
-                        <label htmlFor="formGroupExampleInput6" className="form-label">Address 1</label>
-                        <input type="text" className="form-control" id="formGroupExampleInput6" placeholder="123 Main Street"
+                        <label htmlFor="addressOne" className="form-label">Address 1</label>
+                        <input type="text" disabled={!disabled} value={editProfile.address_1} className="form-control" id="addressOne" placeholder="123 Main Street"
                             onChange={(e) => {
-                                setAddressOne(e.target.value)
+                                setEditProfile({ ...editProfile, address_1: e.target.value })
                             }} />
                     </div>
                     <div className="mb-2">
-                        <label htmlFor="formGroupExampleInput66" className="form-label">Address 2</label>
-                        <input type="text" className="form-control" id="formGroupExampleInput66" placeholder="Door number, floor"
+                        <label htmlFor="addressTwo" className="form-label">Address 2</label>
+                        <input type="text" disabled={!disabled} value={editProfile.address_2} className="form-control" id="addressTwo" placeholder="Door number, floor"
                             onChange={(e) => {
-                                setAddressTwo(e.target.value)
+                                setEditProfile({ ...editProfile, address_2: e.target.value })
                             }} />
                     </div>
 
                 </div>
                 <div className="d-flex align-items-end flex-column mt-3">
                     <div className="form-check">
-                        <input className="form-check-input me-2" type="checkbox" value="" id="flexCheckDefault" />
+                        <input className="form-check-input me-2" checked={disabled} onChange={toggleProfileEdit} type="checkbox" value="" id="flexCheckDefault" />
                         <label className="form-check-label" for="flexCheckDefault">
                             Edit Profile
                         </label>
