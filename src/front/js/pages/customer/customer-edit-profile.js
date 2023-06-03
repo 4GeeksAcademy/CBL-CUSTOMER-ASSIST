@@ -19,9 +19,9 @@ export const EditCustomerProfile = () => {
     // const [zip, setZip] = useState("");
     const navigate = useNavigate();
 
-    useEffect(() => {
-        actions.getUserProfile()
-    }, [store.userProfile])
+    // useEffect(() => {
+    //     actions.getUserProfile()
+    // }, [store.userProfile])
 
     const toggleProfileEdit = () => {
         setDisabled(!disabled)
@@ -32,26 +32,26 @@ export const EditCustomerProfile = () => {
         else setTitle("Profile")
     }
 
-    const sendNewCustomer = async () => {
-        const response = await fetch(process.env.BACKEND_URL + "/api/user", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                company: company,
-                email: email,
-                password: password,
-                city: city,
-                phone: phone,
-                address: address,
-                zip: zip
-            })
-        });
-        if (response.ok) {
-            navigate("/")
-        }
-    }
+    // const sendNewCustomer = async () => {
+    //     const response = await fetch(process.env.BACKEND_URL + "/api/user", {
+    //         method: "POST",
+    //         headers: {
+    //             "Content-Type": "application/json"
+    //         },
+    //         body: JSON.stringify({
+    //             company: company,
+    //             email: email,
+    //             password: password,
+    //             city: city,
+    //             phone: phone,
+    //             address: address,
+    //             zip: zip
+    //         })
+    //     });
+    //     if (response.ok) {
+    //         navigate("/")
+    //     }
+    // }
 
     return (
         <div className="container mx-auto mt-5">
@@ -106,7 +106,7 @@ export const EditCustomerProfile = () => {
                     </div>
                     <div className="mb-2">
                         <label htmlFor="contactPerson" className="form-label">Contact Person</label>
-                        <input type="text" disabled={!disabled} value={editProfile.contact_person} className="form-control" id="contactPerson" placeholder="Name"
+                        <input type="text" disabled={!disabled} value={editProfile.contact_person ? editProfile.contact_person : ""} className="form-control" id="contactPerson" placeholder="Name"
                             onChange={(e) => {
                                 setEditProfile({ ...editProfile, contact_person: e.target.value })
                             }} />
