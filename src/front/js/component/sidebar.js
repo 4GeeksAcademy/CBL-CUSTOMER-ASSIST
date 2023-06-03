@@ -67,14 +67,14 @@ export const Sidebar = () => {
                     <NavItem eventKey="admin">
                         <NavIcon><i className="fa-solid fa-user-gear" style={{ fontSize: "1.5em" }}></i></NavIcon>
                         <NavText>Admin</NavText>
+                        <NavItem eventKey="admin/dashboard">
+                            <NavText>Dashboard</NavText>
+                        </NavItem>
                         <NavItem eventKey="admin-create">
                             <NavText>Create Admin</NavText>
                         </NavItem>
                         <NavItem eventKey="admin-edit">
-                            <NavText>Create Admin</NavText>
-                        </NavItem>
-                        <NavItem eventKey="admin-search">
-                            <NavText>Search</NavText>
+                            <NavText>Edit Admin</NavText>
                         </NavItem>
                     </NavItem>
 

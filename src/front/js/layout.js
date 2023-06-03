@@ -12,7 +12,7 @@ import { CustomerMachineList } from "./pages/customer/customer-machine-list";
 import { Navbar } from "./component/navbar";
 import { Sidebar } from "./component/sidebar";
 import { EditCustomerProfile } from "./pages/customer/customer-edit-profile";
-
+import { AdminDashboard } from "./pages/admin/admin-dashboard";
 const Layout = () => {
     const basename = process.env.BASENAME || "";
 
@@ -30,12 +30,13 @@ const Layout = () => {
                     <Route element={<Home />} path="/" />
                     <Route element={<Single />} path="/single/:theid" />
                     <Route element={<h1>Not found!</h1>} />
+                    <Route element={<EditCustomerProfile />} path="/edit/customer/profile" />
                     <Route element={<CustomerDashboard />} path="/customer/dashboard" />
                     <Route element={<CustomerCreateTicket />} path="/customer/create/ticket" />
-                    <Route element={<AdminCreateTicket />} path="/admin/create/ticket" />
-                    <Route element={<CreateNewCustomer />} path="/admin/create/customer" />
                     <Route element={<CustomerMachineList />} path="/customer/machine/list" />
-                    <Route element={<EditCustomerProfile />} path="/edit/customer/profile" />
+                    <Route element={<CreateNewCustomer />} path="/admin/create/customer" />
+                    <Route element={<AdminCreateTicket />} path="/admin/create/ticket" />
+                    <Route element={<AdminDashboard />} path="/admin/dashboard" />
 
                 </Routes>
             </BrowserRouter>
