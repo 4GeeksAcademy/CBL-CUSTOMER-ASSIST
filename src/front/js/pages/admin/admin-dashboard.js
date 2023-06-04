@@ -87,7 +87,7 @@ export const AdminDashboard = () => {
                                     <td>{item.intervention_type_id}</td>
                                     <td><button type="button" className="btn btn-secondary">Submit</button></td>
                                     <td><div className="d-flex align-content-center justify-content-center" data-bs-theme="dark">
-                                        <button type="button" className="btn-close" aria-label="Close"></button>
+                                        <button type="button" className="btn-close" aria-label="Close"></button><div>  </div>
                                     </div>
                                     </td>
                                 </tr>)
