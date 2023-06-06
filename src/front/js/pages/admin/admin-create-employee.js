@@ -9,21 +9,21 @@ export const EmployeeCreate = () => {
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
 
-    const registerNewUser = async () => {
-        const response = await fetch(process.env.BACKEND_URL + "/api/user", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                email: email,
-                password: password
-            })
-        });
-        if (response.ok) {
-            navigate("/login")
-        }
-    }
+    // const registerNewUser = async () => {
+    //     const response = await fetch(process.env.BACKEND_URL + "/api/user", {
+    //         method: "POST",
+    //         headers: {
+    //             "Content-Type": "application/json"
+    //         },
+    //         body: JSON.stringify({
+    //             email: email,
+    //             password: password
+    //         })
+    //     });
+    //     if (response.ok) {
+    //         navigate("/")
+    //     }
+    // }
 
     return (
         <div className="container mx-auto mt-5">
