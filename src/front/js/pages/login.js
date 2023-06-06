@@ -17,8 +17,6 @@ export const Login = () => {
             await actions.getTickets();
             navigate("/customer/dashboard");
         }
-
-
     }
 
     return (
