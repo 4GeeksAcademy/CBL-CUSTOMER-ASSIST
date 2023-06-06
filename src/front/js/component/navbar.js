@@ -24,7 +24,11 @@ export const Navbar = () => {
 										<i className="fs-4 fa-regular fa-circle-user"></i>
 									</button>
 									<ul className="dropdown-menu">
-										<li><a className="dropdown-item" href="/edit/customer/profile">Edit Profile</a></li>
+										<li>
+											<Link to={"/edit/customer/profile"}>
+												<button className="dropdown-item">Edit Profile</button>
+											</Link>
+										</li>
 										<li><button onClick={() => {
 											actions.logout();
 											navigate("/")
