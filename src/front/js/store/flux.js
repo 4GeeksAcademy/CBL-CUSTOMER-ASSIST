@@ -8,25 +8,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			machineList: [],
 			interventionType: [],
 			tickets: [],
-			userProfile: {
-				"address_1": "123 Main Street",
-				"address_2": "Building 789, 2nd Floor",
-				"city": "New York",
-				"company_name": "Automotive Parts",
-				"contact_person": null,
-				"id": 1,
-				"phone": "5551234567",
-				"user_info": {
-					"customer_id": 1,
-					"email": "customer1@email.com",
-					"password": "customer1",
-					"employee_id": null,
-					"id": 4,
-					"user_type": "customer",
-					"user_type_id": 4
-				},
-				"zipcode": 12345
-			}
+			userProfile: null
 		},
 		actions: {
 			syncTokenFromSessionStorage: () => {
@@ -45,6 +27,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 			syncTicketsFromSessionStorage: () => {
 				if (sessionStorage.getItem('tickets')) return setStore({ tickets: JSON.parse(sessionStorage.getItem('tickets')) });
+			},
+
+			syncUserProfileFromSessionStorage: () => {
+				if (sessionStorage.getItem('userProfile')) return setStore({ userProfile: JSON.parse(sessionStorage.getItem('userProfile')) });
 			},
 
 			login: async (email, password) => {
@@ -219,7 +205,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 			getUserProfile: async () => {
 				console.log("action: getUserProfile");
-				console.log(token)
 				const token = getStore().token;
 				const opts = {
 					method: "GET",
@@ -230,15 +215,19 @@ const getState = ({ getStore, getActions, setStore }) => {
 				};
 				try {
 					const response = await fetch(process.env.BACKEND_URL + "api/user/profile", opts);
-					if (response.status !== 200) {
-						alert("There has been some error!");
-						return false;
-					}
-					console.log("Getting to response");
 					const data = await response.json();
+
+					if (response.status !== 200) {
+						console.log(response.status, data.msg);
+						return [response.status, data.msg];
+					}
+
 					console.log("This came from the backend", data);
-					setStore({ "userProfile": data.user_profile });
-					return true;
+
+					sessionStorage.setItem('userProfile', JSON.stringify(data.user_profile));
+					setStore({ "userProfile": JSON.parse(sessionStorage.getItem('userProfile')) });
+					console.log(getStore().userProfile); // delete
+					// return true;
 				}
 				catch (error) {
 					console.log("There has been an error login in!", error)
