@@ -70,8 +70,8 @@ export const Sidebar = () => {
                         <NavItem eventKey="admin/dashboard">
                             <NavText>Dashboard</NavText>
                         </NavItem>
-                        <NavItem eventKey="admin-create">
-                            <NavText>Create Admin</NavText>
+                        <NavItem eventKey="admin/create/user">
+                            <NavText>Create User</NavText>
                         </NavItem>
                         <NavItem eventKey="admin-edit">
                             <NavText>Edit Admin</NavText>
