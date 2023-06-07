@@ -168,7 +168,9 @@ def updateProfile():
                 setattr(employee, data['employee_info'])
 
         db.session.commit()
+
         return jsonify({"msg": "Profile updated successfully"}), 200
+    
     except Exception as e:
         print(e)
         return jsonify({"msg": "Something went wrong when updating profile"}), 400
