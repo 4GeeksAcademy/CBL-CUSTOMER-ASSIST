@@ -4,7 +4,7 @@ import { Context } from "../../store/appContext";
 
 export const CustomerDashboard = () => {
     const { store, actions } = useContext(Context)
-    
+
     return (
         <>
             <div className="container my-3">
