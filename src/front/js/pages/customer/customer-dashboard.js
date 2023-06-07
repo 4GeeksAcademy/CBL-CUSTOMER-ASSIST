@@ -4,12 +4,7 @@ import { Context } from "../../store/appContext";
 
 export const CustomerDashboard = () => {
     const { store, actions } = useContext(Context)
-
-    useEffect(() => {
-        actions.getTickets()
-
-    }, [store.tickets])
-
+    
     return (
         <>
             <div className="container my-3">
