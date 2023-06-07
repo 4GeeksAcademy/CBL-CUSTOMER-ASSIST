@@ -10,6 +10,7 @@
   "extends": [ "plugin:react/recommended"],
   "rules": {
     "strict":0,
+    "code": 120,
     "no-unused-vars": 0,
     "no-console": 1,
     "no-mixed-spaces-and-tabs": 0,
