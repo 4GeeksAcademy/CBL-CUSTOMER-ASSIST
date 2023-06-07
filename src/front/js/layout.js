@@ -13,6 +13,8 @@ import { Navbar } from "./component/navbar";
 import { Sidebar } from "./component/sidebar";
 import { EditCustomerProfile } from "./pages/customer/customer-edit-profile";
 import { AdminDashboard } from "./pages/admin/admin-dashboard";
+import { AdminCreateUser } from "./pages/admin/admin-create-user";
+
 const Layout = () => {
     const basename = process.env.BASENAME || "";
 
@@ -37,6 +39,7 @@ const Layout = () => {
                     <Route element={<CreateNewCustomer />} path="/admin/create/customer" />
                     <Route element={<AdminCreateTicket />} path="/admin/create/ticket" />
                     <Route element={<AdminDashboard />} path="/admin/dashboard" />
+                    <Route element={<AdminCreateUser />} path="/admin/create/user" />
 
                 </Routes>
             </BrowserRouter>
