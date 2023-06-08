@@ -11,21 +11,19 @@ export const Login = () => {
 
     const userLogin = async () => {
         const response = await actions.login(email, password);
-        if (response === "error") return alert('Please, contact service support!');
-        else if (!response) return alert("Bad user or password!");
-
-        await actions.getInterventionType();
-        await actions.getMachineList();
-        await actions.getTickets();
-        // await actions.getUserProfile();
-        
-        navigate("/customer/dashboard");
+        if (response) {
+            await actions.getInterventionType();
+            await actions.getMachineList();
+            await actions.getTickets();
+            await actions.getUserProfile();
+            navigate("/customer/dashboard");
+        }
     }
 
     return (
         <div className="container mt-5">
             <div className="d-flex justify-content-center mx-auto mb-4">
-                <h1>Welome back</h1>
+                <h1>Welcome back</h1>
             </div>
             <div className="border p-5 col-sm-12 col-md-8 col-lg-8 mx-auto ">
                 <h2 className="mb-3 text-center">Login into your account</h2>

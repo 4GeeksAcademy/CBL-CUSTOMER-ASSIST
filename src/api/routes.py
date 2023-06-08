@@ -9,19 +9,8 @@ from flask_jwt_extended import get_jwt_identity
 from flask_jwt_extended import jwt_required
 import datetime
 
+
 api = Blueprint('api', __name__)
-
-
-# @api.route('/hello', methods=['GET'])
-# @jwt_required()
-# def get_hello():
-
-#     response_body = {
-#         "message": "Hello! I'm a message that came from the backend"
-#     }
-
-#     return jsonify(response_body), 200
-# works
 
 
 @api.route('/token', methods=['POST'])
@@ -34,7 +23,8 @@ def create_token():
     user = User.query.filter_by(email=email, password=password).first()
 
     if user:
-        access_token = create_access_token(identity=user.email)
+        access_token = create_access_token(
+            identity=user.email, expires_delta=datetime.timedelta(hours=1))
     else:
         return jsonify({"msg": "Bad username or password"}), 401
 
@@ -46,11 +36,10 @@ def create_token():
 def create_ticket():
     try:
         current_user_email = get_jwt_identity()
-        user = User.query.filter_by(
-            email=current_user_email).one_or_none()
+        user = User.query.filter_by(email=current_user_email).one_or_none()
 
         if not user:
-            return jsonify({"error": "Customer not found!"}), 404
+            return jsonify({"error": "Customer not found!"}), 401
 
         machine_id = request.json.get("machine_id", None)
         intervention_id = request.json.get("intervention_id", None)
@@ -78,37 +67,9 @@ def create_ticket():
         db.session.commit()
 
         return jsonify({"msg": "Ticket created successfully"}), 201
-    except Exception:
-        return jsonify({"msg": "Exception"}), 400
-
-# It's working
-
-
-@api.route('/user/profile/update', methods=['PUT'])
-# @jwt_required()
-def updateProfile():
-    data = request.json
-
-    # Fetch the customer based on the provided ID
-    current_user_email = data['email']
-    user_info = User.query.filter_by(
-        email=current_user_email).one_or_none()
-
-    if not user_info:
-        return jsonify({"error": "User profile not found"}), 404
-    try:
-        if user_info.customer_id:
-            db.session.execute(db.update(Customer).filter_by(
-                id=user_info.customer_id).values(**data['info']))
-        if user_info.employee_id:
-            db.session.execute(db.update(Employee).filter_by(
-                id=user_info.employee_id).values(**data['info']))
-
-        db.session.commit()
-        return jsonify({"msg": "Profile updated successfully"}), 200
     except Exception as e:
         print(e.args)
-        return jsonify({"msg": "Something went wrong when updating profile"}), 404
+        return jsonify({"msg": "Exception"}), 400
 
 
 @api.route('/interventiontype', methods=['GET'])
@@ -117,7 +78,7 @@ def get_intervention_types():
     intervention_types = InterventionType.query.all()
 
     if not intervention_types:
-        return jsonify({"msg": "No types found for intervention type!"}), 404
+        return jsonify({"msg": "No types found for intervention type!"}), 400
 
     response_body = {
         "intervention_type": [intervention_type.serialize() for intervention_type in intervention_types]
@@ -129,8 +90,7 @@ def get_intervention_types():
 @jwt_required()
 def get_machines():
     current_user_email = get_jwt_identity()
-    user = User.query.filter_by(
-        email=current_user_email).one_or_none()
+    user = User.query.filter_by(email=current_user_email).one_or_none()
 
     if not user:
         return jsonify({"msg": "Unauthorized access!"}), 401
@@ -138,7 +98,7 @@ def get_machines():
     machines = Machine.query.filter_by(customer_id=user.customer_id).all()
 
     if not machines:
-        return jsonify({"msg": "No machines where found for this customer!"}), 404
+        return jsonify({"error": "No machines for that customer!"}), 400
 
     response_body = {
         "machines": [machine.serialize() for machine in machines]
@@ -150,17 +110,18 @@ def get_machines():
 @jwt_required()
 def get_tickets():
     current_user_email = get_jwt_identity()
-    user = User.query.filter_by(
-        email=current_user_email).one_or_none()
+    user = User.query.filter_by(email=current_user_email).one_or_none()
 
-    if user:
-        tickets = Ticket.query.filter_by(customer_id=user.customer_id).all()
+    if not user:
+        return jsonify({"msg": "Unauthorized access!"}), 401
+
+    tickets = Ticket.query.filter_by(customer_id=user.customer_id).all()
 
     if not tickets:
-        return jsonify({"error": "No machines for that customer!"}), 404
+        return jsonify({"error": "No tickets for this customer!"}), 400
 
     response_body = {
-        "machines": [ticket.serialize() for ticket in tickets]
+        "tickets": [ticket.serialize() for ticket in tickets]
     }
     return jsonify(response_body), 200
 
@@ -169,23 +130,54 @@ def get_tickets():
 @jwt_required()
 def get_user_profile():
     current_user_email = get_jwt_identity()
-    user = User.query.filter_by(
-        email=current_user_email).one_or_none()
+    user = User.query.filter_by(email=current_user_email).one_or_none()
 
-    if user:
-        if user.customer_id:
-            user_info = Customer.query.get(user.customer_id)
-            user_profile = user_info.serialize()
-            # user_profile['user_type'] = user.user_type.type
-        elif user.employee_id:
-            user_info = Employee.query.get(user.employee_id)
-            user_profile = user_info.serialize()
-            # user_profile['user_type'] = user.user_type.type
-        else:
-            print("No user info found for user:", user.id)
-            return jsonify({"msg": "No user information found"}), 404
-        print("User profile found:", user_profile)
-        return jsonify({"user_profile": user_profile}), 200
-    else:
-        print("User not found for email:", email)
-        return jsonify({"msg": "User doesn't exist."}), 404
+    if not user:
+        return jsonify({"msg": "Unauthorized access!"}), 401
+
+    if user.customer_id:
+        user_profile = Customer.query.get(user.customer_id).serialize()
+    elif user.employee_id:
+        user_profile = Employee.query.get(user.employee_id).serialize()
+
+    response_body = {"user_profile": user_profile}
+    return jsonify(response_body), 200
+
+
+@api.route('/user/profile/update', methods=['PUT'])
+@jwt_required()
+def updateProfile():
+    data = request.json
+    print("############################")
+    print(data)
+    print("############################")
+
+    # Fetch the customer based on the provided ID
+    current_user_email = get_jwt_identity()
+    user = User.query.filter_by(email=current_user_email).one_or_none()
+
+    if not user:
+        return jsonify({"error": "User profile not found"}), 401
+
+    try:
+        if 'user_info' in data:
+            # db.session.execute(db.update(User).filter_by(id=user.id).values(**data['user_info'])) # DO THE SAME IN ONE LINE AS THE NEXT 3 LINES BELOW
+            user = User.query.get(user.id)
+            for k in data['user_info']:
+                setattr(user, k, data['user_info'][k])
+        if 'customer_info' in data:
+            customer = Customer.query.get(user.customer_id)
+            for k in data['customer_info']:
+                setattr(customer, k, data['customer_info'][k])
+        if 'employee_info' in data:
+            employee = Employee.query.get(user.employee_id)
+            for k in data['employee_info']:
+                setattr(employee, k, data['employee_info'][k])
+
+        db.session.commit()
+
+        return jsonify({"msg": "Profile updated successfully"}), 200
+
+    except Exception as e:
+        print(e)
+        return jsonify({"msg": "Something went wrong when updating profile"}), 400

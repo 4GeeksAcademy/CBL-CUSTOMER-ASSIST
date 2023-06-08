@@ -7,20 +7,30 @@ const getState = ({ getStore, getActions, setStore }) => {
 			customerTickets: [],
 			machineList: [],
 			interventionType: [],
-			tickets: []
+			tickets: [],
+			userProfile: null
 		},
 		actions: {
 			syncTokenFromSessionStorage: () => {
 				console.log("actions: syncTokenFromSessionStorage");
 				if (sessionStorage.getItem('token')) return setStore({ token: JSON.parse(sessionStorage.getItem('token')) });
-				// const token = sessionStorage.getItem('token');
-				// if (token && token != "" && token != undefined) setStore({ token: token });
 			},
 
-			syncDataFromSessionStorage: () => {
+			syncMachineListFromSessionStorage: () => {
 				console.log("actions: syncDataFromSessionStorage");
 				if (sessionStorage.getItem('machineList')) return setStore({ machineList: JSON.parse(sessionStorage.getItem('machineList')) });
+			},
+
+			syncInterventionTypeFromSessionStorage: () => {
 				if (sessionStorage.getItem('interventionType')) return setStore({ interventionType: JSON.parse(sessionStorage.getItem('interventionType')) });
+			},
+
+			syncTicketsFromSessionStorage: () => {
+				if (sessionStorage.getItem('tickets')) return setStore({ tickets: JSON.parse(sessionStorage.getItem('tickets')) });
+			},
+
+			syncUserProfileFromSessionStorage: () => {
+				if (sessionStorage.getItem('userProfile')) return setStore({ userProfile: JSON.parse(sessionStorage.getItem('userProfile')) });
 			},
 
 			login: async (email, password) => {
@@ -55,10 +65,15 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			},
 
+
 			logout: () => {
 				console.log("Logout: erasing user data!")
 				sessionStorage.clear();
 				setStore({ token: null });
+				setStore({ machineList: [] });
+				setStore({ interventionType: [] });
+				setStore({ tickets: [] });
+
 				return true;
 			},
 
@@ -170,15 +185,18 @@ const getState = ({ getStore, getActions, setStore }) => {
 				};
 				try {
 					const response = await fetch(process.env.BACKEND_URL + "api/ticketlist", opts);
+					const data = await response.json();
+
 					if (response.status !== 200) {
-						alert("There has been some error!");
-						return false;
+						console.log(response.status, data.msg);
+						return [response.status, data.msg];
 					}
 					console.log("Getting to response");
-					const data = await response.json();
 					console.log("This came from the backend", data);
-					setStore({ "tickets": data.machines });
-					return true;
+
+					sessionStorage.setItem('tickets', JSON.stringify(data.tickets));
+					setStore({ "tickets": JSON.parse(sessionStorage.getItem('tickets')) });
+					console.log(getStore().tickets); // delete
 				}
 				catch (error) {
 					console.log("There has been an error login in!", error)
@@ -187,7 +205,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 			getUserProfile: async () => {
 				console.log("action: getUserProfile");
-				console.log(token)
 				const token = getStore().token;
 				const opts = {
 					method: "GET",
@@ -198,20 +215,54 @@ const getState = ({ getStore, getActions, setStore }) => {
 				};
 				try {
 					const response = await fetch(process.env.BACKEND_URL + "api/user/profile", opts);
-					if (response.status !== 200) {
-						alert("There has been some error!");
-						return false;
-					}
-					console.log("Getting to response");
 					const data = await response.json();
+
+					if (response.status !== 200) {
+						console.log(response.status, data.msg);
+						return [response.status, data.msg];
+					}
+
 					console.log("This came from the backend", data);
-					setStore({ "userProfile": data.user_profile });
-					return true;
+
+					sessionStorage.setItem('userProfile', JSON.stringify(data.user_profile));
+					setStore({ "userProfile": JSON.parse(sessionStorage.getItem('userProfile')) });
+					console.log(getStore().userProfile); // delete
+					// return true;
+				}
+				catch (error) {
+					console.log("There has been an error login in!", error)
+				}
+			},
+
+			updateUserProfile: async (data) => {
+				console.log("action: updateUserProfile");
+				const token = getStore().token;
+				const opts = {
+					method: "PUT",
+					headers: {
+						"Content-Type": "application/json",
+						"Authorization": "Bearer " + token
+					},
+					body: JSON.stringify(data)
+				};
+				try {
+					const response = await fetch(process.env.BACKEND_URL + "api/user/profile/update", opts);
+					const data = await response.json();
+
+					if (response.status !== 200) {
+						console.log(response.status, data.msg);
+						return [response.status, data.msg];
+					}
+
+					console.log(response.status, data.msg);
+					return [response.status, data.msg];
 				}
 				catch (error) {
 					console.log("There has been an error login in!", error)
 				}
 			}
+
+
 		}
 	};
 };
