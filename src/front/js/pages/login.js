@@ -15,10 +15,9 @@ export const Login = () => {
             await actions.getInterventionType();
             await actions.getMachineList();
             await actions.getTickets();
+            await actions.getUserProfile();
             navigate("/customer/dashboard");
         }
-
-
     }
 
     return (
