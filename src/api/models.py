@@ -14,6 +14,7 @@ class User(db.Model):
         return {
             'id': self.id,
             'email': self.email,
+            'password': self.password,
             'user_type_id': self.user_type_id,
             'user_type': self.user_type.type,
             'customer_id': self.customer_id,
@@ -55,14 +56,16 @@ class Customer(db.Model):
 
     def serialize(self):
         return {
-            'id': self.id,
-            'company_name': self.company_name,
-            'phone': self.phone,
-            'contact_person': self.contact_person,
-            'address_1': self.address_1,
-            'address_2': self.address_2,
-            'zipcode': self.zipcode,
-            'city': self.city,
+            'customer_info': {
+                'id': self.id,
+                'company_name': self.company_name,
+                'phone': self.phone,
+                'contact_person': self.contact_person,
+                'address_1': self.address_1,
+                'address_2': self.address_2,
+                'zipcode': self.zipcode,
+                'city': self.city
+            },
             'user_info': self.user.serialize() if self.user else None
         }
 

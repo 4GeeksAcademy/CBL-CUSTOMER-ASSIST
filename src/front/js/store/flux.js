@@ -232,7 +232,37 @@ const getState = ({ getStore, getActions, setStore }) => {
 				catch (error) {
 					console.log("There has been an error login in!", error)
 				}
+			},
+
+			updateUserProfile: async (data) => {
+				console.log("action: updateUserProfile");
+				const token = getStore().token;
+				const opts = {
+					method: "PUT",
+					headers: {
+						"Content-Type": "application/json",
+						"Authorization": "Bearer " + token
+					},
+					body: JSON.stringify(data)
+				};
+				try {
+					const response = await fetch(process.env.BACKEND_URL + "api/user/profile/update", opts);
+					const data = await response.json();
+
+					if (response.status !== 200) {
+						console.log(response.status, data.msg);
+						return [response.status, data.msg];
+					}
+
+					console.log(response.status, data.msg);
+					return [response.status, data.msg];
+				}
+				catch (error) {
+					console.log("There has been an error login in!", error)
+				}
 			}
+
+			
 		}
 	};
 };
