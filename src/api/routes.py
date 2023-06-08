@@ -144,7 +144,10 @@ def get_user_profile():
 @jwt_required()
 def updateProfile():
     data = request.json
-
+    print("############################")
+    print(data)
+    print("############################")
+    
     # Fetch the customer based on the provided ID
     current_user_email = get_jwt_identity()
     user = User.query.filter_by(email=current_user_email).one_or_none()
@@ -155,17 +158,17 @@ def updateProfile():
     try:
         if 'user_info' in data:
             # db.session.execute(db.update(User).filter_by(id=user.id).values(**data['user_info'])) # DO THE SAME IN ONE LINE AS THE NEXT 3 LINES BELOW 
-            user = User.query.get(user.user_id)
+            user = User.query.get(user.id)
             for k in data['user_info']:
-                setattr(user, data['user_info'])
+                setattr(user, k, data['user_info'][k])
         if 'customer_info' in data:
             customer = Customer.query.get(user.customer_id)
             for k in data['customer_info']:
-                setattr(customer, data['customer_info'])
+                setattr(customer, k, data['customer_info'][k])
         if 'employee_info' in data:
             employee = Employee.query.get(user.employee_id)
             for k in data['employee_info']:
-                setattr(employee, data['employee_info'])
+                setattr(employee, k, data['employee_info'][k])
 
         db.session.commit()
 
