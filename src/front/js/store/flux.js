@@ -33,6 +33,11 @@ const getState = ({ getStore, getActions, setStore }) => {
 				if (sessionStorage.getItem('userProfile')) return setStore({ userProfile: JSON.parse(sessionStorage.getItem('userProfile')) });
 			},
 
+			sessionStorageAndSetStoreDataSave: (key, data) => {
+				sessionStorage.setItem([key], JSON.stringify(data));
+				setStore({ [key]: data });
+			},
+
 			login: async (email, password) => {
 				console.log("actions: login")
 				const opts = {
@@ -55,8 +60,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 					}
 
 					console.log("This came from the backend", data);
-					sessionStorage.setItem("token", JSON.stringify(data.access_token));
-					setStore({ token: data.access_token })
+
+					getActions().sessionStorageAndSetStoreDataSave('token', data.access_token);
+
 					return true;
 				}
 				catch (error) {
@@ -69,6 +75,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			logout: () => {
 				console.log("Logout: erasing user data!")
 				sessionStorage.clear();
+
 				setStore({ token: null });
 				setStore({ machineList: [] });
 				setStore({ interventionType: [] });
@@ -76,24 +83,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 				return true;
 			},
-
-			// getMessage: async () => {
-			// 	const token = getStore().token;
-			// 	const opts = {
-			// 		headers: {
-			// 			"Authorization": "Bearer " + token
-			// 		}
-			// 	}
-			// 	const response = await fetch(process.env.BACKEND_URL + "api/hello", opts);
-			// 	if (response.status != 200) {
-			// 		alert("Something went wrong with your authorization!");
-			// 		return false;
-			// 	}
-
-			// 	const data = await response.json();
-			// 	setStore({ "message": data.message });
-			// 	console.log(getStore().message);
-			// },
 
 			getMachineList: async () => {
 				console.log('action: getMachineList');
@@ -112,9 +101,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					return [response.status, data.msg];
 				}
 
-				sessionStorage.setItem('machineList', JSON.stringify(data.machines));
-				setStore({ "machineList": JSON.parse(sessionStorage.getItem('machineList')) });
-				console.log(getStore().machineList); // delete
+				getActions().sessionStorageAndSetStoreDataSave('machineList', data.machines);
 			},
 
 			getInterventionType: async () => {
@@ -134,11 +121,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 					return [response.status, data.msg];
 				}
 
-				sessionStorage.setItem('interventionType', JSON.stringify(data.intervention_type));
-				setStore({ "interventionType": JSON.parse(sessionStorage.getItem('interventionType')) });
-				console.log(getStore().interventionType); // delete
+				getActions().sessionStorageAndSetStoreDataSave('interventionType', data.intervention_type);
 
-				// setStore({ "interventionType": data.intervention_type });
 				// return true;
 			},
 
@@ -194,9 +178,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.log("Getting to response");
 					console.log("This came from the backend", data);
 
-					sessionStorage.setItem('tickets', JSON.stringify(data.tickets));
-					setStore({ "tickets": JSON.parse(sessionStorage.getItem('tickets')) });
-					console.log(getStore().tickets); // delete
+					getActions().sessionStorageAndSetStoreDataSave('tickets', data.tickets);
 				}
 				catch (error) {
 					console.log("There has been an error login in!", error)
@@ -224,9 +206,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 					console.log("This came from the backend", data);
 
-					sessionStorage.setItem('userProfile', JSON.stringify(data.user_profile));
-					setStore({ "userProfile": JSON.parse(sessionStorage.getItem('userProfile')) });
-					console.log(getStore().userProfile); // delete
+					getActions().sessionStorageAndSetStoreDataSave('userProfile', data.user_profile);
 					// return true;
 				}
 				catch (error) {
