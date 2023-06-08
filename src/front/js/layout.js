@@ -5,7 +5,6 @@ import { Login } from "./pages/login";
 import { Home } from "./pages/home";
 import { Single } from "./pages/single";
 import { AdminCreateTicket } from "./pages/admin/admin-create-ticket";
-import { CreateNewCustomer } from "./pages/admin/admin-create-customer";
 import { CustomerDashboard } from "./pages/customer/customer-dashboard";
 import { CustomerCreateTicket } from "./pages/customer/customer-create-ticket";
 import { CustomerMachineList } from "./pages/customer/customer-machine-list";
@@ -36,7 +35,6 @@ const Layout = () => {
                     <Route element={<CustomerDashboard />} path="/customer/dashboard" />
                     <Route element={<CustomerCreateTicket />} path="/customer/create/ticket" />
                     <Route element={<CustomerMachineList />} path="/customer/machine/list" />
-                    <Route element={<CreateNewCustomer />} path="/admin/create/customer" />
                     <Route element={<AdminCreateTicket />} path="/admin/create/ticket" />
                     <Route element={<AdminDashboard />} path="/admin/dashboard" />
                     <Route element={<AdminCreateUser />} path="/admin/create/user" />
