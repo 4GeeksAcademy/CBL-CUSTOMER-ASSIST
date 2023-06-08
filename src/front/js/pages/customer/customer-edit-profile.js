@@ -37,14 +37,13 @@ export const EditCustomerProfile = () => {
     
     const handleUpdateProfile = async () => {
         let newData = {...updateProfile};
-        if(!newData.user_info || newData.user_info === "" || newData.user_info === undefined) delete newData.user_info;
-        userInfo.user_type !== "customer" ? delete newData.customer_info : delete newData.employee_info;
-        console.log(newData);
+
+        if(Object.keys(newData.user_info).length === 0) delete newData.user_info; // deletes user_info if this is empty
+        userInfo.user_type !== "customer" ? delete newData.customer_info : delete newData.employee_info; // deletes customer_info or employee_info
 
         const response = await actions.updateUserProfile(newData);
 
         response[0] === 200 ? navigate('/') : alert(response[1]);
-
     }
 
     return (
