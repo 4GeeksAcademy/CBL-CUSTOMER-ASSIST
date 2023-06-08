@@ -5,10 +5,10 @@ import { Context } from "../../store/appContext";
 export const CustomerDashboard = () => {
     const { store, actions } = useContext(Context)
 
-    useEffect(() => {
-        actions.getTickets()
+    // useEffect(() => {
+    //     actions.getTickets()
 
-    }, [store.tickets])
+    // }, [store.tickets])
 
     return (
         <>

@@ -32,14 +32,13 @@ def create_token():
     print(email, password)
 
     user = User.query.filter_by(email=email, password=password).first()
-   
+
     if user:
         access_token = create_access_token(identity=user.email)
     else:
         return jsonify({"msg": "Bad username or password"}), 401
 
-    return jsonify({'access_token':access_token,'user_type':user.user_type_id}), 200
-
+    return jsonify({'access_token': access_token, 'user_type': user.user_type_id}), 200
 
 
 @api.route('/customer/create/ticket', methods=['POST'])
@@ -85,33 +84,31 @@ def create_ticket():
 # It's working
 
 
-@api.route('/customer/update/profile', methods=['PUT'])
+@api.route('/user/profile/update', methods=['PUT'])
 # @jwt_required()
 def updateProfile():
-    body = request.json
-
-    customer_id = 3  # Assuming the client provides the customer ID
+    data = request.json
 
     # Fetch the customer based on the provided ID
-    customer = Customer.query.get(customer_id)
-    if customer:
-        # Update the fields based on the provided data
-        if "new_email" in body:
-            customer.email = body["new_email"]
-        if "new_company_name" in body:
-            customer.company_name = body["new_company_name"]
-        if "new_password" in body:
-            customer.password = body["new_password"]
-        if "new_contact_phone" in body:
-            customer.contact_phone = body["new_contact_phone"]
-        if "new_contact_person" in body:
-            customer.contact_person = body["new_contact_person"]
+    current_user_email = data['email']
+    user_info = User.query.filter_by(
+        email=current_user_email).one_or_none()
+
+    if not user_info:
+        return jsonify({"error": "User profile not found"}), 404
+    try:
+        if user_info.customer_id:
+            db.session.execute(db.update(Customer).filter_by(
+                id=user_info.customer_id).values(**data['info']))
+        if user_info.employee_id:
+            db.session.execute(db.update(Employee).filter_by(
+                id=user_info.employee_id).values(**data['info']))
 
         db.session.commit()
-
-        return jsonify({"message": "Profile updated successfully"})
-    else:
-        return jsonify({"error": "Customer not found"})
+        return jsonify({"msg": "Profile updated successfully"}), 200
+    except Exception as e:
+        print(e.args)
+        return jsonify({"msg": "Something went wrong when updating profile"}), 404
 
 
 @api.route('/interventiontype', methods=['GET'])
@@ -120,7 +117,7 @@ def get_intervention_types():
     intervention_types = InterventionType.query.all()
 
     if not intervention_types:
-        return jsonify({"error": "Something wrong with intervention types request!"}), 404
+        return jsonify({"msg": "No types found for intervention type!"}), 404
 
     response_body = {
         "intervention_type": [intervention_type.serialize() for intervention_type in intervention_types]
@@ -135,11 +132,13 @@ def get_machines():
     user = User.query.filter_by(
         email=current_user_email).one_or_none()
 
-    if user:
-        machines = Machine.query.filter_by(customer_id=user.customer_id).all()
+    if not user:
+        return jsonify({"msg": "Unauthorized access!"}), 401
+
+    machines = Machine.query.filter_by(customer_id=user.customer_id).all()
 
     if not machines:
-        return jsonify({"error": "No machines for that customer!"}), 404
+        return jsonify({"msg": "No machines where found for this customer!"}), 404
 
     response_body = {
         "machines": [machine.serialize() for machine in machines]
@@ -164,3 +163,29 @@ def get_tickets():
         "machines": [ticket.serialize() for ticket in tickets]
     }
     return jsonify(response_body), 200
+
+
+@api.route('/user/profile', methods=['GET'])
+@jwt_required()
+def get_user_profile():
+    current_user_email = get_jwt_identity()
+    user = User.query.filter_by(
+        email=current_user_email).one_or_none()
+
+    if user:
+        if user.customer_id:
+            user_info = Customer.query.get(user.customer_id)
+            user_profile = user_info.serialize()
+            # user_profile['user_type'] = user.user_type.type
+        elif user.employee_id:
+            user_info = Employee.query.get(user.employee_id)
+            user_profile = user_info.serialize()
+            # user_profile['user_type'] = user.user_type.type
+        else:
+            print("No user info found for user:", user.id)
+            return jsonify({"msg": "No user information found"}), 404
+        print("User profile found:", user_profile)
+        return jsonify({"user_profile": user_profile}), 200
+    else:
+        print("User not found for email:", email)
+        return jsonify({"msg": "User doesn't exist."}), 404

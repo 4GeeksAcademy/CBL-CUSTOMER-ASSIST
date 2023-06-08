@@ -11,14 +11,15 @@ export const Login = () => {
 
     const userLogin = async () => {
         const response = await actions.login(email, password);
-        if (response) {
-            await actions.getInterventionType();
-            await actions.getMachineList();
-            await actions.getTickets();
-            navigate("/customer/dashboard");
-        }
+        if (response === "error") return alert('Please, contact service support!');
+        else if (!response) return alert("Bad user or password!");
 
-
+        await actions.getInterventionType();
+        await actions.getMachineList();
+        await actions.getTickets();
+        // await actions.getUserProfile();
+        
+        navigate("/customer/dashboard");
     }
 
     return (

@@ -1,27 +1,50 @@
 from flask_sqlalchemy import SQLAlchemy
-
 db = SQLAlchemy()
 
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    email = db.Column(db.String(100), nullable=False)
+    email = db.Column(db.String(100), unique=True, nullable=False)
     password = db.Column(db.String(100), nullable=False)
-    user_type_id = db.Column(db.Integer, db.ForeignKey('user_type.id'), nullable=False)
-    customer_id = db.Column(db.Integer, db.ForeignKey('customer.id'), nullable=True)
-    employee_id = db.Column(db.Integer, db.ForeignKey('employee.id'), nullable=True)
+    user_type_id = db.Column(db.Integer, db.ForeignKey(
+        'user_type.id'), nullable=False)
+    customer_id = db.Column(
+        db.Integer, db.ForeignKey('customer.id'), nullable=True)
+    employee_id = db.Column(
+        db.Integer, db.ForeignKey('employee.id'), nullable=True)
+
+    def serialize(self):
+        return {
+            'id': self.id,
+            'email': self.email,
+            'user_type_id': self.user_type_id,
+            'user_type': self.user_type.type,
+            'customer_id': self.customer_id,
+            'employee_id': self.employee_id
+        }
+
 
 class UserType(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     type = db.Column(db.String(50), nullable=False)
-    user= db.relationship('User', backref='user_type')
+    user = db.relationship('User', backref='user_type')
+
 
 class Employee(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     first_name = db.Column(db.String(50), nullable=False)
     last_name = db.Column(db.String(50), nullable=False)
-    user= db.relationship('User', backref='employee')
-    ticket_employee = db.relationship('TicketEmployeesRelation', backref='employee')
+    user = db.relationship('User', backref='employee')
+    ticket_employee = db.relationship(
+        'TicketEmployeesRelation', backref='employee')
+
+    def serialize(self):
+        return {
+            'id': self.id,
+            'first_name': self.first_name,
+            'last_name': self.last_name,
+            'user_info': self.user.serialize()
+        }
 
 
 class InterventionType(db.Model):
@@ -49,7 +72,6 @@ class TicketEmployeesRelation(db.Model):
         'employee.id'), nullable=False)
     start_intervention_date = db.Column(db.DateTime)
     end_intervention_date = db.Column(db.DateTime)
-
     # @property
     # def role(self):
     #     return self.employee.company_role
@@ -94,10 +116,24 @@ class Customer(db.Model):
     address_2 = db.Column(db.String(100))
     zipcode = db.Column(db.Integer)
     city = db.Column(db.String(50), nullable=False)
-    user= db.relationship('User', backref='customer')
-    ticket= db.relationship('Ticket',backref='customer')
-    machine = db.relationship('Machine',backref='customer')
-    
+    user = db.relationship('User', backref='customer', uselist=False)
+    ticket = db.relationship('Ticket', backref='customer')
+    machine = db.relationship('Machine', backref='customer')
+
+    def serialize(self):
+        return {
+            'id': self.id,
+            'company_name': self.company_name,
+            'phone': self.phone,
+            'contact_person': self.contact_person,
+            'address_1': self.address_1,
+            'address_2': self.address_2,
+            'zipcode': self.zipcode,
+            'city': self.city,
+            'user_info': self.user.serialize()
+        }
+
+
 class Occurrence(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     ticket_id = db.Column(db.Integer, db.ForeignKey(

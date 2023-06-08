@@ -11,8 +11,16 @@ const getState = ({ getStore, getActions, setStore }) => {
 		},
 		actions: {
 			syncTokenFromSessionStorage: () => {
-				const token = sessionStorage.getItem('token');
-				if (token && token != "" && token != undefined) setStore({ token: token });
+				console.log("actions: syncTokenFromSessionStorage");
+				if (sessionStorage.getItem('token')) return setStore({ token: JSON.parse(sessionStorage.getItem('token')) });
+				// const token = sessionStorage.getItem('token');
+				// if (token && token != "" && token != undefined) setStore({ token: token });
+			},
+
+			syncDataFromSessionStorage: () => {
+				console.log("actions: syncDataFromSessionStorage");
+				if (sessionStorage.getItem('machineList')) return setStore({ machineList: JSON.parse(sessionStorage.getItem('machineList')) });
+				if (sessionStorage.getItem('interventionType')) return setStore({ interventionType: JSON.parse(sessionStorage.getItem('interventionType')) });
 			},
 
 			login: async (email, password) => {
@@ -29,45 +37,48 @@ const getState = ({ getStore, getActions, setStore }) => {
 				};
 				try {
 					const response = await fetch(process.env.BACKEND_URL + "api/token", opts);
+					const data = await response.json();
+
 					if (response.status !== 200) {
-						alert("There has been some error!");
+						console.log(data.msg);
 						return false;
 					}
 
-					const data = await response.json();
 					console.log("This came from the backend", data);
-					sessionStorage.setItem("token", data.access_token);
+					sessionStorage.setItem("token", JSON.stringify(data.access_token));
 					setStore({ token: data.access_token })
 					return true;
 				}
 				catch (error) {
-					console.log("There has been an error login in!")
+					console.log("Contact service support", error);
+					return "error";
 				}
 			},
 
 			logout: () => {
-				sessionStorage.removeItem('token');
-				console.log("Login out")
+				console.log("Logout: erasing user data!")
+				sessionStorage.clear();
 				setStore({ token: null });
+				return true;
 			},
 
-			getMessage: async () => {
-				const token = getStore().token;
-				const opts = {
-					headers: {
-						"Authorization": "Bearer " + token
-					}
-				}
-				const response = await fetch(process.env.BACKEND_URL + "api/hello", opts);
-				if (response.status != 200) {
-					alert("Something went wrong with your authorization!");
-					return false;
-				}
+			// getMessage: async () => {
+			// 	const token = getStore().token;
+			// 	const opts = {
+			// 		headers: {
+			// 			"Authorization": "Bearer " + token
+			// 		}
+			// 	}
+			// 	const response = await fetch(process.env.BACKEND_URL + "api/hello", opts);
+			// 	if (response.status != 200) {
+			// 		alert("Something went wrong with your authorization!");
+			// 		return false;
+			// 	}
 
-				const data = await response.json();
-				setStore({ "message": data.message });
-				console.log(getStore().message);
-			},
+			// 	const data = await response.json();
+			// 	setStore({ "message": data.message });
+			// 	console.log(getStore().message);
+			// },
 
 			getMachineList: async () => {
 				console.log('action: getMachineList');
@@ -79,15 +90,16 @@ const getState = ({ getStore, getActions, setStore }) => {
 					}
 				}
 				const response = await fetch(process.env.BACKEND_URL + "api/machinelist", opts);
-				if (response.status != 200) {
-					alert("Something went wrong with your authorization!");
-					return false;
+				const data = await response.json();
+
+				if (response.status !== 200) {
+					console.log(response.status, data.msg);
+					return [response.status, data.msg];
 				}
 
-				const data = await response.json();
-				console.log("action machineList return: ", data);
-				setStore({ "machineList": data.machines });
-				console.log(getStore().machineList);
+				sessionStorage.setItem('machineList', JSON.stringify(data.machines));
+				setStore({ "machineList": JSON.parse(sessionStorage.getItem('machineList')) });
+				console.log(getStore().machineList); // delete
 			},
 
 			getInterventionType: async () => {
@@ -100,14 +112,19 @@ const getState = ({ getStore, getActions, setStore }) => {
 					}
 				}
 				const response = await fetch(process.env.BACKEND_URL + "api/interventiontype", opts);
-				if (response.status != 200) {
-					alert("Something went wrong with your authorization!");
-					return false;
-				}
 				const data = await response.json();
-				console.log(data.intervention_type);
-				setStore({ "interventionType": data.intervention_type });
-				console.log(getStore().interventionType);
+
+				if (response.status != 200) {
+					console.log(response.status, data.msg);
+					return [response.status, data.msg];
+				}
+
+				sessionStorage.setItem('interventionType', JSON.stringify(data.intervention_type));
+				setStore({ "interventionType": JSON.parse(sessionStorage.getItem('interventionType')) });
+				console.log(getStore().interventionType); // delete
+
+				// setStore({ "interventionType": data.intervention_type });
+				// return true;
 			},
 
 			customerCreateTicket: async (machineId, interventionId, description) => {

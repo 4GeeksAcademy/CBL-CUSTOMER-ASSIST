@@ -13,7 +13,9 @@ export const CustomerCreateTicket = () => {
         const response = await actions.customerCreateTicket(machineID, interventionID, description);
         if (response) {
             alert("Ticket created!");
-            navigate("/");
+            await actions.getTickets();
+            console.log("hello tickets");
+            navigate("/customer/dashboard");
         }
         if (!response) {
             alert("Error");
