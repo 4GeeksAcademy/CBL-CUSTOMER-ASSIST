@@ -38,12 +38,19 @@ export const EditCustomerProfile = () => {
     const handleUpdateProfile = async () => {
         let newData = {...updateProfile};
 
-        if(Object.keys(newData.user_info).length === 0) delete newData.user_info; // deletes user_info if this is empty
-        userInfo.user_type !== "customer" ? delete newData.customer_info : delete newData.employee_info; // deletes customer_info or employee_info
+        // check for empty keys and delete them
+        for(const key of Object.keys(newData)) {
+            if(Object.keys(newData[key]).length === 0) delete newData[key];
+        }
 
-        const response = await actions.updateUserProfile(newData);
+        // only submits data if the object is not empty
+        if (Object.keys(newData).length !== 0) {
+            const response = await actions.updateUserProfile(newData);
+            response[0] === 200 ? navigate('/') : alert(response[1]);
+        }else{
+            alert('No data to update');
+        }       
 
-        response[0] === 200 ? navigate('/') : alert(response[1]);
     }
 
     return (
