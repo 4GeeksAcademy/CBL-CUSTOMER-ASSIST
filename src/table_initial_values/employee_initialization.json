@@ -2,16 +2,19 @@
     {
         "id": 1,
         "first_name": "John",
-        "last_name": "Doe"
+        "last_name": "Doe",
+        "available":true
     },
     {
         "id": 2,
         "first_name": "Alex",
-        "last_name": "Smith"
+        "last_name": "Smith",
+        "available":true
     },
     {
         "id": 3,
         "first_name": "David",
-        "last_name": "Johnson"
+        "last_name": "Johnson",
+        "available":true
     }
 ]
