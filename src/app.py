@@ -7,7 +7,7 @@ from flask_migrate import Migrate
 from flask_swagger import swagger
 from flask_cors import CORS
 from api.utils import APIException, generate_sitemap
-from api.models import db, StatusValue, InterventionType, Machine, Employee, Customer, User, UserType
+from api.models import db, Machine, Employee, Customer, User, UserType
 from api.routes import api
 from api.admin import setup_admin
 from api.commands import setup_commands
@@ -53,24 +53,7 @@ app.register_blueprint(api, url_prefix='/api')
 def handle_invalid_usage(error):
     return jsonify(error.to_dict()), error.status_code
 
-# TABLE VALUES INITIALIZATION
-# StatusValue table
-def status_value_initialize():
-    if len(StatusValue.query.all()) == 0:    
-        with open ("src/table_initial_values/status_value_initialization.json") as file:
-            data = json.load(file)
-        statuses = [StatusValue(**item) for item in data]
-        db.session.bulk_save_objects(statuses)
-        db.session.commit()
-
-# InterventionType table
-def intervention_type_initialize():
-    if len(InterventionType.query.all()) == 0:  
-        with open ("src/table_initial_values/intervention_type_initialization.json") as file:
-            data = json.load(file)
-        types = [InterventionType(**item) for item in data]
-        db.session.bulk_save_objects(types)
-        db.session.commit()
+# TABLE VALUES INITIALIZATIOn
 
 # Machine table
 def machine_initialize():
@@ -122,8 +105,6 @@ def sitemap():
     if ENV == "development":
         # table values initialization
         user_type_initialize()
-        status_value_initialize()
-        intervention_type_initialize()
         customer_initialize()
         machine_initialize()
         employee_initialize()

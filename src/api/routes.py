@@ -2,7 +2,7 @@
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
 from flask import Flask, request, jsonify, url_for, Blueprint
-from api.models import db, User, Customer, Employee, Ticket, Machine, Malfunction, Occurrence, InterventionType, Machine
+from api.models import db, User, Customer, Employee, Ticket, Machine, Malfunction, Occurrence, Machine
 from api.utils import generate_sitemap, APIException
 from flask_jwt_extended import create_access_token
 from flask_jwt_extended import get_jwt_identity
@@ -68,20 +68,6 @@ def create_ticket():
     except Exception as e:
         print(e.args)
         return jsonify({"msg": "Exception"}), 400
-
-@api.route('/interventiontype', methods=['GET'])
-@jwt_required()
-def get_intervention_types():
-    intervention_types = InterventionType.query.all()
-
-    if not intervention_types:
-        return jsonify({"msg": "No types found for intervention type!"}), 400
-
-    response_body = {
-        "intervention_type": [intervention_type.serialize() for intervention_type in intervention_types]
-    }
-    return jsonify(response_body), 200
-
 
 @api.route('/machinelist', methods=['GET'])
 @jwt_required()
@@ -158,17 +144,14 @@ def updateProfile():
     try:
         if 'user_info' in data:
             # db.session.execute(db.update(User).filter_by(id=user.id).values(**data['user_info'])) # DO THE SAME IN ONE LINE AS THE NEXT 3 LINES BELOW 
-            user = User.query.get(user.id)
-            for k in data['user_info']:
-                setattr(user, k, data['user_info'][k])
+            for k,v in data['user_info'].items():
+                setattr(user, k,v)
         if 'customer_info' in data:
-            customer = Customer.query.get(user.customer_id)
-            for k in data['customer_info']:
-                setattr(customer, k, data['customer_info'][k])
+            for k,v in data['customer_info'].items():
+                setattr(user.customer, k, v)
         if 'employee_info' in data:
-            employee = Employee.query.get(user.employee_id)
-            for k in data['employee_info']:
-                setattr(employee, k, data['employee_info'][k])
+            for k,v in data['employee_info'].items:
+                setattr(user.employee, k, v)
 
         db.session.commit()
 
