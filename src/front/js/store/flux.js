@@ -6,9 +6,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 			message: null,
 			customerTickets: [],
 			machineList: [],
-			interventionType: [],
 			tickets: [],
-			userProfile: null
+			userProfile: {user_info : {}, customer_info : {}, employee_info : {}}
 		},
 		actions: {
 			syncTokenFromSessionStorage: () => {
@@ -20,11 +19,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				console.log("actions: syncDataFromSessionStorage");
 				if (sessionStorage.getItem('machineList')) return setStore({ machineList: JSON.parse(sessionStorage.getItem('machineList')) });
 			},
-
-			syncInterventionTypeFromSessionStorage: () => {
-				if (sessionStorage.getItem('interventionType')) return setStore({ interventionType: JSON.parse(sessionStorage.getItem('interventionType')) });
-			},
-
+			
 			syncTicketsFromSessionStorage: () => {
 				if (sessionStorage.getItem('tickets')) return setStore({ tickets: JSON.parse(sessionStorage.getItem('tickets')) });
 			},
@@ -104,27 +99,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				getActions().sessionStorageAndSetStoreDataSave('machineList', data.machines);
 			},
 
-			getInterventionType: async () => {
-				console.log('action: getInterventionType');
-				const token = getStore().token;
-				const opts = {
-					method: "GET",
-					headers: {
-						"Authorization": "Bearer " + token
-					}
-				}
-				const response = await fetch(process.env.BACKEND_URL + "api/interventiontype", opts);
-				const data = await response.json();
-
-				if (response.status != 200) {
-					console.log(response.status, data.msg);
-					return [response.status, data.msg];
-				}
-
-				getActions().sessionStorageAndSetStoreDataSave('interventionType', data.intervention_type);
-
-				// return true;
-			},
+		
 
 			customerCreateTicket: async (machineId, interventionId, description) => {
 				console.log("action: createCustomerTicket");
