@@ -1,19 +1,20 @@
 import SideNav, { Toggle, Nav, NavItem, NavIcon, NavText } from '@trendmicro/react-sidenav';
-// Be sure to include styles at some point, probably during your bootstraping
 import '@trendmicro/react-sidenav/dist/react-sidenav.css';
-import React from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 export const Sidebar = () => {
     const navigate = useNavigate();
+    
     return (
         <>
-            <SideNav className="bg-dark"
+            <SideNav
+                className="bg-dark"
                 onSelect={selected => {
-                    console.log(selected)
-                    navigate('/' + selected)
-                }}>
-
+                    console.log(selected);
+                    navigate('/' + selected);
+                }}
+            >
                 <SideNav.Toggle />
                 <SideNav.Nav defaultSelected="tickets">
                     {/********* TICKET *********/}
@@ -39,57 +40,55 @@ export const Sidebar = () => {
                         <NavIcon><i className="fa-solid fa-user" style={{ fontSize: "1.5em" }}></i></NavIcon>
                         <NavText>Customer</NavText>
                         {/* Admin creates a new customer below */}
-                        <NavItem eventKey="admin/create/customer">
+                        <NavItem eventKey="customer/create">
                             <NavText>Create Customer</NavText>
                         </NavItem>
                         <NavItem eventKey="customer-edit">
                             <NavText>Edit Customer</NavText>
-                        </NavItem>
-                        <NavItem eventKey="customer-search">
-                            <NavText>Search</NavText>
                         </NavItem>
                     </NavItem>
                     {/********* TECHNICIAN *********/}
                     <NavItem eventKey="technician">
                         <NavIcon><i className="fa-solid fa-user-tie" style={{ fontSize: "1.5em" }}></i></NavIcon>
                         <NavText>Technician</NavText>
-                        <NavItem eventKey="technician-create">
+                        <NavItem eventKey="tech/create">
                             <NavText>Create Technician</NavText>
                         </NavItem>
-                        <NavItem eventKey="technician-edit">
+                        <NavItem eventKey="tech">
                             <NavText>Edit Technician</NavText>
                         </NavItem>
-                        <NavItem eventKey="technician-search">
-                            <NavText>Search</NavText>
-                        </NavItem>
                     </NavItem>
-                    {/********* ADMIN *********/}
+                    {/********* ADMIN *********/}  
                     <NavItem eventKey="admin">
                         <NavIcon><i className="fa-solid fa-user-gear" style={{ fontSize: "1.5em" }}></i></NavIcon>
                         <NavText>Admin</NavText>
                         <NavItem eventKey="admin/dashboard">
                             <NavText>Dashboard</NavText>
                         </NavItem>
-                        <NavItem eventKey="admin/create/user">
-                            <NavText>Create User</NavText>
+                        <NavItem eventKey="admin/create">
+                            <NavText>Create Admin</NavText>
                         </NavItem>
-                        <NavItem eventKey="admin-edit">
+                        <NavItem eventKey="admin/edit/admin">
                             <NavText>Edit Admin</NavText>
+                        </NavItem>
+                    </NavItem>
+                    {/********* Equipment *********/}
+                    <NavItem eventKey="admin">
+                        <NavIcon><i className="fa-solid fa-gears" style={{ fontSize: "1.5em" }}></i></NavIcon>
+                        <NavText>Equipment</NavText>
+                        <NavItem eventKey="equipment">
+                            <NavText>Equipment</NavText>
+                        </NavItem>
+                        <NavItem eventKey="equipment">
+                            <NavText>Equipment</NavText>
+                        </NavItem>
+                        <NavItem eventKey="equipment">
+                            <NavText>Equipment</NavText>
                         </NavItem>
                     </NavItem>
 
                 </SideNav.Nav>
-
-
-                {/* <div className="container">
-                        <Link to="/">
-                            <button className="btn btn-primary">Home</button>
-                        </Link>
-                    </div>
-                </div> */}
-
             </SideNav>
-
         </>
     );
 };

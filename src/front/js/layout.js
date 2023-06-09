@@ -6,13 +6,15 @@ import { Home } from "./pages/home";
 import { Single } from "./pages/single";
 import { AdminCreateTicket } from "./pages/admin/admin-create-ticket";
 import { CustomerDashboard } from "./pages/customer/customer-dashboard";
-import { CustomerCreateTicket } from "./pages/customer/customer-create-ticket";
-import { CustomerMachineList } from "./pages/customer/customer-machine-list";
 import { Navbar } from "./component/navbar";
 import { Sidebar } from "./component/sidebar";
-import { EditCustomerProfile } from "./pages/customer/customer-edit-profile";
 import { AdminDashboard } from "./pages/admin/admin-dashboard";
-import { AdminCreateUser } from "./pages/admin/admin-create-user";
+import { CreateAdmin } from "./pages/admin/admin-create";
+import { CreateTech } from "./pages/technician/tech-create";
+import { CustomerCreateTicket } from "./pages/customer/customer-create-ticket";
+import { CustomerMachineList } from "./pages/customer/customer-machine-list";
+import { EditCustomerProfile } from "./pages/customer/customer-edit-profile";
+import { CreateCustomer } from "./pages/customer/customer-create.js";
 
 const Layout = () => {
     const basename = process.env.BASENAME || "";
@@ -37,7 +39,9 @@ const Layout = () => {
                     <Route element={<CustomerMachineList />} path="/customer/machine/list" />
                     <Route element={<AdminCreateTicket />} path="/admin/create/ticket" />
                     <Route element={<AdminDashboard />} path="/admin/dashboard" />
-                    <Route element={<AdminCreateUser />} path="/admin/create/user" />
+                    <Route element={<CreateAdmin/>} path="/admin/create" />
+                    <Route element={<CreateTech/>} path="/tech/create"/>
+                    <Route element={<CreateCustomer/>} path="/customer/create"/>
 
                 </Routes>
             </BrowserRouter>
