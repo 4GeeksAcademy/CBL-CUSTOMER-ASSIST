@@ -24,7 +24,6 @@ const injectContext = PassedComponent => {
 		useEffect(() => {
 			state.actions.syncTokenFromSessionStorage();
 			state.actions.syncMachineListFromSessionStorage();
-			state.actions.syncInterventionTypeFromSessionStorage();
 			state.actions.syncTicketsFromSessionStorage();
 			state.actions.syncUserProfileFromSessionStorage();
 		}, []);

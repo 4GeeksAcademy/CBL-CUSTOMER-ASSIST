@@ -12,7 +12,6 @@ export const Login = () => {
     const userLogin = async () => {
         const response = await actions.login(email, password);
         if (response) {
-            await actions.getInterventionType();
             await actions.getMachineList();
             await actions.getTickets();
             await actions.getUserProfile();

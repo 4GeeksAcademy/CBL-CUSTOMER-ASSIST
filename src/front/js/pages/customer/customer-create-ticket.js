@@ -36,13 +36,9 @@ export const CustomerCreateTicket = () => {
                         <div>
                             <select className="form-select" onChange={e => setInterventionID(e.target.value)}>
                                 <option>Select option</option>
-                                {store.interventionType.length > 0
-                                    ? store.interventionType.map((type) => {
-                                        return <option key={type.id} value={type.id} >{type.name}</option>
-                                    })
-                                    :
-                                    <option>Loading...</option>
-                                }
+                                <option value={false}>Maintenance</option>
+                                <option value={true}>Assistance</option>
+                                
                             </select>
                         </div>
 
