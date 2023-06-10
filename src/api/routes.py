@@ -39,29 +39,36 @@ def create_ticket():
         if not user:
             return jsonify({"error": "Customer not found!"}), 401
 
-        machine_id = request.json.get("machine_id", None)
-        intervention_id = request.json.get("intervention_id", None)
-        description = request.json.get("description", None)
+        data = request.json
+
+        print("############################")
+        print(data)
+        print("############################")
+
+        machine_id = data["machine_id"]
+        intervention_type = data["intervention_type"]
+        description = data["description"]
 
         ticket = Ticket()
         ticket.customer_id = user.customer_id
         ticket.machine_id = machine_id
-        ticket.status_id = 1
-        ticket.intervention_type_id = intervention_id
+        ticket.status = "Opened"
+        ticket.intervention_type = intervention_type
+        ticket.description = description
         ticket.open_ticket_time = datetime.datetime.now()
         db.session.add(ticket)
         db.session.flush()
 
-        malfunction = Malfunction()
-        malfunction.description = description
-        db.session.add(malfunction)
-        db.session.flush()
+        # malfunction = Malfunction()
+        # malfunction.description = description
+        # db.session.add(malfunction)
+        # db.session.flush()
 
-        occurrence = Occurrence()
-        occurrence.ticket_id = ticket.id
-        occurrence.malfunction_id = malfunction.id
-        db.session.add(occurrence)
-        db.session.flush()
+        # occurrence = Occurrence()
+        # occurrence.ticket_id = ticket.id
+        # occurrence.malfunction_id = malfunction.id
+        # db.session.add(occurrence)
+        # db.session.flush()
         db.session.commit()
 
         return jsonify({"msg": "Ticket created successfully"}), 201
@@ -130,9 +137,6 @@ def get_user_profile():
 @jwt_required()
 def updateProfile():
     data = request.json
-    print("############################")
-    print(data)
-    print("############################")
     
     # Fetch the customer based on the provided ID
     current_user_email = get_jwt_identity()
@@ -143,14 +147,15 @@ def updateProfile():
 
     try:
         if 'user_info' in data:
-            # db.session.execute(db.update(User).filter_by(id=user.id).values(**data['user_info'])) # DO THE SAME IN ONE LINE AS THE NEXT 3 LINES BELOW 
-            for k,v in data['user_info'].items():
-                setattr(user, k,v)
+            for k, v in data['user_info'].items():
+                setattr(user, k, v)
+
         if 'customer_info' in data:
-            for k,v in data['customer_info'].items():
+            for k, v in data['customer_info'].items():
                 setattr(user.customer, k, v)
+
         if 'employee_info' in data:
-            for k,v in data['employee_info'].items:
+            for k, v in data['employee_info'].items:
                 setattr(user.employee, k, v)
 
         db.session.commit()
@@ -158,5 +163,4 @@ def updateProfile():
         return jsonify({"msg": "Profile updated successfully"}), 200
     
     except Exception as e:
-        print(e)
         return jsonify({"msg": "Something went wrong when updating profile"}), 400

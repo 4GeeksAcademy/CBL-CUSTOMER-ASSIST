@@ -99,10 +99,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 				getActions().sessionStorageAndSetStoreDataSave('machineList', data.machines);
 			},
 
-		
-
-			customerCreateTicket: async (machineId, interventionId, description) => {
+			customerCreateTicket: async (machineId, interventionType, description) => {
 				console.log("action: createCustomerTicket");
+				console.log("Intervention type: ", interventionType);
 				const token = getStore().token;
 				const opts = {
 					method: "POST",
@@ -112,7 +111,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					},
 					body: JSON.stringify({
 						machine_id: machineId,
-						intervention_id: interventionId,
+						intervention_type: interventionType,
 						description: description
 					})
 				};
