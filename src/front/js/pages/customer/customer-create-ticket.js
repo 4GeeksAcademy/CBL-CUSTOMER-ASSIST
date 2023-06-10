@@ -4,14 +4,15 @@ import { useNavigate } from "react-router-dom";
 
 export const CustomerCreateTicket = () => {
     const { store, actions } = useContext(Context);
-    const [description, setDescription] = useState("")
-    const [machineID, setMachineID] = useState(null)
+    const [subject, setSubject] = useState("");
+    const [description, setDescription] = useState("");
+    const [machineID, setMachineID] = useState(null);
     const [interventionType, setInterventionType] = useState(true)
     const navigate = useNavigate();
 
     const createTicket = async () => {
         console.log(typeof(interventionType));
-        const response = await actions.customerCreateTicket(machineID, interventionType, description);
+        const response = await actions.customerCreateTicket(machineID, interventionType, subject, description);
         if (response) {
             alert("Ticket created!");
             navigate("/");
@@ -35,15 +36,12 @@ export const CustomerCreateTicket = () => {
                     <div className="d-flex ">
                         <div className="mt-2 me-2" ><h5>Intervention Type:</h5></div>
                         <div>
-                            {/* <input type="radio" value={true} name="interventionType" /> Assistance
-                            <input type="radio" value={false} name="interventionType" /> Maintenance */}
                             <select className="form-select" onChange={e => setInterventionType(e.target.value === "true" ? true : false)}>
                                 <option>Select option</option>
                                 <option value={true}>Assistance</option>
                                 <option value={false}>Maintenance</option>
                             </select>
                         </div>
-
                     </div>
                 </div>
             </div>
@@ -66,12 +64,26 @@ export const CustomerCreateTicket = () => {
                     </div>
                 </div>
             </div>
+            {/* Subject of ticket*/}
+            <div className="d-flex justify-content-center">
+                <div><label htmlFor="floatingTextarea1" className="me-3 "><h5>Subject:</h5></label></div>
+                <div className="form-floating">
+                    <textarea
+                        className="form-control" id="floatingTextarea1" placeholder="Write a short sentence to describe malfunction"
+                        value={subject}
+                        onChange={(e) => {
+                            setSubject(e.target.value)
+                        }} />
+                </div>
+            </div>
 
-            {/* Description of machine selected*/}
+            {/* Description of equipment malfunction*/}
             <div className="d-flex justify-content-center">
                 <div><label htmlFor="floatingTextarea2" className="me-3 "><h5>Description:</h5></label></div>
                 <div className="form-floating">
-                    <textarea className="form-control" placeholder="Description" id="floatingTextarea2" style={{ height: "120px", width: "900px" }}
+                    <textarea
+                        className="form-control" placeholder="Be as much detailed as you can about the equipment failure" id="floatingTextarea2" style={{ height: "120px", width: "900px" }}
+                        value={description}
                         onChange={(e) => {
                             setDescription(e.target.value)
                         }} />
