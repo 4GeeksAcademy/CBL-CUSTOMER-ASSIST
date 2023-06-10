@@ -6,11 +6,12 @@ export const CustomerCreateTicket = () => {
     const { store, actions } = useContext(Context);
     const [description, setDescription] = useState("")
     const [machineID, setMachineID] = useState(null)
-    const [interventionID, setInterventionID] = useState(null)
+    const [interventionType, setInterventionType] = useState(true)
     const navigate = useNavigate();
 
     const createTicket = async () => {
-        const response = await actions.customerCreateTicket(machineID, interventionID, description);
+        console.log(typeof(interventionType));
+        const response = await actions.customerCreateTicket(machineID, interventionType, description);
         if (response) {
             alert("Ticket created!");
             navigate("/");
@@ -34,11 +35,12 @@ export const CustomerCreateTicket = () => {
                     <div className="d-flex ">
                         <div className="mt-2 me-2" ><h5>Intervention Type:</h5></div>
                         <div>
-                            <select className="form-select" onChange={e => setInterventionID(e.target.value)}>
+                            {/* <input type="radio" value={true} name="interventionType" /> Assistance
+                            <input type="radio" value={false} name="interventionType" /> Maintenance */}
+                            <select className="form-select" onChange={e => setInterventionType(e.target.value === "true" ? true : false)}>
                                 <option>Select option</option>
-                                <option value={false}>Maintenance</option>
                                 <option value={true}>Assistance</option>
-                                
+                                <option value={false}>Maintenance</option>
                             </select>
                         </div>
 
