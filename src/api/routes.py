@@ -47,17 +47,19 @@ def create_ticket():
 
         machine_id = data["machine_id"]
         intervention_type = data["intervention_type"]
+        subject = data['subject']
         description = data["description"]
 
         ticket = Ticket()
         ticket.customer_id = user.customer_id
         ticket.machine_id = machine_id
-        ticket.status = "Opened"
         ticket.intervention_type = intervention_type
+        ticket.subject = subject
         ticket.description = description
+        ticket.status = "Opened"
         ticket.open_ticket_time = datetime.datetime.now()
         db.session.add(ticket)
-        db.session.flush()
+        # db.session.flush()
 
         # malfunction = Malfunction()
         # malfunction.description = description
@@ -124,11 +126,14 @@ def get_user_profile():
 
     if not user:
         return jsonify({"msg": "Unauthorized access!"}), 401
-
+    
+    user_profile =  {}
+    user_profile['user_info'] = user.serialize()
     if user.customer_id:
-        user_profile = Customer.query.get(user.customer_id).serialize()
+        user_profile['customer_info'] = Customer.query.get(user.customer_id).serialize()
     elif user.employee_id:
-        user_profile = Employee.query.get(user.employee_id).serialize()
+        user_profile['employee_info'] = Employee.query.get(user.employee_id).serialize()
+
 
     response_body = {"user_profile": user_profile}
     return jsonify(response_body), 200

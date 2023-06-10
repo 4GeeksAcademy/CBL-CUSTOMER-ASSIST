@@ -21,8 +21,9 @@ export const CustomerDashboard = () => {
                             <th>Date</th>
                             <th>Machine</th>
                             <th>Status</th>
+                            <th>Subject</th>
                             <th>Technician</th>
-                            <th>Intervention Type </th>
+                            <th>Intervention Type</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -32,10 +33,11 @@ export const CustomerDashboard = () => {
                                 <tr key={item.id}>
                                     <td>{i + 1}</td>
                                     <td>{item.open_ticket_time}</td>
-                                    <td>{item.machine_id}</td>
-                                    <td>{item.status_id}</td>
+                                    <td>{item.machine.model}</td>
+                                    <td>{item.status}</td>
+                                    <td>{item.subject}</td>
                                     <td>{"To be assigned"}</td>
-                                    <td>{item.intervention_type_id}</td>
+                                    <td>{item.intervention_type === true ? 'Assistance' : 'Maintenance'}</td>
                                 </tr>)
                         })}
                     </tbody>
