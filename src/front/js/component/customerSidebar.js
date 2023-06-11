@@ -37,6 +37,18 @@ export const CustomerSidebar = () => {
 								<li><span className="bd-links-link d-inline-block rounded">Create Ticket</span></li>
 							</ul> */}
 						</li>
+
+						{/* EQUIPMENTS */}
+						<li className="bd-links-group py-2">
+							<Link to={'customer/create/ticket'}>
+								<strong className="bd-links-heading d-flex w-100 align-items-center fw-semibold">
+									<i className="fa-solid fa-gears bi me-2" style={{ color: "var(--bs-gray-800)"}}></i>My Equipments
+								</strong>
+							</Link>
+							{/* <ul className="list-unstyled fw-normal pb-2 small">
+								<li><span className="bd-links-link d-inline-block rounded">Create Ticket</span></li>
+							</ul> */}
+						</li>
 					</ul>
 				</nav>
         	</div>

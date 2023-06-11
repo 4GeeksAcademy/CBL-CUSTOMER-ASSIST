@@ -33,9 +33,13 @@ export const AdminSidebar = () => {
 									<i className="fa-solid fa-ticket bi me-2" style={{ color: "var(--bs-teal)"}}></i>Tickets
 								</strong>
 							</Link>
-							{/* <ul className="list-unstyled fw-normal pb-2 small">
+							<ul className="list-unstyled fw-normal pb-2 small">
+								<li><span className="bd-links-link d-inline-block rounded">All</span></li>
+								<li><span className="bd-links-link d-inline-block rounded">All Opened</span></li>
+								<li><span className="bd-links-link d-inline-block rounded">All In Progress</span></li>
+								<li><span className="bd-links-link d-inline-block rounded">All In Resolved</span></li>
 								<li><span className="bd-links-link d-inline-block rounded">Create Ticket</span></li>
-							</ul> */}
+							</ul>
                         </li>
 
 						{/* USERS */}
