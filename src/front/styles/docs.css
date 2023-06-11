@@ -1,6 +1,3 @@
-/* 
-    General Styles used on every website (Don't Repeat Yourself)
-*/
 /*!
  * Bootstrap Docs (https://getbootstrap.com/)
  * Copyright 2011-2023 The Bootstrap Authors
@@ -1352,7 +1349,7 @@ details[open]>.bd-summary-link {
 
 @media (max-width: 991.98px) {
     .bd-main {
-        max-width    : 930px;
+        max-width    : 900px;
         margin-inline: auto
     }
 }
@@ -1368,10 +1365,9 @@ details[open]>.bd-summary-link {
 
 @media (min-width: 992px) {
     .bd-main {
-        display              : grid;
-        grid-template-areas  : "intro" "content";
-        grid-template-rows   : auto;
-        grid-template-columns: auto;
+        grid-template-areas  : "intro   toc""content toc";
+        grid-template-rows   : auto 1fr;
+        grid-template-columns: 4fr 1fr
     }
 }
 
@@ -1380,7 +1376,7 @@ details[open]>.bd-summary-link {
 }
 
 .bd-toc {
-    grid-area: toc;
+    grid-area: toc
 }
 
 .bd-content {
