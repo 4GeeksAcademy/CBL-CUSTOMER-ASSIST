@@ -20,10 +20,10 @@ export const Login = () => {
     }
 
     return (
-        <div className="container mt-5">
-            <div className="d-flex justify-content-center mx-auto mb-4">
+        <main className="bd-main">
+            {/* <div className="d-flex col-6 justify-content-center mx-auto mb-4">
                 <h1>Welcome back</h1>
-            </div>
+            </div> */}
             <div className="border p-5 col-sm-12 col-md-8 col-lg-8 mx-auto ">
                 <h2 className="mb-3 text-center">Login into your account</h2>
 
@@ -43,7 +43,6 @@ export const Login = () => {
                 </div>
                 <button className="btn btn-primary" onClick={() => userLogin()}>Submit</button>
             </div>
-
-        </div>
+        </main>
     );
 };

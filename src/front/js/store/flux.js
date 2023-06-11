@@ -75,6 +75,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				setStore({ machineList: [] });
 				setStore({ interventionType: [] });
 				setStore({ tickets: [] });
+				setStore({ userProfile: {user_info : {}, customer_info : {}, employee_info : {}}});
 
 				return true;
 			},
