@@ -90,7 +90,7 @@ class Ticket(db.Model):
     customer_id = db.Column(db.Integer, db.ForeignKey('customer.id'), nullable=False)
     machine_id = db.Column(db.Integer, db.ForeignKey('machine.id'), nullable=False)
     vehicle_id = db.Column(db.Integer, db.ForeignKey('vehicle.id'), nullable=True)
-    occurrences = db.relationship('Occurrence', backref='ticket', uselist=False)
+    ticket_knowledge = db.relationship('Ticket_knowledge', backref='ticket', uselist=False)
     employees = db.relationship('TicketEmployeeRelation', backref='ticket', uselist=False)
     observations = db.relationship('EmployeeTicketObservation', backref='ticket', uselist=False)
 
@@ -105,16 +105,23 @@ class Ticket(db.Model):
             "subject": self.subject,
             "description": self.description
         }
-
-class Occurrence(db.Model):
+    
+class Ticket_knowledge(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    ticket_id = db.Column(db.Integer, db.ForeignKey('ticket.id'), nullable=False)
+    knowledge_id = db.Column(db.Integer, db.ForeignKey('knowledge.id'), nullable=True)
+    ticket_id = db.Column(db.Integer, db.ForeignKey('ticket.id'), nullable=True)
+    
+
+
+class Knowledge(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
     malfunction_id = db.Column(db.Integer, db.ForeignKey('malfunction.id'), nullable=False)
     solution_id = db.Column(db.Integer, db.ForeignKey('solution.id'), nullable=True)
-    tags_occurrences = db.relationship('TagOccurrence', backref='occurrence', uselist=False)
+    category_id = db.Column(db.Integer, db.ForeignKey('category.id'), nullable=True)
+    ticket_knowledge = db.relationship('Ticket_knowledge', backref='knowledge', uselist=False)
 
 class Machine(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)      
     serial_number = db.Column(db.String(50), nullable=False)
     model = db.Column(db.String(50), nullable=False)
     im109 = db.Column(db.String(50), nullable=True)
@@ -132,20 +139,20 @@ class Machine(db.Model):
             "im109": self.im109
         }
 
-class Tag(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    tag_name = db.Column(db.String(50))
-    tags_occurrences = db.relationship('TagOccurrence', backref='tag', uselist=False)
+# class Tag(db.Model):
+#     id = db.Column(db.Integer, primary_key=True)
+#     tag_name = db.Column(db.String(50))
+#     tags_knowledge = db.relationship('TagKnowledge', backref='tag', uselist=False)
 
-class TagOccurrence(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    tag_id = db.Column(db.Integer, db.ForeignKey('tag.id'), nullable=False)
-    occurrence_id = db.Column(db.Integer, db.ForeignKey('occurrence.id'), nullable=False)
+# class TagKnowledge(db.Model):
+#     id = db.Column(db.Integer, primary_key=True)
+#     tag_id = db.Column(db.Integer, db.ForeignKey('tag.id'), nullable=False)
+#     knowledge_id = db.Column(db.Integer, db.ForeignKey('knowledge.id'), nullable=False)
 
 class Malfunction(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     description = db.Column(db.String(200))
-    occurrences = db.relationship('Occurrence', backref='malfunction', uselist=False)
+    knowledge = db.relationship('Knowledge', backref='malfunction', uselist=False)
 
     def serialize(self):
         return {
@@ -156,7 +163,18 @@ class Malfunction(db.Model):
 class Solution(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     description = db.Column(db.String(200))
-    occurrences = db.relationship('Occurrence', backref='solution', uselist=False)
+    knowledge = db.relationship('Knowledge', backref='solution', uselist=False)
+
+    def serialize(self):
+        return {
+            "id": self.id,
+            "description": self.description
+        }
+    
+class Category(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    category = db.Column(db.String(80))
+    knowledge = db.relationship('Knowledge', backref='category', uselist=False)
 
     def serialize(self):
         return {
