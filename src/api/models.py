@@ -103,7 +103,9 @@ class Ticket(db.Model):
             "status": self.status,
             "intervention_type": self.intervention_type,
             "subject": self.subject,
-            "description": self.description
+            "description": self.description,
+            "customer_id": self.customer_id,
+            "company_name": self.customer.company_name
         }
     
 class Ticket_knowledge(db.Model):
