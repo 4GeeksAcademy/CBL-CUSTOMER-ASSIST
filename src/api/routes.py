@@ -183,7 +183,7 @@ def get_tickets_not_closed():
     if user.user_type.type != "admin":
         return jsonify({"msg": "Only admins can access this."}), 401
 
-    tickets = Ticket.query.filter(Ticket.closed_ticket_time.is_(None)).all()
+    tickets = Ticket.query.filter(Ticket.status.in_(['Opened', 'In Progress', 'Resolved'])).all()
 
     if not tickets:
         return jsonify({"error": "No tickets found!"}), 400
