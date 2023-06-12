@@ -6,6 +6,7 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(100), unique=True, nullable=False)
     password = db.Column(db.String(100), nullable=False)
+    active = db.Column(db.Boolean, default=True, nullable=False)
     user_type_id = db.Column(db.Integer, db.ForeignKey('user_type.id'), nullable=False)
     customer_id = db.Column(db.Integer, db.ForeignKey('customer.id'), nullable=True)
     employee_id = db.Column(db.Integer, db.ForeignKey('employee.id'), nullable=True)
@@ -15,6 +16,7 @@ class User(db.Model):
             'id': self.id,
             'email': self.email,
             'password': self.password,
+            'active': self.active,
             'user_type_id': self.user_type_id,
             'user_type': self.user_type.type,
             'customer_id': self.customer_id,
