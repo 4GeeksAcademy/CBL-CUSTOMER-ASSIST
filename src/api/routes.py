@@ -170,6 +170,29 @@ def updateProfile():
     except Exception as e:
         return jsonify({"msg": "Something went wrong when updating profile"}), 400
 
+
+@api.route('/admin/ticketlist', methods=['GET'])
+@jwt_required()
+def get_tickets_not_closed():
+    current_user_email = get_jwt_identity()
+    user = User.query.filter_by(email=current_user_email).one_or_none()
+
+    if not user:
+        return jsonify({"msg": "No user exist with that email"}), 401
+
+    if user.user_type.type != "admin":
+        return jsonify({"msg": "Only admins can access this."}), 401
+
+    tickets = Ticket.query.filter(Ticket.closed_ticket_time.is_(None)).all()
+
+    if not tickets:
+        return jsonify({"error": "No tickets found!"}), 400
+
+    response_body = {
+        "tickets": [ticket.serialize() for ticket in tickets]
+    }
+    return jsonify(response_body), 200
+
 @api.route('/admin/tickets', methods=['POST'])
 @jwt_required()  
 def assign_ticket():
@@ -199,5 +222,3 @@ def assign_ticket():
         db.session.add(ticket_employee_relation)
     db.session.commit()
     return jsonify({'message': 'Ticket assigned successfully'}), 200
-
-
