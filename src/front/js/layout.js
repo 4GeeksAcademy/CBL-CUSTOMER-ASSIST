@@ -8,7 +8,6 @@ import { AdminCreateTicket } from "./pages/admin/admin-create-ticket";
 import { CustomerDashboard } from "./pages/customer/customer-dashboard";
 import { Navbar } from "./component/navbar";
 import { Sidebar } from "./component/sidebar";
-import { Asidebar } from "./component/asidebar";
 import { AdminDashboard } from "./pages/admin/admin-dashboard";
 import { CreateAdmin } from "./pages/admin/admin-create";
 import { CreateTech } from "./pages/technician/tech-create";
@@ -34,7 +33,7 @@ const Layout = () => {
                 <Navbar />
                 <MainBdLayout>
                     {/* {pathname === '/' ? <Asidebar /> : null} */}
-                    <Asidebar />
+                    <Sidebar />
                     <Routes>
                         <Route element={<Login />} path="/" />
                         {/* <Route element={<Home />} path="/" /> */}
@@ -44,11 +43,11 @@ const Layout = () => {
                         <Route element={<CustomerDashboard />} path="/customer/dashboard" />
                         <Route element={<CustomerCreateTicket />} path="/customer/create/ticket" />
                         <Route element={<CustomerMachineList />} path="/customer/machine/list" />
-                        <Route element={<AdminCreateTicket />} path="/admin/create/ticket" />
                         <Route element={<AdminDashboard />} path="/admin/dashboard" />
-                        <Route element={<CreateAdmin/>} path="/admin/create" />
-                        <Route element={<CreateTech/>} path="/tech/create"/>
-                        <Route element={<CreateCustomer/>} path="/customer/create"/>
+                        {/* <Route element={<AdminCreateTicket />} path="/admin/create/ticket" /> */}
+                        {/* <Route element={<CreateAdmin/>} path="/admin/create" /> */}
+                        {/* <Route element={<CreateTech/>} path="/tech/create"/> */}
+                        {/* <Route element={<CreateCustomer/>} path="/customer/create"/> */}
                     </Routes>
                 </MainBdLayout>
             </BrowserRouter>
