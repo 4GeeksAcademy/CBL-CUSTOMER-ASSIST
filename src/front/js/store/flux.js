@@ -30,7 +30,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 			sessionStorageAndSetStoreDataSave: (key, data) => {
 				sessionStorage.setItem([key], JSON.stringify(data));
-				setStore({ [key]: data });
+				 setStore({ [key]: data });
+				 return true;
 			},
 
 			login: async (email, password) => {
@@ -154,7 +155,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.log("Getting to response");
 					console.log("This came from the backend", data);
 
-					getActions().sessionStorageAndSetStoreDataSave('tickets', data.tickets);
+					await getActions().sessionStorageAndSetStoreDataSave('tickets', data.tickets);
+					console.log("@@@@@@@@@@@@@");
+					return true;
 				}
 				catch (error) {
 					console.log("There has been an error login in!", error)
@@ -216,7 +219,36 @@ const getState = ({ getStore, getActions, setStore }) => {
 				catch (error) {
 					console.log("There has been an error login in!", error)
 				}
-			}
+			},
+
+			getAdminTickets: async () => {
+				console.log("action: getAdminTickets");
+				const token = getStore().token;
+				const opts = {
+					method: "GET",
+					headers: {
+						"Content-Type": "application/json",
+						"Authorization": "Bearer " + token
+					}
+				};
+				try {
+					const response = await fetch(process.env.BACKEND_URL + "api/admin/tickets", opts);
+					const data = await response.json();
+
+					if (response.status !== 200) {
+						console.log(response.status, data.msg);
+						return [response.status, data.msg];
+					}
+					console.log("Getting to response");
+					console.log("This came from the backend", data);
+
+					await getActions().sessionStorageAndSetStoreDataSave('tickets', data.tickets);
+					return true;
+				}
+				catch (error) {
+					console.log("There has been an error login in!", error)
+				}
+			},
 
 			
 		}
