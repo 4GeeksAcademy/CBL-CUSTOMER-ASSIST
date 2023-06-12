@@ -2,6 +2,7 @@ import React, {useState, useEffect} from "react";
 
 export const MainBdLayout = ({children}) => {
     const [pathname, setPathname] = useState(window.location.pathname);
+    console.log('mainbdlayout pathname: ', pathname);
 
     useEffect(()=>{
         setPathname(window.location.pathname)

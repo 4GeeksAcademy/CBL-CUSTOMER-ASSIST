@@ -186,39 +186,47 @@ def get_tickets_not_closed():
     tickets = Ticket.query.filter(Ticket.status.in_(['Opened', 'In Progress', 'Resolved'])).all()
 
     if not tickets:
-        return jsonify({"error": "No tickets found!"}), 400
+        return jsonify({"msg": "No tickets found!"}), 204
 
     response_body = {
         "tickets": [ticket.serialize() for ticket in tickets]
     }
     return jsonify(response_body), 200
 
-@api.route('/admin/tickets', methods=['POST'])
+@api.route('/assign/employee/ticket', methods=['POST'])
 @jwt_required()  
 def assign_ticket():
-    print('#$#$#$#$#$')
     current_user_email = get_jwt_identity()
     user = User.query.filter_by(email=current_user_email).one_or_none()
+
     if not user:
-        return jsonify({'message': 'User not found'}), 404
+        return jsonify({'msg': 'No user exist with that email'}), 401
+
     if user.user_type.type != 'admin':
-        return jsonify({'message': 'Access denied'}), 402
+        return jsonify({'msg': 'Access denied'}), 402
+    
     data = request.get_json()
+
     ticket_id = data.get('ticket_id')
-    technician_ids = data.get('technician_ids')
-    if not ticket_id or not technician_ids:
-        return jsonify({'message': 'Ticket ID or technician IDs is wrong or doesnt exist'}), 400
+    employee_ids = data.get('employee_ids')
+    
+    if not ticket_id or not employee_ids:
+        return jsonify({"msg": "Ticket ID or Employee(s) ID is wrong or doesn't exist"}), 401
+    
     ticket = Ticket.query.get(ticket_id)
-    technicians = Employee.query.filter(Employee.id.in_(technician_ids)).all()
+    employees = Employee.query.filter(Employee.id.in_(employee_ids)).all()
+
     if not ticket:
-        return jsonify({'message': 'Ticket not found'}), 404
-    if not technicians:
-        return jsonify({'message': 'Technicians not found'}), 404
-    for technician in technicians:
+        return jsonify({'msg': 'Ticket not found'}), 401
+    if not employees:
+        return jsonify({'message': 'Employee(s) not found'}), 401
+    
+    for employee in employees:
         ticket_employee_relation = TicketEmployeeRelation(
             ticket_id=ticket.id,
-            employee_id=technician.id
+            employee_id=employee.id
         )
-        db.session.add(ticket_employee_relation)
+    
+    db.session.add(ticket_employee_relation)
     db.session.commit()
-    return jsonify({'message': 'Ticket assigned successfully'}), 200
+    return jsonify({'msg': 'Employee(s) assigned successfully to ticket'}), 200

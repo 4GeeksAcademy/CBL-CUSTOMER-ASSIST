@@ -14,12 +14,14 @@ export const Login = () => {
         if (response) {
             await actions.getUserProfile();
             await actions.getMachineList();
-            console.log(store.userProfile.user_info.user_type)
+
             if (store.userProfile.user_info.user_type === "admin") {
-                await actions.getAdminTickets(); console.log("@@@@@@@@@@@@@@@@@@@@"); navigate("/admin/dashboard");
+                await actions.getAdminTickets();
+                navigate("/admin/dashboard");
             }
             if (store.userProfile.user_info.user_type === "customer") {
-                await actions.getTickets(); console.log("@@@@@@@@@@@@@@@@@@@@"); navigate("/customer/dashboard");
+                await actions.getTickets();
+                navigate("/customer/dashboard");
             }
         }
     }

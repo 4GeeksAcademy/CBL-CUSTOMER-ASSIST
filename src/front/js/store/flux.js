@@ -232,8 +232,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 					}
 				};
 				try {
-					const response = await fetch(process.env.BACKEND_URL + "api/admin/tickets", opts);
+					const response = await fetch(process.env.BACKEND_URL + "api/admin/ticketlist", opts);
+					console.log('response getAdminTickets', response)
 					const data = await response.json();
+
 
 					if (response.status !== 200) {
 						console.log(response.status, data.msg);
