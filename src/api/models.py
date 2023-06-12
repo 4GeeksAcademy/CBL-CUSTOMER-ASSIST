@@ -90,7 +90,7 @@ class Ticket(db.Model):
     customer_id = db.Column(db.Integer, db.ForeignKey('customer.id'), nullable=False)
     machine_id = db.Column(db.Integer, db.ForeignKey('machine.id'), nullable=False)
     vehicle_id = db.Column(db.Integer, db.ForeignKey('vehicle.id'), nullable=True)
-    ticket_knowledge = db.relationship('Ticket_knowledge', backref='ticket', uselist=False)
+    ticket_knowledge = db.relationship('TicketKnowledge', backref='ticket', uselist=False)
     employees = db.relationship('TicketEmployeeRelation', backref='ticket', uselist=False)
     observations = db.relationship('EmployeeTicketObservation', backref='ticket', uselist=False)
 
@@ -106,19 +106,25 @@ class Ticket(db.Model):
             "description": self.description
         }
     
-class Ticket_knowledge(db.Model):
+class TicketKnowledge(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     knowledge_id = db.Column(db.Integer, db.ForeignKey('knowledge.id'), nullable=True)
     ticket_id = db.Column(db.Integer, db.ForeignKey('ticket.id'), nullable=True)
-    
-
 
 class Knowledge(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     malfunction_id = db.Column(db.Integer, db.ForeignKey('malfunction.id'), nullable=False)
     solution_id = db.Column(db.Integer, db.ForeignKey('solution.id'), nullable=True)
     category_id = db.Column(db.Integer, db.ForeignKey('category.id'), nullable=True)
-    ticket_knowledge = db.relationship('Ticket_knowledge', backref='knowledge', uselist=False)
+    ticket_knowledge = db.relationship('TicketKnowledge', backref='knowledge', uselist=False)
+    
+    def serialize(self):
+        return {
+            "id": self.id,
+            "malfunction": self.malfunction.description,
+            "solution": self.solution.description,
+            "category": self.category.description
+        }
 
 class Machine(db.Model):
     id = db.Column(db.Integer, primary_key=True)      
@@ -139,15 +145,6 @@ class Machine(db.Model):
             "im109": self.im109
         }
 
-# class Tag(db.Model):
-#     id = db.Column(db.Integer, primary_key=True)
-#     tag_name = db.Column(db.String(50))
-#     tags_knowledge = db.relationship('TagKnowledge', backref='tag', uselist=False)
-
-# class TagKnowledge(db.Model):
-#     id = db.Column(db.Integer, primary_key=True)
-#     tag_id = db.Column(db.Integer, db.ForeignKey('tag.id'), nullable=False)
-#     knowledge_id = db.Column(db.Integer, db.ForeignKey('knowledge.id'), nullable=False)
 
 class Malfunction(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -173,7 +170,7 @@ class Solution(db.Model):
     
 class Category(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    category = db.Column(db.String(80))
+    description = db.Column(db.String(80))
     knowledge = db.relationship('Knowledge', backref='category', uselist=False)
 
     def serialize(self):
