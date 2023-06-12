@@ -10,15 +10,18 @@ export const Navbar = () => {
 		<header className="navbar navbar-expand-lg bd-navbar sticky-top bg-secondary">
   			<nav className="container-xxl bd-gutter flex-wrap flex-lg-nowrap align-items-center" aria-label="Main navigation">
 				<div className="d-flex align-items-center ">
-					<div className="bd-navbar-toggle">
+
+					{/* HAMBURGER FOR SIDEBAR */}
+					{'user_type' in store.userProfile.user_info
+					?(<div className="bd-navbar-toggle">
 						<button className="navbar-toggler p-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#bdSidebar" aria-controls="bdSidebar" aria-label="Toggle docs navigation">
-							{/* <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" className="bi" fill="currentColor" viewBox="0 0 16 16">
-								<path fillRule="evenodd" d="M2.5 11.5A.5.5 0 0 1 3 11h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4A.5.5 0 0 1 3 7h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4A.5.5 0 0 1 3 3h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"></path>
-							</svg> */}
 							<i className="fa-solid fa-bars"></i>
 							<span className="d-none fs-6 pe-1">Browse</span>
 						</button>
-					</div>
+					</div>)
+					: null}
+
+					{/* LOGO */}
 					<div>
 						<span className="navbar-brand p-0 me-0 me-lg-2" aria-label="CBL Desk">CBL Desk</span>
 					</div>
