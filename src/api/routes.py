@@ -199,3 +199,5 @@ def assign_ticket():
         db.session.add(ticket_employee_relation)
     db.session.commit()
     return jsonify({'message': 'Ticket assigned successfully'}), 200
+
+
