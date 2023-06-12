@@ -2,7 +2,7 @@
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
 from flask import Flask, request, jsonify, url_for, Blueprint
-from api.models import db, User, Customer, Employee, Ticket, Machine, Malfunction, Knowledge, Machine
+from api.models import db, User, Customer, Employee, Ticket, Machine, Malfunction, Knowledge, Machine,TicketEmployeeRelation
 from api.utils import generate_sitemap, APIException
 from flask_jwt_extended import create_access_token
 from flask_jwt_extended import get_jwt_identity
@@ -169,3 +169,35 @@ def updateProfile():
     
     except Exception as e:
         return jsonify({"msg": "Something went wrong when updating profile"}), 400
+
+@api.route('/admin/tickets', methods=['POST'])
+@jwt_required()  
+def assign_ticket():
+    print('#$#$#$#$#$')
+    current_user_email = get_jwt_identity()
+    user = User.query.filter_by(email=current_user_email).one_or_none()
+    if not user:
+        return jsonify({'message': 'User not found'}), 404
+    if user.user_type.type != 'admin':
+        return jsonify({'message': 'Access denied'}), 402
+    data = request.get_json()
+    ticket_id = data.get('ticket_id')
+    technician_ids = data.get('technician_ids')
+    if not ticket_id or not technician_ids:
+        return jsonify({'message': 'Ticket ID or technician IDs is wrong or doesnt exist'}), 400
+    ticket = Ticket.query.get(ticket_id)
+    technicians = Employee.query.filter(Employee.id.in_(technician_ids)).all()
+    if not ticket:
+        return jsonify({'message': 'Ticket not found'}), 404
+    if not technicians:
+        return jsonify({'message': 'Technicians not found'}), 404
+    for technician in technicians:
+        ticket_employee_relation = TicketEmployeeRelation(
+            ticket_id=ticket.id,
+            employee_id=technician.id
+        )
+        db.session.add(ticket_employee_relation)
+    db.session.commit()
+    return jsonify({'message': 'Ticket assigned successfully'}), 200
+
+
