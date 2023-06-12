@@ -24,7 +24,8 @@ export const TicketSmall = (props) => {
                     <h5 className="card-title">{data.subject}</h5>
                     <p className="card-text">{data.machine.model}</p>
                     <p className="card-text">{data.machine.serial_number}</p>
-                    <p className="card-text">{data.company_name}</p>
+                    {/* <p className="card-text">{data.company_name}</p> */}
+                    
                 </div>
                 <div className="text-end">
                     <p className={`badge text-bg-${data.status === 'Opened'?'danger':data.status==='In Progress'?'warning':data.status==='Resolved'?'success':'secondary'}`} role="alert">{data.status}</p>
@@ -35,6 +36,13 @@ export const TicketSmall = (props) => {
                         })}
                     </select>
                     <p className="card-text">{data.intervention_type?'Assistance':'Maintenance'}</p>
+                </div>
+            </div>
+            <div class="card-footer text-body-secondary d-flex justify-content-between">
+                <div>
+                    <h6 class="card-subtitle mb-2 text-body-secondary">{data.company_name}</h6>
+                </div>
+                <div>
                     <p className="card-text">{data.open_ticket_time}</p>
                 </div>
             </div>

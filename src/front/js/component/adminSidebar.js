@@ -28,27 +28,16 @@ export const AdminSidebar = () => {
 
 						{/* TICKETS */}
 						<li className="bd-links-group py-2">
-							<Link to={'customer/create/ticket'}>
+							<Link to={'admin/tickets'}>
 								<strong className="bd-links-heading d-flex w-100 align-items-center fw-semibold">
 									<i className="fa-solid fa-ticket bi me-2" style={{ color: "var(--bs-teal)"}}></i>Tickets
 								</strong>
 							</Link>
 							<ul className="list-unstyled fw-normal pb-2 small">
-								<Link to={'admin/tickets/filter:all'}>
-									<li><span className="bd-links-link d-inline-block rounded">All</span></li>
-								</Link>
-								<Link to={'admin/tickets/filter:opened'}>
-									<li><span className="bd-links-link d-inline-block rounded">Opened</span></li>
-								</Link>
-								<Link to={'admin/tickets/filter:inprogress'}>
-									<li><span className="bd-links-link d-inline-block rounded">In Progress</span></li>
-								</Link>
-								<Link to={'admin/tickets/filter:resolved'}>
-									<li><span className="bd-links-link d-inline-block rounded">Resolved</span></li>
-								</Link>
-								<Link to={'admin/create/ticket'}>
-									<li><span className="bd-links-link d-inline-block rounded border-top">Create Ticket</span></li>
-								</Link>
+								<li><span className="bd-links-link d-inline-block rounded">All Opened</span></li>
+								<li><span className="bd-links-link d-inline-block rounded">All In Progress</span></li>
+								<li><span className="bd-links-link d-inline-block rounded">All In Resolved</span></li>
+								<li><span className="bd-links-link d-inline-block rounded">Create Ticket</span></li>
 							</ul>
                         </li>
 
