@@ -22,8 +22,8 @@ export const TicketSmall = (props) => {
             <div className="card-body d-flex justify-content-between">
                 <div>
                     <h5 className="card-title">{data.subject}</h5>
-                    <p className="card-text">{data.machine.model}</p>
-                    <p className="card-text">{data.machine.serial_number}</p>
+                    <p className="card-text">{data.equipment.model}</p>
+                    <p className="card-text">{data.equipment.serial_number}</p>
                     {/* <p className="card-text">{data.company_name}</p> */}
                     
                 </div>

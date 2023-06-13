@@ -2,37 +2,37 @@ import React, { useState, useContext, useEffect } from "react";
 import { Multiselect } from 'multiselect-react-dropdown';
 import { Context } from "../../store/appContext";
 
-export const CustomerMachineList = () => {
+export const CustomerEquipmentList = () => {
     const { store, actions } = useContext(Context)
-    const [machine, setMachine] = useState(store.machineList);
-    const [machineOptions] = useState(store.machineList);
-    const [machineVar, setMachineVar] = useState([])
+    const [equipment, setEquipment] = useState(store.equipmentList);
+    const [equipmentOptions] = useState(store.equipmentList);
+    const [equipmentVar, setEquipmentVar] = useState([])
 
     useEffect(() => {
-        if (Object.keys(machine).length === 0) setMachineVar(machineOptions)
-        else setMachineVar(machine)
-    }, [machine])
+        if (Object.keys(equipment).length === 0) setEquipmentVar(equipmentOptions)
+        else setEquipmentVar(equipment)
+    }, [equipment])
 
-    const saveMachine = (selected) => {
-        const selectedMachine = selected.map((select) => select);
-        setMachine(selectedMachine);
+    const saveEquipment = (selected) => {
+        const selectedEquipment = selected.map((select) => select);
+        setEquipment(selectedEquipment);
     };
 
     return (
         <div className="container">
             <div className="border-bottom mb-4 mt-3">
-                <h1>Machine List</h1>
+                <h1>Equipment List</h1>
             </div>
 
             <div>
                 <div className="mb-3 p-3 col-sm-12 col-md-8 col-lg-8 mx-auto d-flex ">
-                    <h5 className="me-3 mt-2">Machine:</h5>
+                    <h5 className="me-3 mt-2">Equipment:</h5>
                     <Multiselect
-                        options={machineOptions}
+                        options={equipmentOptions}
                         displayValue="model"
-                        placeholder="Select machine"
-                        onSelect={saveMachine}
-                        onRemove={saveMachine}
+                        placeholder="Select equipment"
+                        onSelect={saveEquipment}
+                        onRemove={saveEquipment}
                     />
                 </div>
             </div>
@@ -42,7 +42,7 @@ export const CustomerMachineList = () => {
                 <div className="border rounded p-4 flex-fill">
 
                     <div>
-                        {Object.values(machineVar).map((item, i) => (
+                        {Object.values(equipmentVar).map((item, i) => (
                             <div key={i}>
 
                                 <div className="accordion" id={`accordionPanelsStayOpenExample-${item.id}`}>

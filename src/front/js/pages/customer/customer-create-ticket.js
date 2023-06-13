@@ -6,13 +6,13 @@ export const CustomerCreateTicket = () => {
     const { store, actions } = useContext(Context);
     const [subject, setSubject] = useState("");
     const [description, setDescription] = useState("");
-    const [machineID, setMachineID] = useState(null);
+    const [equipmentID, setEquipmentID] = useState(null);
     const [interventionType, setInterventionType] = useState(true)
     const navigate = useNavigate();
 
     const createTicket = async () => {
         console.log(typeof(interventionType));
-        const response = await actions.customerCreateTicket(machineID, interventionType, subject, description);
+        const response = await actions.customerCreateTicket(equipmentID, interventionType, subject, description);
         if (response) {
             alert("Ticket created!");
             navigate("/");
@@ -48,19 +48,19 @@ export const CustomerCreateTicket = () => {
                     </div>
                 </div>
 
-                {/* Select Machine */}
+                {/* Select Equipment */}
                 <div>
                     <div className="mb-3 p-3 col-sm-12 col-md-8 col-lg-8 mx-auto d-flex ">
-                        <h5 className="me-3 mt-2">Machine:</h5>
+                        <h5 className="me-3 mt-2">Equipment:</h5>
                         <div>
-                            <select className="form-select" onChange={e => setMachineID(e.target.value)}>
+                            <select className="form-select" onChange={e => setEquipmentID(e.target.value)}>
                                 <option>Select option</option>
-                                {store.machineList.length > 0
+                                {store.equipmentList.length > 0
                                     ?
-                                    store.machineList.map((machine) => {
-                                        return <option key={machine.id} value={machine.id}>{machine.model + " - " + machine.serial_number}</option>
+                                    store.equipmentList.map((equipment) => {
+                                        return <option key={equipment.id} value={equipment.id}>{equipment.model + " - " + equipment.serial_number}</option>
                                     })
-                                    : <option>Loading machine list...</option>
+                                    : <option>Loading equipment list...</option>
                                 }
                             </select>
                         </div>
