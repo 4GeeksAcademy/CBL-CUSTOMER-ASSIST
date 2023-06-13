@@ -13,9 +13,9 @@ export const Login = () => {
         const response = await actions.login(email, password);
         if (response) {
             await actions.getUserProfile();
-            await actions.getMachineList();
-
+            
             if (store.userProfile.user_info.user_type === "customer") {
+                await actions.getCustomerEquipment();
                 await actions.getTickets();
                 console.log('LOGIN customer: navigate');
                 navigate("/customer/dashboard");
