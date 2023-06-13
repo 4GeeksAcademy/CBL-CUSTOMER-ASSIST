@@ -12,10 +12,19 @@ export const Login = () => {
     const userLogin = async () => {
         const response = await actions.login(email, password);
         if (response) {
-            await actions.getMachineList();
-            await actions.getTickets();
             await actions.getUserProfile();
-            navigate("/customer/dashboard");
+            await actions.getMachineList();
+
+            if (store.userProfile.user_info.user_type === "customer") {
+                await actions.getTickets();
+                console.log('LOGIN customer: navigate');
+                navigate("/customer/dashboard");
+            }
+            if (store.userProfile.user_info.user_type === "admin") {
+                await actions.getAdminTickets();
+                console.log('LOGIN admin: navigate');
+                navigate("/admin/dashboard");
+            }
         }
     }
 

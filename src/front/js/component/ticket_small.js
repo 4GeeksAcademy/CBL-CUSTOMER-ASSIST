@@ -38,9 +38,9 @@ export const TicketSmall = (props) => {
                     <p className="card-text">{data.intervention_type?'Assistance':'Maintenance'}</p>
                 </div>
             </div>
-            <div class="card-footer text-body-secondary d-flex justify-content-between">
+            <div className="card-footer text-body-secondary d-flex justify-content-between">
                 <div>
-                    <h6 class="card-subtitle mb-2 text-body-secondary">{data.company_name}</h6>
+                    <h6 className="card-subtitle mb-2 text-body-secondary">{data.company_name}</h6>
                 </div>
                 <div>
                     <p className="card-text">{data.open_ticket_time}</p>
