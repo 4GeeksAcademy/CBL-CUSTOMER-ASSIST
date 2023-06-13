@@ -14,7 +14,7 @@ export const AdminDashboard = () => {
             <div className="bd-content">
                 {store.tickets.length > 0
                 ?store.tickets.map((item, i) => {
-                    return <TicketSmall key={i} data={item}/>
+                    return <TicketSmall key={i} data={item} userType={store.userProfile.user_info.user_type}/>
                 })
                 :<span>All customers satisfaction is on top!</span>}
             </div>
