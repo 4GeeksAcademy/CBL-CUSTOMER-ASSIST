@@ -15,7 +15,7 @@ export const CustomerCreateTicket = () => {
         const response = await actions.customerCreateTicket(equipmentID, interventionType, subject, description);
         if (response) {
             alert("Ticket created!");
-            navigate("/");
+            navigate("/customer/dashboard");
         }
         if (!response) {
             alert("Error");

@@ -9,7 +9,7 @@ export const AdminSidebar = () => {
 	return (
 		<div className="offcanvas-lg offcanvas-start" tabIndex="-1" id="bdSidebar" aria-labelledby="bdSidebarOffcanvasLabel">
 			<div className="offcanvas-header border-bottom bg-body-secondary">
-				<h5 className="offcanvas-title" id="bdSidebarOffcanvasLabel">Customer options</h5>
+				<h5 className="offcanvas-title" id="bdSidebarOffcanvasLabel">Admin options</h5>
 				<button type="button" className="btn-close" data-bs-dismiss="offcanvas" aria-label="Close" data-bs-target="#bdSidebar"></button>
 			</div>
 
@@ -19,7 +19,7 @@ export const AdminSidebar = () => {
 
 						{/* DASHBOARD */}
 						<li className="bd-links-group py-2">
-							<Link to={'customer/dashboard'}>
+							<Link to={'admin/dashboard'}>
 								<strong className="bd-links-heading d-flex w-100 align-items-center fw-semibold">
 									<i className="fa-solid fa-gauge-high bi me-2" style={{ color: "var(--bs-indigo)"}}></i>Dashboard
 								</strong>
