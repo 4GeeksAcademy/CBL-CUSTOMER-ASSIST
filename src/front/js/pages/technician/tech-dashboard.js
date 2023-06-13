@@ -25,7 +25,7 @@ export const AdminDashboard = () => {
                             <th>#</th>
                             <th>Customer</th>
                             <th>Date</th>
-                            <th>Machine</th>
+                            <th>Equipment</th>
                             <th>Status</th>
                             <th>Discription</th>
                             <th>Intervention Type</th>
@@ -41,7 +41,7 @@ export const AdminDashboard = () => {
                                     <td>{i + 1}</td>
                                     <td>{"Client Name"}</td>
                                     <td>{item.open_ticket_time}</td>
-                                    <td>{item.machine_id}</td>
+                                    <td>{item.equipment_id}</td>
                                     <td>{item.status_id}</td>
                                     <td>
                                         {/* <!-- Button trigger modal --> */}

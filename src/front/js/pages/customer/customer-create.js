@@ -79,13 +79,13 @@ export const CreateCustomer = () => {
                 </div>
                 <div className="row">
                     <div className="mb-3 p-3 col-sm-12 col-md-8 col-lg-8 mx-auto">
-                        <label htmlFor="inputState" className="form-label">Machine List</label>
+                        <label htmlFor="inputState" className="form-label">Equipment List</label>
                         <select id="inputState" className="form-select">
                             <option>Choose...</option>
                             <option>...</option>
                         </select>
                         {/* onChange={(e) => {
-                            setMachine(e.target.value)
+                            setEquipment(e.target.value)
                         }} />  */}
                     </div>
                 </div>

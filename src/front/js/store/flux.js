@@ -72,7 +72,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				sessionStorage.clear();
 
 				setStore({ token: null });
-				setStore({ machineList: [] });
+				setStore({ equipmentList: [] });
 				setStore({ interventionType: [] });
 				setStore({ tickets: [] });
 				setStore({ userProfile: {user_info : {}, customer_info : {}, employee_info : {}}});
@@ -100,7 +100,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				getActions().sessionStorageAndSetStoreDataSave('equipmentList', data.equipments);
 			},
 
-			customerCreateTicket: async (machineId, interventionType, subject, description) => {
+			customerCreateTicket: async (equipmentId, interventionType, subject, description) => {
 				console.log("action: createCustomerTicket");
 				console.log("Intervention type: ", interventionType);
 				const token = getStore().token;
@@ -111,7 +111,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 						"Authorization": "Bearer " + token
 					},
 					body: JSON.stringify({
-						machine_id: machineId,
+						equipment_id: equipmentId,
 						intervention_type: interventionType,
 						subject: subject,
 						description: description
