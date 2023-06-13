@@ -96,26 +96,6 @@ def get_customer_equipments():
     }
     return jsonify(response_body), 200
 
-@api.route('/manufacturer/equipment', methods=['GET'])
-@jwt_required()
-def get_manufacturer_equipments():
-    current_user_email = get_jwt_identity()
-    user = User.query.filter_by(email=current_user_email).one_or_none()
-
-    if not user:
-        return jsonify({"msg": "Unauthorized access!"}), 401
-
-    equipments = equipment.query.filter_by(customer_id=user.customer_id).all()
-
-    if not equipments:
-        return jsonify({"error": "No equipments for that customer!"}), 400
-
-    response_body = {
-        "equipments": [equipment.serialize() for equipment in equipments]
-    }
-    return jsonify(response_body), 200
-
-
 @api.route('/ticketlist', methods=['GET'])
 @jwt_required()
 def get_tickets():
