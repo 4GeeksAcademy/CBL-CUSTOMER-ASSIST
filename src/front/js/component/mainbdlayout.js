@@ -1,11 +1,14 @@
 import React, {useState, useEffect} from "react";
+import { useLocation } from "react-router-dom";
 
 export const MainBdLayout = ({children}) => {
-    const [pathname, setPathname] = useState(window.location.pathname);
+    const currentLocation = useLocation();
+    const [pathname, setPathname] = useState(currentLocation.pathname);
     console.log('mainbdlayout pathname: ', pathname);
 
     useEffect(()=>{
-        setPathname(window.location.pathname)
+        console.log('MAINDBLAYOUT useEffect');
+        setPathname(currentLocation.pathname);
     });
 
     return (

@@ -17,16 +17,14 @@ def create_token():
     email = request.json.get("email", None)
     password = request.json.get("password", None)
 
-    print(email, password)
-
     user = User.query.filter_by(email=email, password=password).first()
 
-    if user:
-        access_token = create_access_token(identity=user.email, expires_delta=datetime.timedelta(hours=1))
-    else:
+    if not user:
         return jsonify({"msg": "Bad username or password"}), 401
+        
+    access_token = create_access_token(identity=user.email, expires_delta=datetime.timedelta(hours=1))
 
-    return jsonify({'access_token': access_token, 'user_type': user.user_type_id}), 200
+    return jsonify({'access_token': access_token, 'user_type': user.user_type.type}), 200
 
 
 @api.route('/customer/create/ticket', methods=['POST'])
@@ -110,7 +108,7 @@ def get_tickets():
     tickets = Ticket.query.filter_by(customer_id=user.customer_id).all()
 
     if not tickets:
-        return jsonify({"error": "No tickets for this customer!"}), 400
+        return jsonify({"msg": "No tickets for this customer!"}), 400
 
     response_body = {
         "tickets": [ticket.serialize() for ticket in tickets]
@@ -183,10 +181,10 @@ def get_tickets_not_closed():
     if user.user_type.type != "admin":
         return jsonify({"msg": "Only admins can access this."}), 401
 
-    tickets = Ticket.query.filter(Ticket.status.in_(['Opened', 'In Progress', 'Resolved'])).all()
+    tickets = Ticket.query.filter(Ticket.status.in_(['In Progress', 'Resolved'])).all()
 
     if not tickets:
-        return jsonify({"msg": "No tickets found!"}), 204
+        return jsonify({"msg": "No tickets to manage"}), 400
 
     response_body = {
         "tickets": [ticket.serialize() for ticket in tickets]

@@ -2,6 +2,9 @@ import React, { useContext } from "react";
 import { Context } from "../store/appContext";
 import { Navigate, Link, useNavigate } from "react-router-dom";
 
+//include your index.scss file into the bundle
+import "../../styles/navbar.css";
+
 export const Navbar = () => {
 	const { store, actions } = useContext(Context);
 	const navigate = useNavigate();

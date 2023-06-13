@@ -15,13 +15,15 @@ export const Login = () => {
             await actions.getUserProfile();
             await actions.getMachineList();
 
-            if (store.userProfile.user_info.user_type === "admin") {
-                await actions.getAdminTickets();
-                navigate("/admin/dashboard");
-            }
             if (store.userProfile.user_info.user_type === "customer") {
                 await actions.getTickets();
+                console.log('LOGIN customer: navigate');
                 navigate("/customer/dashboard");
+            }
+            if (store.userProfile.user_info.user_type === "admin") {
+                await actions.getAdminTickets();
+                console.log('LOGIN admin: navigate');
+                navigate("/admin/dashboard");
             }
         }
     }
