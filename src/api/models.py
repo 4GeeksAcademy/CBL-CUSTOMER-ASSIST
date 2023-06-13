@@ -56,7 +56,7 @@ class Customer(db.Model):
     city = db.Column(db.String(50), nullable=False)
     user = db.relationship('User', backref='customer', uselist=False)
     tickets = db.relationship('Ticket', backref='customer', uselist=False)
-    machines = db.relationship('Machine', backref='customer', uselist=False)
+    equipments = db.relationship('Equipment', backref='customer', uselist=False)
 
     def serialize(self):
         return {
@@ -90,7 +90,7 @@ class Ticket(db.Model):
     subject = db.Column(db.String(30), nullable=False)
     description = db.Column(db.String(1024), nullable=False)
     customer_id = db.Column(db.Integer, db.ForeignKey('customer.id'), nullable=False)
-    machine_id = db.Column(db.Integer, db.ForeignKey('machine.id'), nullable=False)
+    equipment_id = db.Column(db.Integer, db.ForeignKey('equipment.id'), nullable=False)
     vehicle_id = db.Column(db.Integer, db.ForeignKey('vehicle.id'), nullable=True)
     ticket_knowledge = db.relationship('TicketKnowledge', backref='ticket', uselist=False)
     employees = db.relationship('TicketEmployeeRelation', backref='ticket', uselist=False)
@@ -101,7 +101,7 @@ class Ticket(db.Model):
         return {
             "id": self.id,
             "open_ticket_time": self.open_ticket_time,
-            "machine": self.machine.serialize(),
+            "equipment": self.equipment.serialize(),
             "status": self.status,
             "intervention_type": self.intervention_type,
             "subject": self.subject,
@@ -130,16 +130,16 @@ class Knowledge(db.Model):
             "category": self.category.description
         }
 
-class Machine(db.Model):
+class Equipment(db.Model):
     id = db.Column(db.Integer, primary_key=True)      
     serial_number = db.Column(db.String(50), nullable=False)
     model = db.Column(db.String(50), nullable=False)
     im109 = db.Column(db.String(50), nullable=True)
     customer_id = db.Column(db.Integer, db.ForeignKey('customer.id'), nullable=True)
-    tickets = db.relationship('Ticket', backref='machine', uselist=False)
+    tickets = db.relationship('Ticket', backref='equipment', uselist=False)
 
     def __repr__(self):
-        return f"<Machine {self.model}>"
+        return f"<Equipment {self.model}>"
 
     def serialize(self):
         return {

@@ -5,7 +5,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			userType: null,
 			message: null,
 			customerTickets: [],
-			machineList: [],
+			equipmentList: [],
 			tickets: [],
 			userProfile: {user_info : {}, customer_info : {}, employee_info : {}}
 		},
@@ -15,9 +15,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 				if (sessionStorage.getItem('token')) return setStore({ token: JSON.parse(sessionStorage.getItem('token')) });
 			},
 
-			syncMachineListFromSessionStorage: () => {
+			syncEquipmentListFromSessionStorage: () => {
 				console.log("actions: syncDataFromSessionStorage");
-				if (sessionStorage.getItem('machineList')) return setStore({ machineList: JSON.parse(sessionStorage.getItem('machineList')) });
+				if (sessionStorage.getItem('equipmentList')) return setStore({ equipmentList: JSON.parse(sessionStorage.getItem('equipmentList')) });
 			},
 			
 			syncTicketsFromSessionStorage: () => {
@@ -80,8 +80,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 				return true;
 			},
 
-			getMachineList: async () => {
-				console.log('action: getMachineList');
+			getCustomerEquipment: async () => {
+				console.log('action: getCustomerEquipment');
 				const token = getStore().token;
 				const opts = {
 					method: "GET",
@@ -89,7 +89,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 						"Authorization": "Bearer " + token
 					}
 				}
-				const response = await fetch(process.env.BACKEND_URL + "api/machinelist", opts);
+				const response = await fetch(process.env.BACKEND_URL + "api/customer/equipment", opts);
 				const data = await response.json();
 
 				if (response.status !== 200) {
@@ -97,7 +97,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					return [response.status, data.msg];
 				}
 
-				getActions().sessionStorageAndSetStoreDataSave('machineList', data.machines);
+				getActions().sessionStorageAndSetStoreDataSave('equipmentList', data.equipments);
 			},
 
 			customerCreateTicket: async (machineId, interventionType, subject, description) => {

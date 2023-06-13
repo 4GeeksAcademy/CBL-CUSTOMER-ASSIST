@@ -7,7 +7,7 @@ from flask_migrate import Migrate
 from flask_swagger import swagger
 from flask_cors import CORS
 from api.utils import APIException, generate_sitemap
-from api.models import db, Machine, Employee, Customer, User, UserType
+from api.models import db, Equipment, Employee, Customer, User, UserType
 from api.routes import api
 from api.admin import setup_admin
 from api.commands import setup_commands
@@ -55,13 +55,13 @@ def handle_invalid_usage(error):
 
 # TABLE VALUES INITIALIZATIOn
 
-# Machine table
-def machine_initialize():
-    if len(Machine.query.all()) == 0:  
-        with open ("src/table_initial_values/machine_initialization.json") as file:
+# Equipment table
+def equipment_initialize():
+    if len(Equipment.query.all()) == 0:  
+        with open ("src/table_initial_values/equipment_initialization.json") as file:
             data = json.load(file)
-        machines = [Machine(**item) for item in data]
-        db.session.bulk_save_objects(machines)
+        equipments = [Equipment(**item) for item in data]
+        db.session.bulk_save_objects(equipments)
         db.session.commit()
 
 # Employee table
@@ -106,7 +106,7 @@ def sitemap():
         # table values initialization
         user_type_initialize()
         customer_initialize()
-        machine_initialize()
+        equipment_initialize()
         employee_initialize()
         user_initialize()
 

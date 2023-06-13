@@ -2,7 +2,7 @@
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
 from flask import Flask, request, jsonify, url_for, Blueprint
-from api.models import db, User, Customer, Employee, Ticket, Machine, Malfunction, Knowledge, Machine,TicketEmployeeRelation
+from api.models import db, User, Customer, Employee, Ticket, Equipment, Malfunction, Knowledge, TicketEmployeeRelation
 from api.utils import generate_sitemap, APIException
 from flask_jwt_extended import create_access_token
 from flask_jwt_extended import get_jwt_identity
@@ -43,14 +43,14 @@ def create_ticket():
         print(data)
         print("############################")
 
-        machine_id = data["machine_id"]
+        equipment_id = data["equipment_id"]
         intervention_type = data["intervention_type"]
         subject = data['subject']
         description = data["description"]
 
         ticket = Ticket()
         ticket.customer_id = user.customer_id
-        ticket.machine_id = machine_id
+        ticket.equipment_id = equipment_id
         ticket.intervention_type = intervention_type
         ticket.subject = subject
         ticket.description = description
@@ -76,22 +76,42 @@ def create_ticket():
         print(e.args)
         return jsonify({"msg": "Exception"}), 400
 
-@api.route('/machinelist', methods=['GET'])
+# @api.route('/equipmentlist', methods=['GET'])
+@api.route('/customer/equipment', methods=['GET'])
 @jwt_required()
-def get_machines():
+def get_customer_equipments():
     current_user_email = get_jwt_identity()
     user = User.query.filter_by(email=current_user_email).one_or_none()
 
     if not user:
         return jsonify({"msg": "Unauthorized access!"}), 401
 
-    machines = Machine.query.filter_by(customer_id=user.customer_id).all()
+    equipments = Equipment.query.filter_by(customer_id=user.customer_id).all()
 
-    if not machines:
-        return jsonify({"error": "No machines for that customer!"}), 400
+    if not equipments:
+        return jsonify({"error": "No equipments for that customer!"}), 400
 
     response_body = {
-        "machines": [machine.serialize() for machine in machines]
+        "equipments": [equipment.serialize() for equipment in equipments]
+    }
+    return jsonify(response_body), 200
+
+@api.route('/manufacturer/equipment', methods=['GET'])
+@jwt_required()
+def get_manufacturer_equipments():
+    current_user_email = get_jwt_identity()
+    user = User.query.filter_by(email=current_user_email).one_or_none()
+
+    if not user:
+        return jsonify({"msg": "Unauthorized access!"}), 401
+
+    equipments = equipment.query.filter_by(customer_id=user.customer_id).all()
+
+    if not equipments:
+        return jsonify({"error": "No equipments for that customer!"}), 400
+
+    response_body = {
+        "equipments": [equipment.serialize() for equipment in equipments]
     }
     return jsonify(response_body), 200
 
@@ -181,7 +201,7 @@ def get_tickets_not_closed():
     if user.user_type.type != "admin":
         return jsonify({"msg": "Only admins can access this."}), 401
 
-    tickets = Ticket.query.filter(Ticket.status.in_(['In Progress', 'Resolved'])).all()
+    tickets = Ticket.query.filter(Ticket.status.in_(['Opened', 'In Progress', 'Resolved'])).all()
 
     if not tickets:
         return jsonify({"msg": "No tickets to manage"}), 400
