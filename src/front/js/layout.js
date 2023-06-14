@@ -7,7 +7,7 @@ import { Navbar } from "./component/navbar";
 import { Sidebar } from "./component/sidebar";
 import { AdminDashboard } from "./pages/admin/admin_dashboard";
 import { CustomerCreateTicket } from "./pages/customer/customer-create-ticket";
-import { CustomerEquipmentList } from "./pages/customer/customer_machine_list";
+import { CustomerEquipmentList } from "./pages/customer/customer_equipment_list";
 import { EditCustomerProfile } from "./pages/customer/customer-edit-profile";
 import { MainBdLayout } from "./component/mainbdlayout";
 // import { Home } from "./pages/home";
