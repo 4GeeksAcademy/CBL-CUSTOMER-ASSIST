@@ -1,6 +1,6 @@
 [
     {
-        "id": 1,
+        
         "company_name": "Automotive Parts",
         "phone": 5551234567,
         "address_1": "123 Main Street",
@@ -9,7 +9,7 @@
         "city": "New York"
     },
     {
-        "id": 2,
+        
         "company_name": "Forks and Knifes",
         "phone": 5559876543,
         "address_1": "456 Elm Avenue",
@@ -18,7 +18,7 @@
         "city": "Los Angeles"
     },
     {
-        "id": 3,
+        
         "company_name": "Animal Pills",
         "phone": 5552468139,
         "address_1": "789 Oak Street",

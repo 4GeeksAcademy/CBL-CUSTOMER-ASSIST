@@ -3,7 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 db = SQLAlchemy()
 
 class User(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     email = db.Column(db.String(100), unique=True, nullable=False)
     password = db.Column(db.String(100), nullable=False)
     active = db.Column(db.Boolean, default=True, nullable=False)
@@ -24,12 +24,12 @@ class User(db.Model):
         }
 
 class UserType(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     type = db.Column(db.String(50), nullable=False)
     user = db.relationship('User', backref='user_type', uselist=False)
 
 class Employee(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     first_name = db.Column(db.String(50), nullable=False)
     last_name = db.Column(db.String(50), nullable=False)
     available = db.Column(db.Boolean,nullable=False)
@@ -46,7 +46,7 @@ class Employee(db.Model):
         }
 
 class Customer(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     company_name = db.Column(db.String(100), nullable=False)
     phone = db.Column(db.String(20), nullable=False)
     contact_person = db.Column(db.String(20), nullable=True)
@@ -72,14 +72,14 @@ class Customer(db.Model):
 
 
 class TicketEmployeeRelation(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     ticket_id = db.Column(db.Integer, db.ForeignKey('ticket.id'), nullable=False)
     employee_id = db.Column(db.Integer, db.ForeignKey('employee.id'), nullable=False)
     start_intervention_date = db.Column(db.DateTime)
     end_intervention_date = db.Column(db.DateTime)
 
 class Ticket(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     status = db.Column(db.String(30), nullable=False)
     intervention_type = db.Column(db.Boolean, nullable=True)
     open_ticket_time = db.Column(db.DateTime, nullable=False)
@@ -111,12 +111,12 @@ class Ticket(db.Model):
         }
     
 class TicketKnowledge(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     knowledge_id = db.Column(db.Integer, db.ForeignKey('knowledge.id'), nullable=True)
     ticket_id = db.Column(db.Integer, db.ForeignKey('ticket.id'), nullable=True)
 
 class Knowledge(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     malfunction_id = db.Column(db.Integer, db.ForeignKey('malfunction.id'), nullable=False)
     solution_id = db.Column(db.Integer, db.ForeignKey('solution.id'), nullable=True)
     category_id = db.Column(db.Integer, db.ForeignKey('category.id'), nullable=True)
@@ -131,7 +131,7 @@ class Knowledge(db.Model):
         }
 
 class Equipment(db.Model):
-    id = db.Column(db.Integer, primary_key=True)      
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)      
     serial_number = db.Column(db.String(50), nullable=False)
     model = db.Column(db.String(50), nullable=False)
     im109 = db.Column(db.String(50), nullable=True)
@@ -151,7 +151,7 @@ class Equipment(db.Model):
 
 
 class Malfunction(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     description = db.Column(db.String(200))
     knowledge = db.relationship('Knowledge', backref='malfunction', uselist=False)
 
@@ -162,7 +162,7 @@ class Malfunction(db.Model):
         }
 
 class Solution(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     description = db.Column(db.String(200))
     knowledge = db.relationship('Knowledge', backref='solution', uselist=False)
 
@@ -173,7 +173,7 @@ class Solution(db.Model):
         }
     
 class Category(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     description = db.Column(db.String(80))
     knowledge = db.relationship('Knowledge', backref='category', uselist=False)
 
@@ -184,7 +184,7 @@ class Category(db.Model):
         }
 
 class Vehicle(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     license_plate = db.Column(db.String(20))
     model = db.Column(db.String(50), nullable=True)
     maker = db.Column(db.String(50), nullable=True)
@@ -199,7 +199,7 @@ class Vehicle(db.Model):
         }
 
 class EmployeeTicketObservation(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     employee_id = db.Column(db.Integer, db.ForeignKey('employee.id'), nullable=False)
     ticket_id = db.Column(db.Integer, db.ForeignKey('ticket.id'), nullable=False)
     observation = db.Column(db.String(1024), nullable=False)
