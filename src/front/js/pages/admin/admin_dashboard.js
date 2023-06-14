@@ -1,10 +1,11 @@
 import React, { useState, useContext, useEffect } from "react";
 import { Context } from "../../store/appContext";
-import { TicketSmall } from "../../component/ticket_small";
 import { InfoCard } from "../../component/info_card";
+import { Link, useNavigate } from "react-router-dom";
 
 export const AdminDashboard = () => {
     const { store, actions } = useContext(Context)
+    const navigate = useNavigate();
 
     const openedTickets = store.tickets.filter((ticket) => ticket.status === 'Opened');
     const inProgressTickets = store.tickets.filter((ticket) => ticket.status === 'In Progress');
@@ -19,29 +20,23 @@ export const AdminDashboard = () => {
             <div className="bd-content">
                 <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
                     {openedTickets.length > 0
-                    ?<div className="col">
-                        <InfoCard data={openedTickets} />
-                    </div>
-                    : null}
+                        ? <Link to={'/admin/tickets/opened'}>
+                            <div className="col"><InfoCard data={openedTickets} /></div>
+                        </Link>
+                        : null}
 
                     {inProgressTickets.length > 0
-                    ?<div className="col">
-                        <InfoCard data={inProgressTickets} />
-                    </div>
-                    : null}
+                        ? <Link to={'/admin/tickets/inprogress'}>
+                            <div className="col"><InfoCard data={inProgressTickets} /></div>
+                        </Link>
+                        : null}
 
                     {resolvedTickets.length > 0
-                    ?<div className="col">
-                        <InfoCard data={resolvedTickets} />
-                    </div>
-                    : null}
+                        ? <Link to={'/admin/tickets/resolved'}>
+                            <div className="col"><InfoCard data={resolvedTickets} /></div>
+                        </Link>
+                        : null}
                 </div>
-{/*                 
-                {store.tickets.length > 0
-                ?store.tickets.map((item, i) => {
-                    return <TicketSmall key={i} data={item} userType={store.userProfile.user_info.user_type}/>
-                })
-                :<span>All customers satisfaction is on top!</span>} */}
             </div>
         </main>
     );
