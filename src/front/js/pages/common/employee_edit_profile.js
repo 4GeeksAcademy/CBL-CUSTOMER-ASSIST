@@ -30,18 +30,19 @@ export const EmployeeEditProfile = () => {
     const handleUpdateProfile = async () => {
         let newData = { ...updateProfile };
 
-        // check for empty keys and delete them
-        for (const key of Object.keys(newData)) {
-            if (Object.keys(newData[key]).length === 0) delete newData[key];
-        }
+        console.log('data to send to backend: ', newData);
+        // // check for empty keys and delete them
+        // for (const key of Object.keys(newData)) {
+        //     if (Object.keys(newData[key]).length === 0) delete newData[key];
+        // }
 
-        // only submits data if the object is not empty
-        if (Object.keys(newData).length !== 0) {
-            const response = await actions.updateUserProfile(newData);
-            response[0] === 200 ? navigate('/') : alert(response[1]);
-        } else {
-            alert('No data to update');
-        }
+        // // only submits data if the object is not empty
+        // if (Object.keys(newData).length !== 0) {
+        //     const response = await actions.updateUserProfile(newData);
+        //     response[0] === 200 ? navigate('/') : alert(response[1]);
+        // } else {
+        //     alert('No data to update');
+        // }
 
     }
 
