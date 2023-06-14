@@ -3,6 +3,9 @@ import { Context } from "../../store/appContext";
 import { InfoCard } from "../../component/info_card";
 import { Link, useNavigate } from "react-router-dom";
 
+//include your index.scss file into the bundle
+import "../../../styles/info_card.css";
+
 export const AdminDashboard = () => {
     const { store, actions } = useContext(Context)
     const navigate = useNavigate();
@@ -20,19 +23,19 @@ export const AdminDashboard = () => {
             <div className="bd-content">
                 <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
                     {openedTickets.length > 0
-                        ? <Link to={'/admin/tickets/opened'}>
+                        ? <Link className="info-card" to={'/admin/tickets/opened'}>
                             <div className="col"><InfoCard data={openedTickets} /></div>
                         </Link>
                         : null}
 
                     {inProgressTickets.length > 0
-                        ? <Link to={'/admin/tickets/inprogress'}>
+                        ? <Link className="info-card" to={'/admin/tickets/inprogress'}>
                             <div className="col"><InfoCard data={inProgressTickets} /></div>
                         </Link>
                         : null}
 
                     {resolvedTickets.length > 0
-                        ? <Link to={'/admin/tickets/resolved'}>
+                        ? <Link className="info-card" to={'/admin/tickets/resolved'}>
                             <div className="col"><InfoCard data={resolvedTickets} /></div>
                         </Link>
                         : null}

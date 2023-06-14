@@ -1,34 +1,29 @@
 [
     {
-     
         "serial_number": "AA0101",
         "model": "CC63",
         "im109": "101",
         "customer_id": 1
     },
     {
-        
         "serial_number": "AA0102",
         "model": "CC100",
         "im109": "102",
         "customer_id": 1
     },
     {
-       
         "serial_number": "AA0103",
         "model": "CC160",
         "im109": "103",
         "customer_id": 1
     },
     {
-    
         "serial_number": "BB0104",
         "model": "CC250",
         "im109": "104",
         "customer_id": 2
     },
     {
-      
         "serial_number": "CA0105",
         "model": "DM400",
         "im109": "356"
