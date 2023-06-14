@@ -8,9 +8,10 @@ import { Sidebar } from "./component/sidebar";
 import { AdminDashboard } from "./pages/admin/admin_dashboard";
 import { CustomerCreateTicket } from "./pages/customer/customer-create-ticket";
 import { CustomerEquipmentList } from "./pages/customer/customer_machine_list";
-import { EditCustomerProfile } from "./pages/customer/customer-edit-profile";
+import { CustomerEditProfile } from "./pages/customer/customer_edit_profile";
 import { MainBdLayout } from "./component/mainbdlayout";
 import { AdminTickets } from "./pages/admin/admin_tickets";
+import { EmployeeEditProfile } from "./pages/common/employee_edit_profile";
 // import { Home } from "./pages/home";
 // import { Single } from "./pages/single";
 // import { AdminCreateTicket } from "./pages/admin/admin-create-ticket";
@@ -41,8 +42,9 @@ const Layout = () => {
                         <Route element={<AdminDashboard />} path="/admin/dashboard" />
                         <Route element={<AdminTickets />} path="/admin/tickets" />
                         <Route element={<AdminTickets />} path="/admin/tickets/:filter" />
+                        <Route element={<EmployeeEditProfile />} path="/admin/edit/profile" />
                         <Route element={<CustomerDashboard />} path="/customer/dashboard" />
-                        <Route element={<EditCustomerProfile />} path="/edit/customer/profile" />
+                        <Route element={<CustomerEditProfile />} path="/customer/edit/profile" />
                         <Route element={<CustomerCreateTicket />} path="/customer/create/ticket" />
                         <Route element={<CustomerEquipmentList />} path="/customer/equipment/list" />
                         <Route element={<h1>Not found!</h1>} path="*" />
