@@ -35,7 +35,7 @@ def create_ticket():
         user = User.query.filter_by(email=current_user_email).one_or_none()
 
         if not user:
-            return jsonify({"error": "Customer not found!"}), 401
+            return jsonify({"msg": "Customer not found!"}), 401
 
         data = request.json
 
@@ -89,7 +89,7 @@ def get_customer_equipments():
     equipments = Equipment.query.filter_by(customer_id=user.customer_id).all()
 
     if not equipments:
-        return jsonify({"error": "No equipments for that customer!"}), 400
+        return jsonify({"msg": "No equipments for that customer!"}), 400
 
     response_body = {
         "equipments": [equipment.serialize() for equipment in equipments]
@@ -146,7 +146,7 @@ def updateProfile():
     user = User.query.filter_by(email=current_user_email).one_or_none()
 
     if not user:
-        return jsonify({"error": "User profile not found"}), 401
+        return jsonify({"msg": "User profile not found"}), 401
 
     try:
         if 'user_info' in data:
@@ -197,11 +197,8 @@ def assign_ticket():
     current_user_email = get_jwt_identity()
     user = User.query.filter_by(email=current_user_email).one_or_none()
 
-    if not user:
-        return jsonify({'msg': 'No user exist with that email'}), 401
-
-    if user.user_type.type != 'admin':
-        return jsonify({'msg': 'Access denied'}), 402
+    if not user or user.user_type.type != 'admin':
+        return jsonify({'msg': 'Only admins can create equipment profiles'}), 402
     
     data = request.get_json()
 
@@ -217,7 +214,7 @@ def assign_ticket():
     if not ticket:
         return jsonify({'msg': 'Ticket not found'}), 401
     if not employees:
-        return jsonify({'message': 'Employee(s) not found'}), 401
+        return jsonify({'msg': 'Employee(s) not found'}), 401
     
     for employee in employees:
         ticket_employee_relation = TicketEmployeeRelation(
@@ -228,3 +225,27 @@ def assign_ticket():
     db.session.add(ticket_employee_relation)
     db.session.commit()
     return jsonify({'msg': 'Employee(s) assigned successfully to ticket'}), 200
+
+@api.route('/admin/equipment', methods=['POST'])
+@jwt_required()  
+def create_equipment():
+    current_user_email = get_jwt_identity()
+    user = User.query.filter_by(email=current_user_email).one_or_none()
+    if not user or user.user_type.type != 'admin':
+        return jsonify({'msg': 'Only admins can create equipment profiles'}), 402
+
+    data = request.json
+    if not data:
+        return jsonify({'msg': 'No data provided'}), 400
+    
+
+    equipment = Equipment()
+    equipment.serial_number = data.get('serial_number')
+    equipment.model = data.get('model')
+    equipment.im109 = data.get('im109')
+    
+    db.session.add(equipment)
+    db.session.commit()
+
+    return jsonify({'msg': 'Equipment created'}), 201
+
