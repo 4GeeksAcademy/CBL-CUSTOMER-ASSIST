@@ -8,10 +8,8 @@ export const Sidebar = () => {
 	const { store, actions } = useContext(Context);
     const currentLocation = useLocation();
     const [pathname, setPathname] = useState(currentLocation.pathname);
-    console.log('SIDEBAR user: ', store.userProfile.user_info.user_type)
 
     useEffect(()=>{
-        console.log('SIDEBAR useEffect')
         setPathname(currentLocation.pathname)
     });
 

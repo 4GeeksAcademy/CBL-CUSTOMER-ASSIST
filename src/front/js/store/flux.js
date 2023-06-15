@@ -7,19 +7,18 @@ const getState = ({ getStore, getActions, setStore }) => {
 			customerTickets: [],
 			equipmentList: [],
 			tickets: [],
-			userProfile: {user_info : {}, customer_info : {}, employee_info : {}}
+			user: null,
+			userProfile: { user_info: {}, customer_info: {}, employee_info: {} }
 		},
 		actions: {
 			syncTokenFromSessionStorage: () => {
-				console.log("actions: syncTokenFromSessionStorage");
 				if (sessionStorage.getItem('token')) return setStore({ token: JSON.parse(sessionStorage.getItem('token')) });
 			},
 
 			syncEquipmentListFromSessionStorage: () => {
-				console.log("actions: syncDataFromSessionStorage");
 				if (sessionStorage.getItem('equipmentList')) return setStore({ equipmentList: JSON.parse(sessionStorage.getItem('equipmentList')) });
 			},
-			
+
 			syncTicketsFromSessionStorage: () => {
 				if (sessionStorage.getItem('tickets')) return setStore({ tickets: JSON.parse(sessionStorage.getItem('tickets')) });
 			},
@@ -30,8 +29,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 			sessionStorageAndSetStoreDataSave: (key, data) => {
 				sessionStorage.setItem([key], JSON.stringify(data));
-				 setStore({ [key]: data });
-				 return true;
+				setStore({ [key]: data });
+				return true;
 			},
 
 			login: async (email, password) => {
@@ -51,11 +50,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 					const data = await response.json();
 
 					if (response.status !== 200) {
-						console.log(data.msg);
 						return false;
 					}
 
-					console.log("This came from the backend", data);
 
 					await getActions().sessionStorageAndSetStoreDataSave('token', data.access_token);
 					return true;
@@ -75,7 +72,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				setStore({ equipmentList: [] });
 				setStore({ interventionType: [] });
 				setStore({ tickets: [] });
-				setStore({ userProfile: {user_info : {}, customer_info : {}, employee_info : {}}});
+				setStore({ userProfile: { user_info: {}, customer_info: {}, employee_info: {} } });
 
 				return true;
 			},
@@ -102,7 +99,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 			customerCreateTicket: async (equipmentId, interventionType, subject, description) => {
 				console.log("action: createCustomerTicket");
-				console.log("Intervention type: ", interventionType);
 				const token = getStore().token;
 				const opts = {
 					method: "POST",
@@ -125,7 +121,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 					}
 
 					const data = await response.json();
-					console.log("This came from the backend", data);
 					return true;
 				}
 				catch (error) {
@@ -152,10 +147,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 						// return [response.status, data.msg];
 						return false;
 					}
-					console.log("Getting to response");
 					console.log("This came from the backend", data);
 
-					if('tickets' in data) await getActions().sessionStorageAndSetStoreDataSave('tickets', data.tickets);
+					if ('tickets' in data) await getActions().sessionStorageAndSetStoreDataSave('tickets', data.tickets);
 					return true;
 				}
 				catch (error) {
@@ -182,7 +176,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 						return [response.status, data.msg];
 					}
 
-					console.log("This came from the backend", data);
 
 					getActions().sessionStorageAndSetStoreDataSave('userProfile', data.user_profile);
 					// return true;
@@ -220,6 +213,26 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			},
 
+			updateUserProfileLocally: (data) => {
+				let newUserProfile = {};
+				Object.assign(newUserProfile, getStore().userProfile);
+				
+				const infoKeys = Object.keys(getStore().userProfile);
+
+				const updateValues = (infos, data) => {
+					infos.map((info) => {
+						if(info in data) {
+							Object.keys(data[info]).map((key) => {
+								newUserProfile[info][key] = data[info][key];
+							})
+						}
+					});
+					getActions().sessionStorageAndSetStoreDataSave('userProfile', newUserProfile);
+				}
+
+				updateValues(infoKeys, data)
+			},
+
 			getAdminTickets: async () => {
 				console.log("action: getAdminTickets");
 				const token = getStore().token;
@@ -232,9 +245,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 				};
 				try {
 					const response = await fetch(process.env.BACKEND_URL + "api/admin/ticketlist", opts);
-					
+
 					// if(response.status === 304) return true;
-					
+
 					const data = await response.json();
 
 					if (response.status !== 200) {
@@ -244,7 +257,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.log("Getting to response Admin tickets");
 					console.log("This came from the backend", data);
 
-					if('tickets' in data) await getActions().sessionStorageAndSetStoreDataSave('tickets', data.tickets);
+					if ('tickets' in data) await getActions().sessionStorageAndSetStoreDataSave('tickets', data.tickets);
 					return true;
 				}
 				catch (error) {
@@ -252,7 +265,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			},
 
-			
+
 		}
 	};
 };

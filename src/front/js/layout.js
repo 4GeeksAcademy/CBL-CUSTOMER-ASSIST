@@ -27,7 +27,6 @@ const Layout = () => {
         setPathname(currentLocation.pathname)
     })
 
-    console.log('LAYOUT pathname: ', pathname);
     // TODO: NEED TO REMOVE THIS LINE
     // if(!process.env.BACKEND_URL || process.env.BACKEND_URL == "") return <BackendURL/ >;
     return (

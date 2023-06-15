@@ -30,7 +30,6 @@ export const EmployeeEditProfile = () => {
     const handleUpdateProfile = async () => {
         let newData = { ...updateProfile };
 
-        console.log('data to send to backend: ', newData);
         // // check for empty keys and delete them
         // for (const key of Object.keys(newData)) {
         //     if (Object.keys(newData[key]).length === 0) delete newData[key];
