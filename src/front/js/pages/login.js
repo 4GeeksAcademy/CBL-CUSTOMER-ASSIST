@@ -17,12 +17,10 @@ export const Login = () => {
             if (store.userProfile.user_info.user_type === "customer") {
                 await actions.getCustomerEquipment();
                 await actions.getTickets();
-                console.log('LOGIN customer: navigate');
                 navigate("/customer/dashboard");
             }
             if (store.userProfile.user_info.user_type === "admin") {
                 await actions.getAdminTickets();
-                console.log('LOGIN admin: navigate');
                 navigate("/admin/dashboard");
             }
         }
