@@ -231,13 +231,13 @@ def assign_ticket():
 def create_equipment():
     current_user_email = get_jwt_identity()
     user = User.query.filter_by(email=current_user_email).one_or_none()
+    
     if not user or user.user_type.type != 'admin':
         return jsonify({'msg': 'Only admins can create equipment profiles'}), 402
 
     data = request.json
     if not data:
         return jsonify({'msg': 'No data provided'}), 400
-    
 
     equipment = Equipment()
     equipment.serial_number = data.get('serial_number')
@@ -248,6 +248,25 @@ def create_equipment():
     db.session.commit()
 
     return jsonify({'msg': 'Equipment created'}), 201
+
+  
+@api.route('/admin/equipment/<int:customer_id>', methods=['GET'])
+@jwt_required()
+def get_equipment_by_customer_id(customer_id):
+    current_user_email = get_jwt_identity()
+    user = User.query.filter_by(email=current_user_email).one_or_none()
+    
+    if not user or user.user_type.type != 'admin':
+        return jsonify({'msg': 'Only admins can access this endpoint'}), 400
+    
+    customer = Customer.query.get(customer_id)
+    
+    if not customer:
+        return jsonify({'msg': 'customer_id parameter is missing'}), 400
+
+    equipments = Equipment.query.filter_by(customer_id=customer_id).all()
+
+    return jsonify({"equipemets": equipmet.serialize() for equipment in equipments}), 200
 
 @api.route('/employees/available', methods=['GET'])
 @jwt_required()
