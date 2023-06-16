@@ -249,6 +249,19 @@ def create_equipment():
 
     return jsonify({'msg': 'Equipment created'}), 201
 
+@api.route('/employees/available', methods=['GET'])
+@jwt_required()
+def get_available_employees():
+    current_user_email = get_jwt_identity()
+    user = User.query.filter_by(email=current_user_email).one_or_none()
+    if not user or user.user_type.type != 'admin':
+        return jsonify({'msg': 'Only admins can access this endpoint'}), 401
+
+    available_employees = Employee.query.filter_by(available=True).all()
+    serialized_employees = [e.serialize() for e in available_employees]
+
+    return jsonify(serialized_employees), 200
+
 @api.route('/vehicles', methods=['GET'])
 def get_all_vehicles():
     vehicles = Vehicle.query.all()
