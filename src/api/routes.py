@@ -249,3 +249,15 @@ def create_equipment():
 
     return jsonify({'msg': 'Equipment created'}), 201
 
+@api.route('/admin/equipments', methods=['GET'])
+@jwt_required()
+def get_all_equipments():
+    current_user_email = get_jwt_identity()
+    user = User.query.filter_by(email=current_user_email).one_or_none()
+    if not user or user.user_type.type != 'admin':
+        return jsonify({'msg': 'Only admins can access this endpoint'}), 401
+
+    equipments = Equipment.query.all()
+    serialized_equipments = [e.serialize() for e in equipments]
+
+    return jsonify(serialized_equipments), 200
