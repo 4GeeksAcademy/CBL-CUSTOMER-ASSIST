@@ -2,7 +2,7 @@
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
 from flask import Flask, request, jsonify, url_for, Blueprint
-from api.models import db, User, Customer, Employee, Ticket, Equipment, Malfunction, Knowledge, TicketEmployeeRelation
+from api.models import db, User, Customer, Employee, Ticket, Equipment, Malfunction, Knowledge, TicketEmployeeRelation, Vehicle
 from api.utils import generate_sitemap, APIException
 from flask_jwt_extended import create_access_token
 from flask_jwt_extended import get_jwt_identity
@@ -249,3 +249,9 @@ def create_equipment():
 
     return jsonify({'msg': 'Equipment created'}), 201
 
+@api.route('/vehicles', methods=['GET'])
+def get_all_vehicles():
+    vehicles = Vehicle.query.all()
+    serialized_vehicles = [v.serialize() for v in vehicles]
+
+    return jsonify(serialized_vehicles), 200
