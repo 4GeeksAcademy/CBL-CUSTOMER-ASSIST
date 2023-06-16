@@ -10,6 +10,7 @@ import { CustomerCreateTicket } from "./pages/customer/customer-create-ticket";
 import { CustomerEquipmentList } from "./pages/customer/customer_equipment_list";
 import { EditCustomerProfile } from "./pages/customer/customer-edit-profile";
 import { MainBdLayout } from "./component/mainbdlayout";
+import { CustomerEquipmentHistory } from "./pages/customer/customer_equipment_history";
 // import { Home } from "./pages/home";
 // import { Single } from "./pages/single";
 // import { AdminCreateTicket } from "./pages/admin/admin-create-ticket";
@@ -42,6 +43,7 @@ const Layout = () => {
                         <Route element={<EditCustomerProfile />} path="/edit/customer/profile" />
                         <Route element={<CustomerCreateTicket />} path="/customer/create/ticket" />
                         <Route element={<CustomerEquipmentList />} path="/customer/equipment/list" />
+                        <Route element={<CustomerEquipmentHistory />} path="/customer/equipment/history" />
                         <Route element={<h1>Not found!</h1>} path="*" />
                         {/* <Route element={<Single />} path="/single/:theid" /> */}
                         {/* <Route element={<AdminCreateTicket />} path="/admin/create/ticket" /> */}
