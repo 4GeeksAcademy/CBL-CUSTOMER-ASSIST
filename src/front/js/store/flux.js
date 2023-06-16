@@ -7,8 +7,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 			customerTickets: [],
 			equipmentList: [],
 			tickets: [],
-			user: null,
-			userProfile: { user_info: {}, customer_info: {}, employee_info: {} }
+			userProfile: {user_info : {}, customer_info : {}, employee_info : {}},
+			customerEquipmentTickets: [],
+			user: null
 		},
 		actions: {
 			syncTokenFromSessionStorage: () => {
@@ -264,8 +265,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.log("There has been an error login in!", error)
 				}
 			},
-
-
+			getCustomerEquipmentTickets: (data) => {
+				setStore({customerEquipmentTickets: data})
+			}
 		}
 	};
 };
