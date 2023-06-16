@@ -8,7 +8,7 @@ import { Sidebar } from "./component/sidebar";
 import { AdminDashboard } from "./pages/admin/admin_dashboard";
 import { CustomerCreateTicket } from "./pages/customer/customer-create-ticket";
 import { CustomerEquipmentList } from "./pages/customer/customer_equipment_list";
-import { EditCustomerProfile } from "./pages/customer/customer-edit-profile";
+import { CustomerEditProfile } from "./pages/customer/customer_edit_profile";
 import { MainBdLayout } from "./component/mainbdlayout";
 import { CustomerEquipmentHistory } from "./pages/customer/customer_equipment_history";
 import { AdminTickets } from "./pages/admin/admin_tickets";

@@ -8,7 +8,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			equipmentList: [],
 			tickets: [],
 			userProfile: {user_info : {}, customer_info : {}, employee_info : {}},
-			customerEquipmentTickets: []
+			customerEquipmentTickets: [],
 			user: null
 		},
 		actions: {
