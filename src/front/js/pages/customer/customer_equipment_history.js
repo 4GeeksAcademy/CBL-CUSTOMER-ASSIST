@@ -17,7 +17,7 @@ export const CustomerEquipmentHistory = () => {
                     {store.customerEquipmentTickets}
                     {Object.values(store.customerEquipmentTickets).length > 0 ? store.customerEquipmentTickets.map((item, i) => {
                         return <EquipmentHistoryCard key={i} data={item} />
-                    }) : <span>No equipment found..</span>}
+                    }) : <span>No equipment found...</span>}
                 </div>
             </div>
         </main>
