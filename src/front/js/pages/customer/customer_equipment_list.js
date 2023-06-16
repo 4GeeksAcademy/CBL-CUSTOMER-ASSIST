@@ -1,22 +1,27 @@
 import React, { useState, useContext, useEffect } from "react";
 import { Multiselect } from 'multiselect-react-dropdown';
 import { Context } from "../../store/appContext";
+import { EquipmentList } from "../../component/equipment_list_card";
 
 export const CustomerEquipmentList = () => {
     const { store, actions } = useContext(Context)
     const [equipment, setEquipment] = useState(store.equipmentList);
     const [equipmentOptions] = useState(store.equipmentList);
     const [equipmentVar, setEquipmentVar] = useState([])
+    const [getTicket, setGetTicket] = useState(store.tickets)
+    const [find, setFind] = useState([{}])
 
     useEffect(() => {
         if (Object.keys(equipment).length === 0) setEquipmentVar(equipmentOptions)
         else setEquipmentVar(equipment)
+        console.log("------------------->" + equipmentVar)
     }, [equipment])
 
     const saveEquipment = (selected) => {
         const selectedEquipment = selected.map((select) => select);
         setEquipment(selectedEquipment);
     };
+
 
     return (
         <div className="container">
@@ -38,33 +43,15 @@ export const CustomerEquipmentList = () => {
             </div>
 
             <div className="d-flex">
-
                 <div className="border rounded p-4 flex-fill">
-
                     <div>
-                        {Object.values(equipmentVar).map((item, i) => (
-                            <div key={i}>
+                        {equipmentVar.length > 0 ? Object.values(equipmentVar).map((item, i) => {
+                            return <EquipmentList key={i} data={item} />
+                        }) : <p>No equipment listed</p>}
 
-                                <div className="accordion" id={`accordionPanelsStayOpenExample-${item.id}`}>
-                                    <div className="accordion-item">
-                                        <h2 className="accordion-header">
-                                            <button className="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target={`#panelsStayOpen-collapse-${item.id}`} aria-expanded="flase" aria-controls={`panelsStayOpen-collapse-${item.id}`}>
-                                                <p> {item.model}</p>
-                                            </button>
-                                        </h2>
-                                        <div id={`panelsStayOpen-collapse-${item.id}`} className="accordion-collapse collapse">
-                                            <div className="accordion-body">
-                                                <p>ID: {item.id}</p>
-                                                <p>Serial Number: {item.serial_number}</p>
-                                                <p>Model: {item.model} </p>
-                                                <p>im109: {item.im109} </p>
-                                                <p>Tickets: { } </p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        ))}
+
+
+
                     </div>
                 </div>
             </div>
