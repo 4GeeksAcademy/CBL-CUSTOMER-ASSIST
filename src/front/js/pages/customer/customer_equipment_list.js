@@ -45,7 +45,7 @@ export const CustomerEquipmentList = () => {
             <div className="d-flex">
                 <div className="border rounded p-4 flex-fill">
                     <div>
-                        {equipmentVar > 0 ? Object.values(equipmentVar).map((item, i) => {
+                        {equipmentVar.length > 0 ? Object.values(equipmentVar).map((item, i) => {
                             return <EquipmentList key={i} data={item} />
                         }) : <p>No equipment listed</p>}
 
