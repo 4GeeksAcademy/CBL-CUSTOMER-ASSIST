@@ -52,7 +52,7 @@ export const CustomerEquipmentList = () => {
                                 return <EquipmentListCard key={i} data={item} />
                             }) : <span>No equipment found..</span>}
                         </div>
-                    </div>
+                   </div>
                 </div>
             </div>
         </main>

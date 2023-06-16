@@ -1,3 +1,4 @@
+
 /* 
     General Styles used on every website (Don't Repeat Yourself)
 */
@@ -7,6 +8,18 @@
  * Licensed under the Creative Commons Attribution 3.0 Unported License.
  * For details, see https://creativecommons.org/licenses/by/3.0/.
  */
+html {
+    scrollbar-width: none;
+}
+
+body {
+    -ms-overflow-style: none;
+}
+
+body::-webkit-scrollbar{
+    display: none;
+}
+
 :root {
     --bs-breakpoint-xs : 0;
     --bs-breakpoint-sm : 576px;

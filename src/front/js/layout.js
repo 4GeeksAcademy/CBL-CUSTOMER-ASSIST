@@ -11,6 +11,8 @@ import { CustomerEquipmentList } from "./pages/customer/customer_equipment_list"
 import { EditCustomerProfile } from "./pages/customer/customer-edit-profile";
 import { MainBdLayout } from "./component/mainbdlayout";
 import { CustomerEquipmentHistory } from "./pages/customer/customer_equipment_history";
+import { AdminTickets } from "./pages/admin/admin_tickets";
+import { EmployeeEditProfile } from "./pages/common/employee_edit_profile";
 // import { Home } from "./pages/home";
 // import { Single } from "./pages/single";
 // import { AdminCreateTicket } from "./pages/admin/admin-create-ticket";
@@ -26,7 +28,6 @@ const Layout = () => {
         setPathname(currentLocation.pathname)
     })
 
-    console.log('LAYOUT pathname: ', pathname);
     // TODO: NEED TO REMOVE THIS LINE
     // if(!process.env.BACKEND_URL || process.env.BACKEND_URL == "") return <BackendURL/ >;
     return (
@@ -39,8 +40,11 @@ const Layout = () => {
                         <Route element={<Login />} path="/" />
                         {/* <Route element={<Home />} path="/" /> */}
                         <Route element={<AdminDashboard />} path="/admin/dashboard" />
+                        <Route element={<AdminTickets />} path="/admin/tickets" />
+                        <Route element={<AdminTickets />} path="/admin/tickets/:filter" />
+                        <Route element={<EmployeeEditProfile />} path="/admin/edit/profile" />
                         <Route element={<CustomerDashboard />} path="/customer/dashboard" />
-                        <Route element={<EditCustomerProfile />} path="/edit/customer/profile" />
+                        <Route element={<CustomerEditProfile />} path="/customer/edit/profile" />
                         <Route element={<CustomerCreateTicket />} path="/customer/create/ticket" />
                         <Route element={<CustomerEquipmentList />} path="/customer/equipment/list" />
                         <Route element={<CustomerEquipmentHistory />} path="/customer/equipment/history" />

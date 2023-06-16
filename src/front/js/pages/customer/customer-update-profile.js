@@ -14,7 +14,6 @@ export const CustomerUpdateProfile = () => {
         // Read the form data
         const form = e.target;
         const formData = new FormData(form);
-        console.log(formData.entries())
         setFormJson(Object.fromEntries(formData.entries()));
     }
 
