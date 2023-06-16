@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../../store/appContext";
 import { Navigate, useNavigate } from "react-router-dom";
 
-export const EditCustomerProfile = () => {
+export const CustomerEditProfile = () => {
     const { store, actions } = useContext(Context);
     const navigate = useNavigate();
     const [title, setTitle] = useState("Profile");
@@ -20,7 +20,6 @@ export const EditCustomerProfile = () => {
     const toggleProfileEdit = () => {setDisabled(!disabled)}
     
     const handleInput = (info, key) => {
-        // console.log('handleInput'); //debug
         return (e) => {
             // const input = { ...updateProfile[info], [key]: e.target.value };
             // const inputs = { ...updateProfile, [info]: input };
@@ -46,7 +45,12 @@ export const EditCustomerProfile = () => {
         // only submits data if the object is not empty
         if (Object.keys(newData).length !== 0) {
             const response = await actions.updateUserProfile(newData);
-            response[0] === 200 ? navigate('/') : alert(response[1]);
+            if(response[0] === 200) {
+                await actions.updateUserProfileLocally(newData);
+                navigate('/customer/dashboard');
+                return true;
+            }
+            alert(response[1]);
         }else{
             alert('No data to update');
         }       

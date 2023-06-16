@@ -9,7 +9,7 @@ export const AdminSidebar = () => {
 	return (
 		<div className="offcanvas-lg offcanvas-start" tabIndex="-1" id="bdSidebar" aria-labelledby="bdSidebarOffcanvasLabel">
 			<div className="offcanvas-header border-bottom bg-body-secondary">
-				<h5 className="offcanvas-title" id="bdSidebarOffcanvasLabel">Customer options</h5>
+				<h5 className="offcanvas-title" id="bdSidebarOffcanvasLabel">Admin options</h5>
 				<button type="button" className="btn-close" data-bs-dismiss="offcanvas" aria-label="Close" data-bs-target="#bdSidebar"></button>
 			</div>
 
@@ -18,8 +18,8 @@ export const AdminSidebar = () => {
 					<ul className="bd-links-nav list-unstyled mb-0 pb-3 pb-md-2 pe-lg-2">
 
 						{/* DASHBOARD */}
-						<li className="bd-links-group py-2">
-							<Link to={'customer/dashboard'}>
+						<li className="bd-links-group py-2" data-bs-target="#bdSidebar" data-bs-dismiss="offcanvas">
+							<Link to={'admin/dashboard'}>
 								<strong className="bd-links-heading d-flex w-100 align-items-center fw-semibold">
 									<i className="fa-solid fa-gauge-high bi me-2" style={{ color: "var(--bs-indigo)"}}></i>Dashboard
 								</strong>
@@ -27,22 +27,30 @@ export const AdminSidebar = () => {
 						</li>
 
 						{/* TICKETS */}
-						<li className="bd-links-group py-2">
+						<li className="bd-links-group py-2" data-bs-target="#bdSidebar" data-bs-dismiss="offcanvas">
 							<Link to={'admin/tickets'}>
 								<strong className="bd-links-heading d-flex w-100 align-items-center fw-semibold">
 									<i className="fa-solid fa-ticket bi me-2" style={{ color: "var(--bs-teal)"}}></i>Tickets
 								</strong>
 							</Link>
 							<ul className="list-unstyled fw-normal pb-2 small">
+								<Link to={'/admin/tickets/opened'}>
 								<li><span className="bd-links-link d-inline-block rounded">All Opened</span></li>
+								</Link>
+								<Link to={'/admin/tickets/inprogress'}>
 								<li><span className="bd-links-link d-inline-block rounded">All In Progress</span></li>
+								</Link>
+								<Link to={'/admin/tickets/resolved'}>
 								<li><span className="bd-links-link d-inline-block rounded">All In Resolved</span></li>
+								</Link>
+								<Link to={'/admin/create/ticket'}>
 								<li><span className="bd-links-link d-inline-block rounded">Create Ticket</span></li>
+								</Link>
 							</ul>
                         </li>
 
 						{/* USERS */}
-						<li className="bd-links-group py-2">
+						<li className="bd-links-group py-2" data-bs-target="#bdSidebar" data-bs-dismiss="offcanvas">
 							<Link to={'get/allusers'}>
 								<strong className="bd-links-heading d-flex w-100 align-items-center fw-semibold">
                                     <i className="fa-solid fa-users bi me-2" style={{ color: "var(--bs-cyan)"}}></i>Users

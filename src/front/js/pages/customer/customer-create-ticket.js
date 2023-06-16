@@ -11,11 +11,10 @@ export const CustomerCreateTicket = () => {
     const navigate = useNavigate();
 
     const createTicket = async () => {
-        console.log(typeof(interventionType));
         const response = await actions.customerCreateTicket(equipmentID, interventionType, subject, description);
         if (response) {
             alert("Ticket created!");
-            navigate("/");
+            navigate("/customer/dashboard");
         }
         if (!response) {
             alert("Error");

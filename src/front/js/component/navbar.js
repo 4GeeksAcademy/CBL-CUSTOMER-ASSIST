@@ -8,6 +8,7 @@ import "../../styles/navbar.css";
 export const Navbar = () => {
 	const { store, actions } = useContext(Context);
 	const navigate = useNavigate();
+	const userType = store.userProfile.user_info.user_type;
 
 	return (
 		<header className="navbar navbar-expand-lg bd-navbar sticky-top bg-secondary">
@@ -44,7 +45,7 @@ export const Navbar = () => {
 							</button>
 							<ul className="dropdown-menu dropdown-menu-end">
 								<li>
-									<Link to={"/edit/customer/profile"}>
+									<Link to={`${userType === 'admin' ? '/admin/edit/profile' : userType === 'engineer' || userType === 'technician' ? '/employee/edit/profile' : '/customer/edit/profile'}`}>
 										<button className="dropdown-item">Edit Profile</button>
 									</Link>
 								</li>

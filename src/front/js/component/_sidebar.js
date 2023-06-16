@@ -11,7 +11,6 @@ export const Sidebar = () => {
             <SideNav
                 className="bg-dark"
                 onSelect={selected => {
-                    console.log(selected);
                     navigate('/' + selected);
                 }}
             >
