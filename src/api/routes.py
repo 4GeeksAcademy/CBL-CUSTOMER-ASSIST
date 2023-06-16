@@ -2,7 +2,7 @@
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
 from flask import Flask, request, jsonify, url_for, Blueprint
-from api.models import db, User, Customer, Employee, Ticket, Equipment, Malfunction, Knowledge, TicketEmployeeRelation
+from api.models import db, User, Customer, Employee, Ticket, Equipment, Malfunction, Knowledge, TicketEmployeeRelation, Vehicle
 from api.utils import generate_sitemap, APIException
 from flask_jwt_extended import create_access_token
 from flask_jwt_extended import get_jwt_identity
@@ -231,13 +231,13 @@ def assign_ticket():
 def create_equipment():
     current_user_email = get_jwt_identity()
     user = User.query.filter_by(email=current_user_email).one_or_none()
+    
     if not user or user.user_type.type != 'admin':
         return jsonify({'msg': 'Only admins can create equipment profiles'}), 402
 
     data = request.json
     if not data:
         return jsonify({'msg': 'No data provided'}), 400
-    
 
     equipment = Equipment()
     equipment.serial_number = data.get('serial_number')
@@ -249,22 +249,59 @@ def create_equipment():
 
     return jsonify({'msg': 'Equipment created'}), 201
 
-@api.route('/admin/equipment', methods=['GET'])
+  
+@api.route('/admin/equipment/<int:customer_id>', methods=['GET'])
 @jwt_required()
-def get_equipment_by_customer_id():
+def get_equipment_by_customer_id(customer_id):
     current_user_email = get_jwt_identity()
     user = User.query.filter_by(email=current_user_email).one_or_none()
+    
     if not user or user.user_type.type != 'admin':
-        return jsonify({'msg': 'Only admins can access this endpoint'}), 401
-
-    customer_id = 1
-    if not customer_id:
+        return jsonify({'msg': 'Only admins can access this endpoint'}), 400
+    
+    customer = Customer.query.get(customer_id)
+    
+    if not customer:
         return jsonify({'msg': 'customer_id parameter is missing'}), 400
 
-    equipment = Equipment.query.filter_by(customer_id=customer_id).all()
-    serialized_equipment = [e.serialize() for e in equipment]
+    equipments = Equipment.query.filter_by(customer_id=customer_id).all()
 
-    return jsonify(serialized_equipment), 200
+    return jsonify({"equipemets": equipmet.serialize() for equipment in equipments}), 200
+
+@api.route('/employees/available', methods=['GET'])
+@jwt_required()
+def get_available_employees():
+    current_user_email = get_jwt_identity()
+    user = User.query.filter_by(email=current_user_email).one_or_none()
+    
+    if not user or user.user_type.type != 'admin':
+        return jsonify({'msg': 'Only admins can access this endpoint'}), 401
+    
+    available_employees = Employee.query.filter_by(available=True).all()
+    serialized_employees = [e.serialize() for e in available_employees]
+
+    return jsonify(serialized_employees), 200
+
+@api.route('/admin/equipments', methods=['GET'])
+@jwt_required()
+def get_all_equipments():
+    # IF OTHERS EMPLOYEE'S NEED TO GET ALL EQUIPMENTS REMOVE FROM THIS LINE TO NEXT COMMENTED LINE
+    current_user_email = get_jwt_identity()
+    user = User.query.filter_by(email=current_user_email).one_or_none()
+    
+    if not user or user.user_type.type != 'admin':
+        return jsonify({'msg': 'Only admins can access this endpoint'}), 401
+    # #####################################
+    
+    equipments = Equipment.query.all()
+    serialized_equipments = [e.serialize() for e in equipments]
+
+    return jsonify(serialized_equipments), 200
 
 
+@api.route('/vehicles', methods=['GET'])
+def get_all_vehicles():
+    vehicles = Vehicle.query.all()
+    serialized_vehicles = [v.serialize() for v in vehicles]
 
+    return jsonify(serialized_vehicles), 200

@@ -1,18 +1,11 @@
-import React, { useState, useContext} from "react";
+import React, {useState, useContext} from "react";
 import { Link } from "react-router-dom";
-import { Context } from "../store/appContext"; 
 
-export const EquipmentListCard = (props) => {
-    const { store, actions } = useContext(Context)
+
+export const EquipmentHistoryCard = (props) => {
+    
     const data = props.data;
     const myModal = document.querySelector('#modalTicketInfo');
-
-    const handleAllTickets = () => {
-        const ticketIds = store.tickets.map(item => item.equipment.id)
-        const matchingTickets = ticketIds.filter(ticketId => ticketId === data.id);
-        actions.getCustomerEquipmentTickets(matchingTickets);
-        console.log(matchingTickets)
-    };
 
     return (
         <div className="card w-100 mb-3">
@@ -27,10 +20,10 @@ export const EquipmentListCard = (props) => {
                 </div>
             </div>
             <Link to={'/customer/equipment/history'} style={{ textDecoration: 'none' }}>
-                <div onClick={handleAllTickets} className="card-footer text-body-secondary d-flex justify-content-center btn btn-secondary border border-0 border-top">
-                    <h6 className="card-subtitle my-1 text-body-secondary">View Equipment History</h6>
+                <div className="card-footer text-body-secondary d-flex justify-content-center btn btn-secondary border border-0 border-top">
+                    <h6 className="card-subtitle my-1 text-body-secondary">View Description</h6>
                 </div>
             </Link>
-        </div>
+        </div>         
     );
 }
