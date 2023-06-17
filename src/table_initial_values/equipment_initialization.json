@@ -26,6 +26,7 @@
     {
         "serial_number": "CA0105",
         "model": "DM400",
-        "im109": "356"
+        "im109": "356",
+        "customer_id": 3
     }
 ]

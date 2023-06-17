@@ -1,0 +1,52 @@
+[
+    {
+        "malfunction_id": 1,
+        "solution_id": 1,
+        "category_id":1
+    },
+    {
+        "malfunction_id": 2,
+        "solution_id": 2,
+        "category_id":1
+    },
+    {
+        "malfunction_id": 3,
+        "solution_id": 3,
+        "category_id":2
+    },
+    {
+        "malfunction_id": 4,
+        "solution_id": 4,
+        "category_id":3
+    },
+    {
+        "malfunction_id": 5,
+        "solution_id": 5,
+        "category_id":2
+    },
+    {
+        "malfunction_id": 6,
+        "solution_id": 6,
+        "category_id":2
+    },
+    {
+        "malfunction_id": 7,
+        "solution_id": 7,
+        "category_id":3
+    },
+    {
+        "malfunction_id": 8,
+        "solution_id": 8,
+        "category_id":1
+    },
+    {
+        "malfunction_id": 9,
+        "solution_id": 9,
+        "category_id":3
+    },
+    {
+        "malfunction_id": 10,
+        "solution_id": 10,
+        "category_id":2
+    }
+]
