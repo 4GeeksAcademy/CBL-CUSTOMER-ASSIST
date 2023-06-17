@@ -260,13 +260,18 @@ def get_equipment_by_customer_id(customer_id):
         return jsonify({'msg': 'Only admins can access this endpoint'}), 400
     
     customer = Customer.query.get(customer_id)
+
     
     if not customer:
         return jsonify({'msg': 'customer_id parameter is missing'}), 400
-
+    
     equipments = Equipment.query.filter_by(customer_id=customer_id).all()
+    print("#################")
+    print(customer_id)
+    print(equipments)
+    print("#################")
 
-    return jsonify({"equipemets": equipmet.serialize() for equipment in equipments}), 200
+    return jsonify({"equipments": [equipment.serialize() for equipment in equipments]}), 200
 
 @api.route('/employees/available', methods=['GET'])
 @jwt_required()
@@ -300,7 +305,16 @@ def get_all_equipments():
 
 
 @api.route('/vehicles', methods=['GET'])
+@jwt_required()
 def get_all_vehicles():
+    # IF OTHERS EMPLOYEE'S NEED TO GET ALL EQUIPMENTS REMOVE FROM THIS LINE TO NEXT COMMENTED LINE
+    current_user_email = get_jwt_identity()
+    user = User.query.filter_by(email=current_user_email).one_or_none()
+    
+    if not user or user.user_type.type != 'admin':
+        return jsonify({'msg': 'Only admins can access this endpoint'}), 401
+    # #####################################
+
     vehicles = Vehicle.query.all()
     serialized_vehicles = [v.serialize() for v in vehicles]
 

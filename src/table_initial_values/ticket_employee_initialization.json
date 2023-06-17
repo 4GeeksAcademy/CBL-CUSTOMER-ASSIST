@@ -1,0 +1,86 @@
+[
+    {
+        "employee_id": 3,
+        "ticket_id": 1,
+        "start_intervention_date": "2023-06-05 08:00:00",
+        "end_intervention_date": "2023-06-05 18:00:00"
+    },
+    {
+        "employee_id": 3,
+        "ticket_id": 2,
+        "start_intervention_date": "2023-06-06 07:00:00",
+        "end_intervention_date": "2023-06-06 21:00:00"
+    },
+    {
+        "employee_id": 2,
+        "ticket_id": 2,
+        "start_intervention_date": "2023-06-06 11:00:00",
+        "end_intervention_date": "2023-06-06 15:00:00"
+    },
+    {
+        "employee_id": 3,
+        "ticket_id": 3,
+        "start_intervention_date": "2023-06-09 07:00:00",
+        "end_intervention_date": "2023-06-09 14:00:00"
+    },
+    {
+        "employee_id": 2,
+        "ticket_id": 3,
+        "start_intervention_date": "2023-06-09 07:00:00",
+        "end_intervention_date": "2023-06-09 14:00:00"
+    },
+    {
+        "employee_id": 3,
+        "ticket_id": 4,
+        "start_intervention_date": "2023-06-12 07:00:00",
+        "end_intervention_date": "2023-06-12 16:00:00"
+    },
+    {
+        "employee_id": 2,
+        "ticket_id": 4,
+        "start_intervention_date": "2023-06-12 07:00:00",
+        "end_intervention_date": "2023-06-12 16:00:00"
+    },
+    {
+        "employee_id": 3,
+        "ticket_id": 5,
+        "start_intervention_date": "2023-06-13 08:00:00",
+        "end_intervention_date": "2023-06-13 18:00:00"
+    },
+    {
+        "employee_id": 2,
+        "ticket_id": 5,
+        "start_intervention_date": "2023-06-13 10:00:00",
+        "end_intervention_date": "2023-06-13 15:30:00"
+    },
+    {
+        "employee_id": 3,
+        "ticket_id": 6,
+        "start_intervention_date": "2023-06-14 08:00:00",
+        "end_intervention_date": "2023-06-14 17:00:00"
+    },
+    {
+        "employee_id": 3,
+        "ticket_id": 7,
+        "start_intervention_date": "2023-06-15 08:00:00",
+        "end_intervention_date": "2023-06-15 19:00:00"
+    },
+    {
+        "employee_id": 3,
+        "ticket_id": 8,
+        "start_intervention_date": "2023-06-16 07:00:00",
+        "end_intervention_date": "2023-06-15 17:00:00"
+    },
+    {
+        "employee_id": 3,
+        "ticket_id": 9,
+        "start_intervention_date": "2023-06-17 06:00:00",
+        "end_intervention_date": "2023-06-17 18:00:00"
+    },
+    {
+        "employee_id": 2,
+        "ticket_id": 10,
+        "start_intervention_date": "2023-06-17 06:00:00",
+        "end_intervention_date": "2023-06-17 18:00:00"
+    }
+]
