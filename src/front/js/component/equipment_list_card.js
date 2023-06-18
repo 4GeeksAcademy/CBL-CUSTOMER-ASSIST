@@ -1,6 +1,6 @@
-import React, { useState, useContext} from "react";
+import React, { useState, useContext } from "react";
 import { Link } from "react-router-dom";
-import { Context } from "../store/appContext"; 
+import { Context } from "../store/appContext";
 
 export const EquipmentListCard = (props) => {
     const { store, actions } = useContext(Context)
@@ -8,11 +8,23 @@ export const EquipmentListCard = (props) => {
     const myModal = document.querySelector('#modalTicketInfo');
 
     const handleAllTickets = () => {
-        const ticketIds = store.tickets.map(item => item.equipment.id)
-        const matchingTickets = ticketIds.filter(ticketId => ticketId === data.id);
-        actions.getCustomerEquipmentTickets(matchingTickets);
-        console.log(matchingTickets)
+
+        const filtered = store.tickets.filter(obj => {
+            return obj.equipment.id === data.id;
+            
+          });
+          actions.getCustomerEquipmentTickets(filtered)
+          console.log("CUSTOMER TICKETS")
+            console.log(store.customerEquipmentTickets)
+          //The code below was saving the number and not the ticket. Try save the whole object by matching the ids. There might be a match function.
+
+        // const ticketIds = store.tickets.map(item => item.equipment.id)
+        // ticketIds.filter(ticketId => {
+        //     if (ticketId === data.id) actions.getCustomerEquipmentTickets(item)});
+        // console.log(ticketIds)
     };
+
+    
 
     return (
         <div className="card w-100 mb-3">

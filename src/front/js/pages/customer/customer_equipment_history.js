@@ -14,10 +14,10 @@ export const CustomerEquipmentHistory = () => {
             </div>
             <div className="bd-content">
                 <div>
-                    {store.customerEquipmentTickets}
+                    
                     {Object.values(store.customerEquipmentTickets).length > 0 ? store.customerEquipmentTickets.map((item, i) => {
                         return <EquipmentHistoryCard key={i} data={item} />
-                    }) : <span>No equipment found..</span>}
+                    }) : <span>No information found..</span>}    
                 </div>
             </div>
         </main>
