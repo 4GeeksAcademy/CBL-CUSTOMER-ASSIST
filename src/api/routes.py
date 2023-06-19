@@ -21,6 +21,9 @@ def create_token():
 
     if not user:
         return jsonify({"msg": "Bad username or password"}), 401
+
+    if not user.active:
+        return jsonify({"msg": "User no longer avaliable"}), 401
         
     access_token = create_access_token(identity=user.email, expires_delta=datetime.timedelta(hours=1))
 
@@ -338,7 +341,7 @@ def set_available_vehicle():
     current_user_email = get_jwt_identity()
     user = User.query.filter_by(email=current_user_email).one_or_none()
     if not user or user.user_type.type != 'admin':
-        return jsonify({'msg': 'Only admins can access this endpoint'}), 401
+        return jsonify({'msg': 'Only admins can access this endpoint'}), 401 
     info = request.json
     vehicle_id = info.get('vehicle_id')
     availability = info.get('availability')
@@ -350,6 +353,39 @@ def set_available_vehicle():
     vehicle.available = availability
     db.session.commit()
     return jsonify({'msg':'Availability update is done!'}),200
+
+@api.route('/admin/edit/user', methods=['PUT'])
+@jwt_required()
+def admin_edit_user():
+    current_user_email = get_jwt_identity()
+    user = User.query.filter_by(email=current_user_email).one_or_none()
+    
+    if not user or user.user_type.type != 'admin':
+        return jsonify({'msg': 'Only admins can access this endpoint'}), 400
+
+    data = request.json
+
+    user_id = data.get('user_id')
+    if user_id is None:
+        return jsonify({'msg' : 'No info to finsih request'}), 400
+    
+    if user_id == user.id:
+        return jsonify({'msg' : 'You can not set yourself to inactive'})
+
+    user_active = User.query.get(user_id)
+
+    if not user_active:
+        return jsonify({'msg' : 'No user with that ID'}), 400
+    
+    if user_active.active:
+        user_active.active = False
+        db.session.commit()
+        print("User is inactive")
+    
+    return jsonify({'msg' : 'User is inactive'}), 200
+
+
+    
 
 
 
