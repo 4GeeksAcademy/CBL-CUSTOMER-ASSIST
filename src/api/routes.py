@@ -332,6 +332,25 @@ def get_available_vehicles():
 
     return jsonify(serialized_vehicle), 200
     
+@api.route('/admin/vehicles/available', methods=['PUT'])
+@jwt_required()
+def set_available_vehicle():
+    current_user_email = get_jwt_identity()
+    user = User.query.filter_by(email=current_user_email).one_or_none()
+    if not user or user.user_type.type != 'admin':
+        return jsonify({'msg': 'Only admins can access this endpoint'}), 401
+    info = request.json
+    vehicle_id = info.get('vehicle_id')
+    availability = info.get('availability')
+    if not vehicle_id or availability is None:
+        return jsonify({'msg':'Not enough info to update the vehicle availability'}),400
+    vehicle = Vehicle.query.get(vehicle_id)
+    if not vehicle:
+        return jsonify({'msg':'not vehicle with this id found'}),400
+    vehicle.available = availability
+    db.session.commit()
+    return jsonify({'msg':'Availability update is done!'}),200
+
 
 
 
