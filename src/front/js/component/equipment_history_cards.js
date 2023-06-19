@@ -7,7 +7,7 @@ export const EquipmentHistoryCard = (props) => {
 
     const data = props.data;
     const myModal = document.querySelector('#modalTicketInfo');
-
+ 
     return (
         <div className="card w-100 mb-3">
             <div className="card-body d-flex justify-content-between">
@@ -21,24 +21,22 @@ export const EquipmentHistoryCard = (props) => {
                 </div>
             </div>
             <div className="d-flex justify-content-center btn-group" role="group">
-                <div data-bs-target="#exampleModal" data-bs-toggle="modal" className=" border-end card-footer text-body-secondary d-flex justify-content-center btn btn-secondary border border-0 border-top" onClick={
+                <div data-bs-target={"#exampleModal" + data.id} data-bs-toggle="modal" className=" border-end card-footer text-body-secondary d-flex justify-content-center btn btn-secondary border border-0 border-top" onClick={
                    () => setButton(true)
                 }>
                     <h6 className="card-subtitle my-1 text-body-secondary">View Description</h6>
                 </div>
-                <div data-bs-target="#exampleModal" data-bs-toggle="modal" className="card-footer text-body-secondary d-flex justify-content-center btn btn-secondary border border-0 border-top" onClick={
+                <div data-bs-target={"#exampleModal" + data.id} data-bs-toggle="modal" className="card-footer text-body-secondary d-flex justify-content-center btn btn-secondary border border-0 border-top" onClick={
                     () => setButton(false)
                 }>
                     <h6 className="card-subtitle my-1 text-body-secondary">View Solution</h6>
                 </div>
             </div>
-
-
-            <div className="modal fade" id="exampleModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div className="modal fade" id={"exampleModal" + data.id} tabIndex="-1" aria-labelledby={"exampleModalLabel" + data.id} aria-hidden="true">
                 <div className="modal-dialog">
                     <div className="modal-content">
                         <div className="modal-header">
-                            <h1 className="modal-title fs-5" id="exampleModalLabel">{button ? "Description": "Solution"}</h1>
+                            <h1 className="modal-title fs-5" id={"exampleModalLabel" + data.id}>{button ? "Description": "Solution"}</h1>
                             <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div className="modal-body">

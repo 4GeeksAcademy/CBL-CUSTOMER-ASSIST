@@ -92,7 +92,7 @@ class Ticket(db.Model):
     customer_id = db.Column(db.Integer, db.ForeignKey('customer.id'), nullable=False)
     equipment_id = db.Column(db.Integer, db.ForeignKey('equipment.id'), nullable=False)
     vehicle_id = db.Column(db.Integer, db.ForeignKey('vehicle.id'), nullable=True)
-    ticket_knowledge = db.relationship('TicketKnowledge', backref='ticket', uselist=False)
+    ticket_knowledge = db.relationship('TicketKnowledge', backref='ticket')
     employees = db.relationship('TicketEmployeeRelation', backref='ticket', uselist=False)
     observations = db.relationship('EmployeeTicketObservation', backref='ticket', uselist=False)
 
@@ -109,11 +109,34 @@ class Ticket(db.Model):
             "customer_id": self.customer_id,
             "company_name": self.customer.company_name
         }
+
+    def serialize_cus(self):
+        print(self.ticket_knowledge)
+        return {
+            "id": self.id,
+            "open_ticket_time": self.open_ticket_time,
+            "equipment": self.equipment.serialize(),
+            "status": self.status,
+            "intervention_type": self.intervention_type,
+            "subject": self.subject,
+            "description": self.description,
+            "customer_id": self.customer_id,
+            "company_name": self.customer.company_name,
+            "knowledge" : [knowledge.serialize() for knowledge in self.ticket_knowledge] if self.ticket_knowledge else []
+        }
+    
     
 class TicketKnowledge(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     knowledge_id = db.Column(db.Integer, db.ForeignKey('knowledge.id'), nullable=True)
     ticket_id = db.Column(db.Integer, db.ForeignKey('ticket.id'), nullable=True)
+
+    def serialize(self):
+        knowledge = Knowledge.query.get(self.knowledge_id)
+        return {
+            "id": self.id,
+            "knowledge" : knowledge.serialize_full() if knowledge else None
+        }
 
 class Knowledge(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -128,6 +151,18 @@ class Knowledge(db.Model):
             "malfunction": self.malfunction.description,
             "solution": self.solution.description,
             "category": self.category.description
+        }
+    
+    def serialize_full(self):
+
+        solution = Solution.query.get(self.solution_id)
+        category = Category.query.get(self.category_id)
+        malfunction = Malfunction.query.get(self.malfunction_id)
+        return {
+            "id": self.id,
+            "solution" : solution.serialize() if solution else None, 
+            "category" : category.serialize()  if category else None, 
+            "malfunction" : malfunction.serialize() if malfunction else None
         }
 
 class Equipment(db.Model):

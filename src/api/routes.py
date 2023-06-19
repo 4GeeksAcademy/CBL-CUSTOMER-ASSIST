@@ -111,7 +111,7 @@ def get_tickets():
         return jsonify({"msg": "No tickets for this customer!"}), 400
 
     response_body = {
-        "tickets": [ticket.serialize() for ticket in tickets]
+        "tickets": [ticket.serialize_cus() for ticket in tickets]
     }
     return jsonify(response_body), 200
 
