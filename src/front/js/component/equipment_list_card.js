@@ -15,16 +15,9 @@ export const EquipmentListCard = (props) => {
           });
           actions.getCustomerEquipmentTickets(filtered)
           console.log("CUSTOMER TICKETS")
-            console.log(store.customerEquipmentTickets)
-          //The code below was saving the number and not the ticket. Try save the whole object by matching the ids. There might be a match function.
-
-        // const ticketIds = store.tickets.map(item => item.equipment.id)
-        // ticketIds.filter(ticketId => {
-        //     if (ticketId === data.id) actions.getCustomerEquipmentTickets(item)});
-        // console.log(ticketIds)
+        console.log(store.customerEquipmentTickets)
     };
-
-    
+   
 
     return (
         <div className="card w-100 mb-3">

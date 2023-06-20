@@ -17,6 +17,7 @@ export const CustomerDashboard = () => {
                     .map((item, i) => {
                     return <TicketSmall key={i} data={item}/>
                 })}
+            
             </div>
         </main>
     );
