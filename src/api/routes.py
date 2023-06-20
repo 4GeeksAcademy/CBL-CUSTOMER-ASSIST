@@ -21,6 +21,9 @@ def create_token():
 
     if not user:
         return jsonify({"msg": "Bad username or password"}), 401
+
+    if not user.active:
+        return jsonify({"msg": "User no longer avaliable"}), 401
         
     access_token = create_access_token(identity=user.email, expires_delta=datetime.timedelta(hours=1))
 
@@ -231,13 +234,13 @@ def assign_ticket():
 def create_equipment():
     current_user_email = get_jwt_identity()
     user = User.query.filter_by(email=current_user_email).one_or_none()
+    
     if not user or user.user_type.type != 'admin':
         return jsonify({'msg': 'Only admins can create equipment profiles'}), 402
 
     data = request.json
     if not data:
         return jsonify({'msg': 'No data provided'}), 400
-    
 
     equipment = Equipment()
     equipment.serial_number = data.get('serial_number')
@@ -249,22 +252,143 @@ def create_equipment():
 
     return jsonify({'msg': 'Equipment created'}), 201
 
+  
+@api.route('/admin/equipment/<int:customer_id>', methods=['GET'])
+@jwt_required()
+def get_equipment_by_customer_id(customer_id):
+    current_user_email = get_jwt_identity()
+    user = User.query.filter_by(email=current_user_email).one_or_none()
+    
+    if not user or user.user_type.type != 'admin':
+        return jsonify({'msg': 'Only admins can access this endpoint'}), 400
+    
+    customer = Customer.query.get(customer_id)
+
+    
+    if not customer:
+        return jsonify({'msg': 'customer_id parameter is missing'}), 400
+    
+    equipments = Equipment.query.filter_by(customer_id=customer_id).all()
+    print("#################")
+    print(customer_id)
+    print(equipments)
+    print("#################")
+
+    return jsonify({"equipments": [equipment.serialize() for equipment in equipments]}), 200
+
 @api.route('/employees/available', methods=['GET'])
 @jwt_required()
 def get_available_employees():
     current_user_email = get_jwt_identity()
     user = User.query.filter_by(email=current_user_email).one_or_none()
+    
     if not user or user.user_type.type != 'admin':
         return jsonify({'msg': 'Only admins can access this endpoint'}), 401
-
+    
     available_employees = Employee.query.filter_by(available=True).all()
     serialized_employees = [e.serialize() for e in available_employees]
 
     return jsonify(serialized_employees), 200
 
+@api.route('/admin/equipments', methods=['GET'])
+@jwt_required()
+def get_all_equipments():
+    # IF OTHERS EMPLOYEE'S NEED TO GET ALL EQUIPMENTS REMOVE FROM THIS LINE TO NEXT COMMENTED LINE
+    current_user_email = get_jwt_identity()
+    user = User.query.filter_by(email=current_user_email).one_or_none()
+    
+    if not user or user.user_type.type != 'admin':
+        return jsonify({'msg': 'Only admins can access this endpoint'}), 401
+    # #####################################
+    
+    equipments = Equipment.query.all()
+    serialized_equipments = [e.serialize() for e in equipments]
+
+    return jsonify(serialized_equipments), 200
+
+
 @api.route('/vehicles', methods=['GET'])
+@jwt_required()
 def get_all_vehicles():
+    # IF OTHERS EMPLOYEE'S NEED TO GET ALL EQUIPMENTS REMOVE FROM THIS LINE TO NEXT COMMENTED LINE
+    current_user_email = get_jwt_identity()
+    user = User.query.filter_by(email=current_user_email).one_or_none()
+    
+    if not user or user.user_type.type != 'admin':
+        return jsonify({'msg': 'Only admins can access this endpoint'}), 401
+    # #####################################
+
     vehicles = Vehicle.query.all()
     serialized_vehicles = [v.serialize() for v in vehicles]
 
     return jsonify(serialized_vehicles), 200
+
+@api.route('/admin/vehicles/available', methods=['GET'])
+@jwt_required()
+def get_available_vehicles():
+    current_user_email = get_jwt_identity()
+    user = User.query.filter_by(email=current_user_email).one_or_none()
+    if not user or user.user_type.type != 'admin':
+        return jsonify({'msg': 'Only admins can access this endpoint'}), 401
+    available_vehicles = Vehicle.query.filter_by(available=True).all()
+    serialized_vehicle = [e.serialize() for e in available_vehicles]
+
+    return jsonify(serialized_vehicle), 200
+    
+@api.route('/admin/vehicles/available', methods=['PUT'])
+@jwt_required()
+def set_available_vehicle():
+    current_user_email = get_jwt_identity()
+    user = User.query.filter_by(email=current_user_email).one_or_none()
+    if not user or user.user_type.type != 'admin':
+        return jsonify({'msg': 'Only admins can access this endpoint'}), 401 
+    info = request.json
+    vehicle_id = info.get('vehicle_id')
+    availability = info.get('availability')
+    if not vehicle_id or availability is None:
+        return jsonify({'msg':'Not enough info to update the vehicle availability'}),400
+    vehicle = Vehicle.query.get(vehicle_id)
+    if not vehicle:
+        return jsonify({'msg':'not vehicle with this id found'}),400
+    vehicle.available = availability
+    db.session.commit()
+    return jsonify({'msg':'Availability update is done!'}),200
+
+@api.route('/admin/edit/user', methods=['PUT'])
+@jwt_required()
+def admin_edit_user():
+    current_user_email = get_jwt_identity()
+    user = User.query.filter_by(email=current_user_email).one_or_none()
+    
+    if not user or user.user_type.type != 'admin':
+        return jsonify({'msg': 'Only admins can access this endpoint'}), 400
+
+    data = request.json
+
+    user_id = data.get('user_id')
+    if user_id is None:
+        return jsonify({'msg' : 'No info to fullfill the request'}), 400
+    
+    if user_id == user.id:
+        return jsonify({'msg' : 'You can not set yourself to inactive'})
+
+    user_active = User.query.get(user_id)
+
+    if not user_active:
+        return jsonify({'msg' : 'No user with that ID'}), 400
+    
+    if user_active.active:
+        user_active.active = False
+        db.session.commit()
+        print("User is inactive")
+        return jsonify({'msg' : 'User set to inactive'}), 200
+    
+    return jsonify({'msg' : 'User already set to inactive'}), 200
+
+
+    
+
+
+
+
+

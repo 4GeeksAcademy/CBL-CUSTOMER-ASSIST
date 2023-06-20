@@ -221,6 +221,7 @@ class Category(db.Model):
 class Vehicle(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     license_plate = db.Column(db.String(20))
+    available = db.Column(db.Boolean, default=True, nullable=False)
     model = db.Column(db.String(50), nullable=True)
     maker = db.Column(db.String(50), nullable=True)
     tickets = db.relationship('Ticket', backref='vehicle', uselist=False)

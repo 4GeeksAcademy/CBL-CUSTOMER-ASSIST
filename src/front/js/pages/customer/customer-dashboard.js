@@ -3,7 +3,7 @@ import { Context } from "../../store/appContext";
 import { TicketSmall } from "../../component/ticket_small";
 
 export const CustomerDashboard = () => {
-    const { store, actions } = useContext(Context)
+    const { store, actions } = useContext(Context);
 
     return (
         <main className="bd-main order-1">
@@ -12,8 +12,9 @@ export const CustomerDashboard = () => {
                 <h3>Tickets:</h3>
             </div>
             <div className="bd-content">
-                {store.tickets.map((item, i) => {
-                    {console.log(store.tickets)}
+                {store.tickets
+                    .filter(ticket => ticket.status === 'Opened')
+                    .map((item, i) => {
                     return <TicketSmall key={i} data={item}/>
                 })}
             
