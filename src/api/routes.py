@@ -367,7 +367,7 @@ def admin_edit_user():
 
     user_id = data.get('user_id')
     if user_id is None:
-        return jsonify({'msg' : 'No info to finsih request'}), 400
+        return jsonify({'msg' : 'No info to fullfill the request'}), 400
     
     if user_id == user.id:
         return jsonify({'msg' : 'You can not set yourself to inactive'})
@@ -381,8 +381,9 @@ def admin_edit_user():
         user_active.active = False
         db.session.commit()
         print("User is inactive")
+        return jsonify({'msg' : 'User set to inactive'}), 200
     
-    return jsonify({'msg' : 'User is inactive'}), 200
+    return jsonify({'msg' : 'User already set to inactive'}), 200
 
 
     
