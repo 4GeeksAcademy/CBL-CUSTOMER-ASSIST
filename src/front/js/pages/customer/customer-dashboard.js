@@ -13,8 +13,10 @@ export const CustomerDashboard = () => {
             </div>
             <div className="bd-content">
                 {store.tickets.map((item, i) => {
+                    {console.log(store.tickets)}
                     return <TicketSmall key={i} data={item}/>
                 })}
+            
             </div>
         </main>
     );
