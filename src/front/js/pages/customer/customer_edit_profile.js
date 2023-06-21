@@ -47,6 +47,7 @@ export const CustomerEditProfile = () => {
             const response = await actions.updateUserProfile(newData);
             if(response[0] === 200) {
                 await actions.updateUserProfileLocally(newData);
+                actions.userToastAlert("Profile", "Profile updated successfully!");
                 navigate('/customer/dashboard');
                 return true;
             }
