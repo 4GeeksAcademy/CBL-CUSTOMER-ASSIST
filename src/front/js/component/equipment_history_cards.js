@@ -23,8 +23,8 @@ export const EquipmentHistoryCard = (props) => {
             </div>
             <div className="d-flex justify-content-center btn-group" role="group">
                 <div data-bs-target={"#exampleModal" + data.id} data-bs-toggle="modal" className=" border-end card-footer text-body-secondary d-flex justify-content-center btn btn-secondary border border-0 border-top" onClick={
-                   () => setButton(true)
-                }>
+                   () => setButton(true) 
+                }> 
                     <h6 className="card-subtitle my-1 text-body-secondary">View Description</h6>
                 </div>
                 <div data-bs-target={"#exampleModal" + data.id} data-bs-toggle="modal" className="card-footer text-body-secondary d-flex justify-content-center btn btn-secondary border border-0 border-top" onClick={
