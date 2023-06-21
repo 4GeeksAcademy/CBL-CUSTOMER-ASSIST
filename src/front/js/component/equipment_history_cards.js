@@ -7,15 +7,10 @@ export const EquipmentHistoryCard = (props) => {
 
     const data = props.data;
     const myModal = document.querySelector('#modalTicketInfo');
-    const solutions = Object.keys(data.knowledge).map(item => data.knowledge[item].knowledge.solution.description)
+    const solutions = Object.keys(data.knowledge).map(item => data.knowledge[item].knowledge)
+    const malfunctions = Object.keys(data.knowledge).map(item => data.knowledge[item].knowledge.malfunction.description)
     return (
         <div className="card w-100 mb-3">
-            {console.log(" TICKET")}
-            {console.log(data)}
-            {console.log(" Knowledge ")}
-            {console.log(solutions.map((item) => item))}; 
-            
-            
             <div className="card-body d-flex justify-content-between">
                 <div className="text-start">
                     <h5 className="card-text">Ticket ID: {data.id}</h5>
@@ -28,8 +23,8 @@ export const EquipmentHistoryCard = (props) => {
             </div>
             <div className="d-flex justify-content-center btn-group" role="group">
                 <div data-bs-target={"#exampleModal" + data.id} data-bs-toggle="modal" className=" border-end card-footer text-body-secondary d-flex justify-content-center btn btn-secondary border border-0 border-top" onClick={
-                   () => setButton(true)
-                }>
+                   () => setButton(true) 
+                }> 
                     <h6 className="card-subtitle my-1 text-body-secondary">View Description</h6>
                 </div>
                 <div data-bs-target={"#exampleModal" + data.id} data-bs-toggle="modal" className="card-footer text-body-secondary d-flex justify-content-center btn btn-secondary border border-0 border-top" onClick={
@@ -42,15 +37,23 @@ export const EquipmentHistoryCard = (props) => {
                 <div className="modal-dialog modal-fullscreen">
                     <div className="modal-content">
                         <div className="modal-header">
-                            <h1 className="modal-title fs-5" id={"exampleModalLabel" + data.id}>{button ? "Description": "Solution"}</h1>
+                            <h1 className="modal-title fs-5" id={"exampleModalLabel" + data.id}>{button ? "Description": "Malfunction/Solution"}</h1>
                             <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div className="modal-body">
                             {button ? data.description : solutions.map((item, index) => {
                                return( 
                                <React.Fragment key={index}>
-                                    <h3>{"Solution " + (index +1)}</h3> 
-                                    {item}
+                                    <div className="container d-flex justify-content-between">
+                                        <div>
+                                            <h3>{"Malfunction " + (index +1)}</h3> 
+                                            <div>{item.malfunction.description}</div>
+                                        </div>
+                                        <div>
+                                            <h3>{"Solution " + (index +1)}</h3> 
+                                            <div>{item.solution.description}</div>     
+                                        </div>
+                                    </div>
                                     <br />
                                     <br />
                                 </React.Fragment>
