@@ -1,17 +1,13 @@
-import React from "react";
+import React, {useContext} from "react";
+import { Context } from "../store/appContext";
 
 export const TicketSmall = (props) => {
+    const {actions} = useContext(Context);
     const data = props.data;
-    const myModal = document.querySelector('#modalTicketInfo');
+
 
     const handleModal = () => {
-        let modalTitle = document.querySelector('.modal-title');
-        let modalBody = document.querySelector('.modal-body');
-
-        modalTitle.innerHTML = data.subject;
-        modalBody.innerHTML = data.description;
-
-        new bootstrap.Modal(myModal).toggle();
+        actions.updateShowModal(data.subject, data.description);
     }
 
     const employees = [{
