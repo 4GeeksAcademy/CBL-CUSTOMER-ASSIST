@@ -9,7 +9,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 			tickets: [],
 			userProfile: {user_info : {}, customer_info : {}, employee_info : {}},
 			customerEquipmentTickets: [],
-			user: null
+			user: null,
+			liveToastHeader: "CBL Desk",
+			liveToastBody: null
 		},
 		actions: {
 			syncTokenFromSessionStorage: () => {
@@ -265,8 +267,18 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.log("There has been an error login in!", error)
 				}
 			},
+
 			getCustomerEquipmentTickets: (data) => {
 				setStore({customerEquipmentTickets: data})
+			},
+
+			setLiveToastValues: (header, body) => {
+				setStore(
+					{
+						liveToastHeader: header,
+						liveToastBody: body
+					}
+				);
 			}
 		}
 	};
