@@ -10,10 +10,15 @@ export const CustomerCreateTicket = () => {
     const [interventionType, setInterventionType] = useState(true)
     const navigate = useNavigate();
 
+    const liveToast = document.getElementById('liveToast');
+    const toastBootstrap = bootstrap.Toast.getOrCreateInstance(liveToast);
+
     const createTicket = async () => {
         const response = await actions.customerCreateTicket(equipmentID, interventionType, subject, description);
         if (response) {
-            alert("Ticket created!");
+            actions.setLiveToastValues("New Customer Ticket", "Ticket created successfully!");
+            toastBootstrap.show();
+            // alert("Ticket created!");
             navigate("/customer/dashboard");
         }
         if (!response) {

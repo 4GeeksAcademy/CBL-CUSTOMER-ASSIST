@@ -52,9 +52,10 @@ export const EmployeeEditProfile = () => {
                 {/* <h3>Tickets:</h3> */}
             </div>
             <div className="bd-content">
+            <form onSubmit={e => e.preventDefault()} noValidate>
 
-                {/* USER INFO */}
-                <h5 className="mt-5 mb-0">User info</h5>
+                {/* AUTHENTICATION INFO */}
+                <h5 className="mt-1 mb-0">Authentication Info</h5>
                 <hr className="mt-0"></hr>
                 <div className="row g-2">
 
@@ -81,6 +82,8 @@ export const EmployeeEditProfile = () => {
                     </div>
 
                     {/* USER TYPE */}
+                    { userInfo.user_type !== 'admin'
+                    ?
                     <div className="col-12 col-md-6">
                         <div className="form-floating">
                             <select className="form-select" id="userTypeSelect" disabled={!editProfile}>
@@ -92,10 +95,11 @@ export const EmployeeEditProfile = () => {
                             <label htmlFor="userTypeSelect">User type</label>
                         </div>
                     </div>
+                    : null}
                 </div>
 
-                {/* EMPLOYEE INFO */}
-                <h5 className="mt-5 mb-0">Employee info</h5>
+                {/* PERSONAL INFO */}
+                <h5 className="mt-5 mb-0">Personal Info</h5>
                 <hr className="mt-0"></hr>
                 <div className="row g-2">
 
@@ -105,7 +109,8 @@ export const EmployeeEditProfile = () => {
                             <input type="text" className="form-control" id="firstNameInput" placeholder="your first name"
                             disabled={!editProfile}
                             value={updateProfile.employee_info.hasOwnProperty('first_name') ? updateProfile.employee_info.first_name : employeeInfo.first_name}
-                            onChange={handleInput('employee_info', 'first_name')}/>
+                            onChange={handleInput('employee_info', 'first_name')}
+                            required/>
                             <label htmlFor="firstNameInput">First Name</label>
                         </div>
                     </div>
@@ -116,7 +121,8 @@ export const EmployeeEditProfile = () => {
                             <input type="text" className="form-control" id="lastNameInput" placeholder="your last name"
                             disabled={!editProfile}
                             value={updateProfile.employee_info.hasOwnProperty('last_name') ? updateProfile.employee_info.last_name : employeeInfo.last_name}
-                            onChange={handleInput('employee_info', 'last_name')}/>
+                            onChange={handleInput('employee_info', 'last_name')}
+                            required/>
                             <label htmlFor="lastNameInput">Last Name</label>
                         </div>
                     </div>
@@ -132,10 +138,11 @@ export const EmployeeEditProfile = () => {
                             <label className="form-check-label" htmlFor="flexCheckDefault">Edit Profile</label>
                         </div>
                         <div className="mt-2 ">
-                            <button disabled={!editProfile} className="btn btn-primary" style={{ width: "100px" }} onClick={() => handleUpdateProfile()}>Submit</button>
+                            <button disabled={!editProfile} className="btn btn-primary" style={{ width: "100px" }} onClick={() => handleUpdateProfile()}>Save</button>
                         </div>
                     </div>
                 </div>
+            </form>
             </div>
         </main>
     );
