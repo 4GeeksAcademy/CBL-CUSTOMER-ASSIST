@@ -272,13 +272,18 @@ const getState = ({ getStore, getActions, setStore }) => {
 				setStore({customerEquipmentTickets: data})
 			},
 
-			setLiveToastValues: (header, body) => {
+			userToastAlert: (header, body) => {
 				setStore(
 					{
 						liveToastHeader: header,
 						liveToastBody: body
 					}
 				);
+
+				const liveToast = document.getElementById('liveToast');
+				const toastBootstrap = bootstrap.Toast.getOrCreateInstance(liveToast);
+
+				toastBootstrap.show();
 			}
 		}
 	};
