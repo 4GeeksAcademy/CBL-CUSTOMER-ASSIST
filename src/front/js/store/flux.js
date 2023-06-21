@@ -10,7 +10,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 			userProfile: {user_info : {}, customer_info : {}, employee_info : {}},
 			customerEquipmentTickets: [],
 			user: null,
-			liveToastHeader: "CBL Desk",
+			modalTitle: null,
+			modalBody: null,
+			liveToastHeader: null,
 			liveToastBody: null
 		},
 		actions: {
@@ -284,6 +286,19 @@ const getState = ({ getStore, getActions, setStore }) => {
 				const toastBootstrap = bootstrap.Toast.getOrCreateInstance(liveToast);
 
 				toastBootstrap.show();
+			},
+
+			updateShowModal: (title, body) => {
+				const myModal = document.querySelector('#modalTicketInfo');
+
+				setStore(
+					{
+						modalTitle: title,
+						modalBody: body
+					}
+				);
+
+				new bootstrap.Modal(myModal).toggle();
 			}
 		}
 	};
