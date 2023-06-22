@@ -291,9 +291,11 @@ def get_all_equipments():
     # #####################################
     
     equipments = Equipment.query.all()
-    serialized_equipments = [e.serialize() for e in equipments]
+    response_body = {
+        "equipments": [equipment.serialize() for equipment in equipments]
+    }
 
-    return jsonify(serialized_equipments), 200
+    return jsonify(response_body), 200
 
 
 @api.route('/vehicles', methods=['GET'])
@@ -373,6 +375,72 @@ def admin_edit_user():
         return jsonify({'msg' : 'User set to inactive'}), 200
     
     return jsonify({'msg' : 'User already set to inactive'}), 200
+
+@api.route('/admin/create/ticket', methods=['POST'])
+@jwt_required()
+def admin_create_ticket():
+    try:
+        current_user_email = get_jwt_identity()
+        user = User.query.filter_by(email=current_user_email).one_or_none()
+    
+        if not user or user.user_type.type != 'admin':
+            return jsonify({'msg': 'Only admins can access this endpoint'}), 400
+
+        data = request.json
+
+        print("############################")
+        print(data)
+        print("############################")
+
+        equipment_id = data["equipment_id"]
+        intervention_type = data["intervention_type"]
+        subject = data['subject']
+        description = data["description"]
+        customer_id = data["customer_id"]
+
+        ticket = Ticket()
+        ticket.customer_id = customer_id
+        ticket.equipment_id = equipment_id
+        ticket.intervention_type = intervention_type
+        ticket.subject = subject
+        ticket.description = description
+        ticket.status = "Opened"
+        ticket.open_ticket_time = datetime.datetime.now()
+        db.session.add(ticket)
+        # db.session.flush()
+
+        # malfunction = Malfunction()
+        # malfunction.description = description
+        # db.session.add(malfunction)
+        # db.session.flush()
+
+        # knowledge = Knowledge()
+        # knowledge.ticket_id = ticket.id
+        # knowledge.malfunction_id = malfunction.id
+        # db.session.add(knowledge)
+        # db.session.flush()
+        db.session.commit()
+
+        return jsonify({"msg": "Ticket created successfully"}), 201
+    except Exception as e:
+        print(e.args)
+        return jsonify({"msg": "Exception"}), 400
+    
+@api.route('/admin/user/list', methods=['GET'])
+@jwt_required()
+def get_user_list():
+    current_user_email = get_jwt_identity()
+    user = User.query.filter_by(email=current_user_email).one_or_none()
+    
+    if not user or user.user_type.type != 'admin':
+        return jsonify({'msg': 'Only admins can access this endpoint'}), 401
+
+    users = User.query.all()
+    response_body = {
+        "users": [user.serialize_admin() for user in users]
+    }
+    
+    return jsonify(response_body), 200
 
 
     

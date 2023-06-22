@@ -22,6 +22,21 @@ class User(db.Model):
             'customer_id': self.customer_id,
             'employee_id': self.employee_id
         }
+    
+    def serialize_admin(self):
+         
+        data = {
+            'id': self.id,
+            'email': self.email,
+            'active': self.active,
+            'user_type_id': self.user_type_id,
+            'user_type': self.user_type.type,
+            'customer_id': self.customer_id,
+            'employee_id': self.employee_id
+        }
+        if self.customer :
+            data ["company_name"] = self.customer.company_name 
+        return data
 
 class UserType(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -178,6 +193,7 @@ class Equipment(db.Model):
 
     def serialize(self):
         return {
+            "customer_id" : self.customer_id,
             "id": self.id,
             "serial_number": self.serial_number,
             "model": self.model,

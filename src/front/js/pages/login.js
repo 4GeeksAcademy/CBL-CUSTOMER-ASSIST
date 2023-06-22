@@ -2,7 +2,6 @@ import React, { useContext, useState } from "react";
 import { Context } from "../store/appContext";
 import { useNavigate } from "react-router-dom";
 
-
 export const Login = () => {
     const { store, actions } = useContext(Context);
     const [email, setEmail] = useState("");
@@ -20,6 +19,7 @@ export const Login = () => {
                 navigate("/customer/dashboard");
             }
             if (store.userProfile.user_info.user_type === "admin") {
+                await actions.getAdminEquipment();
                 await actions.getAdminTickets();
                 navigate("/admin/dashboard");
             }
