@@ -100,6 +100,28 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 
 				getActions().sessionStorageAndSetStoreDataSave('equipmentList', data.equipments);
+				// needs to have error handle
+			},
+
+			getAdminEquipment: async () => {
+				console.log('action: getAdminEquipment');
+				const token = getStore().token;
+				const opts = {
+					method: "GET",
+					headers: {
+						"Authorization": "Bearer " + token
+					}
+				}
+				const response = await fetch(process.env.BACKEND_URL + "api/admin/equipments", opts);
+				const data = await response.json();
+
+				if (response.status !== 200) {
+					console.log(response.status, data.msg);
+					return [response.status, data.msg];
+				}
+
+				getActions().sessionStorageAndSetStoreDataSave('equipmentList', data.equipments);
+				// needs to have error handle
 			},
 
 			customerCreateTicket: async (equipmentId, interventionType, subject, description) => {

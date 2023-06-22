@@ -15,7 +15,7 @@ import { AdminTickets } from "./pages/admin/admin_tickets";
 import { EmployeeEditProfile } from "./pages/common/employee_edit_profile";
 // import { Home } from "./pages/home";
 // import { Single } from "./pages/single";
-// import { AdminCreateTicket } from "./pages/admin/admin-create-ticket";
+import { AdminCreateTicket } from "./pages/admin/admin-create-ticket";
 // import { CreateAdmin } from "./pages/admin/admin-create";
 // import { CreateTech } from "./pages/technician/tech-create";
 // import { CreateCustomer } from "./pages/customer/customer-create.js";
@@ -50,7 +50,7 @@ const Layout = () => {
                         <Route element={<CustomerEquipmentHistory />} path="/customer/equipment/history" />
                         <Route element={<h1>Not found!</h1>} path="*" />
                         {/* <Route element={<Single />} path="/single/:theid" /> */}
-                        {/* <Route element={<AdminCreateTicket />} path="/admin/create/ticket" /> */}
+                        <Route element={<AdminCreateTicket />} path="/admin/create/ticket" />
                         {/* <Route element={<CreateAdmin/>} path="/admin/create" /> */}
                         {/* <Route element={<CreateTech/>} path="/tech/create"/> */}
                         {/* <Route element={<CreateCustomer/>} path="/customer/create"/> */}
