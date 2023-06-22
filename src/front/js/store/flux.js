@@ -120,16 +120,23 @@ const getState = ({ getStore, getActions, setStore }) => {
 				};
 				try {
 					const response = await fetch(process.env.BACKEND_URL + "api/customer/create/ticket", opts);
+					const data = await response.json();
+					
 					if (response.status !== 201) {
 						alert("There has been some error!");
 						return false;
 					}
-
-					const data = await response.json();
+					
+					const newTickets = [];
+					Object.assign(newTickets, getStore().tickets);
+					newTickets.push(data.ticket);
+					getActions().sessionStorageAndSetStoreDataSave('tickets', newTickets);
+					
 					return true;
 				}
 				catch (error) {
-					console.log("There has been an error login in!")
+					console.log("error: ", error);
+					console.log("There has been an error login in!");
 				}
 			},
 

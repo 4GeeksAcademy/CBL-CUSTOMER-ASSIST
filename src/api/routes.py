@@ -42,10 +42,6 @@ def create_ticket():
 
         data = request.json
 
-        print("############################")
-        print(data)
-        print("############################")
-
         equipment_id = data["equipment_id"]
         intervention_type = data["intervention_type"]
         subject = data['subject']
@@ -60,21 +56,14 @@ def create_ticket():
         ticket.status = "Opened"
         ticket.open_ticket_time = datetime.datetime.now()
         db.session.add(ticket)
-        # db.session.flush()
 
-        # malfunction = Malfunction()
-        # malfunction.description = description
-        # db.session.add(malfunction)
-        # db.session.flush()
-
-        # knowledge = Knowledge()
-        # knowledge.ticket_id = ticket.id
-        # knowledge.malfunction_id = malfunction.id
-        # db.session.add(knowledge)
-        # db.session.flush()
         db.session.commit()
 
-        return jsonify({"msg": "Ticket created successfully"}), 201
+        new_ticket = Ticket.query.get(ticket.id)
+
+        response_ticket = new_ticket.serialize_cus()
+
+        return jsonify({"msg": "Ticket created successfully", "ticket": response_ticket}), 201
     except Exception as e:
         print(e.args)
         return jsonify({"msg": "Exception"}), 400
@@ -190,7 +179,7 @@ def get_tickets_not_closed():
         return jsonify({"msg": "No tickets to manage"}), 400
 
     response_body = {
-        "tickets": [ticket.serialize() for ticket in tickets]
+        "tickets": [ticket.serialize_cus() for ticket in tickets]
     }
     return jsonify(response_body), 200
 
