@@ -477,5 +477,43 @@ def update_user(user_id):
     except Exception as e:
         return jsonify({"msg": "Something went wrong when updating user"}), 400
 
+@api.route('/admin/tickets/<int:ticket_id>', methods=['GET', 'PUT'])
+@jwt_required()
+def manage_ticket(ticket_id):
+    current_user_email = get_jwt_identity()
+    current_user = User.query.filter_by(email=current_user_email).one_or_none()
 
+    if not current_user:
+        return jsonify({"msg": "User not found"}), 401
+
+    if current_user.user_type.type != 'admin':
+        return jsonify({"msg": "Unauthorized. Only admins have access to this endpoint"}), 404
+
+    ticket = Ticket.query.get(ticket_id)
+
+    if not ticket:
+        return jsonify({"msg": "Ticket not found"}), 404
+
+    if request.method == 'GET':
+        return jsonify(ticket.serialize()), 200
+
+    elif request.method == 'PUT':
+        try:
+            data = request.json
+
+            if 'status' in data:
+                ticket.status = data['status']
+            if 'intervention_type' in data:
+                ticket.intervention_type = data['intervention_type']
+            if 'subject' in data:
+                ticket.subject = data['subject']
+            if 'description' in data:
+                ticket.description = data['description']
+
+            db.session.commit()
+
+            return jsonify({"msg": "Ticket updated successfully"}), 200
+
+        except Exception as e:
+            return jsonify({"msg": "Something went wrong when updating the ticket"}), 400
 
