@@ -20,7 +20,9 @@ export const Login = () => {
             }
             if (store.userProfile.user_info.user_type === "admin") {
                 await actions.getAdminEquipment();
+                await actions.getAdminUserList();
                 await actions.getAdminTickets();
+                await actions.getAdminEquipment();
                 navigate("/admin/dashboard");
             }
         }
