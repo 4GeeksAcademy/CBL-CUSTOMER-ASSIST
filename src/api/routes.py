@@ -132,8 +132,6 @@ def get_user_profile():
 @jwt_required()
 def updateProfile():
     data = request.json
-    
-    # Fetch the customer based on the provided ID
     current_user_email = get_jwt_identity()
     user = User.query.filter_by(email=current_user_email).one_or_none()
 
@@ -441,11 +439,43 @@ def get_user_list():
     }
     
     return jsonify(response_body), 200
+@api.route('/admin/user/update/<int:user_id>', methods=['PUT'])
+@jwt_required()
+def update_user(user_id):
+    current_user_email = get_jwt_identity()
+    current_user = User.query.filter_by(email=current_user_email).one_or_none()
 
+    if not current_user:
+        return jsonify({"msg": "User not found"}), 401
 
-    
+    if current_user.user_type.type != 'admin':
+        return jsonify({"msg": "Unauthorized. Only admins can update users"}), 403
 
+    try:
+        data = request.json
 
+        user = User.query.get(user_id)
+        if not user:
+            return jsonify({"msg": "User not found"}), 404
+
+        if 'user_info' in data:
+            for k, v in data['user_info'].items():
+                setattr(user, k, v)
+
+        if 'customer_info' in data:
+            for k, v in data['customer_info'].items():
+                setattr(user.customer, k, v)
+
+        if 'employee_info' in data:
+            for k, v in data['employee_info'].items():
+                setattr(user.employee, k, v)
+
+        db.session.commit()
+
+        return jsonify({"msg": "User updated successfully"}), 200
+
+    except Exception as e:
+        return jsonify({"msg": "Something went wrong when updating user"}), 400
 
 
 

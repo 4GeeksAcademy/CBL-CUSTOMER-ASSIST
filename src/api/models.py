@@ -262,4 +262,4 @@ class EmployeeTicketObservation(db.Model):
             'employee_id': self.employee_id,
             'ticket_id': self.ticket_id,
             'observation': self.observation
-        }
+        }   
