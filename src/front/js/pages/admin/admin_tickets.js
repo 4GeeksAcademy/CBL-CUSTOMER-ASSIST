@@ -7,9 +7,7 @@ import { useParams } from "react-router-dom";
 export const AdminTickets = () => {
     const { store, actions } = useContext(Context)
     const userType = store.userProfile.user_info.user_type;
-
     const { filter } = useParams();
-
     const allTickets = store.tickets;
     const openedTickets = store.tickets.filter((ticket) => ticket.status === 'Opened');
     const inProgressTickets = store.tickets.filter((ticket) => ticket.status === 'In Progress');

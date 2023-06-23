@@ -13,8 +13,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 			modalTitle: null,
 			modalBody: null,
 			liveToastHeader: null,
-			liveToastBody: null
-		},
+			liveToastBody: null,
+			userList: []
+		}, 
 		actions: {
 			syncTokenFromSessionStorage: () => {
 				if (sessionStorage.getItem('token')) return setStore({ token: JSON.parse(sessionStorage.getItem('token')) });
@@ -22,6 +23,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 			syncEquipmentListFromSessionStorage: () => {
 				if (sessionStorage.getItem('equipmentList')) return setStore({ equipmentList: JSON.parse(sessionStorage.getItem('equipmentList')) });
+			},
+
+			syncUserListFromSessionStorage: () => {
+				if (sessionStorage.getItem('userList')) return setStore({ userList: JSON.parse(sessionStorage.getItem('userList')) });
 			},
 
 			syncTicketsFromSessionStorage: () => {
@@ -328,7 +333,28 @@ const getState = ({ getStore, getActions, setStore }) => {
 				);
 
 				new bootstrap.Modal(myModal).toggle();
-			}
+			},
+
+			getAdminUserList: async () => {
+				console.log('action: getAdminUserList');
+				const token = getStore().token;
+				const opts = {
+					method: "GET",
+					headers: {
+						"Authorization": "Bearer " + token
+					}
+				}
+				const response = await fetch(process.env.BACKEND_URL + "api/admin/user/list", opts);
+				const data = await response.json();
+
+				if (response.status !== 200) {
+					console.log(response.status, data.msg);
+					return [response.status, data.msg];
+				}
+
+				getActions().sessionStorageAndSetStoreDataSave('userList', data.users);
+				// needs to have error handle
+			},
 		}
 	};
 };
