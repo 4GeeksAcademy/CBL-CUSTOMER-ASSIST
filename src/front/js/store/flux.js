@@ -167,8 +167,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			},
 
-			getTickets: async () => {
-				console.log("action: getTickets");
+			getCustomerTickets: async () => {
+				console.log("action: getCustomerTickets");
 				const token = getStore().token;
 				const opts = {
 					method: "GET",
@@ -178,7 +178,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					}
 				};
 				try {
-					const response = await fetch(process.env.BACKEND_URL + "api/ticketlist", opts);
+					const response = await fetch(process.env.BACKEND_URL + "api/customer/tickets", opts);
 					const data = await response.json();
 
 					if (response.status !== 200) {
@@ -187,7 +187,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 						return false;
 					}
 					console.log("This came from the backend", data);
-
+					
+					// TODO: instead of store.tickets change to store.customerTickets
 					if ('tickets' in data) await getActions().sessionStorageAndSetStoreDataSave('tickets', data.tickets);
 					return true;
 				}
@@ -283,7 +284,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					}
 				};
 				try {
-					const response = await fetch(process.env.BACKEND_URL + "api/admin/ticketlist", opts);
+					const response = await fetch(process.env.BACKEND_URL + "api/admin/tickets", opts);
 
 					// if(response.status === 304) return true;
 
