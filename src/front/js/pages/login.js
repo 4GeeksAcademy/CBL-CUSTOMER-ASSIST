@@ -13,6 +13,7 @@ export const Login = () => {
         if (response) {
             // navigate("/loading");
             await actions.getUserProfile();
+            console.log("USER TYPE: ", store.userProfile.user_info.user_type);
             
             if (store.userProfile.user_info.user_type === "customer") {
                 await actions.getCustomerEquipment();
@@ -25,6 +26,9 @@ export const Login = () => {
                 await actions.getAdminTickets();
                 await actions.getAdminEquipment();
                 navigate("/admin/dashboard");
+            }
+            if (store.userProfile.user_info.user_type === "technician") {
+                // await actions.getAssignedTickets();
             }
         }
     }
