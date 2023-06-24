@@ -13,29 +13,29 @@ class User(db.Model):
 
     def serialize(self):
         return {
-            'id': self.id,
-            'email': self.email,
-            'password': self.password,
-            'active': self.active,
-            'user_type_id': self.user_type_id,
-            'user_type': self.user_type.type,
-            'customer_id': self.customer_id,
-            'employee_id': self.employee_id
+            "id": self.id,
+            "email": self.email,
+            "password": self.password,
+            "active": self.active,
+            "user_type_id": self.user_type_id,
+            "user_type": self.user_type.type,
+            "customer_id": self.customer_id,
+            "employee_id": self.employee_id
         }
     
     def serialize_admin(self):
          
         data = {
-            'id': self.id,
-            'email': self.email,
-            'active': self.active,
-            'user_type_id': self.user_type_id,
-            'user_type': self.user_type.type,
-            'customer_id': self.customer_id,
-            'employee_id': self.employee_id
+            "id": self.id,
+            "email": self.email,
+            "active": self.active,
+            "user_type_id": self.user_type_id,
+            "user_type": self.user_type.type,
+            "customer_id": self.customer_id,
+            "employee_id": self.employee_id
         }
         if self.customer :
-            data ["company_name"] = self.customer.company_name 
+            data["company_name"] = self.customer.company_name 
         return data
 
 class UserType(db.Model):
@@ -54,10 +54,10 @@ class Employee(db.Model):
 
     def serialize(self):
         return {
-            'id': self.id,
-            'first_name': self.first_name,
-            'last_name': self.last_name,
-            'available': self.available
+            "id": self.id,
+            "first_name": self.first_name,
+            "last_name": self.last_name,
+            "available": self.available
         }
 
 class Customer(db.Model):
@@ -75,14 +75,14 @@ class Customer(db.Model):
 
     def serialize(self):
         return {
-            'id': self.id,
-            'company_name': self.company_name,
-            'phone': self.phone,
-            'contact_person': self.contact_person,
-            'address_1': self.address_1,
-            'address_2': self.address_2,
-            'zipcode': self.zipcode,
-            'city': self.city
+            "id": self.id,
+            "company_name": self.company_name,
+            "phone": self.phone,
+            "contact_person": self.contact_person,
+            "address_1": self.address_1,
+            "address_2": self.address_2,
+            "zipcode": self.zipcode,
+            "city": self.city
         }
 
 
@@ -244,10 +244,10 @@ class Vehicle(db.Model):
 
     def serialize(self):
         return {
-            'id':self.id,
-            'license_plate': self.license_plate,
-            'model' : self.model,
-            'maker' : self.maker
+            "id":self.id,
+            "license_plate": self.license_plate,
+            "model" : self.model,
+            "maker" : self.maker
         }
 
 class EmployeeTicketObservation(db.Model):
@@ -258,8 +258,8 @@ class EmployeeTicketObservation(db.Model):
 
     def serialize(self):
         return {
-            'id': self.id,
-            'employee_id': self.employee_id,
-            'ticket_id': self.ticket_id,
-            'observation': self.observation
+            "id": self.id,
+            "employee_id": self.employee_id,
+            "ticket_id": self.ticket_id,
+            "observation": self.observation
         }   
