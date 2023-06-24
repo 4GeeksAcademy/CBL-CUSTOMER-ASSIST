@@ -10,14 +10,14 @@
         
         "email": "engineer1@email.com",
         "password": "engineer1",
-        "user_type_id": 1,
+        "user_type_id": 2,
         "employee_id": "2"
     },
     {
         
         "email": "technician1@email.com",
         "password": "technician1",
-        "user_type_id": 1,
+        "user_type_id": 3,
         "employee_id": "3"
     },
     {
