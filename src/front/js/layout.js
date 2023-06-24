@@ -19,6 +19,8 @@ import { AdminCreateTicket } from "./pages/admin/admin-create-ticket";
 // import { CreateAdmin } from "./pages/admin/admin-create";
 // import { CreateTech } from "./pages/technician/tech-create";
 // import { CreateCustomer } from "./pages/customer/customer-create.js";
+import { LoadingData } from "./pages/common/loading_data";
+
 const Layout = () => {
     const basename = process.env.BASENAME || "";
     const currentLocation = useLocation();
@@ -48,6 +50,7 @@ const Layout = () => {
                         <Route element={<CustomerCreateTicket />} path="/customer/create/ticket" />
                         <Route element={<CustomerEquipmentList />} path="/customer/equipment/list" />
                         <Route element={<CustomerEquipmentHistory />} path="/customer/equipment/history" />
+                        <Route element={<LoadingData />} path="/loading" />
                         <Route element={<h1>Not found!</h1>} path="*" />
                         {/* <Route element={<Single />} path="/single/:theid" /> */}
                         <Route element={<AdminCreateTicket />} path="/admin/create/ticket" />

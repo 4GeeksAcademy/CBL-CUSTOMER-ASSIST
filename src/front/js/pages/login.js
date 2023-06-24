@@ -11,6 +11,7 @@ export const Login = () => {
     const userLogin = async () => {
         const response = await actions.login(email, password);
         if (response) {
+            // navigate("/loading");
             await actions.getUserProfile();
             
             if (store.userProfile.user_info.user_type === "customer") {
