@@ -13,7 +13,7 @@ export const MainBdLayout = ({children}) => {
     });
 
     return (
-        <div className={pathname === '/' ? "container-xxl bd-gutter mt-3 my-md-4" : "container-xxl bd-gutter mt-3 my-md-4 bd-layout"} style={{position: "relative"}}>
+        <div className={pathname === '/' || pathname === '/loading' ? "container-xxl bd-gutter mt-3 my-md-4 vh-100" : "container-xxl bd-gutter mt-3 my-md-4 bd-layout"} style={{position: "relative"}}>
             {children}
             
             {/* MODAL */}
