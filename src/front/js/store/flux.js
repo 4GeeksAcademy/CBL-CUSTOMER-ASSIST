@@ -7,6 +7,63 @@ const getState = ({ getStore, getActions, setStore }) => {
 			customerTickets: [],
 			equipmentList: [],
 			tickets: [],
+			assignedTicket: {
+				"id": 11,
+				"status": "Opened",
+				"intervention_type": true,
+				"subject": "Main motor doesn't start",
+				"description": "After main switch turned on and after all safety validations, the main motor doesn't start!",
+				"customer": {
+					"id": 1,
+					"company_name": "Automotive Parts",
+					"phone": 5551234567,
+					"contact_person": "Abe Lashtar",
+					"address_1": "123 Main Street",
+					"address_2": "Building 789, 2nd Floor",
+					"zipcode": "12345",
+					"city": "New York",
+					"company_email": "automotive.parts@email.com",
+					"customer_email": "customer1@email.com"
+				},
+				"equipment": {
+					"id": 4,
+					"serial_number": "AA0101",
+					"model": "CC63",
+					"im109": 101
+				},
+				"knowledge": [
+					{
+						"id": 16,
+						"category": {
+							"id": 2,
+							"description": "Mechanical"
+						},
+						"malfunction": {
+							"id": 3,
+							"description": "Malfunction 3"
+						},
+						"solution": {
+							"id": 3,
+							"description": "Solution 3"
+						}
+					},
+					{
+						"id": 17,
+						"category": {
+							"id": 2,
+							"description": "Mechanical"
+						},
+						"malfunction": {
+							"id": 6,
+							"description": "Malfunction 6"
+						},
+						"solution": {
+							"id": 6,
+							"description": "Solution 6"
+						}
+					}
+				]
+			},
 			userProfile: {user_info : {}, customer_info : {}, employee_info : {}},
 			customerEquipmentTickets: [],
 			user: null,
