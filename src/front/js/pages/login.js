@@ -15,7 +15,7 @@ export const Login = () => {
             
             if (store.userProfile.user_info.user_type === "customer") {
                 await actions.getCustomerEquipment();
-                await actions.getTickets();
+                await actions.getCustomerTickets();
                 navigate("/customer/dashboard");
             }
             if (store.userProfile.user_info.user_type === "admin") {

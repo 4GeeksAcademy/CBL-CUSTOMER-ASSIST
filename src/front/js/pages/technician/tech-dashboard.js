@@ -6,7 +6,7 @@ export const AdminDashboard = () => {
     const { store, actions } = useContext(Context)
 
     // useEffect(() => {
-    //     actions.getTickets()
+    //     actions.getCustomerTickets()
 
     // }, [store.tickets])
 

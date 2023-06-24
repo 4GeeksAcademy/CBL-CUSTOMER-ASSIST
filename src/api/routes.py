@@ -12,6 +12,8 @@ import datetime
 
 api = Blueprint('api', __name__)
 
+#TODO: REFACTOR HTTP REQUEST CODES
+
 @api.route('/token', methods=['POST'])
 def create_token():
     email = request.json.get("email", None)
@@ -24,10 +26,51 @@ def create_token():
 
     if not user.active:
         return jsonify({"msg": "User no longer avaliable"}), 401
-        
-    access_token = create_access_token(identity=user.email, expires_delta=datetime.timedelta(hours=1))
+
+    access_token = create_access_token(
+        identity=user.email, expires_delta=datetime.timedelta(hours=1))
 
     return jsonify({'access_token': access_token, 'user_type': user.user_type.type}), 200
+
+
+@api.route('/customer/equipment', methods=['GET'])
+@jwt_required()
+def get_customer_equipments():
+    current_user_email = get_jwt_identity()
+    user = User.query.filter_by(email=current_user_email).one_or_none()
+
+    if not user:
+        return jsonify({"msg": "Unauthorized access!"}), 401
+
+    equipments = Equipment.query.filter_by(customer_id=user.customer_id).all()
+
+    if not equipments:
+        return jsonify({"msg": "No equipments for that customer!"}), 400
+
+    response_body = {
+        "equipments": [equipment.serialize() for equipment in equipments]
+    }
+    return jsonify(response_body), 200
+
+
+@api.route('/customer/tickets', methods=['GET'])
+@jwt_required()
+def get_tickets():
+    current_user_email = get_jwt_identity()
+    user = User.query.filter_by(email=current_user_email).one_or_none()
+
+    if not user:
+        return jsonify({"msg": "Unauthorized access!"}), 401
+
+    tickets = Ticket.query.filter_by(customer_id=user.customer_id).all()
+
+    if not tickets:
+        return jsonify({"msg": "No tickets for this customer!"}), 400
+
+    response_body = {
+        "tickets": [ticket.serialize_cus() for ticket in tickets]
+    }
+    return jsonify(response_body), 200
 
 
 @api.route('/customer/create/ticket', methods=['POST'])
@@ -68,45 +111,6 @@ def create_ticket():
         print(e.args)
         return jsonify({"msg": "Exception"}), 400
 
-# @api.route('/equipmentlist', methods=['GET'])
-@api.route('/customer/equipment', methods=['GET'])
-@jwt_required()
-def get_customer_equipments():
-    current_user_email = get_jwt_identity()
-    user = User.query.filter_by(email=current_user_email).one_or_none()
-
-    if not user:
-        return jsonify({"msg": "Unauthorized access!"}), 401
-
-    equipments = Equipment.query.filter_by(customer_id=user.customer_id).all()
-
-    if not equipments:
-        return jsonify({"msg": "No equipments for that customer!"}), 400
-
-    response_body = {
-        "equipments": [equipment.serialize() for equipment in equipments]
-    }
-    return jsonify(response_body), 200
-
-@api.route('/ticketlist', methods=['GET'])
-@jwt_required()
-def get_tickets():
-    current_user_email = get_jwt_identity()
-    user = User.query.filter_by(email=current_user_email).one_or_none()
-
-    if not user:
-        return jsonify({"msg": "Unauthorized access!"}), 401
-
-    tickets = Ticket.query.filter_by(customer_id=user.customer_id).all()
-
-    if not tickets:
-        return jsonify({"msg": "No tickets for this customer!"}), 400
-
-    response_body = {
-        "tickets": [ticket.serialize_cus() for ticket in tickets]
-    }
-    return jsonify(response_body), 200
-
 
 @api.route('/user/profile', methods=['GET'])
 @jwt_required()
@@ -116,17 +120,19 @@ def get_user_profile():
 
     if not user:
         return jsonify({"msg": "Unauthorized access!"}), 401
-    
-    user_profile =  {}
+
+    user_profile = {}
     user_profile['user_info'] = user.serialize()
     if user.customer_id:
-        user_profile['customer_info'] = Customer.query.get(user.customer_id).serialize()
+        user_profile['customer_info'] = Customer.query.get(
+            user.customer_id).serialize()
     elif user.employee_id:
-        user_profile['employee_info'] = Employee.query.get(user.employee_id).serialize()
-
+        user_profile['employee_info'] = Employee.query.get(
+            user.employee_id).serialize()
 
     response_body = {"user_profile": user_profile}
     return jsonify(response_body), 200
+
 
 @api.route('/user/profile/update', methods=['PUT'])
 @jwt_required()
@@ -154,12 +160,12 @@ def updateProfile():
         db.session.commit()
 
         return jsonify({"msg": "Profile updated successfully"}), 200
-    
+
     except Exception as e:
         return jsonify({"msg": "Something went wrong when updating profile"}), 400
 
 
-@api.route('/admin/ticketlist', methods=['GET'])
+@api.route('/admin/tickets', methods=['GET'])
 @jwt_required()
 def get_tickets_not_closed():
     current_user_email = get_jwt_identity()
@@ -169,9 +175,11 @@ def get_tickets_not_closed():
         return jsonify({"msg": "No user exist with that email"}), 401
 
     if user.user_type.type != "admin":
-        return jsonify({"msg": "Only admins can access this."}), 401
+        return jsonify({"msg": "Only admins have access to this endpoint!"}), 403
 
-    tickets = Ticket.query.filter(Ticket.status.in_(['Opened', 'In Progress', 'Resolved'])).all()
+
+    tickets = Ticket.query.filter(Ticket.status.in_(
+        ['Opened', 'In Progress', 'Resolved'])).all()
 
     if not tickets:
         return jsonify({"msg": "No tickets to manage"}), 400
@@ -181,49 +189,68 @@ def get_tickets_not_closed():
     }
     return jsonify(response_body), 200
 
+
 @api.route('/assign/employee/ticket', methods=['POST'])
-@jwt_required()  
+@jwt_required()
 def assign_ticket():
     current_user_email = get_jwt_identity()
     user = User.query.filter_by(email=current_user_email).one_or_none()
 
-    if not user or user.user_type.type != 'admin':
-        return jsonify({'msg': 'Only admins can create equipment profiles'}), 402
-    
+    if not user:
+        return jsonify({"msg": "No user exist with that email"}), 401
+
+    if user.user_type.type != "admin":
+        return jsonify({"msg": "Only admins have access to this endpoint!"}), 403
+
+
     data = request.get_json()
 
-    ticket_id = data.get('ticket_id')
-    employee_ids = data.get('employee_ids')
+    # TODO: remove this comment lines
+    # DON'T NEED THIS VALIDATION. WE DO THE QUERY.
+    # IF TICKET OR EMPLOYEES GIVE AN ERROR THEN AN ERROR MESSAGE IS RETURNED
     
-    if not ticket_id or not employee_ids:
-        return jsonify({"msg": "Ticket ID or Employee(s) ID is wrong or doesn't exist"}), 401
-    
-    ticket = Ticket.query.get(ticket_id)
-    employees = Employee.query.filter(Employee.id.in_(employee_ids)).all()
+    # ticket_id = data['ticket_id']
+    # employee_ids = data['employee_ids']
+
+    # if not ticket_id or not employee_ids:
+    #     return jsonify({"msg": "Ticket or Employee ID is wrong or doesn't exist"}), 401
+
+    ticket = Ticket.query.get(data['ticket_id'])
+    employees = Employee.query.filter(Employee.id.in_(data['employee_ids'])).all()
 
     if not ticket:
         return jsonify({'msg': 'Ticket not found'}), 401
     if not employees:
         return jsonify({'msg': 'Employee(s) not found'}), 401
-    
+
     for employee in employees:
+        # set employee has not available
+        employee.available = False
+        db.session.add(employee)
+
+        # assign employee to ticket 
         ticket_employee_relation = TicketEmployeeRelation(
             ticket_id=ticket.id,
             employee_id=employee.id
         )
-    
-    db.session.add(ticket_employee_relation)
+        db.session.add(ticket_employee_relation)
     db.session.commit()
+
     return jsonify({'msg': 'Employee(s) assigned successfully to ticket'}), 200
 
+
 @api.route('/admin/equipment', methods=['POST'])
-@jwt_required()  
+@jwt_required()
 def create_equipment():
     current_user_email = get_jwt_identity()
     user = User.query.filter_by(email=current_user_email).one_or_none()
-    
-    if not user or user.user_type.type != 'admin':
-        return jsonify({'msg': 'Only admins can create equipment profiles'}), 402
+
+    if not user:
+        return jsonify({"msg": "No user exist with that email"}), 401
+
+    if user.user_type.type != "admin":
+        return jsonify({"msg": "Only admins have access to this endpoint!"}), 403
+
 
     data = request.json
     if not data:
@@ -233,28 +260,31 @@ def create_equipment():
     equipment.serial_number = data.get('serial_number')
     equipment.model = data.get('model')
     equipment.im109 = data.get('im109')
-    
+
     db.session.add(equipment)
     db.session.commit()
 
     return jsonify({'msg': 'Equipment created'}), 201
 
-  
+
 @api.route('/admin/equipment/<int:customer_id>', methods=['GET'])
 @jwt_required()
 def get_equipment_by_customer_id(customer_id):
     current_user_email = get_jwt_identity()
     user = User.query.filter_by(email=current_user_email).one_or_none()
-    
-    if not user or user.user_type.type != 'admin':
-        return jsonify({'msg': 'Only admins can access this endpoint'}), 400
-    
+
+    if not user:
+        return jsonify({"msg": "No user exist with that email"}), 401
+
+    if user.user_type.type != "admin":
+        return jsonify({"msg": "Only admins have access to this endpoint!"}), 403
+
+
     customer = Customer.query.get(customer_id)
 
-    
     if not customer:
         return jsonify({'msg': 'customer_id parameter is missing'}), 400
-    
+
     equipments = Equipment.query.filter_by(customer_id=customer_id).all()
     print("#################")
     print(customer_id)
@@ -263,19 +293,25 @@ def get_equipment_by_customer_id(customer_id):
 
     return jsonify({"equipments": [equipment.serialize() for equipment in equipments]}), 200
 
+
 @api.route('/employees/available', methods=['GET'])
 @jwt_required()
 def get_available_employees():
     current_user_email = get_jwt_identity()
     user = User.query.filter_by(email=current_user_email).one_or_none()
-    
-    if not user or user.user_type.type != 'admin':
-        return jsonify({'msg': 'Only admins can access this endpoint'}), 401
-    
+
+    if not user:
+        return jsonify({"msg": "No user exist with that email"}), 401
+
+    if user.user_type.type != "admin":
+        return jsonify({"msg": "Only admins have access to this endpoint!"}), 403
+
+
     available_employees = Employee.query.filter_by(available=True).all()
     serialized_employees = [e.serialize() for e in available_employees]
 
     return jsonify(serialized_employees), 200
+
 
 @api.route('/admin/equipments', methods=['GET'])
 @jwt_required()
@@ -283,11 +319,15 @@ def get_all_equipments():
     # IF OTHERS EMPLOYEE'S NEED TO GET ALL EQUIPMENTS REMOVE FROM THIS LINE TO NEXT COMMENTED LINE
     current_user_email = get_jwt_identity()
     user = User.query.filter_by(email=current_user_email).one_or_none()
-    
-    if not user or user.user_type.type != 'admin':
-        return jsonify({'msg': 'Only admins can access this endpoint'}), 401
+
+    if not user:
+        return jsonify({"msg": "No user exist with that email"}), 401
+
+    if user.user_type.type != "admin":
+        return jsonify({"msg": "Only admins have access to this endpoint!"}), 403
+
     # #####################################
-    
+
     equipments = Equipment.query.all()
     response_body = {
         "equipments": [equipment.serialize() for equipment in equipments]
@@ -302,9 +342,13 @@ def get_all_vehicles():
     # IF OTHERS EMPLOYEE'S NEED TO GET ALL EQUIPMENTS REMOVE FROM THIS LINE TO NEXT COMMENTED LINE
     current_user_email = get_jwt_identity()
     user = User.query.filter_by(email=current_user_email).one_or_none()
-    
-    if not user or user.user_type.type != 'admin':
-        return jsonify({'msg': 'Only admins can access this endpoint'}), 401
+
+    if not user:
+        return jsonify({"msg": "No user exist with that email"}), 401
+
+    if user.user_type.type != "admin":
+        return jsonify({"msg": "Only admins have access to this endpoint!"}), 403
+
     # #####################################
 
     vehicles = Vehicle.query.all()
@@ -312,83 +356,98 @@ def get_all_vehicles():
 
     return jsonify(serialized_vehicles), 200
 
+
 @api.route('/admin/vehicles/available', methods=['GET'])
 @jwt_required()
 def get_available_vehicles():
-    current_user_email = get_jwt_identity()
-    user = User.query.filter_by(email=current_user_email).one_or_none()
-    if not user or user.user_type.type != 'admin':
-        return jsonify({'msg': 'Only admins can access this endpoint'}), 401
+    user_email = get_jwt_identity()
+    user = User.query.filter_by(email=user_email).one_or_none()
+
+    if not user:
+        return jsonify({"msg": "No user exist with that email"}), 400
+
+    if user.user_type.type != "admin":
+        return jsonify({"msg": "Only admins have access to this endpoint!"}), 403
+
+    
     available_vehicles = Vehicle.query.filter_by(available=True).all()
     serialized_vehicle = [e.serialize() for e in available_vehicles]
 
     return jsonify(serialized_vehicle), 200
-    
+
+
 @api.route('/admin/vehicles/available', methods=['PUT'])
 @jwt_required()
 def set_available_vehicle():
-    current_user_email = get_jwt_identity()
-    user = User.query.filter_by(email=current_user_email).one_or_none()
-    if not user or user.user_type.type != 'admin':
-        return jsonify({'msg': 'Only admins can access this endpoint'}), 401 
-    info = request.json
-    vehicle_id = info.get('vehicle_id')
-    availability = info.get('availability')
-    if not vehicle_id or availability is None:
-        return jsonify({'msg':'Not enough info to update the vehicle availability'}),400
-    vehicle = Vehicle.query.get(vehicle_id)
+    user_email = get_jwt_identity()
+    user = User.query.filter_by(email=user_email).one_or_none()
+
+    if not user:
+        return jsonify({"msg": "No user exist with that email"}), 400
+
+    if user.user_type.type != "admin":
+        return jsonify({"msg": "Only admins have access to this endpoint!"}), 403
+
+    
+    data = request.json
+
+    vehicle = Vehicle.query.get(data['vehicle_id'])
+
     if not vehicle:
-        return jsonify({'msg':'not vehicle with this id found'}),400
-    vehicle.available = availability
+        return jsonify({'msg': 'No vehicle found with this id'}), 400
+
+    vehicle.available = data['availability']
     db.session.commit()
-    return jsonify({'msg':'Availability update is done!'}),200
+    
+    return jsonify({'msg': 'Availability update is done!'}), 200
+
 
 @api.route('/admin/edit/user', methods=['PUT'])
 @jwt_required()
 def admin_edit_user():
     current_user_email = get_jwt_identity()
     user = User.query.filter_by(email=current_user_email).one_or_none()
-    
-    if not user or user.user_type.type != 'admin':
-        return jsonify({'msg': 'Only admins can access this endpoint'}), 400
+
+    if not user:
+        return jsonify({"msg": "No user exist with that email"}), 401
+
+    if user.user_type.type != "admin":
+        return jsonify({"msg": "Only admins have access to this endpoint!"}), 403
+
 
     data = request.json
 
-    user_id = data.get('user_id')
-    if user_id is None:
-        return jsonify({'msg' : 'No info to fullfill the request'}), 400
+    user_to_edit = User.query.get(data['user_id'])
     
-    if user_id == user.id:
-        return jsonify({'msg' : 'You can not set yourself to inactive'})
+    if user_to_edit:
+        return jsonify({'msg': 'No user found to edit'}), 404
 
-    user_active = User.query.get(user_id)
+    if user_to_edit.id == user.id:
+        return jsonify({'msg': 'You can not set yourself to inactive'})
 
-    if not user_active:
-        return jsonify({'msg' : 'No user with that ID'}), 400
-    
-    if user_active.active:
-        user_active.active = False
+    if user_to_edit.active:
+        user_to_edit.active = False
         db.session.commit()
-        print("User is inactive")
-        return jsonify({'msg' : 'User set to inactive'}), 200
-    
-    return jsonify({'msg' : 'User already set to inactive'}), 200
+        return jsonify({'msg': 'User set to inactive'}), 200
+
+    return jsonify({'msg': 'User already set to inactive'}), 200
+
 
 @api.route('/admin/create/ticket', methods=['POST'])
 @jwt_required()
 def admin_create_ticket():
     try:
-        current_user_email = get_jwt_identity()
-        user = User.query.filter_by(email=current_user_email).one_or_none()
-    
-        if not user or user.user_type.type != 'admin':
-            return jsonify({'msg': 'Only admins can access this endpoint'}), 400
+        user_email = get_jwt_identity()
+        user = User.query.filter_by(email=user_email).one_or_none()
+
+        if not user:
+            return jsonify({"msg": "No user exist with that email"}), 401
+
+        if user.user_type.type != "admin":
+            return jsonify({"msg": "Only admins have access to this endpoint!"}), 403
+
 
         data = request.json
-
-        print("############################")
-        print(data)
-        print("############################")
 
         equipment_id = data["equipment_id"]
         intervention_type = data["intervention_type"]
@@ -405,115 +464,135 @@ def admin_create_ticket():
         ticket.status = "Opened"
         ticket.open_ticket_time = datetime.datetime.now()
         db.session.add(ticket)
-        # db.session.flush()
 
-        # malfunction = Malfunction()
-        # malfunction.description = description
-        # db.session.add(malfunction)
-        # db.session.flush()
-
-        # knowledge = Knowledge()
-        # knowledge.ticket_id = ticket.id
-        # knowledge.malfunction_id = malfunction.id
-        # db.session.add(knowledge)
-        # db.session.flush()
         db.session.commit()
 
         return jsonify({"msg": "Ticket created successfully"}), 201
     except Exception as e:
         print(e.args)
         return jsonify({"msg": "Exception"}), 400
-    
+
+
 @api.route('/admin/user/list', methods=['GET'])
 @jwt_required()
 def get_user_list():
-    current_user_email = get_jwt_identity()
-    user = User.query.filter_by(email=current_user_email).one_or_none()
-    
-    if not user or user.user_type.type != 'admin':
-        return jsonify({'msg': 'Only admins can access this endpoint'}), 401
+    user_email = get_jwt_identity()
+    user = User.query.filter_by(email=user_email).one_or_none()
 
+    if not user:
+        return jsonify({"msg": "No user exist with that email"}), 401
+
+    if user.user_type.type != "admin":
+        return jsonify({"msg": "Only admins have access to this endpoint!"}), 403
+
+    
     users = User.query.all()
     response_body = {
         "users": [user.serialize_admin() for user in users]
     }
-    
-    return jsonify(response_body), 200
-@api.route('/admin/user/update/<int:user_id>', methods=['PUT'])
-@jwt_required()
-def update_user(user_id):
-    current_user_email = get_jwt_identity()
-    current_user = User.query.filter_by(email=current_user_email).one_or_none()
 
-    if not current_user:
+    return jsonify(response_body), 200
+
+
+@api.route('/admin/user/update', methods=['PUT'])
+@jwt_required()
+def update_user():
+    user_email = get_jwt_identity()
+    user = User.query.filter_by(email=user_email).one_or_none()
+
+    if not user:
         return jsonify({"msg": "User not found"}), 401
 
-    if current_user.user_type.type != 'admin':
-        return jsonify({"msg": "Unauthorized. Only admins can update users"}), 403
+    if user.user_type.type != 'admin':
+        return jsonify({"msg": "Forbiden. Only admins can update users"}), 403
 
     try:
         data = request.json
 
-        user = User.query.get(user_id)
-        if not user:
+        user_to_update = User.query.get(data['user_info']['user_id'])
+        if not user_to_update:
             return jsonify({"msg": "User not found"}), 404
 
         if 'user_info' in data:
             for k, v in data['user_info'].items():
-                setattr(user, k, v)
+                setattr(user_to_update, k, v)
 
         if 'customer_info' in data:
             for k, v in data['customer_info'].items():
-                setattr(user.customer, k, v)
+                setattr(user_to_update.customer, k, v)
 
         if 'employee_info' in data:
             for k, v in data['employee_info'].items():
-                setattr(user.employee, k, v)
+                setattr(user_to_update.employee, k, v)
 
         db.session.commit()
 
         return jsonify({"msg": "User updated successfully"}), 200
 
     except Exception as e:
-        return jsonify({"msg": "Something went wrong when updating user"}), 400
+        print(e)
+        return jsonify({"msg": "Something went wrong when trying to update user"}), 400
 
-@api.route('/admin/tickets/<int:ticket_id>', methods=['GET', 'PUT'])
+
+@api.route('/admin/tickets/<int:ticket_id>', methods=['GET'])
 @jwt_required()
 def manage_ticket(ticket_id):
-    current_user_email = get_jwt_identity()
-    current_user = User.query.filter_by(email=current_user_email).one_or_none()
+    user_email = get_jwt_identity()
+    user = User.query.filter_by(email=user_email).one_or_none()
 
-    if not current_user:
+    if not user:
         return jsonify({"msg": "User not found"}), 401
 
-    if current_user.user_type.type != 'admin':
-        return jsonify({"msg": "Unauthorized. Only admins have access to this endpoint"}), 404
+    if user.user_type.type != 'admin':
+        return jsonify({"msg": "Only admins have access to this endpoint!"}), 403
+
 
     ticket = Ticket.query.get(ticket_id)
 
     if not ticket:
         return jsonify({"msg": "Ticket not found"}), 404
 
-    if request.method == 'GET':
-        return jsonify(ticket.serialize()), 200
+    return jsonify(ticket.serialize()), 200
 
-    elif request.method == 'PUT':
-        try:
-            data = request.json
 
-            if 'status' in data:
-                ticket.status = data['status']
-            if 'intervention_type' in data:
-                ticket.intervention_type = data['intervention_type']
-            if 'subject' in data:
-                ticket.subject = data['subject']
-            if 'description' in data:
-                ticket.description = data['description']
+@api.route('/admin/update/ticket', methods=['PUT'])
+@jwt_required()
+def admin_update_ticket():
+    user_email = get_jwt_identity()
+    user = User.query.filter_by(email=user_email).one_or_none()
 
-            db.session.commit()
+    if not user:
+        return jsonify({"msg": "User not found"}), 401
 
-            return jsonify({"msg": "Ticket updated successfully"}), 200
+    if user.user_type.type != 'admin':
+        return jsonify({"msg": "Only admins have access to this endpoint!"}), 403
 
-        except Exception as e:
-            return jsonify({"msg": "Something went wrong when updating the ticket"}), 400
 
+    data = request.json
+
+    ticket = Ticket.query.get(data['id'])
+
+    if not ticket:
+        return jsonify({"msg": "Ticket not found"}), 401
+
+    if ticket.status == 'Closed':
+        return jsonify({"msg": "You can not update a closed ticket!"})
+
+    try:
+        data = request.json
+
+        if 'status' in data:
+            ticket.status = data['status']
+        if 'intervention_type' in data:
+            ticket.intervention_type = data['intervention_type']
+        if 'subject' in data:
+            ticket.subject = data['subject']
+        if 'description' in data:
+            ticket.description = data['description']
+
+        db.session.commit()
+
+        return jsonify({"msg": "Ticket updated successfully"}), 200
+
+    except Exception as e:
+        return jsonify({"msg": "Something went wrong when updating the ticket"}), 400
