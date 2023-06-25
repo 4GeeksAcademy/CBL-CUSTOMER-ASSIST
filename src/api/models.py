@@ -82,7 +82,22 @@ class Customer(db.Model):
             "address_1": self.address_1,
             "address_2": self.address_2,
             "zipcode": self.zipcode,
-            "city": self.city
+            "city": self.city,
+            # "company_email": self.company_email,
+        }
+
+    def serialize_employee(self):
+        return {
+            "id": self.id,
+            "company_name": self.company_name,
+            "phone": self.phone,
+            "contact_person": self.contact_person,
+            "address_1": self.address_1,
+            "address_2": self.address_2,
+            "zipcode": self.zipcode,
+            "city": self.city,
+            # "company_email": self.company_email,
+            "customer_email": self.user.email
         }
 
 
@@ -92,6 +107,19 @@ class TicketEmployeeRelation(db.Model):
     employee_id = db.Column(db.Integer, db.ForeignKey('employee.id'), nullable=False)
     start_intervention_date = db.Column(db.DateTime)
     end_intervention_date = db.Column(db.DateTime)
+
+    def serialize(self):
+        return {
+            "id": self.id,
+            "ticket_id": self.ticket_id,
+            "employee_id": self.employee_id,
+            "start_intervention_date": self.start_intervention_date,
+            "end_intervention_date": self.end_intervention_date
+        }
+
+    def serialize_employee(self):
+        return self.ticket.serialize_employee()
+    
 
 class Ticket(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -126,7 +154,6 @@ class Ticket(db.Model):
         }
 
     def serialize_cus(self):
-        print(self.ticket_knowledge)
         return {
             "id": self.id,
             "open_ticket_time": self.open_ticket_time,
@@ -139,6 +166,23 @@ class Ticket(db.Model):
             "company_name": self.customer.company_name,
             "knowledge" : [knowledge.serialize() for knowledge in self.ticket_knowledge] if self.ticket_knowledge else []
         }
+
+    def serialize_employee(self):
+        return {
+            "ticket": {
+                "id": self.id,
+                "status": self.status,
+                "intervention_type": self.intervention_type,
+                "subject": self.subject,
+                "description": self.description
+            },
+            "customer": self.customer.serialize_employee(),
+            "equipment": self.equipment.serialize_employee()
+        }
+
+    def serialize_equipment_knowledge(self):
+        # knowledges = [knowledge.serialize_employee() for knowledge in self.ticket_knowledge] if self.ticket_knowledge else []
+        return self.id
     
     
 class TicketKnowledge(db.Model):
@@ -151,6 +195,14 @@ class TicketKnowledge(db.Model):
         return {
             "id": self.id,
             "knowledge" : knowledge.serialize_full() if knowledge else None
+        }
+
+    def serialize_employee(self):
+        return {
+            "id": self.id,
+            "category": self.knowledge.category.serialize() if self.knowledge.category else None,
+            "malfunction": self.knowledge.malfunction.serialize() if self.knowledge.malfunction else None,
+            "solution": self.knowledge.solution.serialize() if self.knowledge.solution else None
         }
 
 class Knowledge(db.Model):
@@ -193,7 +245,20 @@ class Equipment(db.Model):
 
     def serialize(self):
         return {
+            "id": self.id,
             "customer_id" : self.customer_id,
+            "serial_number": self.serial_number,
+            "model": self.model,
+            "im109": self.im109
+        }
+    
+    def serialize_employee(self):
+        # tickets = Ticket.query.filter_by(equipment_id = self.id).all()
+        # knowledge = [knowledge.serialize_equipment_knowledge() for knowledge in tickets] if tickets else []
+        # print("############################")
+        # print(knowledge)
+        # print("$$$$$$$$$$$$$$$$$$$$$$$$$$")
+        return {
             "id": self.id,
             "serial_number": self.serial_number,
             "model": self.model,
