@@ -4,6 +4,7 @@ import { Navigate, useNavigate } from "react-router-dom";
 import { CustomerInfo } from "../../component/customer_info";
 import { TicketInfo } from "../../component/ticket_info";
 import { InterventionTypes } from "../../constants/intervention_types";
+import { MapInfo } from "../../component/ticket_assistance/map"
 
 export const EmployeeTicketAssistance = () => {
     const { store, actions } = useContext(Context);
@@ -18,6 +19,7 @@ export const EmployeeTicketAssistance = () => {
     return (
         <main className="bd-main">
             <CustomerInfo data={ticket.customer} />
+            <MapInfo />
             <TicketInfo data={ticketData} />
         </main>
     );
