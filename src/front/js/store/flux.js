@@ -7,6 +7,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			customerTickets: [],
 			equipmentList: [],
 			tickets: [],
+			manufacturerAddress: "Mecânica Exacta, S.A., Rua António Gomes da Cruz, São Paio de Oleiros",
 			assignedTicket: {
 				"id": 11,
 				"status": "Opened",
@@ -18,10 +19,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 					"company_name": "Automotive Parts",
 					"phone": 5551234567,
 					"contact_person": "Abe Lashtar",
-					"address_1": "123 Main Street",
-					"address_2": "Building 789, 2nd Floor",
-					"zipcode": "12345",
-					"city": "New York",
+					"address_1": "R. Vale do Grou",
+					"address_2": "1378",
+					"zipcode": "3754-908",
+					"city": "Águeda",
 					"company_email": "automotive.parts@email.com",
 					"customer_email": "customer1@email.com"
 				},
@@ -29,40 +30,40 @@ const getState = ({ getStore, getActions, setStore }) => {
 					"id": 4,
 					"serial_number": "AA0101",
 					"model": "CC63",
-					"im109": 101
+					"im109": 101,
+					"knowledge": [
+						{
+							"id": 16,
+							"category": {
+								"id": 2,
+								"description": "Mechanical"
+							},
+							"malfunction": {
+								"id": 3,
+								"description": "Malfunction 3"
+							},
+							"solution": {
+								"id": 3,
+								"description": "Solution 3"
+							}
+						},
+						{
+							"id": 17,
+							"category": {
+								"id": 2,
+								"description": "Mechanical"
+							},
+							"malfunction": {
+								"id": 6,
+								"description": "Malfunction 6"
+							},
+							"solution": {
+								"id": 6,
+								"description": "Solution 6"
+							}
+						}
+					]
 				},
-				"knowledge": [
-					{
-						"id": 16,
-						"category": {
-							"id": 2,
-							"description": "Mechanical"
-						},
-						"malfunction": {
-							"id": 3,
-							"description": "Malfunction 3"
-						},
-						"solution": {
-							"id": 3,
-							"description": "Solution 3"
-						}
-					},
-					{
-						"id": 17,
-						"category": {
-							"id": 2,
-							"description": "Mechanical"
-						},
-						"malfunction": {
-							"id": 6,
-							"description": "Malfunction 6"
-						},
-						"solution": {
-							"id": 6,
-							"description": "Solution 6"
-						}
-					}
-				]
 			},
 			userProfile: {user_info : {}, customer_info : {}, employee_info : {}},
 			customerEquipmentTickets: [],
