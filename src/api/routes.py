@@ -2,7 +2,7 @@
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
 from flask import Flask, request, jsonify, url_for, Blueprint
-from api.models import db, User, Customer, Employee, Ticket, Equipment, Malfunction, Knowledge, TicketEmployeeRelation, Vehicle
+from api.models import db, User, Customer, Employee, Ticket, Equipment, Malfunction, Knowledge, TicketKnowledge, TicketEmployeeRelation, Vehicle
 from api.utils import generate_sitemap, APIException
 from flask_jwt_extended import create_access_token
 from flask_jwt_extended import get_jwt_identity
@@ -596,3 +596,37 @@ def admin_update_ticket():
 
     except Exception as e:
         return jsonify({"msg": "Something went wrong when updating the ticket"}), 400
+
+
+@api.route('/employee/assigned/ticket', methods=['GET'])
+@jwt_required()
+def get_employee_assigned_tickets():
+    current_user_email = get_jwt_identity()
+    user = User.query.filter_by(email=current_user_email).one_or_none()
+
+    if not user:
+        return jsonify({"msg": "No user exist with that email"}), 401
+
+    # get tickets assigned to employee
+    assigned_tickets = TicketEmployeeRelation.query.filter_by(employee_id = user.employee_id).all()
+    tickets_serialized = [ticket.serialize_employee() for ticket in assigned_tickets]
+
+    # filter the ticket 'Opened'
+    filtered_list_of_tickets = [ ticket for ticket in tickets_serialized if ticket['ticket']['status'] in ['Opened']]
+
+    # get equipment id to get tickets created for this equipment
+    equipment_id = filtered_list_of_tickets[0]['equipment']['id']
+
+    # get tickets id
+    tickets = Ticket.query.filter_by(equipment_id = equipment_id).all()
+    tickets_id = [tickets_id.serialize_equipment_knowledge() for tickets_id in tickets] if tickets else []
+
+    # get TicketKnowledges that contains tickets id from tickets_id
+    knowledges = TicketKnowledge.query.filter(TicketKnowledge.ticket_id.in_(tickets_id)).all()
+
+    # serialize Knowledges
+    final = [knowledge.serialize_employee() for knowledge in knowledges]
+
+    filtered_list_of_tickets[0]['equipment']['knowledge'] = final
+    
+    return jsonify(filtered_list_of_tickets[0]), 200
