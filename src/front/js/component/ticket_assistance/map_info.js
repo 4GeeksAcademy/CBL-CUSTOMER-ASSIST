@@ -11,7 +11,7 @@ export const MapInfo = (props) => {
                 height="350"
                 frameBorder="0" style={{"border":0}}
                 referrerPolicy="no-referrer-when-downgrade"
-                src="https://www.google.com/maps/embed/v1/directions?key=AIzaSyCOcxTSXvSDDWIP9DyVSDLqMYEApldW_yQ&origin=Oslo+Norway&destination=Telemark+Norway&avoid=tolls|highways"
+                src={`https://www.google.com/maps/embed/v1/directions?key=AIzaSyCOcxTSXvSDDWIP9DyVSDLqMYEApldW_yQ&origin=${data.manufacturerAddress}&destination=${data.customerAddress}&avoid=tolls|highways`}
                 allowFullScreen>
             </iframe>
         </div>
