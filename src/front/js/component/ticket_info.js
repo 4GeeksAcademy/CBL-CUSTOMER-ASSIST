@@ -1,4 +1,6 @@
 import React from "react";
+import { CarouselItem } from "./ticket_assistance/carousel_item";
+
 import "../../styles/carousel.css"
 
 export const TicketInfo = (props) => {
@@ -49,18 +51,12 @@ export const TicketInfo = (props) => {
                 <div className="bd-example m-0">
                     <div id="carouselExample" className="carousel slide pointer-event">
                     <div className="carousel-inner">
-                        <div className="carousel-item">
-                        {/* <img src="https://picsum.photos/1040/500" className="d-block w-100 ratio ratio-4x3" role="img" alt="..."/> */}
-                            <div className="img d-block w-100 ratio ratio-4x3" style={{"backgroundImage": "url('https://picsum.photos/1040/500')"}}></div>
-                        </div>
-                        <div className="carousel-item">
-                        {/* <img src="https://picsum.photos/1040/500" className="d-block w-100 ratio ratio-4x3" role="img" alt="..."/> */}
-                            <div className="img d-block w-100 ratio ratio-4x3" style={{"backgroundImage": "url('https://picsum.photos/1040/500')"}}></div>
-                        </div>
-                        <div className="carousel-item active">
-                        {/* <img src="https://picsum.photos/1040/500" className="d-block w-100 ratio ratio-4x3" role="img" alt="..."/> */}
-                            <div className="img d-block w-100 ratio ratio-4x3" style={{"backgroundImage": "url('https://picsum.photos/1040/500')"}}></div>
-                        </div>
+                        {data.customerMedia.length > 0 ?
+                            data.customerMedia.map((url, i) => {
+                                return <CarouselItem key={i} url={data.customerMedia[i]} index={i}/>  
+                            }) :
+                            "Dá cá"
+                        }
                     </div>
                     <button className="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
                         <span className="carousel-control-prev-icon" aria-hidden="true"></span>

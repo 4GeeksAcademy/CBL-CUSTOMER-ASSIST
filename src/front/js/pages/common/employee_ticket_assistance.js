@@ -11,16 +11,19 @@ export const EmployeeTicketAssistance = () => {
     const ticket = store.assignedTicket;
     const mapInfo = {
         manufacturerAddress: store.manufacturerAddress,
-        customerAddress: ticket.customer.address_1 + ", " + ticket.customer.address_2 + " " + ticket.customer.zipcode + " " + ticket.customer.city
+        customerAddress: ticket.customer.address_1 + ", " + ticket.customer.address_2 + " " + ticket.customer.zipcode + " " + ticket.customer.city,
     }
-
-    console.log(mapInfo);
-
+    
     const ticketInfo = {
         id: ticket.id,
         interventionType: ticket.intervention_type ? InterventionTypes.ASSISTANCE : InterventionTypes.MAINTENANCE,
         subject: ticket.subject,
-        description: ticket.description
+        description: ticket.description,
+        customerMedia: [
+            "https://picsum.photos/1040/500",
+            "https://picsum.photos/1040/500",
+            "https://picsum.photos/1040/500"
+        ]
     };
 
     return (
