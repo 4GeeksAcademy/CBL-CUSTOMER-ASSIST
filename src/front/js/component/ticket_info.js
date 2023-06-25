@@ -1,4 +1,5 @@
 import React from "react";
+import "../../styles/carousel.css"
 
 export const TicketInfo = (props) => {
     const data = props.data;
@@ -6,8 +7,8 @@ export const TicketInfo = (props) => {
     return (
         <div className="container">
             <h4 className="border-bottom">Ticket Information</h4>
-            <div class="card">
-                <div class="card-header d-flex flex-wrap">
+            <div className="card">
+                <div className="card-header d-flex flex-wrap">
                 
                     {/* TICKET ID */}
                     <div className="col-12 col-md-6">
@@ -25,10 +26,10 @@ export const TicketInfo = (props) => {
                     </div>
                 </div>
 
-                <ul class="list-group list-group-flush">
+                <ul className="list-group list-group-flush">
 
                     {/* SUBJECT */}
-                    <li class="list-group-item">
+                    <li className="list-group-item">
                         {/* <div className="card-body"> */}
                             <p className="card-title"><i className="fa-solid fa-circle-question me-1" style={{color: "#689ffd"}}></i><strong>Subject</strong></p>
                             <p className="card-text">{data.subject}</p>
@@ -36,24 +37,42 @@ export const TicketInfo = (props) => {
                     </li>
 
                     {/* DESCRIPTION */}
-                    <li class="list-group-item">
+                    <li className="list-group-item">
                         <p className="card-title"><i className="fa-solid fa-square-pen me-1" style={{color: "#689ffd"}}></i><strong>Description</strong></p>
                         <p className="card-text">{data.description}</p>
                     </li>
                 </ul>
             </div>
+
+            {/* CARROUSEL */}
+            <div className="bd-example-snippet border rounded-2 mt-1">
+                <div className="bd-example m-0">
+                    <div id="carouselExample" className="carousel slide pointer-event">
+                    <div className="carousel-inner">
+                        <div className="carousel-item">
+                        {/* <img src="https://picsum.photos/1040/500" className="d-block w-100 ratio ratio-4x3" role="img" alt="..."/> */}
+                            <div className="img d-block w-100 ratio ratio-4x3" style={{"backgroundImage": "url('https://picsum.photos/1040/500')"}}></div>
+                        </div>
+                        <div className="carousel-item">
+                        {/* <img src="https://picsum.photos/1040/500" className="d-block w-100 ratio ratio-4x3" role="img" alt="..."/> */}
+                            <div className="img d-block w-100 ratio ratio-4x3" style={{"backgroundImage": "url('https://picsum.photos/1040/500')"}}></div>
+                        </div>
+                        <div className="carousel-item active">
+                        {/* <img src="https://picsum.photos/1040/500" className="d-block w-100 ratio ratio-4x3" role="img" alt="..."/> */}
+                            <div className="img d-block w-100 ratio ratio-4x3" style={{"backgroundImage": "url('https://picsum.photos/1040/500')"}}></div>
+                        </div>
+                    </div>
+                    <button className="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+                        <span className="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span className="visually-hidden">Previous</span>
+                    </button>
+                    <button className="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+                        <span className="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span className="visually-hidden">Next</span>
+                    </button>
+                    </div>
+                </div>
+            </div>
         </div>
     );
 }
-
-                {/* SUBJECT */}
-                {/* <div className="col-12">
-                    <h6><i className="fa-solid fa-circle-question me-1" style={{color: "#689ffd"}}></i><strong>Subject</strong></h6>
-                    <p>{data.subject}</p>
-                </div> */}
-
-                {/* DESCRIPTION */}
-                {/* <div className="col-12">
-                    <h6><i className="fa-solid fa-square-pen me-1"></i><strong>Description</strong></h6>
-                    <p>{data.description}</p>
-                </div> */}
