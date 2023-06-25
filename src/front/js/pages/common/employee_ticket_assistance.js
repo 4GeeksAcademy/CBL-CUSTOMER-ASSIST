@@ -1,8 +1,8 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../../store/appContext";
 import { Navigate, useNavigate } from "react-router-dom";
-import { CustomerInfo } from "../../component/customer_info";
-import { TicketInfo } from "../../component/ticket_info";
+import { CustomerInfo } from "../../component/ticket_assistance/customer_info";
+import { TicketInfo } from "../../component/ticket_assistance/ticket_info";
 import { InterventionTypes } from "../../constants/intervention_types";
 import { MapInfo } from "../../component/ticket_assistance/map_info"
 
