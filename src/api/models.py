@@ -68,6 +68,7 @@ class Customer(db.Model):
     address_1 = db.Column(db.String(100), nullable=False)
     address_2 = db.Column(db.String(100))
     zipcode = db.Column(db.Integer)
+    company_email = db.Column(db.String(25) )
     city = db.Column(db.String(50), nullable=False)
     user = db.relationship('User', backref='customer', uselist=False)
     tickets = db.relationship('Ticket', backref='customer', uselist=False)
@@ -83,7 +84,7 @@ class Customer(db.Model):
             "address_2": self.address_2,
             "zipcode": self.zipcode,
             "city": self.city,
-            # "company_email": self.company_email,
+            "company_email": self.company_email
         }
 
     def serialize_employee(self):
