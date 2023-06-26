@@ -32,12 +32,6 @@ export const Navbar = () => {
 
 	return (
 		<header className="navbar navbar-expand-lg bd-navbar sticky-top bg-secondary">
-			{/* {console.log("vvvvvvvvvvvvvvvvvv")}
-			{console.log(store.userProfile.employee_info.first_name)}
-			{console.log("XXXXXXXXXXXXXXXXXX")}
-			{console.log(store.userProfile.user_info.user_type)}
-			{console.log("DISPLAY")}
-			{console.log(display)} */}
 			<nav className="container-xxl bd-gutter flex-wrap flex-lg-nowrap align-items-center" aria-label="Main navigation">
 				<div className="d-flex align-items-center ">
 
