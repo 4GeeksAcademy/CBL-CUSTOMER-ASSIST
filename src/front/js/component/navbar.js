@@ -77,6 +77,7 @@ export const Navbar = () => {
 									</li>
 									<li><button onClick={() => {
 										actions.logout();
+										setDisplay("")
 										navigate("/")
 									}} className="btn btn-light me-3">Logout</button></li>
 								</ul>
