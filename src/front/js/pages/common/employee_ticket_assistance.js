@@ -7,6 +7,7 @@ import { InterventionTypes } from "../../constants/intervention_types";
 import { MapInfo } from "../../component/ticket_assistance/map_info"
 import { EquipmentInfoCard } from "../../component/ticket_assistance/equipment_info_card";
 import { ModalEquipmentHistorical } from "../../component/ticket_assistance/modal_equipment_info";
+import { VehicleInfoCard } from "../../component/ticket_assistance/vehicle_info_card";
 
 export const EmployeeTicketAssistance = () => {
     const { store, actions } = useContext(Context);
@@ -29,14 +30,15 @@ export const EmployeeTicketAssistance = () => {
     };
     const equipmentInfo = ticket.equipment;
     const modalEquipmentHistorical = ticket.equipment.knowledge;
-
+    const vehicleInfo = ticket.vehicle;
     return (
         <main className="bd-main">
             <CustomerInfo data={customerInfo} />
-            <MapInfo data={mapInfo}/>
+            <MapInfo data={mapInfo} />
             <TicketInfo data={ticketInfo} />
             <EquipmentInfoCard data={equipmentInfo} />
-            <ModalEquipmentHistorical data={modalEquipmentHistorical}/>
+            <VehicleInfoCard data={vehicleInfo} />
+            <ModalEquipmentHistorical data={modalEquipmentHistorical} /> {/* this one needs to be at bottom */}
         </main>
     );
 };

@@ -1,4 +1,5 @@
 import equipmentPhotoUrl from "../../assets/img/dm160.jpg";
+import vehiclePhotoUrl from "../../assets/img/8568jn.jpeg";
 
 const getState = ({ getStore, getActions, setStore }) => {
 	return {
@@ -16,6 +17,12 @@ const getState = ({ getStore, getActions, setStore }) => {
 				"intervention_type": true,
 				"subject": "Main motor doesn't start",
 				"description": "After main switch turned on and after all safety validations, the main motor doesn't start!",
+				"vehicle": { // TODO
+					licence_plate: "85-68-JN",
+					model: "Megane",
+					maker: "Renault",
+					photo: vehiclePhotoUrl
+				},
 				"customer": {
 					"id": 1,
 					"company_name": "Automotive Parts",
