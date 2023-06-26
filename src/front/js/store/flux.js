@@ -1,3 +1,5 @@
+import equipmentPhotoUrl from "../../assets/img/dm160.jpg";
+
 const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
@@ -7,7 +9,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			customerTickets: [],
 			equipmentList: [],
 			tickets: [],
-			manufacturerAddress: "Mecânica Exacta, S.A., Rua António Gomes da Cruz, São Paio de Oleiros",
+			manufacturerAddress: "Mecânica Exacta, S.A., Rua António Gomes da Cruz, São Paio de Oleiros", // TODO
 			assignedTicket: {
 				"id": 11,
 				"status": "Opened",
@@ -31,6 +33,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					"serial_number": "AA0101",
 					"model": "CC63",
 					"im109": 101,
+					"photo": equipmentPhotoUrl, // TODO: IMPROVEMENT
 					"knowledge": [
 						{
 							"id": 16,

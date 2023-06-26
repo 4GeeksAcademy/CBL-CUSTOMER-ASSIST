@@ -7,7 +7,7 @@ export const TicketInfo = (props) => {
     const data = props.data;
 
     return (
-        <div className="container">
+        <div className="mb-3">
             <h4 className="border-bottom">Ticket Information</h4>
             <div className="card">
                 <div className="card-header d-flex flex-wrap">
@@ -48,7 +48,7 @@ export const TicketInfo = (props) => {
                     <li className="list-group-item">
                         <p className="card-title"><i className="fa-solid fa-photo-film me-1" style={{ color: "#689ffd" }}></i><strong>Photos from Customer</strong></p>
                         <div id="carouselExample" className="carousel slide pointer-event">
-                            <div className="carousel-inner">
+                            <div className="carousel-inner rounded-bottom">
                                 {data.customerMedia.length > 0 ?
                                     data.customerMedia.map((url, i) => {
                                         return <CarouselItem key={i} url={data.customerMedia[i]} index={i} />

@@ -4,9 +4,10 @@ export const MapInfo = (props) => {
     const data = props.data;
 
     return (
-        <div className="container">
+        <div className="mb-3">
             <h4 className="border-bottom">Directions</h4>
             <iframe
+                className="rounded"
                 width="100%"
                 height="350"
                 frameBorder="0" style={{"border":0}}

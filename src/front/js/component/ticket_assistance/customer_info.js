@@ -4,7 +4,7 @@ export const CustomerInfo = (props) => {
     const data = props.data;
 
     return (
-        <div className="container">
+        <div className="mb-3">
             <h4 className="border-bottom">Customer Information</h4>
             <div className="d-flex flex-wrap">
                 <div className="col-12 col-sm-6">
