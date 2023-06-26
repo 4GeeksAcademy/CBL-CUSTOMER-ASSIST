@@ -4,10 +4,10 @@ export const CustomerInfo = (props) => {
     const data = props.data;
 
     return (
-        <div className="container">
+        <div className="mb-3">
             <h4 className="border-bottom">Customer Information</h4>
             <div className="d-flex flex-wrap">
-                <div className="col-12 col-md-6">
+                <div className="col-12 col-sm-6">
                     <div className="col-12">
                         <h6><i className="fa-regular fa-building me-1"></i><strong>Company name</strong></h6>
                         <p>{data.company_name}</p>
@@ -18,7 +18,7 @@ export const CustomerInfo = (props) => {
                         <p>{data.city} {data.zipcode}</p>
                     </div>
                 </div>
-            <div className="col-12 col-md-6">
+            <div className="col-12 col-sm-6">
                 <div className="col-12">
                     <h6><i className="fa-solid fa-user me-1"></i><strong>Contact Person</strong></h6>
                     <p>{data.contact_person}</p>

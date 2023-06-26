@@ -16,7 +16,7 @@ export const MainBdLayout = ({children}) => {
         <div className={pathname === '/' || pathname === '/loading' ? "container-xxl bd-gutter mt-3 my-md-4 vh-100" : "container-xxl bd-gutter mt-3 my-md-4 bd-layout"} style={{position: "relative"}}>
             {children}
             
-            {/* MODAL */}
+            {/* MODAL TICKET INFO*/}
             <div id="modalTicketInfo" className="modal fade modal-fullscreen" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                 <div className="modal-dialog modal-fullscreen">
                     <div className="modal-content">
