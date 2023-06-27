@@ -75,6 +75,82 @@ const getState = ({ getStore, getActions, setStore }) => {
 					]
 				},
 			},
+			categoryOptions: [ // TODO
+				{
+					"label": "Electrical",
+					"value": "Electrical"
+				},
+				{
+					"label": "Mechanical",
+					"value": "Mechanical"
+				},
+				{
+					"label": "Software",
+					"value": "Software"
+				}
+			],
+			knowledges: [ // TODO
+				{
+					"category": "Electrical",
+					"id": 1,
+					"malfunction": "Malfunction lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum      1",
+					"solution": "Solution lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lolorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lolorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lolorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lolorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lolorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lolorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lolorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lolorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lolorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum  1"
+				},
+				{
+					"category": "Electrical",
+					"id": 2,
+					"malfunction": "Malfunction 2",
+					"solution": "Solution 2"
+				},
+				{
+					"category": "Mechanical",
+					"id": 3,
+					"malfunction": "Malfunction 3",
+					"solution": "Solution 3"
+				},
+				{
+					"category": "Software",
+					"id": 4,
+					"malfunction": "Malfunction 4",
+					"solution": "Solution 4"
+				},
+				{
+					"category": "Mechanical",
+					"id": 5,
+					"malfunction": "Malfunction 5",
+					"solution": "Solution 5"
+				},
+				{
+					"category": "Mechanical",
+					"id": 6,
+					"malfunction": "Malfunction 6",
+					"solution": "Solution 6"
+				},
+				{
+					"category": "Software",
+					"id": 7,
+					"malfunction": "Malfunction 7",
+					"solution": "Solution 7"
+				},
+				{
+					"category": "Electrical",
+					"id": 8,
+					"malfunction": "Malfunction 8",
+					"solution": "Solution 8"
+				},
+				{
+					"category": "Software",
+					"id": 9,
+					"malfunction": "Malfunction 9",
+					"solution": "Solution 9"
+				},
+				{
+					"category": "Mechanical",
+					"id": 10,
+					"malfunction": "Malfunction 10",
+					"solution": "Solution 10"
+				}
+			],
 			userProfile: {user_info : {}, customer_info : {}, employee_info : {}},
 			customerEquipmentTickets: [],
 			user: null,
