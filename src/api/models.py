@@ -68,7 +68,7 @@ class Customer(db.Model):
     address_1 = db.Column(db.String(100), nullable=False)
     address_2 = db.Column(db.String(100))
     zipcode = db.Column(db.Integer)
-    company_email = db.Column(db.String(25) )
+    company_email = db.Column(db.String(25), nullable=True)
     city = db.Column(db.String(50), nullable=False)
     user = db.relationship('User', backref='customer', uselist=False)
     tickets = db.relationship('Ticket', backref='customer', uselist=False)
@@ -238,6 +238,7 @@ class Equipment(db.Model):
     serial_number = db.Column(db.String(50), nullable=False)
     model = db.Column(db.String(50), nullable=False)
     im109 = db.Column(db.String(50), nullable=True)
+    equipment_photo = db.Column(db.String(50), nullable=True)
     customer_id = db.Column(db.Integer, db.ForeignKey('customer.id'), nullable=True)
     tickets = db.relationship('Ticket', backref='equipment', uselist=False)
 
@@ -250,7 +251,8 @@ class Equipment(db.Model):
             "customer_id" : self.customer_id,
             "serial_number": self.serial_number,
             "model": self.model,
-            "im109": self.im109
+            "im109": self.im109,
+            "equipment_photo": self.equipment_photo
         }
     
     def serialize_employee(self):
@@ -306,6 +308,7 @@ class Vehicle(db.Model):
     available = db.Column(db.Boolean, default=True, nullable=False)
     model = db.Column(db.String(50), nullable=True)
     maker = db.Column(db.String(50), nullable=True)
+    vehicle_photo = db.Column(db.String(50), nullable=True)
     tickets = db.relationship('Ticket', backref='vehicle', uselist=False)
 
     def serialize(self):
@@ -313,7 +316,8 @@ class Vehicle(db.Model):
             "id":self.id,
             "license_plate": self.license_plate,
             "model" : self.model,
-            "maker" : self.maker
+            "maker" : self.maker,
+            "vehicle_photo" : self.vehicle_photo
         }
 
 class EmployeeTicketObservation(db.Model):
