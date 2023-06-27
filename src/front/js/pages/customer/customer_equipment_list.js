@@ -14,12 +14,12 @@ export const CustomerEquipmentList = () => {
         }, [equipmentSelected])
     
     useEffect(() => {
-        const storedEquipmentVar = window.localStorage.getItem('equipmentVar');
+        const storedEquipmentVar = sessionStorage.getItem('equipmentVar'); 
         if (storedEquipmentVar) setEquipmentVar(JSON.parse(storedEquipmentVar))
         }, []);
 
       useEffect(() => {
-        window.localStorage.setItem('equipmentVar', JSON.stringify(equipmentVar));
+        sessionStorage.setItem('equipmentVar', JSON.stringify(equipmentVar));
       }, [equipmentVar]);
 
       const saveEquipment = (selected) => {
@@ -29,7 +29,7 @@ export const CustomerEquipmentList = () => {
     
     return (
         <main className="bd-main order-1">
-            <div className="bd-intro">
+           <div className="bd-intro">
                 <div className="border-bottom mb-4 mt-3">
                     <h1>Equipment List</h1>
                 </div>
@@ -47,7 +47,7 @@ export const CustomerEquipmentList = () => {
                 </div>
                 <div className="bd-content ">
                     <div className="border rounded p-4 flex-fill">
-                        <div>{console.log(equipmentVar)}
+                        <div>
                             {Object.values(equipmentVar).length > 0 ? equipmentVar.map((item, i) => {
                                 return <EquipmentListCard key={i} data={item} />
                             }) : <span>No equipment found..</span>}
