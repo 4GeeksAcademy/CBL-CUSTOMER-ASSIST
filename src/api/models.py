@@ -316,7 +316,8 @@ class Vehicle(db.Model):
             "id":self.id,
             "license_plate": self.license_plate,
             "model" : self.model,
-            "maker" : self.maker
+            "maker" : self.maker,
+            "vehicle_photo" : self.vehicle_photo
         }
 
 class EmployeeTicketObservation(db.Model):
