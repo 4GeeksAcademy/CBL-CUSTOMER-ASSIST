@@ -73,6 +73,7 @@
 		]
 	},
 	"dependencies": {
+		"@googlemaps/js-api-loader": "^1.16.2",
 		"@trendmicro/react-sidenav": "^0.5.0",
 		"bootstrap": "^5.3.0",
 		"multiselect-react-dropdown": "^2.0.25",

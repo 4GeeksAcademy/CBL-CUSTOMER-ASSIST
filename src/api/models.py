@@ -302,6 +302,12 @@ class Category(db.Model):
             "description": self.description
         }
 
+    def serialize_options(self):
+        return {
+            "value": self.description,
+            "label": self.description
+        }
+
 class Vehicle(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     license_plate = db.Column(db.String(20))

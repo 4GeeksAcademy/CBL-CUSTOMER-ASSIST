@@ -46,6 +46,5 @@ export const MainBdLayout = ({children}) => {
                 </div>
             </div>
         </div>
-
     );
 }

@@ -6,8 +6,9 @@ import { TicketInfo } from "../../component/ticket_assistance/ticket_info";
 import { InterventionTypes } from "../../constants/intervention_types";
 import { MapInfo } from "../../component/ticket_assistance/map_info"
 import { EquipmentInfoCard } from "../../component/ticket_assistance/equipment_info_card";
-import { ModalEquipmentHistorical } from "../../component/ticket_assistance/modal_equipment_info";
+import { ModalEquipmentHistory } from "../../component/ticket_assistance/modal_equipment_history";
 import { VehicleInfoCard } from "../../component/ticket_assistance/vehicle_info_card";
+import { KnowledgeAssistanceReport } from "../../component/ticket_assistance/knowledge_assistance_report";
 
 export const EmployeeTicketAssistance = () => {
     const { store, actions } = useContext(Context);
@@ -31,6 +32,9 @@ export const EmployeeTicketAssistance = () => {
     const equipmentInfo = ticket.equipment;
     const modalEquipmentHistorical = ticket.equipment.knowledge;
     const vehicleInfo = ticket.vehicle;
+    const categoryOptions = store.categoryOptions;
+    const knowledges = store.knowledges;
+
     return (
         <main className="bd-main">
             <CustomerInfo data={customerInfo} />
@@ -38,7 +42,8 @@ export const EmployeeTicketAssistance = () => {
             <TicketInfo data={ticketInfo} />
             <EquipmentInfoCard data={equipmentInfo} />
             <VehicleInfoCard data={vehicleInfo} />
-            <ModalEquipmentHistorical data={modalEquipmentHistorical} /> {/* this one needs to be at bottom */}
+            <KnowledgeAssistanceReport categoryOptions={categoryOptions} knowledges={knowledges}/>
+            <ModalEquipmentHistory data={modalEquipmentHistorical} /> {/* this one needs to be the last element of <main> */}
         </main>
     );
 };

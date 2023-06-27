@@ -2,7 +2,7 @@
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
 from flask import Flask, request, jsonify, url_for, Blueprint
-from api.models import db, User, Customer, Employee, Ticket, Equipment, Malfunction, Knowledge, TicketKnowledge, TicketEmployeeRelation, Vehicle
+from api.models import db, User, Customer, Employee, Ticket, Equipment, Malfunction, Knowledge, TicketKnowledge, TicketEmployeeRelation, Vehicle, Category
 from api.utils import generate_sitemap, APIException
 from flask_jwt_extended import create_access_token
 from flask_jwt_extended import get_jwt_identity
@@ -630,3 +630,38 @@ def get_employee_assigned_tickets():
     filtered_list_of_tickets[0]['equipment']['knowledge'] = final
     
     return jsonify(filtered_list_of_tickets[0]), 200
+
+
+@api.route('/employee/categories', methods=['GET'])
+@jwt_required()
+def get_categories():
+    user_email = get_jwt_identity()
+    user = User.query.filter_by(email=user_email).one_or_none()
+
+    if not user:
+        return jsonify({"msg": "No user exist with that email"}), 400
+
+    if user.user_type.type == "customer":
+        return jsonify({"msg": "Customers don't have access to this endpoint!"}), 403
+
+    
+    categories = Category.query.all()
+
+    return jsonify({"categories": [categorie.serialize_options() for categorie in categories]}), 200
+
+
+@api.route('/knowledge/list', methods=['GET'])
+@jwt_required()
+def get_all_knowledges():
+    user_email = get_jwt_identity()
+    user = User.query.filter_by(email=user_email).one_or_none()
+
+    if not user:
+        return jsonify({"msg": "No user exist with that email"}), 400
+
+    if user.user_type.type == "customer":
+        return jsonify({"msg": "Customers don't have access to this endpoint!"}), 403
+
+    knowledges = Knowledge.query.all()
+
+    return jsonify({"knowledges": [knowledge.serialize() for knowledge in knowledges]}), 200
