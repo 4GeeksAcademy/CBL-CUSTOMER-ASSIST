@@ -1,16 +1,26 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useContext } from "react";
+import { Context } from "../../store/appContext";
 import Select from 'react-select';
 import makeAnimated from 'react-select/animated';
-// import { colourOptions } from '../data';
+import { Buffer } from "buffer";
 
 export const KnowledgeAssistanceReport = (props) => {
+    const { store, actions } = useContext(Context);
+    const ticketStage = store.ticketStage;
     const categoryOptions = props.categoryOptions;
     const knowledges = props.knowledges;
+    const customerInfo = props.customerInfo;
     const animatedComponents = makeAnimated();
     const [knowledgeFilter, setKnowledgeFilter] = useState([]);
     const [actionsTaken, setActionsTaken] = useState([]);
     const [editObservations, setEditObservations] = useState(false);
     const [observationsValue, setObservationsValue] = useState("");
+    const [enableCloseReportButton, setEnableCloseReportButton] = useState(false);
+    const [customerUserPassword, setCustomerUserPassword] = useState("");
+
+    useEffect(() => {
+        (actionsTaken.length > 0 || observationsValue.length > 0) && !editObservations ? setEnableCloseReportButton(true) : setEnableCloseReportButton(false);
+    }, [actionsTaken, observationsValue])
 
     const handleFilters = (options) => {
         const filter = options.map((opt) => opt.value);
@@ -23,6 +33,22 @@ export const KnowledgeAssistanceReport = (props) => {
 
     const handleEditObservations = () => {
         setEditObservations(!editObservations);
+        enableCloseReportButton ? setEnableCloseReportButton(!enableCloseReportButton)
+            : !enableCloseReportButton && actionsTaken.length > 0 || observationsValue.length > 0 ? setEnableCloseReportButton(!enableCloseReportButton)
+                : setEnableCloseReportButton(false);
+    }
+
+    const handleObservationsValue = (value) => {
+        setObservationsValue(value)
+    }
+
+    const handleCloseReport = () => {
+        actions.setTicketStage(4);
+    }
+
+    const handleCustomerReportAproval = () => {
+        const encodedString = Buffer.from(customerUserPassword).toString('base64');
+        encodedString === customerInfo.authentication.password ? actions.setTicketStage(5) : console.log('Not aproved!');
     }
 
     return (
@@ -43,6 +69,7 @@ export const KnowledgeAssistanceReport = (props) => {
                     closeMenuOnSelect={true}
                     blurInputOnSelect={true}
                     components={animatedComponents}
+                    isDisabled={ticketStage >= 5}
                     // defaultValue={[categoryOptions[0]]}
                     isMulti
                     options={categoryOptions}
@@ -94,9 +121,9 @@ export const KnowledgeAssistanceReport = (props) => {
                 }
             </div>
 
-            {/* ACTIONS TAKEN */}
+            {/* ACTIONS TAKEN: KNOWLEDGES ADDED TO REPORT */}
             {/* TODO: is there a way to do this below without having two actionsTaken.length? */}
-            {/* The next line just need to be rendered one time */}
+            {/* Because the next line just needs to be rendered one time */}
             {actionsTaken.length > 0 ? <h6 className="border-bottom">Actions taken</h6> : ""}
             {actionsTaken.length > 0 ?
                 actionsTaken.map((action, i) => {
@@ -124,21 +151,122 @@ export const KnowledgeAssistanceReport = (props) => {
                 }) :
                 null
             }
+
             {/* OBSERVATIONS */}
             <div className="form-floating mb-1">
-                <textarea className="form-control" placeholder="Leave a comment here" id="floatingTextarea" style={{ minHeight: "500px" }} disabled={!editObservations}></textarea>
+                <textarea className="form-control"
+                    id="floatingTextarea"
+                    placeholder="Leave a comment here"
+                    style={{ minHeight: "500px" }}
+                    disabled={!editObservations}
+                    value={observationsValue}
+                    onChange={(e) => handleObservationsValue(e.target.value)}
+                ></textarea>
                 <label htmlFor="floatingTextarea">Observations...</label>
             </div>
-            <div className="form-check">
-                <input
-                    className="form-check-input me-2"
-                    checked={editObservations}
-                    value={observationsValue}
-                    onChange={() => handleEditObservations()}
-                    type="checkbox"
-                    id="editObservations"
-                />
-                <label className="form-check-label" htmlFor="editObservations">Edit Observations</label>
+
+            {/* BUTTON EDIT OBSERVATIONS TEXTAREA */}
+            {ticketStage === 3 ?
+                <div className="form-check">
+                    <input
+                        className="form-check-input me-2"
+                        checked={editObservations}
+                        value={observationsValue}
+                        onChange={() => handleEditObservations()}
+                        type="checkbox"
+                        id="editObservations"
+                    />
+                    <label className="form-check-label" htmlFor="editObservations">Edit Observations</label>
+                </div> :
+                null
+            }
+
+            {/* BUTTON CLOSE REPORT */}
+            {ticketStage === 3 ?
+                <button type="button" className="btn btn-primary"
+                    data-bs-toggle="modal" data-bs-target="#actionsTakenAndObservationsReportConfirmation"
+                    style={{ "--bs-btn-padding-y": ".25rem", "--bs-btn-padding-x": ".5rem", "--bs-btn-font-size": ".75rem" }}
+                    disabled={!enableCloseReportButton}>
+                    Close Report
+                </button> :
+                null
+            }
+
+            {/* BUTTON CUSTOMER APROVAL */}
+            {ticketStage === 4 ?
+                <button type="button" className="btn btn-success"
+                    data-bs-toggle="modal" data-bs-target="#customerReportAproval"
+                    style={{ "--bs-btn-padding-y": ".25rem", "--bs-btn-padding-x": ".5rem", "--bs-btn-font-size": ".75rem" }}>
+                    Customer Aproval
+                </button> :
+                null
+            }
+
+            {/* MODAL TO CONFIRM ACTIONS TAKEN AND OBSERVATIONS BY TECHNICIAN/ENGINEER */}
+            <div className="modal fade" id="actionsTakenAndObservationsReportConfirmation" tabIndex="-1" aria-labelledby="customerReportAprovalLabel" aria-hidden="true">
+                <div className="modal-dialog">
+                    <div className="modal-content">
+                        <div className="modal-header">
+                            <h1 className="modal-title fs-5" id="customerReportAprovalLabel">Customer Assistance Report Aproval Authentication</h1>
+                            <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div className="modal-body">
+                            Have all actions taken and notes been added to the report?
+                        </div>
+                        <div className="modal-footer">
+                            <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                            <button type="button" className="btn btn-success" data-bs-dismiss="modal"
+                                onClick={() => handleCloseReport()}>
+                                Yes
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {/* MODAL FOR CUSTOMER REPORT APROVAL */}
+            <div className="modal fade" id="customerReportAproval" tabIndex="-1" aria-labelledby="actionsTakenAndObservationsReportConfirmationLabel" aria-hidden="true">
+                <div className="modal-dialog">
+                    <div className="modal-content">
+                        <div className="modal-header">
+                            <h1 className="modal-title fs-5" id="actionsTakenAndObservationsReportConfirmationLabel">Actions taken in Report</h1>
+                            <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div className="modal-body">
+
+                            {/* CUSTOMER USER EMAIL */}
+                            <div className="form-floating mb-3">
+                                <input type="email"
+                                    className="form-control"
+                                    id="customerUserEmail"
+                                    placeholder="name@example.com"
+                                    value={customerInfo.authentication.user_email}
+                                    disabled
+                                />
+                                <label htmlFor="customerUserEmail">Customer User Email</label>
+                            </div>
+
+                            {/* CUSTOMER USER PASSWORD */}
+                            <div className="form-floating">
+                                <input type="password"
+                                    className="form-control"
+                                    id="floatingPassword"
+                                    placeholder="Password"
+                                    value={customerUserPassword}
+                                    onChange={(e) => setCustomerUserPassword(e.target.value)}
+                                />
+                                <label htmlFor="floatingPassword">Password</label>
+                            </div>
+                        </div>
+                        <div className="modal-footer">
+                            <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                            <button type="button" className="btn btn-success" data-bs-dismiss="modal"
+                                onClick={() => handleCustomerReportAproval()}>
+                                Yes
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     );

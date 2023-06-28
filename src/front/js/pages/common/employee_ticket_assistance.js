@@ -49,7 +49,7 @@ export const EmployeeTicketAssistance = () => {
                 : null
             }
             {ticketStage >= 3 ?
-                <KnowledgeAssistanceReport categoryOptions={categoryOptions} knowledges={knowledges} />
+                <KnowledgeAssistanceReport categoryOptions={categoryOptions} knowledges={knowledges} customerInfo={customerInfo} />
                 : null
             }
             <ModalEquipmentHistory data={modalEquipmentHistorical} /> {/* this one needs to be the last element of <main> */}
