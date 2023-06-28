@@ -24,16 +24,20 @@ const getState = ({ getStore, getActions, setStore }) => {
 					photo: vehiclePhotoUrl
 				},
 				"customer": {
-					"id": 1,
-					"company_name": "Automotive Parts",
-					"phone": 5551234567,
-					"contact_person": "Abe Lashtar",
-					"address_1": "R. Vale do Grou",
-					"address_2": "1378",
-					"zipcode": "3754-908",
-					"city": "Águeda",
-					"company_email": "automotive.parts@email.com",
-					"customer_email": "customer1@email.com"
+					id: 1,
+					company_name: "Automotive Parts",
+					phone: 5551234567,
+					contact_person: "Abe Lashtar",
+					address_1: "R. Vale do Grou",
+					address_2: "1378",
+					zipcode: "3754-908",
+					city: "Águeda",
+					company_email: "automotive.parts@email.com",
+					customer_email: "customer1@email.com",
+					authentication: { // TODO
+						user_email: "customer1@email.com",
+						password: "Y3VzdG9tZXIx"
+					}
 				},
 				"equipment": {
 					"id": 4,

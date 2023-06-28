@@ -18,15 +18,14 @@ export const VehicleInfoCard = (props) => {
         return () => {
             setEditKilometers(!editKilometers);
 
-            // condition to enable input to insert kilometers on leave
+            // conditions to enable input to insert kilometers on leave
             valueKilometersOnLeave === "" && valueKilometersOnArrival === "" && ticketStage === 1 ? setEditKilometersOnLeave(!editKilometersOnLeave) : setEditKilometersOnLeave(false);
 
-            // condition to enable input to insert kilometers on arrival
+            // conditions to enable input to insert kilometers on arrival
             valueKilometersOnLeave !== "" && valueKilometersOnArrival === "" && ticketStage === 6 ? setEditKilometersOnArrival(!editKilometersOnArrival) : setEditKilometersOnArrival(false);
-
-            // setKilometersOnArrival(!editKilometers && kilometersOnLeave);
+            
+            // conditions to enable button to proceed to stage 2
             valueKilometersOnLeave !== "" && valueKilometersOnArrival === "" && ticketStage === 1 ? setProceedToStage2(true) : setProceedToStage2(false);
-            // if (kilometersOnLeave) setProceedToStage2(true);
         }
     }
 
