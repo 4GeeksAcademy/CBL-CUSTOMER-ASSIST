@@ -1,17 +1,32 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import { Context } from "../../store/appContext";
 
 export const VehicleInfoCard = (props) => {
+    const { store, actions } = useContext(Context);
     const data = props.data;
+    const [editKilometers, setEditKilometers] = useState(false);
+    const [editKilometersOnLeave, setEditKilometersOnLeave] = useState(false);
+    const [editKilometersOnArrival, setEditKilometersOnArrival] = useState(false);
     const [valueKilometersOnLeave, setValueKilometersOnLeave] = useState("");
     const [valueKilometersOnArrival, setValueKilometersOnArrival] = useState("");
-    const [editKilometers, setEditKilometers] = useState(false);
     const [kilometersOnLeave, setKilometersOnLeave] = useState(false);
     const [kilometersOnArrival, setKilometersOnArrival] = useState(editKilometers && kilometersOnLeave);
+    const ticketStage = store.ticketStage;
+    const [proceedToStage2, setProceedToStage2] = useState(false);
 
     const handleEditKilometers = () => {
         return () => {
             setEditKilometers(!editKilometers);
-            setKilometersOnArrival(!editKilometers && kilometersOnLeave);
+
+            // condition to enable input to insert kilometers on leave
+            valueKilometersOnLeave === "" && valueKilometersOnArrival === "" && ticketStage === 1 ? setEditKilometersOnLeave(!editKilometersOnLeave) : setEditKilometersOnLeave(false);
+
+            // condition to enable input to insert kilometers on arrival
+            valueKilometersOnLeave !== "" && valueKilometersOnArrival === "" && ticketStage === 6 ? setEditKilometersOnArrival(!editKilometersOnArrival) : setEditKilometersOnArrival(false);
+
+            // setKilometersOnArrival(!editKilometers && kilometersOnLeave);
+            valueKilometersOnLeave !== "" && valueKilometersOnArrival === "" && ticketStage === 1 ? setProceedToStage2(true) : setProceedToStage2(false);
+            // if (kilometersOnLeave) setProceedToStage2(true);
         }
     }
 
@@ -19,7 +34,22 @@ export const VehicleInfoCard = (props) => {
         return (e) => {
             let num = +(e.target.value);
             setValueKilometersOnLeave(num);
-            if(!isNaN(num)) setKilometersOnLeave(true);
+            if (!isNaN(num)) {
+                console.log(typeof num)
+                setKilometersOnLeave(true);
+            }
+        }
+    }
+
+    const handleProceedToCustomer = () => {
+        return () => {
+            if (proceedToStage2) actions.setTicketStage(2);
+        }
+    }
+
+    const handleArrivedCustomerFacilities = () => {
+        return () => {
+            actions.setTicketStage(3);
         }
     }
 
@@ -54,12 +84,11 @@ export const VehicleInfoCard = (props) => {
                                     <div className="row g-2">
                                         {/* KMs ON LEAVE */}
                                         <div className="form-floating col-12 col-sm-6">
-                                            <input
-                                                type="number"
+                                            <input type="number"
                                                 className="form-control"
                                                 id="floatingOnLeave"
                                                 placeholder="Fill in vehicle km's before leave home facilities."
-                                                disabled={!editKilometers}
+                                                disabled={!editKilometersOnLeave}
                                                 value={valueKilometersOnLeave}
                                                 onChange={handleKmOnLeaveValue()} />
                                             <label htmlFor="floatingOnLeave">Km's on leave</label>
@@ -67,16 +96,62 @@ export const VehicleInfoCard = (props) => {
 
                                         {/* KMs ON ARRIVAL */}
                                         <div className="form-floating col-12 col-sm-6">
-                                            <input type="number" className="form-control" id="floatingOnArrival" placeholder="Fill in vehicle km's after arriving home facilities." disabled={!kilometersOnArrival} />
+                                            <input type="number"
+                                                className="form-control"
+                                                id="floatingOnArrival"
+                                                placeholder="Fill in vehicle km's after arriving home facilities."
+                                                disabled={!editKilometersOnArrival} />
                                             <label htmlFor="floatingOnArrival">Km's on arrival</label>
                                         </div>
                                     </div>
-                                    <div className="form-check">
-                                        <input className="form-check-input me-2" checked={editKilometers} onChange={handleEditKilometers()} type="checkbox" id="flexCheckDefault" />
-                                        <label className="form-check-label" htmlFor="flexCheckDefault">Edit Kilometers</label>
-                                    </div>
+                                    {ticketStage === 1 || ticketStage === 6 ?
+                                        <div className="form-check">
+                                            <input className="form-check-input me-2" checked={editKilometers} onChange={handleEditKilometers()} type="checkbox" id="flexCheckDefault" />
+                                            <label className="form-check-label" htmlFor="flexCheckDefault">Edit Kilometers</label>
+                                        </div> :
+                                        null
+                                    }
                                 </li>
                             </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {ticketStage === 1 ?
+                <button type="button" className="btn btn-primary"
+                    style={{ "--bs-btn-padding-y": ".25rem", "--bs-btn-padding-x": ".5rem", "--bs-btn-font-size": ".75rem" }}
+                    onClick={handleProceedToCustomer()}
+                    disabled={!proceedToStage2}>
+                    Proceed to customer
+                </button> :
+                null
+            }
+            {ticketStage === 2 ?
+                <button type="button" className="btn btn-primary"
+                    data-bs-toggle="modal" data-bs-target="#customerFacilitiesArrivalConfirmation"
+                    style={{ "--bs-btn-padding-y": ".25rem", "--bs-btn-padding-x": ".5rem", "--bs-btn-font-size": ".75rem" }}>
+                    Arrived Customer Facilities
+                </button> :
+                null
+            }
+
+            {/* MODAL TO CONFIRM ARRIVAL TO CUSTOMER FACILITIES */}
+            <div className="modal fade" id="customerFacilitiesArrivalConfirmation" tabIndex="-1" aria-labelledby="customerFacilitiesArrivalConfirmationLabel" aria-hidden="true">
+                <div className="modal-dialog">
+                    <div className="modal-content">
+                        <div className="modal-header">
+                            <h1 className="modal-title fs-5" id="customerFacilitiesArrivalConfirmationLabel">Customer Facilities Arrival Confirmation</h1>
+                            <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div className="modal-body">
+                            Did you arrived to customer facilities?
+                        </div>
+                        <div className="modal-footer">
+                            <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                            <button type="button" className="btn btn-success" data-bs-dismiss="modal"
+                                onClick={handleArrivedCustomerFacilities()}>
+                                Yes
+                            </button>
                         </div>
                     </div>
                 </div>
