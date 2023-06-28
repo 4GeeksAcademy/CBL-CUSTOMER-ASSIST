@@ -34,15 +34,24 @@ export const EmployeeTicketAssistance = () => {
     const vehicleInfo = ticket.vehicle;
     const categoryOptions = store.categoryOptions;
     const knowledges = store.knowledges;
+    const ticketStage = store.ticketStage;
 
     return (
         <main className="bd-main">
-            <CustomerInfo data={customerInfo} />
-            <MapInfo data={mapInfo} />
-            <TicketInfo data={ticketInfo} />
-            <EquipmentInfoCard data={equipmentInfo} />
-            <VehicleInfoCard data={vehicleInfo} />
-            <KnowledgeAssistanceReport categoryOptions={categoryOptions} knowledges={knowledges}/>
+            {ticketStage > 0 ?
+                <>
+                    <CustomerInfo data={customerInfo} />
+                    <TicketInfo data={ticketInfo} />
+                    <EquipmentInfoCard data={equipmentInfo} />
+                    <MapInfo data={mapInfo} />
+                    <VehicleInfoCard data={vehicleInfo} />
+                </>
+                : null
+            }
+            {ticketStage >= 3 ?
+                <KnowledgeAssistanceReport categoryOptions={categoryOptions} knowledges={knowledges} />
+                : null
+            }
             <ModalEquipmentHistory data={modalEquipmentHistorical} /> {/* this one needs to be the last element of <main> */}
         </main>
     );

@@ -158,7 +158,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 			modalBody: null,
 			liveToastHeader: null,
 			liveToastBody: null,
-			userList: []
+			userList: [],
+			ticketStage: 1
 		}, 
 		actions: {
 			syncTokenFromSessionStorage: () => {
@@ -185,6 +186,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 				sessionStorage.setItem([key], JSON.stringify(data));
 				setStore({ [key]: data });
 				return true;
+			},
+
+			setTicketStage: (value) => {
+				setStore({ticketStage: value});
 			},
 
 			login: async (email, password) => {
