@@ -13,9 +13,8 @@ export const EquipmentListCard = (props) => {
             return obj.equipment.id === data.id;
             
           });
-          actions.getCustomerEquipmentTickets(filtered)
-          console.log("CUSTOMER TICKETS")
-        console.log(store.customerEquipmentTickets)
+        actions.getCustomerEquipmentTickets(filtered)
+        
     };
    
 

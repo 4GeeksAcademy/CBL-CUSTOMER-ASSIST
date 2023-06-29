@@ -6,7 +6,7 @@ export const EquipmentHistoryCard = (props) => {
     const [button, setButton] = useState(true)
 
     const data = props.data;
-    const myModal = document.querySelector('#modalTicketInfo');
+    // const myModal = document.querySelector('#modalTicketInfo');
     const solutions = Object.keys(data.knowledge).map(item => data.knowledge[item].knowledge)
     const malfunctions = Object.keys(data.knowledge).map(item => data.knowledge[item].knowledge.malfunction.description)
     return (
@@ -17,8 +17,8 @@ export const EquipmentHistoryCard = (props) => {
                     <p className="card-text">Subject: {data.subject} </p>
                 </div>
                 <div className="text-end">
-                    <p className="card-text">Equipment ID: {data.equipment.id}</p>
-                    <p className="card-text">IM109: {data.equipment.im109}</p>
+                    <p className="card-text">Equipment ID: {data.equipment.id}</p>  
+                    <p className="card-text">IM109: {data.equipment.im109}</p> 
                 </div>
             </div>
             <div className="d-flex justify-content-center btn-group" role="group">
