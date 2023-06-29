@@ -294,7 +294,7 @@ def get_equipment_by_customer_id(customer_id):
     return jsonify({"equipments": [equipment.serialize() for equipment in equipments]}), 200
 
 
-@api.route('/employees/available', methods=['GET'])
+@api.route('/available/employees', methods=['GET'])
 @jwt_required()
 def get_available_employees():
     current_user_email = get_jwt_identity()
@@ -310,7 +310,7 @@ def get_available_employees():
     available_employees = Employee.query.filter_by(available=True).all()
     serialized_employees = [e.serialize() for e in available_employees]
 
-    return jsonify(serialized_employees), 200
+    return jsonify({"available_employees": serialized_employees}), 200
 
 
 @api.route('/admin/equipments', methods=['GET'])

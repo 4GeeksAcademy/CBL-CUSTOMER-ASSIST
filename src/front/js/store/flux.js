@@ -163,7 +163,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 			liveToastHeader: null,
 			liveToastBody: null,
 			userList: [],
-			ticketStage: 1
+			ticketStage: 1,
+			availableEmployees: []
 		}, 
 		actions: {
 			syncTokenFromSessionStorage: () => {
@@ -508,6 +509,27 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 
 				getActions().sessionStorageAndSetStoreDataSave('userList', data.users);
+				// needs to have error handle
+			},
+
+			getAvailableEmployees: async () => {
+				console.log('action: getAvailableEmployees');
+				const token = getStore().token;
+				const opts = {
+					method: "GET",
+					headers: {
+						"Authorization": "Bearer " + token
+					}
+				}
+				const response = await fetch(process.env.BACKEND_URL + "api/available/employees", opts);
+				const data = await response.json();
+
+				if (response.status !== 200) {
+					console.log(response.status, data.msg);
+					return [response.status, data.msg];
+				}
+
+				getActions().sessionStorageAndSetStoreDataSave('availableEmployees', data.available_employees);
 				// needs to have error handle
 			},
 		}
