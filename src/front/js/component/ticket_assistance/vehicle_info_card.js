@@ -1,57 +1,82 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { Context } from "../../store/appContext";
 
 export const VehicleInfoCard = (props) => {
     const { store, actions } = useContext(Context);
     const data = props.data;
+    const ticketStage = store.ticketStage;
     const [editKilometers, setEditKilometers] = useState(false);
     const [editKilometersOnLeave, setEditKilometersOnLeave] = useState(false);
     const [editKilometersOnArrival, setEditKilometersOnArrival] = useState(false);
-    const [valueKilometersOnLeave, setValueKilometersOnLeave] = useState("");
-    const [valueKilometersOnArrival, setValueKilometersOnArrival] = useState("");
-    const [kilometersOnLeave, setKilometersOnLeave] = useState(false);
-    const [kilometersOnArrival, setKilometersOnArrival] = useState(editKilometers && kilometersOnLeave);
-    const ticketStage = store.ticketStage;
-    const [proceedToStage2, setProceedToStage2] = useState(false);
+    const [errorKilometersValuesInsertion, setErrorKilometersValuesInsertion] = useState(false);
+
+    const [valueKilometersOnLeave, setValueKilometersOnLeave]
+        = useState(localStorage.getItem('value_kilometers_on_leave') ? JSON.parse(localStorage.getItem('value_kilometers_on_leave')) : "");
+    const [valueKilometersOnArrival, setValueKilometersOnArrival]
+        = useState(localStorage.getItem('value_kilometers_on_arrival') ? JSON.parse(localStorage.getItem('value_kilometers_on_arrival')) : "");
+    const [proceedToStage2, setProceedToStage2]
+        = useState(localStorage.getItem('proceed_to_stage_2') ? JSON.parse(localStorage.getItem('proceed_to_stage_2')) : false);
 
     const handleEditKilometers = () => {
-        return () => {
-            setEditKilometers(!editKilometers);
+        // enable kilometers input
+        setEditKilometers(!editKilometers);
 
-            // conditions to enable input to insert kilometers on leave
-            valueKilometersOnLeave === "" && valueKilometersOnArrival === "" && ticketStage === 1 ? setEditKilometersOnLeave(!editKilometersOnLeave) : setEditKilometersOnLeave(false);
+        // conditions to enable input to insert kilometers on leave
+        /*valueKilometersOnArrival === "" && */ticketStage === 1 ? setEditKilometersOnLeave(!editKilometersOnLeave) : setEditKilometersOnLeave(false);
 
-            // conditions to enable input to insert kilometers on arrival
-            valueKilometersOnLeave !== "" && valueKilometersOnArrival === "" && ticketStage === 6 ? setEditKilometersOnArrival(!editKilometersOnArrival) : setEditKilometersOnArrival(false);
-            
-            // conditions to enable button to proceed to stage 2
-            valueKilometersOnLeave !== "" && valueKilometersOnArrival === "" && ticketStage === 1 ? setProceedToStage2(true) : setProceedToStage2(false);
-        }
+        // conditions to enable input to insert kilometers on arrival
+        valueKilometersOnLeave !== "" && /*valueKilometersOnArrival === "" && */ticketStage === 6 ? setEditKilometersOnArrival(!editKilometersOnArrival) : setEditKilometersOnArrival(false);
+
+        // conditions to enable button to proceed to stage 2
+        valueKilometersOnLeave !== "" && valueKilometersOnArrival === "" && ticketStage === 1 ? handleProceedToStage2(true) : handleProceedToStage2(false);
+
+        // conditions to proceed to stage 7
+        valueKilometersOnLeave !== "" && valueKilometersOnArrival !== "" && ticketStage === 6 && !errorKilometersValuesInsertion ? handleProceedToStage7() : null;
     }
 
-    const handleKmOnLeaveValue = () => {
-        return (e) => {
-            let num = +(e.target.value);
+    useEffect(()=>{
+        if (valueKilometersOnLeave !== "" && valueKilometersOnArrival !== "" && ticketStage === 6) compareKilometersValues();
+    }, [valueKilometersOnArrival, valueKilometersOnLeave])
+
+    const handleValueKilometersOnLeave = (value) => {
+        let num = +(value);
+
+        if (!isNaN(num)) {
             setValueKilometersOnLeave(num);
-            if (!isNaN(num)) {
-                console.log(typeof num)
-                setKilometersOnLeave(true);
-            }
+            localStorage.setItem('value_kilometers_on_leave', JSON.stringify(num));
         }
     }
 
+    const handleValueKilometersOnArrival = (value) => {
+        let num = +(value);
+
+        if (!isNaN(num)) {
+            setValueKilometersOnArrival(num);
+            localStorage.setItem('value_kilometers_on_arrival', JSON.stringify(num));
+        }
+    }
+
+    const compareKilometersValues = () => {
+        valueKilometersOnArrival > valueKilometersOnLeave ? setErrorKilometersValuesInsertion(false) : setErrorKilometersValuesInsertion(true);
+    }
+
+    const handleProceedToStage2 = (value) => {
+        setProceedToStage2(value);
+        localStorage.setItem('proceed_to_stage_2', JSON.stringify(value));
+    }
+    
     const handleProceedToCustomer = () => {
-        return () => {
-            if (proceedToStage2) actions.setTicketStage(2);
-        }
+        if (proceedToStage2) actions.setTicketStage(2);
     }
-
+    
     const handleArrivedCustomerFacilities = () => {
-        return () => {
-            actions.setTicketStage(3);
-        }
+        actions.setTicketStage(3);
     }
-
+    
+    const handleProceedToStage7 = () => {
+        actions.setTicketStage(7);
+    }
+    
     return (
         <div className="mb-3">
             <h4 className="border-bottom">Vehicle Information</h4>
@@ -89,7 +114,7 @@ export const VehicleInfoCard = (props) => {
                                                 placeholder="Fill in vehicle km's before leave home facilities."
                                                 disabled={!editKilometersOnLeave}
                                                 value={valueKilometersOnLeave}
-                                                onChange={handleKmOnLeaveValue()} />
+                                                onChange={(e) => handleValueKilometersOnLeave(e.target.value)} />
                                             <label htmlFor="floatingOnLeave">Km's on leave</label>
                                         </div>
 
@@ -99,16 +124,24 @@ export const VehicleInfoCard = (props) => {
                                                 className="form-control"
                                                 id="floatingOnArrival"
                                                 placeholder="Fill in vehicle km's after arriving home facilities."
-                                                disabled={!editKilometersOnArrival} />
+                                                disabled={!editKilometersOnArrival}
+                                                value={valueKilometersOnArrival}
+                                                onChange={(e) => handleValueKilometersOnArrival(e.target.value)} />
                                             <label htmlFor="floatingOnArrival">Km's on arrival</label>
                                         </div>
                                     </div>
                                     {ticketStage === 1 || ticketStage === 6 ?
                                         <div className="form-check">
-                                            <input className="form-check-input me-2" checked={editKilometers} onChange={handleEditKilometers()} type="checkbox" id="flexCheckDefault" />
+                                            <input className="form-check-input me-2" checked={editKilometers} onChange={() => handleEditKilometers()} type="checkbox" id="flexCheckDefault" />
                                             <label className="form-check-label" htmlFor="flexCheckDefault">Edit Kilometers</label>
                                         </div> :
                                         null
+                                    }
+
+                                    {/* WARNING TO ALERT USER OF PROBLEM IN VALUES INSERTED IN KILOMETERS */}
+                                    {errorKilometersValuesInsertion ?
+                                        <span className="badge text-bg-warning">Kilometers inserted on arrival are lesser then on leave!</span>
+                                        : null
                                     }
                                 </li>
                             </ul>
@@ -116,15 +149,19 @@ export const VehicleInfoCard = (props) => {
                     </div>
                 </div>
             </div>
+
+            {/* BUTTON: PROCEED TO CUSTOMER */}
             {ticketStage === 1 ?
                 <button type="button" className="btn btn-primary"
                     style={{ "--bs-btn-padding-y": ".25rem", "--bs-btn-padding-x": ".5rem", "--bs-btn-font-size": ".75rem" }}
-                    onClick={handleProceedToCustomer()}
+                    onClick={() => handleProceedToCustomer()}
                     disabled={!proceedToStage2}>
                     Proceed to customer
                 </button> :
                 null
             }
+
+            {/* BUTTON: ARRIVED CUSTOMER FACILITIES */}
             {ticketStage === 2 ?
                 <button type="button" className="btn btn-primary"
                     data-bs-toggle="modal" data-bs-target="#customerFacilitiesArrivalConfirmation"
@@ -148,7 +185,7 @@ export const VehicleInfoCard = (props) => {
                         <div className="modal-footer">
                             <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">No</button>
                             <button type="button" className="btn btn-success" data-bs-dismiss="modal"
-                                onClick={handleArrivedCustomerFacilities()}>
+                                onClick={() => handleArrivedCustomerFacilities()}>
                                 Yes
                             </button>
                         </div>

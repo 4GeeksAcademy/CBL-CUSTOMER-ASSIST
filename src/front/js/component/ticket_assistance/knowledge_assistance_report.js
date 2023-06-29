@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, useReducer } from "react";
 import { Context } from "../../store/appContext";
 import Select from 'react-select';
 import makeAnimated from 'react-select/animated';
@@ -12,15 +12,20 @@ export const KnowledgeAssistanceReport = (props) => {
     const customerInfo = props.customerInfo;
     const animatedComponents = makeAnimated();
     const [knowledgeFilter, setKnowledgeFilter] = useState([]);
-    const [actionsTaken, setActionsTaken] = useState([]);
     const [editObservations, setEditObservations] = useState(false);
-    const [observationsValue, setObservationsValue] = useState("");
     const [enableCloseReportButton, setEnableCloseReportButton] = useState(false);
     const [customerUserPassword, setCustomerUserPassword] = useState("");
+
+    const [actionsTaken, setActionsTaken] = useState(localStorage.getItem('actions_taken') ? JSON.parse(localStorage.getItem('actions_taken')) : []);
+    const [observationsValue, setObservationsValue] = useState(localStorage.getItem('observations_value') ? JSON.parse(localStorage.getItem('observations_value')) : "");
 
     useEffect(() => {
         (actionsTaken.length > 0 || observationsValue.length > 0) && !editObservations ? setEnableCloseReportButton(true) : setEnableCloseReportButton(false);
     }, [actionsTaken, observationsValue])
+
+    useEffect(() => {
+        if (ticketStage === 8) localStorage.clear();
+    }, [ticketStage])
 
     const handleFilters = (options) => {
         const filter = options.map((opt) => opt.value);
@@ -28,7 +33,14 @@ export const KnowledgeAssistanceReport = (props) => {
     }
 
     const handleAddKnowledgeToReport = (knowledge) => {
-        if (!actionsTaken.includes(knowledge)) setActionsTaken(actionsTaken => [...actionsTaken, knowledge]);
+        if (!actionsTaken.includes(knowledge)) {
+            setActionsTaken(actionsTaken => [...actionsTaken, knowledge]);
+
+            let actions = [...actionsTaken];
+            actions.push(knowledge);
+            localStorage.setItem('actions_taken', JSON.stringify(actions))
+        }
+
     }
 
     const handleEditObservations = () => {
@@ -40,6 +52,8 @@ export const KnowledgeAssistanceReport = (props) => {
 
     const handleObservationsValue = (value) => {
         setObservationsValue(value)
+
+        localStorage.setItem('observations_value', JSON.stringify(value));
     }
 
     const handleCloseReport = () => {
@@ -49,6 +63,15 @@ export const KnowledgeAssistanceReport = (props) => {
     const handleCustomerReportAproval = () => {
         const encodedString = Buffer.from(customerUserPassword).toString('base64');
         encodedString === customerInfo.authentication.password ? actions.setTicketStage(5) : console.log('Not aproved!');
+        console.log(customerInfo.authentication.password, encodedString)
+    }
+
+    const handleArrivedHomeFacilities = () => {
+        actions.setTicketStage(6);
+    }
+
+    const handleFinishAssistance = () => {
+        actions.setTicketStage(8);
     }
 
     return (
@@ -66,8 +89,8 @@ export const KnowledgeAssistanceReport = (props) => {
                     className="react-select-container w-100"
                     placeholder="Select categories..."
                     id="selectCategories"
-                    closeMenuOnSelect={true}
-                    blurInputOnSelect={true}
+                    closeMenuOnSelect={false}
+                    blurInputOnSelect={false}
                     components={animatedComponents}
                     isDisabled={ticketStage >= 5}
                     // defaultValue={[categoryOptions[0]]}
@@ -81,7 +104,7 @@ export const KnowledgeAssistanceReport = (props) => {
                             borderRadius: '0 4px 4px 0'
                         }),
                     }}
-                    onChange={(e) => handleFilters(e)}
+                    onChange={(optionsSelected) => handleFilters(optionsSelected)}
                 />
             </div>
 
@@ -92,7 +115,7 @@ export const KnowledgeAssistanceReport = (props) => {
                         .filter(knowledge => knowledgeFilter.includes(knowledge.category))
                         .map((knowledge) => {
                             return (
-                                <ul className="list-group mb-3 shadow" key={knowledge.id}>
+                                <ul className="list-group mb-3 shadow" key={'filtKnow' + knowledge.id}>
 
                                     {/* MALFUNCTION */}
                                     <li className="list-group-item d-flex justify-content-between align-items-center list-group-item-danger lh-1 fw-medium p-1">
@@ -165,6 +188,23 @@ export const KnowledgeAssistanceReport = (props) => {
                 <label htmlFor="floatingTextarea">Observations...</label>
             </div>
 
+            {/* ALERT TO FILL IN KMs ON ARRIVAL TO HOME FACILITIES */}
+            {ticketStage === 6 ?
+                <div className="alert alert-warning" role="alert">
+                    <i className="fa-solid fa-circle-info fa-beat me-3"></i> Please, <strong>fill in</strong> vehicle <strong>kilometers on arrival</strong> in <strong>Vehicle Information</strong>!
+                </div>
+                : null
+            }
+            
+            {/* ALERTS ABOUT CUSTOMER APROVAL SUCCESS */}
+            {ticketStage === 5 ?
+                <div className="alert alert-success" role="alert">
+                    <i className="fa-solid fa-circle-info fa-beat me-3"></i>
+                    Report <strong>aprooved</strong> by customer!
+                </div>
+                : null
+            }
+
             {/* BUTTON EDIT OBSERVATIONS TEXTAREA */}
             {ticketStage === 3 ?
                 <div className="form-check">
@@ -202,16 +242,37 @@ export const KnowledgeAssistanceReport = (props) => {
                 null
             }
 
+
+            {/* BUTTON: ARRIVED HOME FACILITIES */}
+            {ticketStage === 5 ?
+                <button type="button" className="btn btn-primary"
+                    data-bs-toggle="modal" data-bs-target="#homeFacilitiesArrivalConfirmation"
+                    style={{ "--bs-btn-padding-y": ".25rem", "--bs-btn-padding-x": ".5rem", "--bs-btn-font-size": ".75rem" }}>
+                    Arrived Home Facilities
+                </button> :
+                null
+            }
+
+            {/* BUTTON: FINISH ASSISTANCE */}
+            {ticketStage === 7 ?
+                <button type="button" className="btn btn-primary"
+                    data-bs-toggle="modal" data-bs-target="#finishesAssistanceConfirmation"
+                    style={{ "--bs-btn-padding-y": ".25rem", "--bs-btn-padding-x": ".5rem", "--bs-btn-font-size": ".75rem" }}>
+                    Finish Assistance
+                </button> :
+                null
+            }
+
             {/* MODAL TO CONFIRM ACTIONS TAKEN AND OBSERVATIONS BY TECHNICIAN/ENGINEER */}
             <div className="modal fade" id="actionsTakenAndObservationsReportConfirmation" tabIndex="-1" aria-labelledby="customerReportAprovalLabel" aria-hidden="true">
                 <div className="modal-dialog">
                     <div className="modal-content">
                         <div className="modal-header">
-                            <h1 className="modal-title fs-5" id="customerReportAprovalLabel">Customer Assistance Report Aproval Authentication</h1>
+                            <h1 className="modal-title fs-5" id="customerReportAprovalLabel">Report Completion Confirmation</h1>
                             <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div className="modal-body">
-                            Have all actions taken and notes been added to the report?
+                            All filled in information in report is correct?
                         </div>
                         <div className="modal-footer">
                             <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">No</button>
@@ -229,10 +290,11 @@ export const KnowledgeAssistanceReport = (props) => {
                 <div className="modal-dialog">
                     <div className="modal-content">
                         <div className="modal-header">
-                            <h1 className="modal-title fs-5" id="actionsTakenAndObservationsReportConfirmationLabel">Actions taken in Report</h1>
+                            <h1 className="modal-title fs-5" id="actionsTakenAndObservationsReportConfirmationLabel">Customer Assistance Report Aproval Authentication</h1>
                             <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div className="modal-body">
+                        <form className="was-validated">
 
                             {/* CUSTOMER USER EMAIL */}
                             <div className="form-floating mb-3">
@@ -251,17 +313,65 @@ export const KnowledgeAssistanceReport = (props) => {
                                 <input type="password"
                                     className="form-control"
                                     id="floatingPassword"
-                                    placeholder="Password"
+                                    placeholder="Password required"
                                     value={customerUserPassword}
                                     onChange={(e) => setCustomerUserPassword(e.target.value)}
+                                    required
                                 />
-                                <label htmlFor="floatingPassword">Password</label>
+                                <label className="form-label" htmlFor="floatingPassword">Password</label>
+                                <div className="invalid-feedback">
+                                    Please enter your password.
+                                </div>
                             </div>
+                        </form>
+                        </div>
+                        <div className="modal-footer">
+                            <button type="button" className="btn btn-success flex-grow-1" data-bs-dismiss="modal"
+                                onClick={() => handleCustomerReportAproval()}>
+                                Yes
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {/* MODAL TO CONFIRM ARRIVAL TO HOME FACILITIES */}
+            <div className="modal fade" id="homeFacilitiesArrivalConfirmation" tabIndex="-1" aria-labelledby="homeFacilitiesArrivalConfirmationLabel" aria-hidden="true">
+                <div className="modal-dialog">
+                    <div className="modal-content">
+                        <div className="modal-header">
+                            <h1 className="modal-title fs-5" id="homeFacilitiesArrivalConfirmationLabel">Home Facilities Arrival Confirmation</h1>
+                            <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div className="modal-body">
+                            Did you arrived to home facilities?
                         </div>
                         <div className="modal-footer">
                             <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">No</button>
                             <button type="button" className="btn btn-success" data-bs-dismiss="modal"
-                                onClick={() => handleCustomerReportAproval()}>
+                                onClick={() => handleArrivedHomeFacilities()}>
+                                Yes
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {/* MODAL TO CONFIRM ASSISTANCE FINISH */}
+            <div className="modal fade" id="finishesAssistanceConfirmation" tabIndex="-1" aria-labelledby="finishesAssistanceConfirmationLabel" aria-hidden="true">
+                <div className="modal-dialog">
+                    <div className="modal-content">
+                        <div className="modal-header">
+                            <h1 className="modal-title fs-5" id="finishesAssistanceConfirmationLabel">Finish Assistance Confirmation</h1>
+                            <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div className="modal-body">
+                            Do you confirm assistance finishing?
+                        </div>
+                        <div className="modal-footer">
+                            <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                            <button type="button" className="btn btn-success" data-bs-dismiss="modal"
+                                onClick={() => handleFinishAssistance()}>
                                 Yes
                             </button>
                         </div>

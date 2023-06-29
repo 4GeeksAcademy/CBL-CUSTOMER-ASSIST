@@ -194,6 +194,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 			setTicketStage: (value) => {
 				setStore({ticketStage: value});
+				localStorage.setItem('ticketStage', JSON.stringify(value));
 			},
 
 			login: async (email, password) => {
