@@ -1,16 +1,15 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { Context } from "../../store/appContext";
 
 export const VehicleInfoCard = (props) => {
     const { store, actions } = useContext(Context);
     const data = props.data;
     const ticketStage = store.ticketStage;
-    const [editKilometers, setEditKilometers]
-        = useState(localStorage.getItem('edit_kilometers') ? JSON.parse(localStorage.getItem('edit_kilometers')) : false);
-    const [editKilometersOnLeave, setEditKilometersOnLeave]
-        = useState(localStorage.getItem('edit_kilometers_on_leave') ? JSON.parse(localStorage.getItem('edit_kilometers_on_leave')) : false);
-    const [editKilometersOnArrival, setEditKilometersOnArrival]
-        = useState(localStorage.getItem('edit_kilometers_on_arrival') ? JSON.parse(localStorage.getItem('edit_kilometers_on_arrival')) : false);
+    const [editKilometers, setEditKilometers] = useState(false);
+    const [editKilometersOnLeave, setEditKilometersOnLeave] = useState(false);
+    const [editKilometersOnArrival, setEditKilometersOnArrival] = useState(false);
+    const [errorKilometersValuesInsertion, setErrorKilometersValuesInsertion] = useState(false);
+
     const [valueKilometersOnLeave, setValueKilometersOnLeave]
         = useState(localStorage.getItem('value_kilometers_on_leave') ? JSON.parse(localStorage.getItem('value_kilometers_on_leave')) : "");
     const [valueKilometersOnArrival, setValueKilometersOnArrival]
@@ -30,30 +29,54 @@ export const VehicleInfoCard = (props) => {
 
         // conditions to enable button to proceed to stage 2
         valueKilometersOnLeave !== "" && valueKilometersOnArrival === "" && ticketStage === 1 ? handleProceedToStage2(true) : handleProceedToStage2(false);
+
+        // conditions to proceed to stage 7
+        valueKilometersOnLeave !== "" && valueKilometersOnArrival !== "" && ticketStage === 6 && !errorKilometersValuesInsertion ? handleProceedToStage7() : null;
     }
+
+    useEffect(()=>{
+        if (valueKilometersOnLeave !== "" && valueKilometersOnArrival !== "" && ticketStage === 6) compareKilometersValues();
+    }, [valueKilometersOnArrival, valueKilometersOnLeave])
 
     const handleValueKilometersOnLeave = (value) => {
         let num = +(value);
-        
+
         if (!isNaN(num)) {
             setValueKilometersOnLeave(num);
-            localStorage.setItem('value_kilometers_on_leave', num);
+            localStorage.setItem('value_kilometers_on_leave', JSON.stringify(num));
         }
+    }
+
+    const handleValueKilometersOnArrival = (value) => {
+        let num = +(value);
+
+        if (!isNaN(num)) {
+            setValueKilometersOnArrival(num);
+            localStorage.setItem('value_kilometers_on_arrival', JSON.stringify(num));
+        }
+    }
+
+    const compareKilometersValues = () => {
+        valueKilometersOnArrival > valueKilometersOnLeave ? setErrorKilometersValuesInsertion(false) : setErrorKilometersValuesInsertion(true);
     }
 
     const handleProceedToStage2 = (value) => {
         setProceedToStage2(value);
-        localStorage.setItem('proceed_to_stage_2', value);
+        localStorage.setItem('proceed_to_stage_2', JSON.stringify(value));
     }
-
+    
     const handleProceedToCustomer = () => {
         if (proceedToStage2) actions.setTicketStage(2);
     }
-
+    
     const handleArrivedCustomerFacilities = () => {
         actions.setTicketStage(3);
     }
-
+    
+    const handleProceedToStage7 = () => {
+        actions.setTicketStage(7);
+    }
+    
     return (
         <div className="mb-3">
             <h4 className="border-bottom">Vehicle Information</h4>
@@ -101,7 +124,9 @@ export const VehicleInfoCard = (props) => {
                                                 className="form-control"
                                                 id="floatingOnArrival"
                                                 placeholder="Fill in vehicle km's after arriving home facilities."
-                                                disabled={!editKilometersOnArrival} />
+                                                disabled={!editKilometersOnArrival}
+                                                value={valueKilometersOnArrival}
+                                                onChange={(e) => handleValueKilometersOnArrival(e.target.value)} />
                                             <label htmlFor="floatingOnArrival">Km's on arrival</label>
                                         </div>
                                     </div>
@@ -111,6 +136,12 @@ export const VehicleInfoCard = (props) => {
                                             <label className="form-check-label" htmlFor="flexCheckDefault">Edit Kilometers</label>
                                         </div> :
                                         null
+                                    }
+
+                                    {/* WARNING TO ALERT USER OF PROBLEM IN VALUES INSERTED IN KILOMETERS */}
+                                    {errorKilometersValuesInsertion ?
+                                        <span className="badge text-bg-warning">Kilometers inserted on arrival are lesser then on leave!</span>
+                                        : null
                                     }
                                 </li>
                             </ul>
@@ -122,9 +153,9 @@ export const VehicleInfoCard = (props) => {
             {/* BUTTON: PROCEED TO CUSTOMER */}
             {ticketStage === 1 ?
                 <button type="button" className="btn btn-primary"
-                style={{ "--bs-btn-padding-y": ".25rem", "--bs-btn-padding-x": ".5rem", "--bs-btn-font-size": ".75rem" }}
-                onClick={() => handleProceedToCustomer()}
-                disabled={!proceedToStage2}>
+                    style={{ "--bs-btn-padding-y": ".25rem", "--bs-btn-padding-x": ".5rem", "--bs-btn-font-size": ".75rem" }}
+                    onClick={() => handleProceedToCustomer()}
+                    disabled={!proceedToStage2}>
                     Proceed to customer
                 </button> :
                 null
