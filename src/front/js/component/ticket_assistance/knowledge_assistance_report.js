@@ -66,8 +66,8 @@ export const KnowledgeAssistanceReport = (props) => {
                     className="react-select-container w-100"
                     placeholder="Select categories..."
                     id="selectCategories"
-                    closeMenuOnSelect={true}
-                    blurInputOnSelect={true}
+                    closeMenuOnSelect={false}
+                    blurInputOnSelect={false}
                     components={animatedComponents}
                     isDisabled={ticketStage >= 5}
                     // defaultValue={[categoryOptions[0]]}
@@ -81,7 +81,7 @@ export const KnowledgeAssistanceReport = (props) => {
                             borderRadius: '0 4px 4px 0'
                         }),
                     }}
-                    onChange={(e) => handleFilters(e)}
+                    onChange={(optionsSelected) => handleFilters(optionsSelected)}
                 />
             </div>
 
