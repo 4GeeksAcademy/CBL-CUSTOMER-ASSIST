@@ -627,6 +627,10 @@ def get_employee_assigned_tickets():
     # serialize Knowledges
     final = [knowledge.serialize_employee() for knowledge in knowledges]
 
+    print("#####################################")
+    print(final)
+    print("#####################################")
+
     filtered_list_of_tickets[0]['equipment']['knowledge'] = final
     
     return jsonify(filtered_list_of_tickets[0]), 200
