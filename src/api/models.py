@@ -188,8 +188,9 @@ class Ticket(db.Model):
     
 class TicketKnowledge(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    knowledge_id = db.Column(db.Integer, db.ForeignKey('knowledge.id'), nullable=True)
-    ticket_id = db.Column(db.Integer, db.ForeignKey('ticket.id'), nullable=True)
+    knowledge_id = db.Column(db.Integer, db.ForeignKey('knowledge.id'), nullable=False)
+    ticket_id = db.Column(db.Integer, db.ForeignKey('ticket.id'), nullable=False)
+    equipment_id = db.Column(db.Integer, db.ForeignKey('equipment.id'), nullable=False)
 
     def serialize(self):
         knowledge = Knowledge.query.get(self.knowledge_id)
@@ -241,6 +242,7 @@ class Equipment(db.Model):
     equipment_photo = db.Column(db.String(50), nullable=True)
     customer_id = db.Column(db.Integer, db.ForeignKey('customer.id'), nullable=True)
     tickets = db.relationship('Ticket', backref='equipment', uselist=False)
+    ticket_knowledge = db.relationship('TicketKnowledge', backref='equipment', uselist=False)
 
     def __repr__(self):
         return f"<Equipment {self.model}>"
@@ -300,6 +302,12 @@ class Category(db.Model):
         return {
             "id": self.id,
             "description": self.description
+        }
+
+    def serialize_options(self):
+        return {
+            "value": self.description,
+            "label": self.description
         }
 
 class Vehicle(db.Model):
