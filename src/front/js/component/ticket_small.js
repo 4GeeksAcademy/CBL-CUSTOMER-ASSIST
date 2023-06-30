@@ -34,7 +34,7 @@ return (
     <div className="card w-100 mb-3">
         <div className="card-body d-flex justify-content-between">
            <div className="text-start">
-                <h5 className="card-title" onClick={handleModal}>{data.subject}</h5>
+                <h5 className="btn btn-lg fw-semibold ps-0 card-title" onClick={handleModal}>{data.subject}</h5>
                 <p className="card-text">{data.equipment.model}</p>
                 <p className="card-text">{data.equipment.serial_number}</p>
                 {/* <p className="card-text">{data.company_name}</p> */}

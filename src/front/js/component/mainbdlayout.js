@@ -26,7 +26,10 @@ export const MainBdLayout = ({ children }) => {
                             <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div className="modal-body">
-                            <div>{store.modalBody}</div>
+                            <div className="border rounded p-2 mb-3 shadow-sm">
+                                <h5 className=" mb-3">Description</h5>
+                                <div>{store.modalBody}</div>
+                                </div>
                             <div>{store.modalEquipment != null ? (
                                 store.modalEquipment.map((item, index) => {
                                     return (
@@ -48,7 +51,7 @@ export const MainBdLayout = ({ children }) => {
                                     );
                                 })
                             ) : (
-                                <div>No historical available for this equipment!</div>
+                                <div>No history available for this equipment!</div>
                             )}
                             </div>
                         </div>
