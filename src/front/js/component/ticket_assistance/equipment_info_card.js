@@ -36,9 +36,9 @@ export const EquipmentInfoCard = (props) => {
                 <li className="list-group-item text-center text-sm-end">
                   {data.knowledge.length > 0 ?
                     <button type="button" className="btn btn-primary"
-                      data-bs-toggle="modal" data-bs-target="#modalEquipmentHistorical"
+                      data-bs-toggle="modal" data-bs-target="#modalEquipmentHistory"
                       style={{ "--bs-btn-padding-y": ".25rem", "--bs-btn-padding-x": ".5rem", "--bs-btn-font-size": ".75rem" }}>
-                      Equipment Historical
+                      Equipment History
                     </button> :
                     <div>
                       <span className="badge text-bg-info">No historical available for this equipment!</span>
