@@ -160,10 +160,12 @@ const getState = ({ getStore, getActions, setStore }) => {
 			user: null,
 			modalTitle: null,
 			modalBody: null,
+			modalEquipment: null,
 			liveToastHeader: null,
 			liveToastBody: null,
 			userList: [],
 			ticketStage: 1
+
 		}, 
 		actions: {
 			syncTokenFromSessionStorage: () => {
@@ -477,13 +479,14 @@ const getState = ({ getStore, getActions, setStore }) => {
 				toastBootstrap.show();
 			},
 
-			updateShowModal: (title, body) => {
+			updateShowModal: (subject, description, knowledgeArray) => {
 				const myModal = document.querySelector('#modalTicketInfo');
 
 				setStore(
 					{
-						modalTitle: title,
-						modalBody: body
+						modalTitle: subject,
+						modalBody: description,
+						modalEquipment: knowledgeArray
 					}
 				);
 
