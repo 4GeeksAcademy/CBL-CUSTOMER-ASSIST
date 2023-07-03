@@ -12,11 +12,11 @@ export const CustomerDashboard = () => {
                 <h3>Tickets:</h3>
             </div>
             <div className="bd-content">
-                {store.tickets
+                {store.tickets != null || undefined ? store.tickets
                     .filter(ticket => ticket.status === 'Opened')
                     .map((item, i) => {
                     return <TicketSmall key={i} data={item}/>
-                })}
+                }) : []}
             
             </div>
         </main>

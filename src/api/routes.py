@@ -467,7 +467,12 @@ def admin_create_ticket():
 
         db.session.commit()
 
-        return jsonify({"msg": "Ticket created successfully"}), 201
+        new_ticket = Ticket.query.get(ticket.id)
+
+        response_ticket = new_ticket.serialize_cus()
+
+        return jsonify({"msg": "Ticket created successfully", "ticket": response_ticket}), 201
+
     except Exception as e:
         print(e.args)
         return jsonify({"msg": "Exception"}), 400

@@ -10,17 +10,19 @@ export const AdminCreateTicket = () => {
     const [equipmentID, setEquipmentID] = useState(null);
     const [interventionType, setInterventionType] = useState(true);
     const [companyName, setCompanyName] = useState(0);
-    const filteredCustomers = store.userList.filter(item => item.customer_id !== null);
     const [enable, setEnable] = useState(false);
     const [filterEquipments , setFilterEquipment] = useState(null) 
+    const [customerId, setCustomerId] = useState(0)
+    const filteredCustomers = store.userList.filter(item => item.customer_id !== null);
     const navigate = useNavigate();
 
     const createTicket = async () => {
-        const response = await actions.customerCreateTicket(equipmentID, interventionType, subject, description);
+        const response = await actions.adminCreateTicket(equipmentID, interventionType, subject, description, customerId);
+        console.log(response)
         if (response) {
             actions.userToastAlert("New Customer Ticket", "Ticket created successfully!");
             // alert("Ticket created!");
-            navigate("/customer/dashboard");
+            navigate("/admin/dashboard");
         }
         if (!response) {
             alert("Error");
@@ -31,6 +33,7 @@ export const AdminCreateTicket = () => {
         const equipment = store.equipmentList.filter(item => item.customer_id === companyName);   
         setFilterEquipment(equipment);
         setEnable(change => companyName > 0 ? change = true : change = false)
+        setCustomerId(equipment.map(e => e.customer_id)[0])
     },[companyName])
     
     return (
