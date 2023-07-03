@@ -104,7 +104,7 @@ export const TicketSmall = (props) => {
         const newVehicleLabel = vehicle.label;
         const dismissVehicleID = selectedVehicle.id ? selectedVehicle.id : false;
 
-        // if no available vehicles it will display the same vehicle
+        // if there are no available vehicles, it will display the same vehicle
         // as option and it will not assign or dismiss
         if (newVehicleID === dismissVehicleID) {
             setSelectedVehicle(vehicle);
