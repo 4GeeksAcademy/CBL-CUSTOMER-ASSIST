@@ -36,7 +36,10 @@ export const TicketSmall = (props) => {
     // <<<<<<<<<<<<<<<
 
     useEffect(()=>{
-        if (props.availableVehicles.length > 0) setAvailableVehicles(props.availableVehicles);
+        if (props.availableVehicles.length > 0) {
+            setAvailableVehicles(props.availableVehicles);
+            setVehicleIsDisabled(false);
+        }
         if (props.availableVehicles.length === 0) setAvailableVehicles([selectedVehicle]);
         if (props.availableVehicles.length === 0 && Object.keys(data.vehicle_assigned).length === 0 && Object.keys(selectedVehicle).length === 0) setVehicleIsDisabled(true);
     }, [props.availableVehicles])
