@@ -160,12 +160,14 @@ const getState = ({ getStore, getActions, setStore }) => {
 			user: null,
 			modalTitle: null,
 			modalBody: null,
+			modalEquipment: null,
 			liveToastHeader: null,
 			liveToastBody: null,
 			userList: [],
 			ticketStage: 1,
 			availableEmployees: []
 		},
+
 		actions: {
 			syncTokenFromSessionStorage: () => {
 				if (sessionStorage.getItem('token')) return setStore({ token: JSON.parse(sessionStorage.getItem('token')) });
@@ -482,13 +484,14 @@ const getState = ({ getStore, getActions, setStore }) => {
 				toastBootstrap.show();
 			},
 
-			updateShowModal: (title, body) => {
+			updateShowModal: (subject, description, knowledgeArray) => {
 				const myModal = document.querySelector('#modalTicketInfo');
 
 				setStore(
 					{
-						modalTitle: title,
-						modalBody: body
+						modalTitle: subject,
+						modalBody: description,
+						modalEquipment: knowledgeArray
 					}
 				);
 

@@ -12,13 +12,21 @@ export const TicketSmall = (props) => {
     const animatedComponents = makeAnimated();
     const [selectedEmployeeIDs, setSelectedEmployeeIDs] = useState(data.employees_assigned);
     const [assignedEmployees, setAssignedEmployees] = useState(data.employees_assigned);
+    // 
+    const [filteredEquipment, setFilteredEquipment] = useState([])
+    const knowledgeArray = filteredEquipment.length > 0 ? filteredEquipment[0].knowledge : [];
 
-    const toast = (data) => actions.userToastAlert("Employee assignment", data);
+     useEffect(() => {
+        setFilteredEquipment(store.tickets.filter(obj => obj.equipment.id === data.equipment.id));
+    },[])
 
     const handleModal = () => {
-        console.log(data);
-        // actions.updateShowModal(data.subject, data.description);
+        actions.updateShowModal(data.subject, data.description, knowledgeArray);
     }
+    //   
+  
+  
+    const toast = (data) => actions.userToastAlert("Employee assignment", data);
 
     const handleAssignEmployeeToTicket = async (employee) => {
         const ticketID = data.id;
@@ -74,8 +82,6 @@ export const TicketSmall = (props) => {
         // updates store and sessionStorage tickets
         actions.sessionStorageAndSetStoreDataSave("tickets", newTickets);
     }
-
-
 
     return (
         <div className="card w-100 mb-3">
@@ -141,5 +147,6 @@ export const TicketSmall = (props) => {
                 </div>
             </div>
         </div>
-    );
+    </div>
+);
 }
