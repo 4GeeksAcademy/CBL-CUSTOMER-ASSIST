@@ -200,37 +200,42 @@ def get_employee_assigned_tickets():
         return jsonify({"msg": "No user exist with that email"}), 401
 
     # get tickets assigned to employee
-    assigned_tickets = TicketEmployeeRelation.query.filter_by(
-        employee_id=user.employee_id).all()
-    tickets_serialized = [ticket.serialize_employee()
-                          for ticket in assigned_tickets]
+    assigned_tickets = TicketEmployeeRelation.query.filter_by(employee_id=user.employee_id).all()
+    if not assigned_tickets:
+        return jsonify({"msg": "No tickets assigned!"}), 401
+
+    tickets_serialized = [ticket.serialize_employee() for ticket in assigned_tickets]
 
     # filter the ticket 'Opened'
-    filtered_list_of_tickets = [
-        ticket for ticket in tickets_serialized if ticket['ticket']['status'] in ['Opened']]
-
+    filtered_list_of_tickets = [ticket for ticket in tickets_serialized if ticket['ticket']['status'] in ['Opened']]
+    if not filtered_list_of_tickets:
+        return '', 204
+    
     # get equipment id to get tickets created for this equipment
     equipment_id = filtered_list_of_tickets[0]['equipment']['id']
 
-    # get tickets id
+    # get tickets id by equipment_id
     tickets = Ticket.query.filter_by(equipment_id=equipment_id).all()
-    tickets_id = [tickets_id.serialize_equipment_knowledge()
-                  for tickets_id in tickets] if tickets else []
+    tickets_id = [tickets_id.serialize_equipment_knowledge() for tickets_id in tickets] if tickets else []
 
     # get TicketKnowledges that contains tickets id from tickets_id
-    knowledges = TicketKnowledge.query.filter(
-        TicketKnowledge.ticket_id.in_(tickets_id)).all()
+    knowledges = TicketKnowledge.query.filter(TicketKnowledge.ticket_id.in_(tickets_id)).all()
 
-    # serialize Knowledges
-    final = [knowledge.serialize_employee() for knowledge in knowledges]
+    # serialize Knowledges 
+    serialized_knowledges = [knowledge.serialize_employee() for knowledge in knowledges]
 
-    print("#####################################")
-    print(final)
-    print("#####################################")
+    # add serialized_knowledges to final dictionary
+    filtered_list_of_tickets[0]['equipment']['knowledge'] = serialized_knowledges
 
-    filtered_list_of_tickets[0]['equipment']['knowledge'] = final
+    # get customer authentication data 
+    customer_info = User.query.filter_by(customer_id = filtered_list_of_tickets[0]['customer']['id']).one_or_none();
+    authentication_data = customer_info.serialize_employee();
+
+    # add authentication customer data to final dictionary
+    filtered_list_of_tickets[0]['customer']['authentication'] = authentication_data
 
     return jsonify(filtered_list_of_tickets[0]), 200
+
 
 @api.route('/assign/employee/ticket', methods=['POST'])
 @jwt_required()
@@ -428,7 +433,7 @@ def get_all_vehicles():
     return jsonify(serialized_vehicles), 200
 
 
-@api.route('/admin/vehicles/available', methods=['GET'])
+@api.route('/admin/available/vehicles', methods=['GET'])
 @jwt_required()
 def get_available_vehicles():
     user_email = get_jwt_identity()
@@ -441,9 +446,13 @@ def get_available_vehicles():
         return jsonify({"msg": "Only admins have access to this endpoint!"}), 403
 
     available_vehicles = Vehicle.query.filter_by(available=True).all()
-    serialized_vehicle = [e.serialize() for e in available_vehicles]
+    serialized_vehicles = [e.serialize() for e in available_vehicles]
 
-    return jsonify(serialized_vehicle), 200
+    print("########################")
+    print(serialized_vehicles)
+    print("########################")
+
+    return jsonify({"available_vehicles": serialized_vehicles}), 200
 
 
 @api.route('/admin/vehicles/available', methods=['PUT'])
@@ -470,6 +479,77 @@ def set_available_vehicle():
 
     return jsonify({'msg': 'Availability update is done!'}), 200
 
+
+@api.route('/assign/vehicle/ticket', methods=['PUT'])
+@jwt_required()
+def assign_vehicle_ticket():
+    current_user_email = get_jwt_identity()
+    user = User.query.filter_by(email=current_user_email).one_or_none()
+
+    if not user:
+        return jsonify({"msg": "No user exist with that email"}), 401
+
+    if user.user_type.type != "admin":
+        return jsonify({"msg": "Only admins have access to this endpoint!"}), 403
+
+    data = request.get_json() 
+
+    ticket = Ticket.query.get(data['ticket_id'])
+    if not ticket:
+        return jsonify({'msg': 'Ticket not found'}), 401
+
+    if not data['dismiss_vehicle_id'] == False:
+        dismiss_vehicle = Vehicle.query.get(data['dismiss_vehicle_id'])
+
+        # dismiss vehicle set has available
+        dismiss_vehicle.available = True
+
+    assign_vehicle = Vehicle.query.get(data['assign_vehicle_id'])
+    if not assign_vehicle:
+        return jsonify({'msg': 'Vehicle not found'}), 401
+
+    # assign vehicle set has not available
+    assign_vehicle.available = False
+
+    # assign assing_vehicle to ticket
+    ticket.vehicle_id = assign_vehicle.id
+    
+    db.session.commit()
+
+    return jsonify({'msg': 'Vehicle assigned successfully to ticket'}), 200
+
+
+@api.route('/dismiss/vehicle/ticket', methods=['PUT'])
+@jwt_required()
+def dismiss_vehicle_ticket():
+    current_user_email = get_jwt_identity()
+    user = User.query.filter_by(email=current_user_email).one_or_none()
+
+    if not user:
+        return jsonify({"msg": "No user exist with that email"}), 401
+
+    if user.user_type.type != "admin":
+        return jsonify({"msg": "Only admins have access to this endpoint!"}), 403
+
+    data = request.get_json() 
+
+    ticket = Ticket.query.get(data['ticket_id'])
+    if not ticket:
+        return jsonify({'msg': 'Ticket not found'}), 401
+
+    dismiss_vehicle = Vehicle.query.get(data['dismiss_vehicle_id'])
+    if not dismiss_vehicle:
+        return jsonify({'msg': 'Vehicle not found'}), 401
+
+    # dismiss vehicle set has available
+    dismiss_vehicle.available = True
+
+    # dismiss dismiss_vehicle from ticket
+    ticket.vehicle_id = None
+    
+    db.session.commit()
+
+    return jsonify({'msg': 'Vehicle assigned successfully to ticket'}), 200
 
 @api.route('/user/active/state', methods=['PUT'])
 @jwt_required()
