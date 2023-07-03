@@ -2,14 +2,18 @@ from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
 
+
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(100), unique=True, nullable=False)
     password = db.Column(db.String(100), nullable=False)
     active = db.Column(db.Boolean, default=True, nullable=False)
-    user_type_id = db.Column(db.Integer, db.ForeignKey('user_type.id'), nullable=False)
-    customer_id = db.Column(db.Integer, db.ForeignKey('customer.id'), nullable=True)
-    employee_id = db.Column(db.Integer, db.ForeignKey('employee.id'), nullable=True)
+    user_type_id = db.Column(db.Integer, db.ForeignKey(
+        'user_type.id'), nullable=False)
+    customer_id = db.Column(
+        db.Integer, db.ForeignKey('customer.id'), nullable=True)
+    employee_id = db.Column(
+        db.Integer, db.ForeignKey('employee.id'), nullable=True)
 
     def serialize(self):
         return {
@@ -22,9 +26,8 @@ class User(db.Model):
             "customer_id": self.customer_id,
             "employee_id": self.employee_id
         }
-    
+
     def serialize_admin(self):
-         
         data = {
             "id": self.id,
             "email": self.email,
@@ -34,20 +37,32 @@ class User(db.Model):
             "customer_id": self.customer_id,
             "employee_id": self.employee_id
         }
-        if self.customer :
-            data["company_name"] = self.customer.company_name 
+        if self.customer:
+            data["company_name"] = self.customer.company_name
         return data
+
+    def serialize_available(self):
+        if self.employee.available:
+            return {
+                "id": self.employee.id,
+                "first_name": self.employee.first_name,
+                "last_name": self.employee.last_name,
+                "value": self.employee.id,
+                "label": self.employee.first_name + " " + self.employee.last_name
+            }
+
 
 class UserType(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     type = db.Column(db.String(50), nullable=False)
     user = db.relationship('User', backref='user_type', uselist=False)
 
+
 class Employee(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     first_name = db.Column(db.String(50), nullable=False)
     last_name = db.Column(db.String(50), nullable=False)
-    available = db.Column(db.Boolean,nullable=False)
+    available = db.Column(db.Boolean, nullable=False)
     user = db.relationship('User', backref='employee', uselist=False)
     tickets = db.relationship('TicketEmployeeRelation', backref='employee', uselist=False)
     observations = db.relationship('EmployeeTicketObservation', backref='employee', uselist=False)
@@ -58,6 +73,16 @@ class Employee(db.Model):
             "first_name": self.first_name,
             "last_name": self.last_name,
             "available": self.available
+        }
+
+    def serialize_available(self):
+        return {
+            "id": self.id,
+            "first_name": self.first_name,
+            "last_name": self.last_name,
+            "available": self.available,
+            "value": self.id,
+            "label": self.first_name + " " + self.last_name
         }
 
 class Customer(db.Model):
@@ -72,7 +97,8 @@ class Customer(db.Model):
     city = db.Column(db.String(50), nullable=False)
     user = db.relationship('User', backref='customer', uselist=False)
     tickets = db.relationship('Ticket', backref='customer', uselist=False)
-    equipments = db.relationship('Equipment', backref='customer', uselist=False)
+    equipments = db.relationship(
+        'Equipment', backref='customer', uselist=False)
 
     def serialize(self):
         return {
@@ -121,6 +147,13 @@ class TicketEmployeeRelation(db.Model):
     def serialize_employee(self):
         return self.ticket.serialize_employee()
     
+    def serialize_employee_assigned(self):
+        employee = self.employee.serialize_available()
+        print("#######################X")
+        print(employee)
+        print("#######################X")
+        return employee
+
 
 class Ticket(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -137,9 +170,8 @@ class Ticket(db.Model):
     equipment_id = db.Column(db.Integer, db.ForeignKey('equipment.id'), nullable=False)
     vehicle_id = db.Column(db.Integer, db.ForeignKey('vehicle.id'), nullable=True)
     ticket_knowledge = db.relationship('TicketKnowledge', backref='ticket')
-    employees = db.relationship('TicketEmployeeRelation', backref='ticket', uselist=False)
+    ticket_employees = db.relationship('TicketEmployeeRelation', backref='ticket')
     observations = db.relationship('EmployeeTicketObservation', backref='ticket', uselist=False)
-
 
     def serialize(self):
         return {
@@ -165,7 +197,9 @@ class Ticket(db.Model):
             "description": self.description,
             "customer_id": self.customer_id,
             "company_name": self.customer.company_name,
-            "knowledge" : [knowledge.serialize() for knowledge in self.ticket_knowledge] if self.ticket_knowledge else []
+            "knowledge": [knowledge.serialize() for knowledge in self.ticket_knowledge] if self.ticket_knowledge else [],
+            "employees_assigned": [employees.serialize_employee_assigned() for employees in self.ticket_employees] if self.ticket_employees else []
+            # "employees_assigned": self.ticket_employees.serialize_employee_assigned() if self.ticket_employees else None
         }
 
     def serialize_employee(self):
@@ -184,8 +218,8 @@ class Ticket(db.Model):
     def serialize_equipment_knowledge(self):
         # knowledges = [knowledge.serialize_employee() for knowledge in self.ticket_knowledge] if self.ticket_knowledge else []
         return self.id
-    
-    
+
+
 class TicketKnowledge(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     knowledge_id = db.Column(db.Integer, db.ForeignKey('knowledge.id'), nullable=False)
@@ -196,7 +230,7 @@ class TicketKnowledge(db.Model):
         knowledge = Knowledge.query.get(self.knowledge_id)
         return {
             "id": self.id,
-            "knowledge" : knowledge.serialize_full() if knowledge else None
+            "knowledge": knowledge.serialize_full() if knowledge else None
         }
 
     def serialize_employee(self):
@@ -207,13 +241,14 @@ class TicketKnowledge(db.Model):
             "solution": self.knowledge.solution.serialize() if self.knowledge.solution else None
         }
 
+
 class Knowledge(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     malfunction_id = db.Column(db.Integer, db.ForeignKey('malfunction.id'), nullable=False)
     solution_id = db.Column(db.Integer, db.ForeignKey('solution.id'), nullable=True)
     category_id = db.Column(db.Integer, db.ForeignKey('category.id'), nullable=True)
     ticket_knowledge = db.relationship('TicketKnowledge', backref='knowledge', uselist=False)
-    
+
     def serialize(self):
         return {
             "id": self.id,
@@ -221,7 +256,7 @@ class Knowledge(db.Model):
             "solution": self.solution.description,
             "category": self.category.description
         }
-    
+
     def serialize_full(self):
 
         solution = Solution.query.get(self.solution_id)
@@ -229,20 +264,23 @@ class Knowledge(db.Model):
         malfunction = Malfunction.query.get(self.malfunction_id)
         return {
             "id": self.id,
-            "solution" : solution.serialize() if solution else None, 
-            "category" : category.serialize()  if category else None, 
-            "malfunction" : malfunction.serialize() if malfunction else None
+            "solution": solution.serialize() if solution else None,
+            "category": category.serialize() if category else None,
+            "malfunction": malfunction.serialize() if malfunction else None
         }
 
+
 class Equipment(db.Model):
-    id = db.Column(db.Integer, primary_key=True)      
+    id = db.Column(db.Integer, primary_key=True)
     serial_number = db.Column(db.String(50), nullable=False)
     model = db.Column(db.String(50), nullable=False)
     im109 = db.Column(db.String(50), nullable=True)
     equipment_photo = db.Column(db.String(50), nullable=True)
-    customer_id = db.Column(db.Integer, db.ForeignKey('customer.id'), nullable=True)
+    customer_id = db.Column(
+        db.Integer, db.ForeignKey('customer.id'), nullable=True)
     tickets = db.relationship('Ticket', backref='equipment', uselist=False)
-    ticket_knowledge = db.relationship('TicketKnowledge', backref='equipment', uselist=False)
+    ticket_knowledge = db.relationship(
+        'TicketKnowledge', backref='equipment', uselist=False)
 
     def __repr__(self):
         return f"<Equipment {self.model}>"
@@ -250,13 +288,13 @@ class Equipment(db.Model):
     def serialize(self):
         return {
             "id": self.id,
-            "customer_id" : self.customer_id,
+            "customer_id": self.customer_id,
             "serial_number": self.serial_number,
             "model": self.model,
             "im109": self.im109,
             "equipment_photo": self.equipment_photo
         }
-    
+
     def serialize_employee(self):
         # tickets = Ticket.query.filter_by(equipment_id = self.id).all()
         # knowledge = [knowledge.serialize_equipment_knowledge() for knowledge in tickets] if tickets else []
@@ -274,13 +312,15 @@ class Equipment(db.Model):
 class Malfunction(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     description = db.Column(db.String(200))
-    knowledge = db.relationship('Knowledge', backref='malfunction', uselist=False)
+    knowledge = db.relationship(
+        'Knowledge', backref='malfunction', uselist=False)
 
     def serialize(self):
         return {
             "id": self.id,
             "description": self.description
         }
+
 
 class Solution(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -292,7 +332,8 @@ class Solution(db.Model):
             "id": self.id,
             "description": self.description
         }
-    
+
+
 class Category(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     description = db.Column(db.String(80))
@@ -310,6 +351,7 @@ class Category(db.Model):
             "label": self.description
         }
 
+
 class Vehicle(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     license_plate = db.Column(db.String(20))
@@ -321,17 +363,20 @@ class Vehicle(db.Model):
 
     def serialize(self):
         return {
-            "id":self.id,
+            "id": self.id,
             "license_plate": self.license_plate,
-            "model" : self.model,
-            "maker" : self.maker,
-            "vehicle_photo" : self.vehicle_photo
+            "model": self.model,
+            "maker": self.maker,
+            "vehicle_photo": self.vehicle_photo
         }
+
 
 class EmployeeTicketObservation(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    employee_id = db.Column(db.Integer, db.ForeignKey('employee.id'), nullable=False)
-    ticket_id = db.Column(db.Integer, db.ForeignKey('ticket.id'), nullable=False)
+    employee_id = db.Column(db.Integer, db.ForeignKey(
+        'employee.id'), nullable=False)
+    ticket_id = db.Column(db.Integer, db.ForeignKey(
+        'ticket.id'), nullable=False)
     observation = db.Column(db.String(1024), nullable=False)
 
     def serialize(self):
@@ -340,4 +385,4 @@ class EmployeeTicketObservation(db.Model):
             "employee_id": self.employee_id,
             "ticket_id": self.ticket_id,
             "observation": self.observation
-        }   
+        }
