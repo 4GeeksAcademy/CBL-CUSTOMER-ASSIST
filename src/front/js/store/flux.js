@@ -289,7 +289,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				getActions().sessionStorageAndSetStoreDataSave('equipmentList', data.equipments);
 				// needs to have error handle
 			},
-
+			
 			customerCreateTicket: async (equipmentId, interventionType, subject, description) => {
 				console.log("action: createCustomerTicket");
 				const token = getStore().token;
@@ -297,7 +297,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					method: "POST",
 					headers: {
 						"Content-Type": "application/json",
-						"Authorization": "Bearer " + token
+						"Authorization": "Bearer " + token   
 					},
 					body: JSON.stringify({
 						equipment_id: equipmentId,
@@ -314,10 +314,11 @@ const getState = ({ getStore, getActions, setStore }) => {
 						alert("There has been some error!");
 						return false;
 					}
-
+          
 					const newTickets = [];
-					Object.assign(newTickets, getStore().tickets);
+          Object.assign(newTickets, getStore().tickets);
 					newTickets.push(data.ticket);
+					console.log(newTickets)
 					getActions().sessionStorageAndSetStoreDataSave('tickets', newTickets);
 
 					return true;
@@ -328,6 +329,46 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			},
 
+			adminCreateTicket: async (equipmentId, interventionType, subject, description, customerId) => {
+				console.log("action: adminCreateTicket");
+				const token = getStore().token;
+				const opts = {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+						"Authorization": "Bearer " + token
+					},
+					body: JSON.stringify({
+						equipment_id: equipmentId,
+						intervention_type: interventionType,
+						subject: subject,
+						customer_id: customerId,
+						description: description
+					})
+				};
+				try {
+					const response = await fetch(process.env.BACKEND_URL + "api/admin/create/ticket", opts);
+					const data = await response.json();
+					console.log("response", response)
+					if (response.status !== 201) {
+						alert("There has been some error!");
+						return false;
+					}
+					
+					const newTickets = []; 
+					Object.assign(newTickets, getStore().tickets);
+					newTickets.push(data.ticket);
+					console.log(data)
+					getActions().sessionStorageAndSetStoreDataSave('tickets', newTickets);
+					
+					return true;
+				}
+				catch (error) {
+					console.log("error: ", error);
+					console.log("There has been an error login in!");
+				}
+			},
+      			
 			getCustomerTickets: async () => {
 				console.log("action: getCustomerTickets");
 				const token = getStore().token;
