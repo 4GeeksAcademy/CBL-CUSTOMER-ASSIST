@@ -480,6 +480,77 @@ def set_available_vehicle():
     return jsonify({'msg': 'Availability update is done!'}), 200
 
 
+@api.route('/assign/vehicle/ticket', methods=['PUT'])
+@jwt_required()
+def assign_vehicle_ticket():
+    current_user_email = get_jwt_identity()
+    user = User.query.filter_by(email=current_user_email).one_or_none()
+
+    if not user:
+        return jsonify({"msg": "No user exist with that email"}), 401
+
+    if user.user_type.type != "admin":
+        return jsonify({"msg": "Only admins have access to this endpoint!"}), 403
+
+    data = request.get_json() 
+
+    ticket = Ticket.query.get(data['ticket_id'])
+    if not ticket:
+        return jsonify({'msg': 'Ticket not found'}), 401
+
+    if not data['dismiss_vehicle_id'] == False:
+        dismiss_vehicle = Vehicle.query.get(data['dismiss_vehicle_id'])
+
+        # dismiss vehicle set has available
+        dismiss_vehicle.available = True
+
+    assign_vehicle = Vehicle.query.get(data['assign_vehicle_id'])
+    if not assign_vehicle:
+        return jsonify({'msg': 'Vehicle not found'}), 401
+
+    # assign vehicle set has not available
+    assign_vehicle.available = False
+
+    # assign assing_vehicle to ticket
+    ticket.vehicle_id = assign_vehicle.id
+    
+    db.session.commit()
+
+    return jsonify({'msg': 'Vehicle assigned successfully to ticket'}), 200
+
+
+@api.route('/dismiss/vehicle/ticket', methods=['PUT'])
+@jwt_required()
+def dismiss_vehicle_ticket():
+    current_user_email = get_jwt_identity()
+    user = User.query.filter_by(email=current_user_email).one_or_none()
+
+    if not user:
+        return jsonify({"msg": "No user exist with that email"}), 401
+
+    if user.user_type.type != "admin":
+        return jsonify({"msg": "Only admins have access to this endpoint!"}), 403
+
+    data = request.get_json() 
+
+    ticket = Ticket.query.get(data['ticket_id'])
+    if not ticket:
+        return jsonify({'msg': 'Ticket not found'}), 401
+
+    dismiss_vehicle = Vehicle.query.get(data['dismiss_vehicle_id'])
+    if not dismiss_vehicle:
+        return jsonify({'msg': 'Vehicle not found'}), 401
+
+    # dismiss vehicle set has available
+    dismiss_vehicle.available = True
+
+    # dismiss dismiss_vehicle from ticket
+    ticket.vehicle_id = None
+    
+    db.session.commit()
+
+    return jsonify({'msg': 'Vehicle assigned successfully to ticket'}), 200
+
 @api.route('/user/active/state', methods=['PUT'])
 @jwt_required()
 def admin_edit_user():

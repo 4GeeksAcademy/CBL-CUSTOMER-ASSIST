@@ -209,7 +209,8 @@ class Ticket(db.Model):
             "customer_id": self.customer_id,
             "company_name": self.customer.company_name,
             "knowledge": [knowledge.serialize() for knowledge in self.ticket_knowledge] if self.ticket_knowledge else [],
-            "employees_assigned": [employees.serialize_employee_assigned() for employees in self.ticket_employees] if self.ticket_employees else []
+            "employees_assigned": [employees.serialize_employee_assigned() for employees in self.ticket_employees] if self.ticket_employees else [],
+            "vehicle_assigned": self.vehicle.serialize() if self.vehicle else {}
             # "employees_assigned": self.ticket_employees.serialize_employee_assigned() if self.ticket_employees else None
         }
 
@@ -376,7 +377,9 @@ class Vehicle(db.Model):
             "license_plate": self.license_plate,
             "model": self.model,
             "maker": self.maker,
-            "vehicle_photo": self.vehicle_photo
+            "vehicle_photo": self.vehicle_photo,
+            "value": self.id,
+            "label": self.license_plate + " - " + self.maker + " " + self.model
         }
 
 

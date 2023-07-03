@@ -6,13 +6,23 @@ import makeAnimated from 'react-select/animated';
 export const TicketSmall = (props) => {
     const { actions, store } = useContext(Context);
     const data = props.data;
-    const availableEmployees = props.availableEmployees;
     const isDisabledStatus = ['Resolved', 'Closed'];
     const isDisabled = isDisabledStatus.includes(data.status) ? true : false;
     const animatedComponents = makeAnimated();
+
+    const availableEmployees = props.availableEmployees;
+    const assignedEmployees = data.employees_assigned;
     const [selectedEmployeeIDs, setSelectedEmployeeIDs] = useState(data.employees_assigned);
-    const [assignedEmployees, setAssignedEmployees] = useState(data.employees_assigned);
-    // 
+
+    const assignedVehicle = Object.keys(data.vehicle_assigned).length > 0 ? data.vehicle_assigned : null;
+    const [availableVehicles, setAvailableVehicles]
+        = useState(props.availableVehicles.length > 0 ? props.availableVehicles
+            : Object.keys(data.vehicle_assigned).length > 0 ? [data.vehicle_assigned]
+                : null);
+    const [selectedVehicle, setSelectedVehicle] = useState(data.vehicle_assigned);
+    const [vehicleIsDisabled, setVehicleIsDisabled] = useState(isDisabled);
+
+    // <<<<<<<<<<<<<<< COMMIT FROM BEN 
     const [filteredEquipment, setFilteredEquipment] = useState([])
     const knowledgeArray = filteredEquipment.length > 0 ? filteredEquipment[0].knowledge : [];
 
@@ -23,16 +33,21 @@ export const TicketSmall = (props) => {
     const handleModal = () => {
         actions.updateShowModal(data.subject, data.description, knowledgeArray);
     }
-    //   
+    // <<<<<<<<<<<<<<<
 
+    useEffect(()=>{
+        if (props.availableVehicles.length > 0) setAvailableVehicles(props.availableVehicles);
+        if (props.availableVehicles.length === 0) setAvailableVehicles([selectedVehicle]);
+        if (props.availableVehicles.length === 0 && Object.keys(data.vehicle_assigned).length === 0 && Object.keys(selectedVehicle).length === 0) setVehicleIsDisabled(true);
+    }, [props.availableVehicles])
 
-    const toast = (data) => actions.userToastAlert("Employee assignment", data);
+    const toast = (title, data) => actions.userToastAlert(title, data);
 
     const handleAssignEmployeeToTicket = async (employee) => {
         const ticketID = data.id;
         const oldEmployees = selectedEmployeeIDs;
 
-        // get employee to dismiss
+        // get employee to assign
         const employeeToAssign = employee.filter(item => !(oldEmployees.some((e) => e.id === item.id)));
 
         // get employee id
@@ -40,7 +55,7 @@ export const TicketSmall = (props) => {
 
         const response = await actions.assignEmployeeToTicket(employeeID, ticketID);
         if (response[0] === 200) {
-            toast(`Assigned ${employeeToAssign[0].label} to ticket number ${ticketID}`);
+            toast('Employee assign', `Assigned ${employeeToAssign[0].label} to ticket number ${ticketID}`);
             setSelectedEmployeeIDs(employee);
             updateEmployeesAssignedStoreSessionStorage(employee);
         }
@@ -61,7 +76,7 @@ export const TicketSmall = (props) => {
 
         const response = await actions.dismissEmployeeFromTicket(employeeID, ticketID);
         if (response[0] === 200) {
-            toast(`Dismissed ${employeeToDismiss[0].label} from ticket number ${ticketID}`);
+            toast('Employee dismiss', `Dismissed ${employeeToDismiss[0].label} from ticket number ${ticketID}`);
             setSelectedEmployeeIDs(employee);
             updateEmployeesAssignedStoreSessionStorage(employee);
         }
@@ -83,13 +98,59 @@ export const TicketSmall = (props) => {
         actions.sessionStorageAndSetStoreDataSave("tickets", newTickets);
     }
 
-    const handleAssignVehicleToTicket = (vehicles) => {
-        toast('Assign Vehicle');
+    const handleAssignVehicleToTicket = async (vehicle) => {
+        const ticketID = data.id;
+        const newVehicleID = vehicle.id;
+        const newVehicleLabel = vehicle.label;
+        const dismissVehicleID = selectedVehicle.id ? selectedVehicle.id : false;
+
+        // if no available vehicles it will display the same vehicle
+        // as option and it will not assign or dismiss
+        if (newVehicleID === dismissVehicleID) {
+            setSelectedVehicle(vehicle);
+            return;
+        }
+
+        const response = await actions.assignVehicleToTicket(newVehicleID, dismissVehicleID, ticketID);
+        if (response[0] === 200) {
+            toast('Vehicle assign', `Assigned ${newVehicleLabel} to ticket number ${ticketID}`);
+            setSelectedVehicle(vehicle);
+            updateVehicleAssignedStoreSessionStorage(vehicle, ticketID);
+        }
+        else {
+            alert(response[1]);
+        }
     }
 
-    const handleDismissVehicleFromTicket = (vehicles) => {
-        toast('Dismiss Vehicle');
+    const handleDismissVehicleFromTicket = async () => {
+        const ticketID = data.id;
+        const dismissVehicleID = selectedVehicle.id;
+        const dismissVehicleLabel = selectedVehicle.label;
 
+        const response = await actions.dismissVehicleFromTicket(dismissVehicleID, ticketID);
+        if (response[0] === 200) {
+            toast('Vehicle dismiss', `Dismissed ${dismissVehicleLabel} from ticket number ${ticketID}`);
+            setSelectedVehicle({});
+            updateVehicleAssignedStoreSessionStorage({}, ticketID);
+        }
+        else {
+            alert(response[1]);
+        }
+    }
+
+    const updateVehicleAssignedStoreSessionStorage = (vehicle, ticketID) => {
+        const newTickets = [...store.tickets];
+
+        console.log('update sessionStorage')
+
+        // updates vehicle_assigned in ticket  
+        newTickets.map((ticket) => { if (ticket.id == ticketID) ticket.vehicle_assigned = vehicle });
+
+        // update global available_vehicles
+        actions.getAvailableVehicles();
+
+        // updates store and sessionStorage tickets
+        actions.sessionStorageAndSetStoreDataSave("tickets", newTickets);
     }
 
     return (
@@ -118,15 +179,15 @@ export const TicketSmall = (props) => {
                                 <div className="d-flex flex-column">
                                     <h6>Assign Vehicle</h6>
                                     <Select
+                                        id="assignVehicle"
                                         className="basic-single mb-2"
                                         classNamePrefix="select"
                                         isSearchable={false}
-                                        isClearable={false}
-                                        isDisabled={isDisabled}
+                                        isClearable={true}
+                                        isDisabled={isDisabled || vehicleIsDisabled}
                                         components={animatedComponents}
-                                        // defaultValue={}
-                                        // options={}
-                                        isMulti
+                                        options={availableVehicles}
+                                        defaultValue={assignedVehicle}
                                         styles={{
                                             control: (baseStyles, state) => ({
                                                 ...baseStyles,
@@ -134,7 +195,7 @@ export const TicketSmall = (props) => {
                                         }}
                                         onChange={(newValue, actionMeta) => {
                                             if (actionMeta.action === 'select-option') handleAssignVehicleToTicket(newValue);
-                                            if (actionMeta.action === 'remove-value' || actionMeta.action === 'pop-value') handleDismissVehicleFromTicket(newValue);
+                                            if (actionMeta.action === 'clear') handleDismissVehicleFromTicket();
                                         }}
                                     />
                                 </div>
@@ -142,14 +203,15 @@ export const TicketSmall = (props) => {
                                 <div className="d-flex flex-column">
                                     <h6>Assign Technician/Engineer</h6>
                                     <Select
+                                        id="assignEmployee"
                                         className="basic-single"
                                         classNamePrefix="select"
-                                        defaultValue={assignedEmployees}
                                         isSearchable={false}
-                                        options={availableEmployees}
-                                        components={animatedComponents}
-                                        isDisabled={isDisabled}
                                         isClearable={false}
+                                        isDisabled={isDisabled}
+                                        components={animatedComponents}
+                                        options={availableEmployees}
+                                        defaultValue={assignedEmployees}
                                         isMulti
                                         styles={{
                                             control: (baseStyles, state) => ({

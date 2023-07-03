@@ -28,6 +28,7 @@ const injectContext = PassedComponent => {
 			state.actions.syncTicketsFromSessionStorage();
 			state.actions.syncUserProfileFromSessionStorage();
 			state.actions.syncAvailableEmployeeFromSessionStorage();
+			state.actions.syncAvailableVehiclesFromSessionStorage();
 		}, []);
 
 

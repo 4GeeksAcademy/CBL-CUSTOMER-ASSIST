@@ -13,6 +13,7 @@ export const AdminTickets = () => {
     const inProgressTickets = store.tickets.filter((ticket) => ticket.status === 'In Progress');
     const resolvedTickets = store.tickets.filter((ticket) => ticket.status === 'Resolved');
     const availableEmployees = store.availableEmployees;
+    const availableVehicles = store.availableVehicles;
 
     return (
         <main className="bd-main order-1">
@@ -22,16 +23,16 @@ export const AdminTickets = () => {
             </div>
             <div className="bd-content">
                 {!filter || filter === '' || filter === undefined && allTickets.length > 0 ? allTickets.map((item, i) => {
-                    return <TicketSmall key={item.id} data={item} userType={userType} availableEmployees={availableEmployees} />
+                    return <TicketSmall key={item.id} data={item} userType={userType} availableEmployees={availableEmployees} availableVehicles={availableVehicles} />
                 })
                     : filter === 'opened' ? openedTickets.map((item, i) => {
-                        return <TicketSmall key={item.id} data={item} userType={userType} availableEmployees={availableEmployees} />
+                        return <TicketSmall key={item.id} data={item} userType={userType} availableEmployees={availableEmployees} availableVehicles={availableVehicles} />
                     })
                         : filter === 'inprogress' ? inProgressTickets.map((item, i) => {
-                            return <TicketSmall key={item.id} data={item} userType={userType} availableEmployees={availableEmployees} />
+                            return <TicketSmall key={item.id} data={item} userType={userType} availableEmployees={availableEmployees} availableVehicles={availableVehicles} />
                         })
                             : filter === 'resolved' ? resolvedTickets.map((item, i) => {
-                                return <TicketSmall key={item.id} data={item} userType={userType} availableEmployees={availableEmployees} />
+                                return <TicketSmall key={item.id} data={item} userType={userType} availableEmployees={availableEmployees} availableVehicles={availableVehicles} />
                             })
                                 : <span>All customers satisfaction it's in tip-top shape!</span>}
             </div>

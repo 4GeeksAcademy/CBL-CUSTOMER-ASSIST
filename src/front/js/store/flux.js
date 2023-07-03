@@ -194,6 +194,11 @@ const getState = ({ getStore, getActions, setStore }) => {
 				if (sessionStorage.getItem('availableEmployees')) return setStore({ availableEmployees: JSON.parse(sessionStorage.getItem('availableEmployees')) });
 			},
 
+			syncAvailableVehiclesFromSessionStorage: () => {
+				console.log('estou aqui')
+				if (sessionStorage.getItem('availableVehicles')) return setStore({ availableVehicles: JSON.parse(sessionStorage.getItem('availableVehicles')) });
+			},
+
 			sessionStorageAndSetStoreDataSave: (key, data) => {
 				sessionStorage.setItem([key], JSON.stringify(data));
 				setStore({ [key]: data });
@@ -634,6 +639,57 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 				getActions().sessionStorageAndSetStoreDataSave('availableVehicles', data.available_vehicles);
 				// needs to have error handle
+			},
+
+			assignVehicleToTicket: async (assignVehicleID, dismissVehicleID, ticketID) => {
+				console.log('action: assignVehicleToTicket');
+				const token = getStore().token;
+				const opts = {
+					method: "PUT",
+					headers: {
+						"Content-Type": "application/json",
+						"Authorization": "Bearer " + token
+					},
+					body: JSON.stringify({
+						'assign_vehicle_id': assignVehicleID,
+						'dismiss_vehicle_id': dismissVehicleID,
+						'ticket_id': ticketID
+					})
+				}
+				const response = await fetch(process.env.BACKEND_URL + "api/assign/vehicle/ticket", opts);
+				const data = await response.json();
+
+				if (response.status !== 200) {
+					console.log(response.status, data.msg);
+					return [response.status, data.msg];
+				}
+
+				return [response.status, data.msg];
+			},
+
+			dismissVehicleFromTicket: async (dismissVehicleID, ticketID) => {
+				console.log('action: dismissVehicleFromTicket');
+				const token = getStore().token;
+				const opts = {
+					method: "PUT",
+					headers: {
+						"Content-Type": "application/json",
+						"Authorization": "Bearer " + token
+					},
+					body: JSON.stringify({
+						'dismiss_vehicle_id': dismissVehicleID,
+						'ticket_id': ticketID
+					})
+				}
+				const response = await fetch(process.env.BACKEND_URL + "api/dismiss/vehicle/ticket", opts);
+				const data = await response.json();
+
+				if (response.status !== 200) {
+					console.log(response.status, data.msg);
+					return [response.status, data.msg];
+				}
+
+				return [response.status, data.msg];
 			},
 		}
 	};
