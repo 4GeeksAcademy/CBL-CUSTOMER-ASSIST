@@ -155,7 +155,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					"solution": "Solution 10"
 				}
 			],
-			userProfile: {user_info : {}, customer_info : {}, employee_info : {}},
+			userProfile: { user_info: {}, customer_info: {}, employee_info: {} },
 			customerEquipmentTickets: [],
 			user: null,
 			modalTitle: null,
@@ -164,9 +164,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 			liveToastHeader: null,
 			liveToastBody: null,
 			userList: [],
-			ticketStage: 1
+			ticketStage: 1,
+			availableEmployees: []
+		},
 
-		}, 
 		actions: {
 			syncTokenFromSessionStorage: () => {
 				if (sessionStorage.getItem('token')) return setStore({ token: JSON.parse(sessionStorage.getItem('token')) });
@@ -188,6 +189,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 				if (sessionStorage.getItem('userProfile')) return setStore({ userProfile: JSON.parse(sessionStorage.getItem('userProfile')) });
 			},
 
+			syncAvailableEmployeeFromSessionStorage: () => {
+				if (sessionStorage.getItem('availableEmployees')) return setStore({ availableEmployees: JSON.parse(sessionStorage.getItem('availableEmployees')) });
+			},
+
 			sessionStorageAndSetStoreDataSave: (key, data) => {
 				sessionStorage.setItem([key], JSON.stringify(data));
 				setStore({ [key]: data });
@@ -195,7 +200,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 
 			setTicketStage: (value) => {
-				setStore({ticketStage: value});
+				setStore({ ticketStage: value });
 				localStorage.setItem('ticketStage', JSON.stringify(value));
 			},
 
@@ -304,17 +309,17 @@ const getState = ({ getStore, getActions, setStore }) => {
 				try {
 					const response = await fetch(process.env.BACKEND_URL + "api/customer/create/ticket", opts);
 					const data = await response.json();
-					
+
 					if (response.status !== 201) {
 						alert("There has been some error!");
 						return false;
 					}
-					
+
 					const newTickets = [];
 					Object.assign(newTickets, getStore().tickets);
 					newTickets.push(data.ticket);
 					getActions().sessionStorageAndSetStoreDataSave('tickets', newTickets);
-					
+
 					return true;
 				}
 				catch (error) {
@@ -343,7 +348,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 						return false;
 					}
 					console.log("This came from the backend", data);
-					
+
 					// TODO: instead of store.tickets change to store.customerTickets
 					if ('tickets' in data) await getActions().sessionStorageAndSetStoreDataSave('tickets', data.tickets);
 					return true;
@@ -412,12 +417,12 @@ const getState = ({ getStore, getActions, setStore }) => {
 			updateUserProfileLocally: (data) => {
 				let newUserProfile = {};
 				Object.assign(newUserProfile, getStore().userProfile);
-				
+
 				const infoKeys = Object.keys(getStore().userProfile);
 
 				const updateValues = (infos, data) => {
 					infos.map((info) => {
-						if(info in data) {
+						if (info in data) {
 							Object.keys(data[info]).map((key) => {
 								newUserProfile[info][key] = data[info][key];
 							})
@@ -462,7 +467,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 
 			getCustomerEquipmentTickets: (data) => {
-				setStore({customerEquipmentTickets: data})
+				setStore({ customerEquipmentTickets: data })
 			},
 
 			userToastAlert: (header, body) => {
@@ -513,6 +518,99 @@ const getState = ({ getStore, getActions, setStore }) => {
 				getActions().sessionStorageAndSetStoreDataSave('userList', data.users);
 				// needs to have error handle
 			},
+
+			getAvailableEmployees: async () => {
+				console.log('action: getAvailableEmployees');
+				const token = getStore().token;
+				const opts = {
+					method: "GET",
+					headers: {
+						"Authorization": "Bearer " + token
+					}
+				}
+				const response = await fetch(process.env.BACKEND_URL + "api/available/employees", opts);
+				const data = await response.json();
+
+				if (response.status !== 200) {
+					console.log(response.status, data.msg);
+					return [response.status, data.msg];
+				}
+
+				getActions().sessionStorageAndSetStoreDataSave('availableEmployees', data.available_employees);
+				// needs to have error handle
+			},
+
+			toggleEmployeeAvailable: async (id) => {
+				console.log('action: toggleEmployeeAvailable');
+				const token = getStore().token;
+				const opts = {
+					method: "PUT",
+					headers: {
+						"Content-Type": "application/json",
+						"Authorization": "Bearer " + token
+					},
+					body: JSON.stringify({ 'id': id })
+				}
+				const response = await fetch(process.env.BACKEND_URL + "api/employee/toggle/available", opts);
+				const data = await response.json();
+
+				if (response.status !== 200) {
+					console.log(response.status, data.msg);
+					return [response.status, data.msg];
+				}
+
+				return [response.status, data.msg];
+			},
+
+			assignEmployeeToTicket: async (employeeID, ticketID) => {
+				console.log('action: assignEmployeeToTicket');
+				const token = getStore().token;
+				const opts = {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+						"Authorization": "Bearer " + token
+					},
+					body: JSON.stringify({
+						'employee_ids': employeeID,
+						'ticket_id': ticketID
+					})
+				}
+				const response = await fetch(process.env.BACKEND_URL + "api/assign/employee/ticket", opts);
+				const data = await response.json();
+
+				if (response.status !== 200) {
+					console.log(response.status, data.msg);
+					return [response.status, data.msg];
+				}
+
+				return [response.status, data.msg];
+			},
+
+			dismissEmployeeFromTicket: async (employeeIDs, ticketID) => {
+				console.log('action: dismissEmployeeFromTicket');
+				const token = getStore().token;
+				const opts = {
+					method: "DELETE",
+					headers: {
+						"Content-Type": "application/json",
+						"Authorization": "Bearer " + token
+					},
+					body: JSON.stringify({
+						'employee_ids': employeeIDs,
+						'ticket_id': ticketID
+					})
+				}
+				const response = await fetch(process.env.BACKEND_URL + "api/dismiss/employee/ticket", opts);
+				const data = await response.json();
+
+				if (response.status !== 200) {
+					console.log(response.status, data.msg);
+					return [response.status, data.msg];
+				}
+
+				return [response.status, data.msg];
+			}
 		}
 	};
 };

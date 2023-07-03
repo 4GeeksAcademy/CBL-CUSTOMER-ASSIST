@@ -40,5 +40,12 @@
         "password": "customer3",
         "user_type_id": 4,
         "customer_id": "3"
+    },
+    {
+        
+        "email": "claude@email.com",
+        "password": "claude",
+        "user_type_id": 3,
+        "employee_id": 4
     }
 ]
