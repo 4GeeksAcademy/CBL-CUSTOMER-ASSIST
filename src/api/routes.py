@@ -433,7 +433,7 @@ def get_all_vehicles():
     return jsonify(serialized_vehicles), 200
 
 
-@api.route('/admin/vehicles/available', methods=['GET'])
+@api.route('/admin/available/vehicles', methods=['GET'])
 @jwt_required()
 def get_available_vehicles():
     user_email = get_jwt_identity()
@@ -446,9 +446,13 @@ def get_available_vehicles():
         return jsonify({"msg": "Only admins have access to this endpoint!"}), 403
 
     available_vehicles = Vehicle.query.filter_by(available=True).all()
-    serialized_vehicle = [e.serialize() for e in available_vehicles]
+    serialized_vehicles = [e.serialize() for e in available_vehicles]
 
-    return jsonify(serialized_vehicle), 200
+    print("########################")
+    print(serialized_vehicles)
+    print("########################")
+
+    return jsonify({"available_vehicles": serialized_vehicles}), 200
 
 
 @api.route('/admin/vehicles/available', methods=['PUT'])

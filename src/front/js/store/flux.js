@@ -165,7 +165,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 			liveToastBody: null,
 			userList: [],
 			ticketStage: 1,
-			availableEmployees: []
+			availableEmployees: [],
+			availableVehicles: []
 		},
 
 		actions: {
@@ -610,7 +611,30 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 
 				return [response.status, data.msg];
-			}
+			},
+
+			getAvailableVehicles: async () => {
+				console.log('action: getAvailableVehicles');
+				const token = getStore().token;
+				const opts = {
+					method: "GET",
+					headers: {
+						"Authorization": "Bearer " + token
+					}
+				}
+				const response = await fetch(process.env.BACKEND_URL + "api/admin/available/vehicles", opts);
+				const data = await response.json();
+
+				console.log("availableVehicles: ", data.available_vehicles)
+
+				if (response.status !== 200) {
+					console.log(response.status, data.msg);
+					return [response.status, data.msg];
+				}
+
+				getActions().sessionStorageAndSetStoreDataSave('availableVehicles', data.available_vehicles);
+				// needs to have error handle
+			},
 		}
 	};
 };
