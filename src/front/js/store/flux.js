@@ -34,7 +34,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					city: "Águeda",
 					company_email: "automotive.parts@email.com",
 					customer_email: "customer1@email.com",
-					authentication: { // TODO
+					authentication: {
 						user_email: "customer1@email.com",
 						password: "Y3VzdG9tZXIx"
 					}

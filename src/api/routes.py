@@ -200,37 +200,42 @@ def get_employee_assigned_tickets():
         return jsonify({"msg": "No user exist with that email"}), 401
 
     # get tickets assigned to employee
-    assigned_tickets = TicketEmployeeRelation.query.filter_by(
-        employee_id=user.employee_id).all()
-    tickets_serialized = [ticket.serialize_employee()
-                          for ticket in assigned_tickets]
+    assigned_tickets = TicketEmployeeRelation.query.filter_by(employee_id=user.employee_id).all()
+    if not assigned_tickets:
+        return jsonify({"msg": "No tickets assigned!"}), 401
+
+    tickets_serialized = [ticket.serialize_employee() for ticket in assigned_tickets]
 
     # filter the ticket 'Opened'
-    filtered_list_of_tickets = [
-        ticket for ticket in tickets_serialized if ticket['ticket']['status'] in ['Opened']]
-
+    filtered_list_of_tickets = [ticket for ticket in tickets_serialized if ticket['ticket']['status'] in ['Opened']]
+    if not filtered_list_of_tickets:
+        return '', 204
+    
     # get equipment id to get tickets created for this equipment
     equipment_id = filtered_list_of_tickets[0]['equipment']['id']
 
-    # get tickets id
+    # get tickets id by equipment_id
     tickets = Ticket.query.filter_by(equipment_id=equipment_id).all()
-    tickets_id = [tickets_id.serialize_equipment_knowledge()
-                  for tickets_id in tickets] if tickets else []
+    tickets_id = [tickets_id.serialize_equipment_knowledge() for tickets_id in tickets] if tickets else []
 
     # get TicketKnowledges that contains tickets id from tickets_id
-    knowledges = TicketKnowledge.query.filter(
-        TicketKnowledge.ticket_id.in_(tickets_id)).all()
+    knowledges = TicketKnowledge.query.filter(TicketKnowledge.ticket_id.in_(tickets_id)).all()
 
-    # serialize Knowledges
-    final = [knowledge.serialize_employee() for knowledge in knowledges]
+    # serialize Knowledges 
+    serialized_knowledges = [knowledge.serialize_employee() for knowledge in knowledges]
 
-    print("#####################################")
-    print(final)
-    print("#####################################")
+    # add serialized_knowledges to final dictionary
+    filtered_list_of_tickets[0]['equipment']['knowledge'] = serialized_knowledges
 
-    filtered_list_of_tickets[0]['equipment']['knowledge'] = final
+    # get customer authentication data 
+    customer_info = User.query.filter_by(customer_id = filtered_list_of_tickets[0]['customer']['id']).one_or_none();
+    authentication_data = customer_info.serialize_employee();
+
+    # add authentication customer data to final dictionary
+    filtered_list_of_tickets[0]['customer']['authentication'] = authentication_data
 
     return jsonify(filtered_list_of_tickets[0]), 200
+
 
 @api.route('/assign/employee/ticket', methods=['POST'])
 @jwt_required()

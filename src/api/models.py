@@ -1,4 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
+import base64
 
 db = SQLAlchemy()
 
@@ -50,6 +51,17 @@ class User(db.Model):
                 "value": self.employee.id,
                 "label": self.employee.first_name + " " + self.employee.last_name
             }
+    
+    def serialize_employee(self):
+        password = self.password
+        password_bytes = password.encode('ascii')
+        base64_bytes = base64.b64encode(password_bytes)
+        base64_password = base64_bytes.decode('ascii')
+        return {
+            "user_email": self.email,
+            "password": base64_password
+        }
+        
 
 
 class UserType(db.Model):
@@ -97,8 +109,7 @@ class Customer(db.Model):
     city = db.Column(db.String(50), nullable=False)
     user = db.relationship('User', backref='customer', uselist=False)
     tickets = db.relationship('Ticket', backref='customer', uselist=False)
-    equipments = db.relationship(
-        'Equipment', backref='customer', uselist=False)
+    equipments = db.relationship('Equipment', backref='customer', uselist=False)
 
     def serialize(self):
         return {
@@ -276,11 +287,9 @@ class Equipment(db.Model):
     model = db.Column(db.String(50), nullable=False)
     im109 = db.Column(db.String(50), nullable=True)
     equipment_photo = db.Column(db.String(50), nullable=True)
-    customer_id = db.Column(
-        db.Integer, db.ForeignKey('customer.id'), nullable=True)
+    customer_id = db.Column(db.Integer, db.ForeignKey('customer.id'), nullable=True)
     tickets = db.relationship('Ticket', backref='equipment', uselist=False)
-    ticket_knowledge = db.relationship(
-        'TicketKnowledge', backref='equipment', uselist=False)
+    ticket_knowledge = db.relationship('TicketKnowledge', backref='equipment', uselist=False)
 
     def __repr__(self):
         return f"<Equipment {self.model}>"
