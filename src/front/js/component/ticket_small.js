@@ -7,6 +7,7 @@ import { TicketStatus } from '../constants/ticket_status'
 export const TicketSmall = (props) => {
     const { actions, store } = useContext(Context);
     const data = props.data;
+    const ticketID = data.id;
     const isDisabledStatus = ['New'];
     const isDisabled = !isDisabledStatus.includes(data.status) ? true : false;
     const animatedComponents = makeAnimated();
@@ -57,7 +58,6 @@ export const TicketSmall = (props) => {
     const toast = (title, data) => actions.userToastAlert(title, data);
 
     const handleAssignEmployeeToTicket = async (employee) => {
-        const ticketID = data.id;
         const oldEmployees = selectedEmployees;
 
         // get employee to assign
@@ -78,7 +78,6 @@ export const TicketSmall = (props) => {
     }
 
     const handleDismissEmployeeFromTicket = async (employee) => {
-        const ticketID = data.id;
         const oldEmployees = selectedEmployees;
 
         // get the employee to dismiss
@@ -112,7 +111,6 @@ export const TicketSmall = (props) => {
     }
 
     const handleAssignVehicleToTicket = async (vehicle) => {
-        const ticketID = data.id;
         const newVehicleID = vehicle.id;
         const newVehicleLabel = vehicle.label;
         const dismissVehicleID = selectedVehicle.id ? selectedVehicle.id : false;
@@ -164,6 +162,20 @@ export const TicketSmall = (props) => {
 
         // updates store and sessionStorage tickets
         actions.sessionStorageAndSetStoreDataSave("tickets", newTickets);
+    }
+
+    const handleBtnSetTicketStatus = async (status) => {
+        console.log('btnOpenTicket');
+        const response = await actions.setTicketStatus(ticketID, status);
+
+        if (response) {
+            toast('Ticket Status', `Updated ticket number ${ticketID} to ${status}`);
+            // setSelectedVehicle(vehicle);
+            // updateVehicleAssignedStoreSessionStorage(vehicle, ticketID);
+        }
+        else {
+            toast('Warning', 'There was some problem trying to set ticket status.');
+        }
     }
 
     return (
@@ -241,11 +253,15 @@ export const TicketSmall = (props) => {
                                 }}
                             />
                         </div>
-                        
+
                         {/* BUTTON TO SET TICKET TO 'OPEN' STATE */}
                         {isDisabledStatus.includes(data.status) ?
                             <div className="mt-3">
-                                <button type="button" className={`btn ${btnOpenTicketDisabled ? 'btn-light text-body-tertiary' : 'btn-warning shadow-sm fw-medium'} btn-sm w-100`} disabled={btnOpenTicketDisabled}>»» Open ticket »»</button>
+                                <button type="button"
+                                    className={`btn ${btnOpenTicketDisabled ? 'btn-light text-body-tertiary' : 'btn-warning shadow-sm fw-medium'} btn-sm w-100`}
+                                    disabled={btnOpenTicketDisabled}
+                                    onClick={() => handleBtnSetTicketStatus('Opened')}
+                                >»» Open ticket »»</button>
                             </div>
                             : null}
                     </div>
