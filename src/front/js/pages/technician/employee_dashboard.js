@@ -4,7 +4,7 @@ import { TicketSmallEmployee } from "../../component/ticket_small_employee";
 
 export const EmployeeDashboard = () => {
     const { store, actions } = useContext(Context);
-    const ticket = { ...store.assignedTicket };
+    const ticket = store.assignedTicket;
 
     return (
         <main className="bd-main order-1">

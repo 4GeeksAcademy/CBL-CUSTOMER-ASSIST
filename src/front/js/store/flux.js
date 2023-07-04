@@ -200,13 +200,20 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 
 
-			syncAssignedTicketFromSessionStorage: () => {
+			syncAssignedTicketFromLocalStorage: () => {
 				console.log('estou aqui')
-				if (sessionStorage.getItem('assignedTicket')) return setStore({ assignedTicket: JSON.parse(sessionStorage.getItem('assignedTicket')) });
+				if (localStorage.getItem('assignedTicket')) return setStore({ assignedTicket: JSON.parse(localStorage.getItem('assignedTicket')) });
 			},
 
 			sessionStorageAndSetStoreDataSave: (key, data) => {
 				sessionStorage.setItem([key], JSON.stringify(data));
+				setStore({ [key]: data });
+				return true;
+			},
+
+			localStorageAndSetStoreDataSave: (key, data) => {
+				console.log('data', data)
+				localStorage.setItem([key], JSON.stringify(data));
 				setStore({ [key]: data });
 				return true;
 			},
@@ -408,21 +415,41 @@ const getState = ({ getStore, getActions, setStore }) => {
 						return [response.status, data.msg];
 					}
 
-					// create a copy of tickets
-					const newTickets = [...getStore().tickets];
+					// Technician/Engineer updating ticket status
+					const employeesSetStatus = ['technician', 'engineer'];
+					if (employeesSetStatus.includes(getStore().userProfile.user_info.user_type)) {
+						console.log('assignedTicket')
+						// create a copy of assignedTicket
+						const newAssignedTicket = { ...getStore().assignedTicket };
 
-					// update ticket status
-					newTickets.map(ticket => {
-						if (ticket.id === ticketID) ticket.status = status; 
-					});
+						// update ticket status value
+						newAssignedTicket.ticket.status = status;
 
-					// update tickets
-					getActions().sessionStorageAndSetStoreDataSave('tickets', newTickets);
+						// update tickets
+						getActions().localStorageAndSetStoreDataSave('assignedTicket', newAssignedTicket);
 
-					return true;
+						return true;
+					}
+
+					// Admin updating ticket status
+					const adminSetStatus = ['admin'];
+					if (adminSetStatus.includes(getStore().userProfile.user_info.user_type)) {
+						// create a copy of tickets
+						const newTickets = [...getStore().tickets];
+
+						// update ticket status
+						newTickets.map(ticket => {
+							if (ticket.id === ticketID) ticket.status = status;
+						});
+
+						// update tickets
+						getActions().sessionStorageAndSetStoreDataSave('tickets', newTickets);
+
+						return true;
+					}
 				}
 				catch (error) {
-					console.log("There has been an error login in!", error)
+					console.log("There has been an error!", error)
 				}
 			},
 
@@ -587,7 +614,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.log("Getting to response Employee assigned ticket");
 					console.log("This came from the backend", data);
 
-					if ('assigned_ticket' in data) await getActions().sessionStorageAndSetStoreDataSave('assignedTicket', data.assigned_ticket);
+					if ('assigned_ticket' in data) await getActions().localStorageAndSetStoreDataSave('assignedTicket', data.assigned_ticket);
 					return true;
 				}
 				catch (error) {
