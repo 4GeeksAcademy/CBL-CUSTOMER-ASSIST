@@ -12,10 +12,20 @@ export const TicketSmallEmployee = (props) => {
     const toast = (title, data) => actions.userToastAlert(title, data);
 
     const handleModal = () => {
-        console.log("equipment.knowledge", equipment.knowledge)
-        actions.updateShowModal(ticket.subject, ticket.description);
+        actions.updateShowModal(ticket.subject, ticket.description, equipment.knowledge);
     }
 
+    const handleBtnSetTicketStatus = async (ticketID, status) => {
+        console.log('btnStartAssistance');
+        const response = await actions.setTicketStatus(ticketID, status);
+
+        if (response) {
+            toast('Ticket Status', `Updated ticket number ${ticketID} to ${status}`);
+        }
+        else {
+            toast('Warning', 'There was some problem trying to set ticket status.');
+        }
+    }
 
     return (
         <div className="card w-100 mb-3">
@@ -57,7 +67,14 @@ export const TicketSmallEmployee = (props) => {
                     </div>
                 </div>
 
-
+                {/* BUTTON TO SET TICKET TO 'IN PROGRESS' STATE */}
+                <hr></hr>
+                <div className="mt-3">
+                    <button type="button"
+                        className="btn btn-primary shadow-sm fw-medium btn-sm w-100"
+                        onClick={() => handleBtnSetTicketStatus(ticket.id, 'In Progress')}
+                    >»» Start Assistance »»</button>
+                </div>
             </div>
             <div className="card-footer text-body-secondary d-flex flex-column flex-sm-row align-items-center justify-content-between">
                 <h6 className="card-subtitle text-body-secondary col-sm-3">Ticket #{ticket.id}</h6>
