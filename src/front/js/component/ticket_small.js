@@ -162,7 +162,8 @@ export const TicketSmall = (props) => {
             <div className="card-header">
                 <div className="d-flex flex-row justify-content-between">
                     <div className="btn p-0"><h5 className="card-title" onClick={handleModal}>{data.subject}</h5></div>
-                    <p className={`badge text-bg-${data.status === 'Opened' ? TicketStatus.OPENED
+                    <p className={`badge text-bg-${data.status === 'New' ? TicketStatus.NEW
+                    : data.status === 'Opened' ? TicketStatus.OPENED
                         : data.status === 'In Progress' ? TicketStatus.IN_PROGRESS
                             : data.status === 'Resolved' ? TicketStatus.RESOLVED
                                 : TicketStatus.CLOSED}`}

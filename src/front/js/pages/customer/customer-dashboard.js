@@ -4,6 +4,7 @@ import { TicketSmall } from "../../component/ticket_small";
 
 export const CustomerDashboard = () => {
     const { store, actions } = useContext(Context);
+    const customerAllowedTicketStatus = ['New', 'Opened', 'In Progress', 'Resolved'];
 
     return (
         <main className="bd-main order-1">
@@ -13,7 +14,7 @@ export const CustomerDashboard = () => {
             </div>
             <div className="bd-content">
                 {store.tickets != null || undefined ? store.tickets
-                    .filter(ticket => ticket.status === 'Opened')
+                    .filter(ticket => customerAllowedTicketStatus.includes(ticket.status))
                     .map((item, i) => {
                     return <TicketSmall key={i} data={item}/>
                 }) : []}

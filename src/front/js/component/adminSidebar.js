@@ -34,6 +34,9 @@ export const AdminSidebar = () => {
 								</strong>
 							</Link>
 							<ul className="list-unstyled fw-normal pb-2 small">
+								<Link to={'/admin/tickets/new'}>
+								<li><span className="bd-links-link d-inline-block rounded">All New</span></li>
+								</Link>
 								<Link to={'/admin/tickets/opened'}>
 								<li><span className="bd-links-link d-inline-block rounded">All Opened</span></li>
 								</Link>
