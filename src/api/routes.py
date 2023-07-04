@@ -97,7 +97,7 @@ def create_ticket():
         ticket.intervention_type = intervention_type
         ticket.subject = subject
         ticket.description = description
-        ticket.status = "Opened"
+        ticket.status = "New"
         ticket.open_ticket_time = datetime.datetime.now()
         db.session.add(ticket)
 
@@ -179,7 +179,7 @@ def get_tickets_not_closed():
         return jsonify({"msg": "Only admins have access to this endpoint!"}), 403
 
     tickets = Ticket.query.filter(Ticket.status.in_(
-        ['Opened', 'In Progress', 'Resolved'])).all()
+        ['New', 'Opened', 'In Progress', 'Resolved'])).all()
 
     if not tickets:
         return jsonify({"msg": "No tickets to manage"}), 400
@@ -608,7 +608,7 @@ def admin_create_ticket():
         ticket.intervention_type = intervention_type
         ticket.subject = subject
         ticket.description = description
-        ticket.status = "Opened"
+        ticket.status = "Opened" # TODO: change to 'New'
         ticket.open_ticket_time = datetime.datetime.now()
         db.session.add(ticket)
 
