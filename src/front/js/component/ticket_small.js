@@ -2,6 +2,7 @@ import React, { useContext, useState, useEffect } from "react";
 import { Context } from "../store/appContext";
 import Select from 'react-select';
 import makeAnimated from 'react-select/animated';
+import {TicketStatus} from '../constants/ticket_status'
 
 export const TicketSmall = (props) => {
     const { actions, store } = useContext(Context);
@@ -35,7 +36,7 @@ export const TicketSmall = (props) => {
     }
     // <<<<<<<<<<<<<<<
 
-    useEffect(()=>{
+    useEffect(() => {
         if (props.availableVehicles.length > 0) {
             setAvailableVehicles(props.availableVehicles);
             setVehicleIsDisabled(false);
@@ -161,7 +162,12 @@ export const TicketSmall = (props) => {
             <div className="card-header">
                 <div className="d-flex flex-row justify-content-between">
                     <div className="btn p-0"><h5 className="card-title" onClick={handleModal}>{data.subject}</h5></div>
-                    <p className={`badge text-bg-${data.status === 'Opened' ? 'danger' : data.status === 'In Progress' ? 'warning' : data.status === 'Resolved' ? 'success' : 'secondary'}`} role="alert">{data.status}</p>
+                    <p className={`badge text-bg-${data.status === 'Opened' ? TicketStatus.OPENED
+                        : data.status === 'In Progress' ? TicketStatus.IN_PROGRESS
+                            : data.status === 'Resolved' ? TicketStatus.RESOLVED
+                                : TicketStatus.CLOSED}`}
+                        role="alert">{data.status}
+                    </p>
                 </div>
             </div>
             <div className="card-body">
