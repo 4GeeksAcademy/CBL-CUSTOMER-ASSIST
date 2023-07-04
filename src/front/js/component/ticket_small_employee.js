@@ -4,10 +4,10 @@ import { TicketStatus } from '../constants/ticket_status'
 
 export const TicketSmallEmployee = (props) => {
     const { actions, store } = useContext(Context);
-    const [ticket, setTicket] = useState(props.data.ticket);
-    const [customer, setCustomer] = useState(props.data.customer);
-    const [equipment, setEquipment] = useState(props.data.equipment);
-    const [vehicleAssigned, setVehicleAssigned] = useState(props.data.vehicle_assigned);
+    const ticket = props.data.ticket;
+    const customer = props.data.customer;
+    const equipment = props.data.equipment;
+    const vehicleAssigned = props.data.vehicle_assigned;
 
     const toast = (title, data) => actions.userToastAlert(title, data);
 
@@ -68,13 +68,16 @@ export const TicketSmallEmployee = (props) => {
                 </div>
 
                 {/* BUTTON TO SET TICKET TO 'IN PROGRESS' STATE */}
-                <hr></hr>
-                <div className="mt-3">
-                    <button type="button"
-                        className="btn btn-primary shadow-sm fw-medium btn-sm w-100"
-                        onClick={() => handleBtnSetTicketStatus(ticket.id, 'In Progress')}
-                    >»» Start Assistance »»</button>
-                </div>
+                {ticket.status === 'Opened' ? <>
+                    <hr></hr>
+                    <div className="mt-3">
+                        <button type="button"
+                            className="btn btn-primary shadow-sm fw-medium btn-sm w-100"
+                            onClick={() => handleBtnSetTicketStatus(ticket.id, 'In Progress')}
+                        >»» Start Assistance »»</button>
+                    </div></>
+                    : null
+                }
             </div>
             <div className="card-footer text-body-secondary d-flex flex-column flex-sm-row align-items-center justify-content-between">
                 <h6 className="card-subtitle text-body-secondary col-sm-3">Ticket #{ticket.id}</h6>
