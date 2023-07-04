@@ -6,6 +6,7 @@ export const TicketSmallCustomer = (props) => {
     const { actions, store } = useContext(Context);
     const data = props.data;
 
+    // TODO: verify use
     const assignedEmployees = data.employees_assigned;
     const assignedVehicle = Object.keys(data.vehicle_assigned).length > 0 ? data.vehicle_assigned : null;
 

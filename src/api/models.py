@@ -218,13 +218,15 @@ class Ticket(db.Model):
         return {
             "ticket": {
                 "id": self.id,
+                "open_ticket_time": self.open_ticket_time,
                 "status": self.status,
                 "intervention_type": self.intervention_type,
                 "subject": self.subject,
                 "description": self.description
             },
             "customer": self.customer.serialize_employee(),
-            "equipment": self.equipment.serialize_employee()
+            "equipment": self.equipment.serialize_employee(),
+            "vehicle_assigned": self.vehicle.serialize() if self.vehicle else {}
         }
 
     def serialize_equipment_knowledge(self):

@@ -201,14 +201,14 @@ def get_employee_assigned_tickets():
     if not user:
         return jsonify({"msg": "No user exist with that email"}), 401
 
-    # get tickets assigned to employee
+    # get all tickets assigned to employee
     assigned_tickets = TicketEmployeeRelation.query.filter_by(employee_id=user.employee_id).all()
     if not assigned_tickets:
         return jsonify({"msg": "No tickets assigned!"}), 401
 
     tickets_serialized = [ticket.serialize_employee() for ticket in assigned_tickets]
 
-    # filter the ticket 'Opened'
+    # filter the ticket with status 'Opened'
     filtered_list_of_tickets = [ticket for ticket in tickets_serialized if ticket['ticket']['status'] in ['Opened']]
     if not filtered_list_of_tickets:
         return '', 204
@@ -220,7 +220,7 @@ def get_employee_assigned_tickets():
     tickets = Ticket.query.filter_by(equipment_id=equipment_id).all()
     tickets_id = [tickets_id.serialize_equipment_knowledge() for tickets_id in tickets] if tickets else []
 
-    # get TicketKnowledges that contains tickets id from tickets_id
+    # get TicketKnowledges that contains tickets id with tickets_id
     knowledges = TicketKnowledge.query.filter(TicketKnowledge.ticket_id.in_(tickets_id)).all()
 
     # serialize Knowledges 
@@ -236,7 +236,7 @@ def get_employee_assigned_tickets():
     # add authentication customer data to final dictionary
     filtered_list_of_tickets[0]['customer']['authentication'] = authentication_data
 
-    return jsonify(filtered_list_of_tickets[0]), 200
+    return jsonify({"assigned_ticket": filtered_list_of_tickets[0]}), 200
 
 
 @api.route('/assign/employee/ticket', methods=['POST'])

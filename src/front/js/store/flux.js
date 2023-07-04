@@ -11,7 +11,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 			equipmentList: [],
 			tickets: [],
 			manufacturerAddress: "Mecânica Exacta, S.A., Rua António Gomes da Cruz, São Paio de Oleiros", // TODO
-			assignedTicket: {
+			assignedTicket: {},
+			assignedTicket___: {
 				"id": 11,
 				"status": "Opened",
 				"intervention_type": true,
@@ -195,8 +196,13 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 
 			syncAvailableVehiclesFromSessionStorage: () => {
-				console.log('estou aqui')
 				if (sessionStorage.getItem('availableVehicles')) return setStore({ availableVehicles: JSON.parse(sessionStorage.getItem('availableVehicles')) });
+			},
+
+
+			syncAssignedTicketFromSessionStorage: () => {
+				console.log('estou aqui')
+				if (sessionStorage.getItem('assignedTicket')) return setStore({ assignedTicket: JSON.parse(sessionStorage.getItem('assignedTicket')) });
 			},
 
 			sessionStorageAndSetStoreDataSave: (key, data) => {
@@ -227,12 +233,12 @@ const getState = ({ getStore, getActions, setStore }) => {
 					const data = await response.json();
 
 					if (response.status !== 200) {
-						return false;
+						return ([false, 'There was a problem with login']);
 					}
 
 
 					await getActions().sessionStorageAndSetStoreDataSave('token', data.access_token);
-					return true;
+					return ([true, data.user_type]);
 				}
 				catch (error) {
 					console.log("Contact service support", error);
@@ -471,10 +477,11 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 
 					getActions().sessionStorageAndSetStoreDataSave('userProfile', data.user_profile);
-					// return true;
+					return true;
 				}
 				catch (error) {
 					console.log("There has been an error login in!", error)
+					return false;
 				}
 			},
 
@@ -558,6 +565,36 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			},
 
+			getEmployeeAssignedTicket: async () => {
+				console.log("action: getEmployeeAssignedTicket");
+				const token = getStore().token;
+				const opts = {
+					method: "GET",
+					headers: {
+						"Content-Type": "application/json",
+						"Authorization": "Bearer " + token
+					}
+				};
+				try {
+					const response = await fetch(process.env.BACKEND_URL + "api/employee/assigned/ticket", opts);
+
+					const data = await response.json();
+
+					if (response.status !== 200) {
+						console.log(response.status, data.msg);
+						return [response.status, data.msg];
+					}
+					console.log("Getting to response Employee assigned ticket");
+					console.log("This came from the backend", data);
+
+					if ('assigned_ticket' in data) await getActions().sessionStorageAndSetStoreDataSave('assignedTicket', data.assigned_ticket);
+					return true;
+				}
+				catch (error) {
+					console.log("There has been an error login in!", error)
+				}
+			},
+
 			getCustomerEquipmentTickets: (data) => {
 				setStore({ customerEquipmentTickets: data })
 			},
@@ -576,7 +613,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				toastBootstrap.show();
 			},
 
-			updateShowModal: (subject, description, knowledgeArray) => {
+			updateShowModal: (subject, description, knowledgeArray = null) => {
 				const myModal = document.querySelector('#modalTicketInfo');
 
 				setStore(
