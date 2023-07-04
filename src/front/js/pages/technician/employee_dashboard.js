@@ -1,24 +1,22 @@
 import React, { useState, useContext, useEffect } from "react";
 import { Context } from "../../store/appContext";
-import { TicketSmallCustomer } from "../../component/ticket_small_customer";
+import { TicketSmallEmployee } from "../../component/ticket_small_employee";
 
 export const EmployeeDashboard = () => {
     const { store, actions } = useContext(Context);
-    const customerAllowedTicketStatus = ['New', 'Opened', 'In Progress', 'Resolved'];
+    const ticket = { ...store.assignedTicket };
 
     return (
         <main className="bd-main order-1">
             <div className="bd-intro">
                 <h1 className="border-bottom">Dashboard</h1>
-                {/* <h3>Tickets:</h3> */}
             </div>
             <div className="bd-content">
-                {store.tickets != null || undefined ? store.tickets
-                    .filter(ticket => customerAllowedTicketStatus.includes(ticket.status))
-                    .map((item, i) => {
-                    return <TicketSmallCustomer key={i} data={item}/>
-                }) : []}
-            
+                {Object.keys(ticket).length > 0 ? <TicketSmallEmployee data={ticket} />
+                    : <div className="alert alert-info" role="alert">
+                        There is no ticket assigned!
+                    </div>
+                }
             </div>
         </main>
     );

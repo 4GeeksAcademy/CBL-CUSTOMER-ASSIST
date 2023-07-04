@@ -12,7 +12,7 @@ export const MainBdLayout = ({ children }) => {
         setPathname(currentLocation.pathname);
     });
 
-
+    console.log("modalEquipment",store.modalEquipment)
     return (
         <div className={pathname === '/' || pathname === '/loading' ? "container-xxl bd-gutter mt-3 my-md-4 vh-100" : "container-xxl bd-gutter mt-3 my-md-4 bd-layout"} style={{ position: "relative" }}>
             {children}
@@ -29,8 +29,8 @@ export const MainBdLayout = ({ children }) => {
                             <div className="border rounded p-2 mb-3 shadow-sm">
                                 <h5 className=" mb-3">Description</h5>
                                 <div>{store.modalBody}</div>
-                                </div>
-                            <div>{store.modalEquipment != null ? (
+                            </div>
+                            <div>{store.modalEquipment !== null ? (
                                 store.modalEquipment.map((item, index) => {
                                     return (
                                         <ul className="list-group mb-3" key={item.id}>

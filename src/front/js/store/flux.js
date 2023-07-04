@@ -196,8 +196,13 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 
 			syncAvailableVehiclesFromSessionStorage: () => {
-				console.log('estou aqui')
 				if (sessionStorage.getItem('availableVehicles')) return setStore({ availableVehicles: JSON.parse(sessionStorage.getItem('availableVehicles')) });
+			},
+
+
+			syncAssignedTicketFromSessionStorage: () => {
+				console.log('estou aqui')
+				if (sessionStorage.getItem('assignedTicket')) return setStore({ assignedTicket: JSON.parse(sessionStorage.getItem('assignedTicket')) });
 			},
 
 			sessionStorageAndSetStoreDataSave: (key, data) => {
@@ -552,7 +557,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.log("Getting to response Admin tickets");
 					console.log("This came from the backend", data);
 
-					if ('tickets' in data) await getActions().sessionStorageAndSetStoreDataSave('assignedTicket', data.assigned_ticket);
+					if ('tickets' in data) await getActions().sessionStorageAndSetStoreDataSave('tickets', data.tickets);
 					return true;
 				}
 				catch (error) {
@@ -582,7 +587,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.log("Getting to response Employee assigned ticket");
 					console.log("This came from the backend", data);
 
-					if ('tickets' in data) await getActions().sessionStorageAndSetStoreDataSave('tickets', data.tickets);
+					if ('assigned_ticket' in data) await getActions().sessionStorageAndSetStoreDataSave('assignedTicket', data.assigned_ticket);
 					return true;
 				}
 				catch (error) {
@@ -608,7 +613,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				toastBootstrap.show();
 			},
 
-			updateShowModal: (subject, description, knowledgeArray) => {
+			updateShowModal: (subject, description, knowledgeArray = null) => {
 				const myModal = document.querySelector('#modalTicketInfo');
 
 				setStore(
