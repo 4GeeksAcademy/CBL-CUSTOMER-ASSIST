@@ -244,7 +244,10 @@ class TicketKnowledge(db.Model):
         knowledge = Knowledge.query.get(self.knowledge_id)
         return {
             "id": self.id,
-            "knowledge": knowledge.serialize_full() if knowledge else None
+            # "knowledge": knowledge.serialize_full() if knowledge else None
+            "category": self.knowledge.category.serialize() if self.knowledge.category else None,
+            "malfunction": self.knowledge.malfunction.serialize() if self.knowledge.malfunction else None,
+            "solution": self.knowledge.solution.serialize() if self.knowledge.solution else None
         }
 
     def serialize_employee(self):

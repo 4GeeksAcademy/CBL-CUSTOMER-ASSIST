@@ -35,17 +35,17 @@ export const MainBdLayout = ({ children }) => {
                                     return (
                                         <ul className="list-group mb-3" key={item.id}>
                                             <li className="list-group-item d-flex justify-content-between align-items-center list-group-item-danger">
-                                                Malfunction {item.knowledge.malfunction.id}
-                                                <span className="badge text-warning bg-dark rounded-pill">{item.knowledge.category.description}</span>
+                                                Malfunction {item.malfunction.id}
+                                                <span className="badge text-warning bg-dark rounded-pill">{item.category.description}</span>
                                             </li>
                                             <li className="list-group-item d-flex justify-content-between align-items-center list-group-item-danger">
-                                                {item.knowledge.malfunction.description}
+                                                {item.malfunction.description}
                                             </li>
                                             <li className="list-group-item d-flex justify-content-between align-items-center list-group-item-success">
-                                                Solution {item.knowledge.solution.id}
+                                                Solution {item.solution.id}
                                             </li>
                                             <li className="list-group-item d-flex justify-content-between align-items-center list-group-item-success">
-                                                {item.knowledge.solution.description}
+                                                {item.solution.description}
                                             </li>
                                         </ul>
                                     );
