@@ -2,18 +2,18 @@ import React, { useContext, useState, useEffect } from "react";
 import { Context } from "../store/appContext";
 import Select from 'react-select';
 import makeAnimated from 'react-select/animated';
-import {TicketStatus} from '../constants/ticket_status'
+import { TicketStatus } from '../constants/ticket_status'
 
 export const TicketSmall = (props) => {
     const { actions, store } = useContext(Context);
     const data = props.data;
-    const isDisabledStatus = ['Resolved', 'Closed'];
-    const isDisabled = isDisabledStatus.includes(data.status) ? true : false;
+    const isDisabledStatus = ['New'];
+    const isDisabled = !isDisabledStatus.includes(data.status) ? true : false;
     const animatedComponents = makeAnimated();
 
     const availableEmployees = props.availableEmployees;
     const assignedEmployees = data.employees_assigned;
-    const [selectedEmployeeIDs, setSelectedEmployeeIDs] = useState(data.employees_assigned);
+    const [selectedEmployees, setSelectedEmployees] = useState(data.employees_assigned);
 
     const assignedVehicle = Object.keys(data.vehicle_assigned).length > 0 ? data.vehicle_assigned : null;
     const [availableVehicles, setAvailableVehicles]
@@ -22,6 +22,8 @@ export const TicketSmall = (props) => {
                 : null);
     const [selectedVehicle, setSelectedVehicle] = useState(data.vehicle_assigned);
     const [vehicleIsDisabled, setVehicleIsDisabled] = useState(isDisabled);
+
+    const [btnOpenTicketDisabled, setBtnOpenTicketDisabled] = useState(true);
 
     // <<<<<<<<<<<<<<< COMMIT FROM BEN 
     const [filteredEquipment, setFilteredEquipment] = useState([])
@@ -36,6 +38,7 @@ export const TicketSmall = (props) => {
     }
     // <<<<<<<<<<<<<<<
 
+    // handling assign vehicles disabled state
     useEffect(() => {
         if (props.availableVehicles.length > 0) {
             setAvailableVehicles(props.availableVehicles);
@@ -45,11 +48,17 @@ export const TicketSmall = (props) => {
         if (props.availableVehicles.length === 0 && Object.keys(data.vehicle_assigned).length === 0 && Object.keys(selectedVehicle).length === 0) setVehicleIsDisabled(true);
     }, [props.availableVehicles])
 
+    // handling button to Open Ticket disabled state
+    useEffect(() => {
+        const conditions = !!(Object.keys(selectedVehicle).length > 0 && selectedEmployees.length > 0);
+        conditions ? setBtnOpenTicketDisabled(false) : setBtnOpenTicketDisabled(true)
+    }, [selectedVehicle, selectedEmployees])
+
     const toast = (title, data) => actions.userToastAlert(title, data);
 
     const handleAssignEmployeeToTicket = async (employee) => {
         const ticketID = data.id;
-        const oldEmployees = selectedEmployeeIDs;
+        const oldEmployees = selectedEmployees;
 
         // get employee to assign
         const employeeToAssign = employee.filter(item => !(oldEmployees.some((e) => e.id === item.id)));
@@ -60,7 +69,7 @@ export const TicketSmall = (props) => {
         const response = await actions.assignEmployeeToTicket(employeeID, ticketID);
         if (response[0] === 200) {
             toast('Employee assign', `Assigned ${employeeToAssign[0].label} to ticket number ${ticketID}`);
-            setSelectedEmployeeIDs(employee);
+            setSelectedEmployees(employee);
             updateEmployeesAssignedStoreSessionStorage(employee);
         }
         else {
@@ -70,7 +79,7 @@ export const TicketSmall = (props) => {
 
     const handleDismissEmployeeFromTicket = async (employee) => {
         const ticketID = data.id;
-        const oldEmployees = selectedEmployeeIDs;
+        const oldEmployees = selectedEmployees;
 
         // get the employee to dismiss
         const employeeToDismiss = oldEmployees.filter(item => !(employee.some((e) => e.id === item.id)));
@@ -81,7 +90,7 @@ export const TicketSmall = (props) => {
         const response = await actions.dismissEmployeeFromTicket(employeeID, ticketID);
         if (response[0] === 200) {
             toast('Employee dismiss', `Dismissed ${employeeToDismiss[0].label} from ticket number ${ticketID}`);
-            setSelectedEmployeeIDs(employee);
+            setSelectedEmployees(employee);
             updateEmployeesAssignedStoreSessionStorage(employee);
         }
         else {
@@ -163,10 +172,10 @@ export const TicketSmall = (props) => {
                 <div className="d-flex flex-row justify-content-between">
                     <div className="btn p-0"><h5 className="card-title" onClick={handleModal}>{data.subject}</h5></div>
                     <p className={`badge text-bg-${data.status === 'New' ? TicketStatus.NEW
-                    : data.status === 'Opened' ? TicketStatus.OPENED
-                        : data.status === 'In Progress' ? TicketStatus.IN_PROGRESS
-                            : data.status === 'Resolved' ? TicketStatus.RESOLVED
-                                : TicketStatus.CLOSED}`}
+                        : data.status === 'Opened' ? TicketStatus.OPENED
+                            : data.status === 'In Progress' ? TicketStatus.IN_PROGRESS
+                                : data.status === 'Resolved' ? TicketStatus.RESOLVED
+                                    : TicketStatus.CLOSED}`}
                         role="alert">{data.status}
                     </p>
                 </div>
@@ -179,65 +188,66 @@ export const TicketSmall = (props) => {
                 </div>
 
                 <div>
-                    {/* SELECT ONLY DISPLAYS WITH ADMIN */}
-                    {props.userType === "admin"
-                        ? (
-                            <div className="d-flex flex-column mb-3">
-                                <hr></hr>
+                    <div className="d-flex flex-column mb-0">
+                        <hr></hr>
 
-                                {/* ASSIGN VEHICLES */}
-                                <div className="d-flex flex-column">
-                                    <h6>Assign Vehicle</h6>
-                                    <Select
-                                        id="assignVehicle"
-                                        className="basic-single mb-2"
-                                        classNamePrefix="select"
-                                        isSearchable={false}
-                                        isClearable={true}
-                                        isDisabled={isDisabled || vehicleIsDisabled}
-                                        components={animatedComponents}
-                                        options={availableVehicles}
-                                        defaultValue={assignedVehicle}
-                                        styles={{
-                                            control: (baseStyles, state) => ({
-                                                ...baseStyles,
-                                            }),
-                                        }}
-                                        onChange={(newValue, actionMeta) => {
-                                            if (actionMeta.action === 'select-option') handleAssignVehicleToTicket(newValue);
-                                            if (actionMeta.action === 'clear') handleDismissVehicleFromTicket();
-                                        }}
-                                    />
-                                </div>
-                                {/* ASSIGN TECHNICIAN/ENGINEER */}
-                                <div className="d-flex flex-column">
-                                    <h6>Assign Technician/Engineer</h6>
-                                    <Select
-                                        id="assignEmployee"
-                                        className="basic-single"
-                                        classNamePrefix="select"
-                                        isSearchable={false}
-                                        isClearable={false}
-                                        isDisabled={isDisabled}
-                                        components={animatedComponents}
-                                        options={availableEmployees}
-                                        defaultValue={assignedEmployees}
-                                        isMulti
-                                        styles={{
-                                            control: (baseStyles, state) => ({
-                                                ...baseStyles,
-                                            }),
-                                        }}
-                                        onChange={(newValue, actionMeta) => {
-                                            if (actionMeta.action === 'select-option') handleAssignEmployeeToTicket(newValue);
-                                            if (actionMeta.action === 'remove-value' || actionMeta.action === 'pop-value') handleDismissEmployeeFromTicket(newValue);
-                                        }}
-                                    />
-                                </div>
+                        {/* ASSIGN VEHICLES */}
+                        <div className="d-flex flex-column">
+                            <h6>Assign Vehicle</h6>
+                            <Select
+                                id="assignVehicle"
+                                className="basic-single mb-2"
+                                classNamePrefix="select"
+                                isSearchable={false}
+                                isClearable={true}
+                                isDisabled={isDisabled || vehicleIsDisabled}
+                                components={animatedComponents}
+                                options={availableVehicles}
+                                defaultValue={assignedVehicle}
+                                styles={{
+                                    control: (baseStyles, state) => ({
+                                        ...baseStyles,
+                                    }),
+                                }}
+                                onChange={(newValue, actionMeta) => {
+                                    if (actionMeta.action === 'select-option') handleAssignVehicleToTicket(newValue);
+                                    if (actionMeta.action === 'clear') handleDismissVehicleFromTicket();
+                                }}
+                            />
+                        </div>
+
+                        {/* ASSIGN TECHNICIAN/ENGINEER */}
+                        <div className="d-flex flex-column">
+                            <h6>Assign Technician/Engineer</h6>
+                            <Select
+                                id="assignEmployee"
+                                className="basic-single"
+                                classNamePrefix="select"
+                                isSearchable={false}
+                                isClearable={false}
+                                isDisabled={isDisabled}
+                                components={animatedComponents}
+                                options={availableEmployees}
+                                defaultValue={assignedEmployees}
+                                isMulti
+                                styles={{
+                                    control: (baseStyles, state) => ({
+                                        ...baseStyles,
+                                    }),
+                                }}
+                                onChange={(newValue, actionMeta) => {
+                                    if (actionMeta.action === 'select-option') handleAssignEmployeeToTicket(newValue);
+                                    if (actionMeta.action === 'remove-value' || actionMeta.action === 'pop-value') handleDismissEmployeeFromTicket(newValue);
+                                }}
+                            />
+                        </div>
+
+                        {isDisabledStatus.includes(data.status) ?
+                            <div className="mt-3">
+                                <button type="button" className="btn btn-warning btn-sm w-100" disabled={btnOpenTicketDisabled}>»» Open ticket »»</button>
                             </div>
-                        )
-                        : <p>-------</p>
-                    }
+                            : null}
+                    </div>
                 </div>
             </div>
             <div className="card-footer text-body-secondary d-flex flex-column flex-sm-row align-items-center justify-content-between">
