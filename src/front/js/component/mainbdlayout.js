@@ -12,7 +12,6 @@ export const MainBdLayout = ({ children }) => {
         setPathname(currentLocation.pathname);
     });
 
-    console.log("modalEquipment",store.modalEquipment)
     return (
         <div className={pathname === '/' || pathname === '/loading' ? "container-xxl bd-gutter mt-3 my-md-4 vh-100" : "container-xxl bd-gutter mt-3 my-md-4 bd-layout"} style={{ position: "relative" }}>
             {children}
