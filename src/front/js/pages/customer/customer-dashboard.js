@@ -9,8 +9,8 @@ export const CustomerDashboard = () => {
     return (
         <main className="bd-main order-1">
             <div className="bd-intro">
-                <h1 className="border-bottom">Customer Dashboard</h1>
-                <h3>Tickets:</h3>
+                <h1 className="border-bottom">Dashboard</h1>
+                {/* <h3>Tickets:</h3> */}
             </div>
             <div className="bd-content">
                 {store.tickets != null || undefined ? store.tickets
