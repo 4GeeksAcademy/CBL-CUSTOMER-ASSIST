@@ -236,7 +236,7 @@ def get_employee_assigned_tickets():
     # add authentication customer data to final dictionary
     filtered_list_of_tickets[0]['customer']['authentication'] = authentication_data
 
-    return jsonify(filtered_list_of_tickets[0]), 200
+    return jsonify({"assigned_ticket": filtered_list_of_tickets[0]}), 200
 
 
 @api.route('/assign/employee/ticket', methods=['POST'])
