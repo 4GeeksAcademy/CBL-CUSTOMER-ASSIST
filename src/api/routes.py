@@ -111,6 +111,8 @@ def create_ticket():
     except Exception as e:
         print(e.args)
         return jsonify({"msg": "Exception"}), 400
+    
+
 
 
 @api.route('/user/profile', methods=['GET'])
@@ -312,6 +314,31 @@ def dismiss_employees_ticket():
 
     return jsonify({'msg': 'Employee(s) dismissed successfully from ticket'}), 200
 
+
+@api.route('/set/ticket/status', methods=['PUT'])
+@jwt_required()
+def set_ticket_status():
+    user_email = get_jwt_identity()
+    user = User.query.filter_by(email=user_email).one_or_none()
+
+    if not user:
+        return jsonify({"msg": "No user exist with that email"}), 400
+
+    allowed_employees = ('admin, technician, engineer')
+    if not user.user_type.type in allowed_employees:
+        return jsonify({"msg": "Only employees from manufacturer have access to this endpoint!"}), 403
+
+    data = request.json
+
+    ticket = Ticket.query.get(data['ticket_id'])
+
+    if not ticket:
+        return jsonify({'msg': 'No ticket found'}), 400
+
+    ticket.status = data['status']
+    db.session.commit()
+
+    return jsonify({'msg': 'Ticket status updated is done!'}), 200
 
 @api.route('/admin/equipment', methods=['POST'])
 @jwt_required()

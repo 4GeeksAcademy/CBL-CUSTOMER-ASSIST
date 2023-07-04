@@ -295,7 +295,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				getActions().sessionStorageAndSetStoreDataSave('equipmentList', data.equipments);
 				// needs to have error handle
 			},
-			
+
 			customerCreateTicket: async (equipmentId, interventionType, subject, description) => {
 				console.log("action: createCustomerTicket");
 				const token = getStore().token;
@@ -303,7 +303,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					method: "POST",
 					headers: {
 						"Content-Type": "application/json",
-						"Authorization": "Bearer " + token   
+						"Authorization": "Bearer " + token
 					},
 					body: JSON.stringify({
 						equipment_id: equipmentId,
@@ -320,11 +320,13 @@ const getState = ({ getStore, getActions, setStore }) => {
 						alert("There has been some error!");
 						return false;
 					}
-          
-					const newTickets = [];
-          Object.assign(newTickets, getStore().tickets);
+
+					// create a copy of tickets
+					// and adds new ticket to tickets
+					const newTickets = [...getStore().tickets];
 					newTickets.push(data.ticket);
-					console.log(newTickets)
+
+					// update tickets
 					getActions().sessionStorageAndSetStoreDataSave('tickets', newTickets);
 
 					return true;
@@ -360,13 +362,15 @@ const getState = ({ getStore, getActions, setStore }) => {
 						alert("There has been some error!");
 						return false;
 					}
-					
-					const newTickets = []; 
-					Object.assign(newTickets, getStore().tickets);
+
+					// create a copy of tickets
+					// and adds new ticket to tickets
+					const newTickets = [...getStore().tickets];
 					newTickets.push(data.ticket);
-					console.log(data)
+
+					// update tickets
 					getActions().sessionStorageAndSetStoreDataSave('tickets', newTickets);
-					
+
 					return true;
 				}
 				catch (error) {
@@ -374,7 +378,48 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.log("There has been an error login in!");
 				}
 			},
-      			
+
+			setTicketStatus: async (ticketID, status) => {
+				console.log("action: setTicketStatus");
+				const token = getStore().token;
+				const opts = {
+					method: "PUT",
+					headers: {
+						"Content-Type": "application/json",
+						"Authorization": "Bearer " + token
+					},
+					body: JSON.stringify({
+						"ticket_id": ticketID,
+						"status": status
+					})
+				};
+				try {
+					const response = await fetch(process.env.BACKEND_URL + "api/set/ticket/status", opts);
+					const data = await response.json();
+
+					if (response.status !== 200) {
+						console.log(response.status, data.msg);
+						return [response.status, data.msg];
+					}
+
+					// create a copy of tickets
+					const newTickets = [...getStore().tickets];
+
+					// update ticket status
+					newTickets.map(ticket => {
+						if (ticket.id === ticketID) ticket.status = status; 
+					});
+
+					// update tickets
+					getActions().sessionStorageAndSetStoreDataSave('tickets', newTickets);
+
+					return true;
+				}
+				catch (error) {
+					console.log("There has been an error login in!", error)
+				}
+			},
+
 			getCustomerTickets: async () => {
 				console.log("action: getCustomerTickets");
 				const token = getStore().token;
