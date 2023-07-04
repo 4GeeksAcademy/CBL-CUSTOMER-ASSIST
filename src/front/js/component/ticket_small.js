@@ -241,10 +241,11 @@ export const TicketSmall = (props) => {
                                 }}
                             />
                         </div>
-
+                        
+                        {/* BUTTON TO SET TICKET TO 'OPEN' STATE */}
                         {isDisabledStatus.includes(data.status) ?
                             <div className="mt-3">
-                                <button type="button" className="btn btn-warning btn-sm w-100" disabled={btnOpenTicketDisabled}>»» Open ticket »»</button>
+                                <button type="button" className={`btn ${btnOpenTicketDisabled ? 'btn-light text-body-tertiary' : 'btn-warning shadow-sm fw-medium'} btn-sm w-100`} disabled={btnOpenTicketDisabled}>»» Open ticket »»</button>
                             </div>
                             : null}
                     </div>
