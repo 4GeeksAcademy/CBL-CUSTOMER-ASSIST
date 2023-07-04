@@ -8,10 +8,13 @@ export const AdminTickets = () => {
     const { store, actions } = useContext(Context)
     const userType = store.userProfile.user_info.user_type;
     const { filter } = useParams();
+
     const allTickets = store.tickets;
+    const newTickets = store.tickets.filter((ticket) => ticket.status === 'New');
     const openedTickets = store.tickets.filter((ticket) => ticket.status === 'Opened');
     const inProgressTickets = store.tickets.filter((ticket) => ticket.status === 'In Progress');
     const resolvedTickets = store.tickets.filter((ticket) => ticket.status === 'Resolved');
+
     const availableEmployees = store.availableEmployees;
     const availableVehicles = store.availableVehicles;
 
@@ -25,16 +28,19 @@ export const AdminTickets = () => {
                 {!filter || filter === '' || filter === undefined && allTickets.length > 0 ? allTickets.map((item, i) => {
                     return <TicketSmall key={item.id} data={item} userType={userType} availableEmployees={availableEmployees} availableVehicles={availableVehicles} />
                 })
-                    : filter === 'opened' ? openedTickets.map((item, i) => {
+                    : filter === 'new' ? newTickets.map((item, i) => {
                         return <TicketSmall key={item.id} data={item} userType={userType} availableEmployees={availableEmployees} availableVehicles={availableVehicles} />
                     })
-                        : filter === 'inprogress' ? inProgressTickets.map((item, i) => {
+                        : filter === 'opened' ? openedTickets.map((item, i) => {
                             return <TicketSmall key={item.id} data={item} userType={userType} availableEmployees={availableEmployees} availableVehicles={availableVehicles} />
                         })
-                            : filter === 'resolved' ? resolvedTickets.map((item, i) => {
+                            : filter === 'inprogress' ? inProgressTickets.map((item, i) => {
                                 return <TicketSmall key={item.id} data={item} userType={userType} availableEmployees={availableEmployees} availableVehicles={availableVehicles} />
                             })
-                                : <span>All customers satisfaction it's in tip-top shape!</span>}
+                                : filter === 'resolved' ? resolvedTickets.map((item, i) => {
+                                    return <TicketSmall key={item.id} data={item} userType={userType} availableEmployees={availableEmployees} availableVehicles={availableVehicles} />
+                                })
+                                    : <span>All customers equipements are working!</span>}
             </div>
         </main>
     );
