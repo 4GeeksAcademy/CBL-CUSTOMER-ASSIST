@@ -1,6 +1,6 @@
 import React, { useContext, useState, useEffect } from "react";
 import { Context } from "../store/appContext";
-import {TicketStatus} from '../constants/ticket_status'
+import { TicketStatus } from '../constants/ticket_status'
 
 export const TicketSmallCustomer = (props) => {
     const { actions, store } = useContext(Context);
@@ -30,20 +30,43 @@ export const TicketSmallCustomer = (props) => {
                 <div className="d-flex flex-row justify-content-between">
                     <div className="btn p-0"><h5 className="card-title" onClick={handleModal}>{data.subject}</h5></div>
                     <p className={`badge text-bg-${data.status === 'New' ? TicketStatus.NEW
-                    : data.status === 'Opened' ? TicketStatus.OPENED
-                        : data.status === 'In Progress' ? TicketStatus.IN_PROGRESS
-                            : data.status === 'Resolved' ? TicketStatus.RESOLVED
-                                : TicketStatus.CLOSED}`}
+                        : data.status === 'Opened' ? TicketStatus.OPENED
+                            : data.status === 'In Progress' ? TicketStatus.IN_PROGRESS
+                                : data.status === 'Resolved' ? TicketStatus.RESOLVED
+                                    : TicketStatus.CLOSED}`}
                         role="alert">{data.status}
                     </p>
                 </div>
             </div>
             <div className="card-body">
                 <div className="d-flex flex-column">
-                    <p className="card-text flex-grow-1 mb-0"><strong>Customer: </strong>{data.company_name}</p>
+                    {/* <p className="card-text flex-grow-1 mb-0"><strong>Customer: </strong>{data.company_name}</p> */}
                     <p className="card-text flex-grow-1 mb-0"><strong>Equipment: </strong>{data.equipment.model}</p>
                     <p className="card-text flex-grow-1 mb-2"><strong>Serial Number: </strong>{data.equipment.serial_number}</p>
                 </div>
+                
+                {data.employees_assigned.length > 0 ? <>
+                    <div className="d-flex flex-column">
+                        <hr></hr>
+                        <h6 className="card-text flex-grow-1 mb-0"><strong>Employees assigned:</strong></h6>
+                        <div>
+                            {data.employees_assigned.map((employee) => { return (<span key={'employee' + employee.id} className="badge text-bg-info me-1">{employee.label}</span>) })}
+                        </div>
+                    </div></>
+                    : null
+                }
+
+                {Object.keys(data.vehicle_assigned).length > 0 ? <>
+                    <div className="d-flex flex-column">
+                        <hr></hr>
+                        <h6 className="card-text flex-grow-1 mb-0"><strong>Vehicle assigned:</strong></h6>
+                        <div>
+                            <span className="badge text-bg-info me-1">{data.vehicle_assigned.label}</span>
+                        </div>
+                    </div></>
+                    : null
+                }
+                
             </div>
             <div className="card-footer text-body-secondary d-flex flex-column flex-sm-row align-items-center justify-content-between">
                 <h6 className="card-subtitle text-body-secondary">Ticket #{data.id}</h6>
