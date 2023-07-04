@@ -608,7 +608,7 @@ def admin_create_ticket():
         ticket.intervention_type = intervention_type
         ticket.subject = subject
         ticket.description = description
-        ticket.status = "Opened" # TODO: change to 'New'
+        ticket.status = "New"
         ticket.open_ticket_time = datetime.datetime.now()
         db.session.add(ticket)
 
