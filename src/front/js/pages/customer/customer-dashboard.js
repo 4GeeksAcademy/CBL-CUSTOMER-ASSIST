@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
 import { Context } from "../../store/appContext";
-import { TicketSmall } from "../../component/ticket_small";
+import { TicketSmallCustomer } from "../../component/ticket_small_customer";
 
 export const CustomerDashboard = () => {
     const { store, actions } = useContext(Context);
@@ -16,7 +16,7 @@ export const CustomerDashboard = () => {
                 {store.tickets != null || undefined ? store.tickets
                     .filter(ticket => customerAllowedTicketStatus.includes(ticket.status))
                     .map((item, i) => {
-                    return <TicketSmall key={i} data={item}/>
+                    return <TicketSmallCustomer key={i} data={item}/>
                 }) : []}
             
             </div>
