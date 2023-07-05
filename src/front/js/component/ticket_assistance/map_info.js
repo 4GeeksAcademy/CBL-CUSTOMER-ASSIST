@@ -48,7 +48,6 @@ export const MapInfo = compose(
 
   return (
     <GoogleMap defaultZoom={8} defaultCenter={{ lat: -34.397, lng: 150.644 }}>
-      {props.isMarkerShown && <Marker position={{ lat: -34.397, lng: 150.644 }} />}
       {directions && <DirectionsRenderer directions={directions} />}
       {distance && <div>Distance: {distance}</div>}
       {duration && <div>Duration: {duration}</div>}
