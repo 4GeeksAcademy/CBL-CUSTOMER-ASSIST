@@ -16,5 +16,11 @@
         "first_name": "David",
         "last_name": "Johnson",
         "available":true
+    },
+    {
+        
+        "first_name": "Claude",
+        "last_name": "Baunilhe",
+        "available":true
     }
 ]

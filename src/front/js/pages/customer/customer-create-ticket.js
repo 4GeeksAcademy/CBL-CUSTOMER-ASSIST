@@ -27,7 +27,7 @@ export const CustomerCreateTicket = () => {
     return (
         // <div className="container">
         <main className="bd-main order-1">
-            <div className="bd-intro pt-2 ps-lg-2">
+                <div className="bd-intro pt-2 ps-lg-2">
                 <h1 className="bd-title mb-0" id="content">Create Ticket</h1>
             </div>
             <div className="bd-content ps-lg-2">

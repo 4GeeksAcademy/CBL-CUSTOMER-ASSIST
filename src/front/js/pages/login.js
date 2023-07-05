@@ -10,22 +10,32 @@ export const Login = () => {
 
     const userLogin = async () => {
         const response = await actions.login(email, password);
-        if (response) {
+        if (response[0]) {
+            const userType = response[1];
+
             // navigate("/loading");
             await actions.getUserProfile();
-            
+
             if (store.userProfile.user_info.user_type === "customer") {
                 await actions.getCustomerEquipment();
                 await actions.getCustomerTickets();
                 navigate("/customer/dashboard");
             }
             if (store.userProfile.user_info.user_type === "admin") {
-                await actions.getAdminEquipment();
                 await actions.getAdminUserList();
                 await actions.getAdminTickets();
                 await actions.getAdminEquipment();
+                await actions.getAvailableEmployees();
+                await actions.getAvailableVehicles();
                 navigate("/admin/dashboard");
             }
+            if (userType === "technician" || userType === 'engineer') {
+                await actions.getEmployeeAssignedTicket();
+                navigate("/employee/dashboard");
+            }
+        } else if (!response[0]) {
+            actions.logout();
+            navigate("/");
         }
     }
 

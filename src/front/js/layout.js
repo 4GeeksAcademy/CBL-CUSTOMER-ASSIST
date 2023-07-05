@@ -21,6 +21,7 @@ import { AdminCreateTicket } from "./pages/admin/admin-create-ticket";
 // import { CreateCustomer } from "./pages/customer/customer-create.js";
 import { LoadingData } from "./pages/common/loading_data";
 import { EmployeeTicketAssistance } from "./pages/common/employee_ticket_assistance";
+import { EmployeeDashboard } from "./pages/technician/employee_dashboard";
 
 const Layout = () => {
     const basename = process.env.BASENAME || "";
@@ -45,6 +46,7 @@ const Layout = () => {
                         <Route element={<AdminDashboard />} path="/admin/dashboard" />
                         <Route element={<AdminTickets />} path="/admin/tickets" />
                         <Route element={<AdminTickets />} path="/admin/tickets/:filter" />
+                        <Route element={<EmployeeDashboard />} path="/employee/dashboard" />
                         <Route element={<EmployeeEditProfile />} path="/admin/edit/profile" />
                         <Route element={<CustomerDashboard />} path="/customer/dashboard" />
                         <Route element={<CustomerEditProfile />} path="/customer/edit/profile" />

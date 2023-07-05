@@ -6,11 +6,20 @@ import { TicketInfo } from "../../component/ticket_assistance/ticket_info";
 import { InterventionTypes } from "../../constants/intervention_types";
 import { MapInfo } from "../../component/ticket_assistance/map_info";
 import { EquipmentInfoCard } from "../../component/ticket_assistance/equipment_info_card";
-import { ModalEquipmentHistorical } from "../../component/ticket_assistance/modal_equipment_info";
+import { ModalEquipmentHistory } from "../../component/ticket_assistance/modal_equipment_history";
 import { VehicleInfoCard } from "../../component/ticket_assistance/vehicle_info_card";
+import { KnowledgeAssistanceReport } from "../../component/ticket_assistance/knowledge_assistance_report";
 
 export const EmployeeTicketAssistance = () => {
     const { store, actions } = useContext(Context);
+    
+    // localStorage to be able to technician/engineer work offline
+    // initialization
+    // MAYBE WE NEED TO CHANGE THIS LINE TO ANOTHER PLACE (APPCONTEXT???)
+    useEffect(()=>{
+        localStorage.getItem('ticketStage') ? actions.setTicketStage(JSON.parse(localStorage.getItem('ticketStage'))) : localStorage.setItem('ticketStage', 1);
+    }, [])
+
     const ticket = store.assignedTicket;
     const customerInfo = ticket.customer;
     const mapInfo = {
@@ -41,15 +50,27 @@ export const EmployeeTicketAssistance = () => {
     const equipmentInfo = ticket.equipment;
     const modalEquipmentHistorical = ticket.equipment.knowledge;
     const vehicleInfo = ticket.vehicle;
+    const categoryOptions = store.categoryOptions;
+    const knowledges = store.knowledges;
+    const ticketStage = store.ticketStage;
+
     return (
         <main className="bd-main">
-            <CustomerInfo data={customerInfo} />
-            <MapInfo destination={mapInfo.customerAddress} isMarkerShown />
-            <TicketInfo data={ticketInfo} />
-            <EquipmentInfoCard data={equipmentInfo} />
-            <VehicleInfoCard data={vehicleInfo} />
-            <ModalEquipmentHistorical data={modalEquipmentHistorical} />{" "}
-            {/* this one needs to be at bottom */}
+            {ticketStage > 0 ?
+                <>
+                    <CustomerInfo />
+                    <TicketInfo />
+                    <EquipmentInfoCard />
+                    <MapInfo destination={mapInfo.customerAddress} isMarkerShown />
+                    <VehicleInfoCard />
+                </>
+                : null
+            }
+            {ticketStage >= 3 ?
+                <KnowledgeAssistanceReport categoryOptions={categoryOptions} knowledges={knowledges} customerInfo={customerInfo} />
+                : null
+            }
+            <ModalEquipmentHistory data={modalEquipmentHistorical} /> {/* this one needs to be the last element of <main> */}
         </main>
     );
 };
