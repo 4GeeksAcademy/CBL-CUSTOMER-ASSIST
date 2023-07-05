@@ -103,8 +103,8 @@ class Customer(db.Model):
     phone = db.Column(db.String(20), nullable=False)
     contact_person = db.Column(db.String(20), nullable=True)
     address_1 = db.Column(db.String(100), nullable=False)
-    address_2 = db.Column(db.String(100))
-    zipcode = db.Column(db.Integer)
+    address_2 = db.Column(db.String(100), nullable=True)
+    zipcode = db.Column(db.String(10))
     company_email = db.Column(db.String(25), nullable=True)
     city = db.Column(db.String(50), nullable=False)
     user = db.relationship('User', backref='customer', uselist=False)
@@ -134,8 +134,8 @@ class Customer(db.Model):
             "address_2": self.address_2,
             "zipcode": self.zipcode,
             "city": self.city,
-            # "company_email": self.company_email,
-            "customer_email": self.user.email
+            "company_email": self.company_email,
+            "customer_email": self.user.email,
         }
 
 
@@ -222,11 +222,12 @@ class Ticket(db.Model):
                 "status": self.status,
                 "intervention_type": self.intervention_type,
                 "subject": self.subject,
-                "description": self.description
+                "description": self.description,
+                "customer_media": [] #TODO: photos uploaded from customer
             },
             "customer": self.customer.serialize_employee(),
             "equipment": self.equipment.serialize_employee(),
-            "vehicle_assigned": self.vehicle.serialize() if self.vehicle else {}
+            "vehicle_assigned": self.vehicle.serialize() if self.vehicle else {},
         }
 
     def serialize_equipment_knowledge(self):
@@ -320,7 +321,8 @@ class Equipment(db.Model):
             "id": self.id,
             "serial_number": self.serial_number,
             "model": self.model,
-            "im109": self.im109
+            "im109": self.im109,
+            "equipment_photo": self.equipment_photo
         }
 
 
@@ -382,7 +384,7 @@ class Vehicle(db.Model):
             "license_plate": self.license_plate,
             "model": self.model,
             "maker": self.maker,
-            "vehicle_photo": self.vehicle_photo,
+            "vehicle_photo": "../../assets/img/8568jn.jpeg", # TODO: change to self.vehicle_photo
             "value": self.id,
             "label": self.license_plate + " - " + self.maker + " " + self.model
         }

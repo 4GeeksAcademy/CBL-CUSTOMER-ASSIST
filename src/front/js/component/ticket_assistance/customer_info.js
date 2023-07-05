@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useContext } from "react";
+import { Context } from "../../store/appContext";
 
-export const CustomerInfo = (props) => {
-    const data = props.data;
+export const CustomerInfo = () => {
+    const { store, actions } = useContext(Context);
+    const data = store.assignedTicket.customer;
 
     return (
         <div className="mb-3">
@@ -18,20 +20,20 @@ export const CustomerInfo = (props) => {
                         <p>{data.city} {data.zipcode}</p>
                     </div>
                 </div>
-            <div className="col-12 col-sm-6">
-                <div className="col-12">
-                    <h6><i className="fa-solid fa-user me-1"></i><strong>Contact Person</strong></h6>
-                    <p>{data.contact_person}</p>
+                <div className="col-12 col-sm-6">
+                    <div className="col-12">
+                        <h6><i className="fa-solid fa-user me-1"></i><strong>Contact Person</strong></h6>
+                        <p>{data.contact_person}</p>
+                    </div>
+                    <div className="col-12">
+                        <h6><i className="fa-solid fa-square-phone me-1"></i><strong>Phone</strong></h6>
+                        <p>{data.phone}</p>
+                    </div>
+                    <div className="col-12">
+                        <h6><i className="fa-solid fa-at me-1"></i><strong>Email</strong></h6>
+                        <p>{data.company_email}</p>
+                    </div>
                 </div>
-                <div className="col-12">
-                    <h6><i className="fa-solid fa-square-phone me-1"></i><strong>Phone</strong></h6>
-                    <p>{data.phone}</p>
-                </div>
-                <div className="col-12">
-                    <h6><i className="fa-solid fa-at me-1"></i><strong>Email</strong></h6>
-                    <p>{data.company_email}</p>
-                </div>
-            </div>
             </div>
         </div>
     );

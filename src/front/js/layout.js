@@ -48,12 +48,12 @@ const Layout = () => {
                         <Route element={<AdminTickets />} path="/admin/tickets/:filter" />
                         <Route element={<EmployeeDashboard />} path="/employee/dashboard" />
                         <Route element={<EmployeeEditProfile />} path="/admin/edit/profile" />
+                        <Route element={<EmployeeTicketAssistance />} path="/employee/ticket/assistance" />
                         <Route element={<CustomerDashboard />} path="/customer/dashboard" />
                         <Route element={<CustomerEditProfile />} path="/customer/edit/profile" />
                         <Route element={<CustomerCreateTicket />} path="/customer/create/ticket" />
                         <Route element={<CustomerEquipmentList />} path="/customer/equipment/list" />
                         <Route element={<CustomerEquipmentHistory />} path="/customer/equipment/history" />
-                        <Route element={<EmployeeTicketAssistance />} path="/employee/ticket/assistance" />
                         <Route element={<LoadingData />} path="/loading" />
                         <Route element={<h1>Not found!</h1>} path="*" />
                         {/* <Route element={<Single />} path="/single/:theid" /> */}

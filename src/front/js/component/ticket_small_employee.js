@@ -1,9 +1,13 @@
 import React, { useContext, useState, useEffect } from "react";
 import { Context } from "../store/appContext";
-import { TicketStatus } from '../constants/ticket_status'
+import { TicketStatusColor } from '../constants/ticket_status_color';
+import { useNavigate } from "react-router-dom";
+
 
 export const TicketSmallEmployee = (props) => {
     const { actions, store } = useContext(Context);
+    const navigate = useNavigate();
+    const ticketStage = store.ticketStage;
     const ticket = props.data.ticket;
     const customer = props.data.customer;
     const equipment = props.data.equipment;
@@ -27,25 +31,31 @@ export const TicketSmallEmployee = (props) => {
         }
     }
 
+    const handleTicketAssistance = async () => {
+        toast('Navigate', "Let's go to ticket assistance page!");
+        await actions.setTicketStage(1);
+        navigate("/employee/ticket/assistance");
+    }
+
     return (
         <div className="card w-100 mb-3">
-            <div className="card-header btn btn-light" onClick={handleModal}>
+            <div className="card-header btn btn-light" onClick={() => handleModal()}>
                 <div className="d-flex flex-row justify-content-between align-items-center">
                     <div className="text-start flex-grow-1 p-0">
                         <h5 className="card-title  m-0">{ticket.subject}</h5>
                     </div>
-                    <p className={`badge m-0 text-bg-${ticket.status === 'New' ? TicketStatus.NEW
-                        : ticket.status === 'Opened' ? TicketStatus.OPENED
-                            : ticket.status === 'In Progress' ? TicketStatus.IN_PROGRESS
-                                : ticket.status === 'Resolved' ? TicketStatus.RESOLVED
-                                    : TicketStatus.CLOSED}`}
+                    <p className={`badge m-0 text-bg-${ticket.status === 'New' ? TicketStatusColor.NEW
+                        : ticket.status === 'Opened' ? TicketStatusColor.OPENED
+                            : ticket.status === 'In Progress' ? TicketStatusColor.IN_PROGRESS
+                                : ticket.status === 'Resolved' ? TicketStatusColor.RESOLVED
+                                    : TicketStatusColor.CLOSED}`}
                         role="alert">{ticket.status}
                     </p>
                 </div>
             </div>
             <div className="card-body">
                 <div className="d-flex flex-column">
-                    {/* <p className="card-text flex-grow-1 mb-0"><strong>Customer: </strong>{data.company_name}</p> */}
+                    <p className="card-text flex-grow-1 mb-0"><strong>Customer: </strong>{customer.company_name}</p>
                     <p className="card-text flex-grow-1 mb-0"><strong>Equipment: </strong>{equipment.model}</p>
                     <p className="card-text flex-grow-1 mb-2"><strong>Serial Number: </strong>{equipment.serial_number}</p>
                 </div>
@@ -67,7 +77,7 @@ export const TicketSmallEmployee = (props) => {
                     </div>
                 </div>
 
-                {/* BUTTON TO SET TICKET TO 'IN PROGRESS' STATE */}
+                {/* BUTTON TO SET TICKET TO 'IN PROGRESS' STATE*/}
                 {ticket.status === 'Opened' ? <>
                     <hr></hr>
                     <div className="mt-3">
@@ -75,6 +85,18 @@ export const TicketSmallEmployee = (props) => {
                             className="btn btn-primary shadow-sm fw-medium btn-sm w-100"
                             onClick={() => handleBtnSetTicketStatus(ticket.id, 'In Progress')}
                         >»» Start Assistance »»</button>
+                    </div></>
+                    : null
+                }
+
+                {/* BUTTON MULTIFUNCTION: OPEN TICKET REPORT*/}
+                {ticket.status === 'In Progress' ? <>
+                    <hr></hr>
+                    <div className="mt-3">
+                        <button type="button"
+                            className="btn btn-success shadow-sm fw-medium btn-sm w-100"
+                            onClick={() => handleTicketAssistance()}
+                        >»» Open Ticket Report »»</button>
                     </div></>
                     : null
                 }

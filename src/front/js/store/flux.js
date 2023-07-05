@@ -1,5 +1,5 @@
 import equipmentPhotoUrl from "../../assets/img/dm160.jpg";
-import vehiclePhotoUrl from "../../assets/img/8568jn.jpeg";
+import vehiclePhotoUrl from "../../assets/img/8568jn.jpg";
 
 const getState = ({ getStore, getActions, setStore }) => {
 	return {
@@ -11,7 +11,18 @@ const getState = ({ getStore, getActions, setStore }) => {
 			equipmentList: [],
 			tickets: [],
 			manufacturerAddress: "Mecânica Exacta, S.A., Rua António Gomes da Cruz, São Paio de Oleiros", // TODO
-			assignedTicket: {},
+			assignedTicket: {
+				customer: {
+					authentication: {},
+				},
+				equipment: {
+					knowledge: [],
+				},
+				ticket: {
+					customer_media: [],
+				},
+				vehicle_assigned: {}
+			},
 			assignedTicket___: {
 				"id": 11,
 				"status": "Opened",
@@ -165,7 +176,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			liveToastHeader: null,
 			liveToastBody: null,
 			userList: [],
-			ticketStage: 1,
+			ticketStage: 0,
 			availableEmployees: [],
 			availableVehicles: []
 		},

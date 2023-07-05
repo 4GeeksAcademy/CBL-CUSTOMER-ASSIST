@@ -2,7 +2,7 @@ import React, { useContext, useState, useEffect } from "react";
 import { Context } from "../store/appContext";
 import Select from 'react-select';
 import makeAnimated from 'react-select/animated';
-import { TicketStatus } from '../constants/ticket_status'
+import { TicketStatusColor } from '../constants/ticket_status_color'
 
 export const TicketSmall = (props) => {
     const { actions, store } = useContext(Context);
@@ -185,11 +185,11 @@ export const TicketSmall = (props) => {
                     <div className="text-start flex-grow-1 p-0">
                         <h5 className="card-title m-0">{data.subject}</h5>
                     </div>
-                    <p className={`badge m-0 text-bg-${data.status === 'New' ? TicketStatus.NEW
-                        : data.status === 'Opened' ? TicketStatus.OPENED
-                            : data.status === 'In Progress' ? TicketStatus.IN_PROGRESS
-                                : data.status === 'Resolved' ? TicketStatus.RESOLVED
-                                    : TicketStatus.CLOSED}`}
+                    <p className={`badge m-0 text-bg-${data.status === 'New' ? TicketStatusColor.NEW
+                        : data.status === 'Opened' ? TicketStatusColor.OPENED
+                            : data.status === 'In Progress' ? TicketStatusColor.IN_PROGRESS
+                                : data.status === 'Resolved' ? TicketStatusColor.RESOLVED
+                                    : TicketStatusColor.CLOSED}`}
                         role="alert">{data.status}
                     </p>
                 </div>
