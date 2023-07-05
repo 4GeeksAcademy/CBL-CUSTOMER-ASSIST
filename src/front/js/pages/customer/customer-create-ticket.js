@@ -1,6 +1,7 @@
 import React, { useContext, useState, useEffect } from "react";
 import { Context } from "../../store/appContext";
 import { useNavigate } from "react-router-dom";
+import {CapturePhoto} from "./capture_photo";
 
 export const CustomerCreateTicket = () => {
     const { store, actions } = useContext(Context);
@@ -37,6 +38,7 @@ export const CustomerCreateTicket = () => {
                     <div>
                         <div className="d-flex ">
                             <div className="mt-2 me-2" ><h5>Intervention Type:</h5></div>
+                            <div><CapturePhoto /></div>
                             <div>
                                 <select className="form-select" onChange={e => setInterventionType(e.target.value === "true" ? true : false)}>
                                     <option>Select option</option>
@@ -47,6 +49,7 @@ export const CustomerCreateTicket = () => {
                         </div>
                     </div>
                 </div>
+                
 
                 {/* Select Equipment */}
                 <div>
