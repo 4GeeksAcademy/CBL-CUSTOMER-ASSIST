@@ -73,9 +73,9 @@
 		]
 	},
 	"dependencies": {
+		"@googlemaps/js-api-loader": "^1.16.2",
 		"@reach/combobox": "^0.18.0",
 		"@react-google-maps/api": "^2.18.1",
-		"@googlemaps/js-api-loader": "^1.16.2",
 		"@trendmicro/react-sidenav": "^0.5.0",
 		"bootstrap": "^5.3.0",
 		"buffer": "^6.0.3",

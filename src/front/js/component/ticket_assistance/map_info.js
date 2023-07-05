@@ -47,10 +47,10 @@ export const MapInfo = compose(
   }, [props.destination]);
 
   return (
-    <GoogleMap defaultZoom={8} defaultCenter={{ lat: -34.397, lng: 150.644 }}>
-      {directions && <DirectionsRenderer directions={directions} />}
-      {distance && <div>Distance: {distance}</div>}
-      {duration && <div>Duration: {duration}</div>}
-    </GoogleMap>
+      <GoogleMap className="mb-3" defaultZoom={8} defaultCenter={{ lat: -34.397, lng: 150.644 }}>
+        {directions && <DirectionsRenderer directions={directions} distance={distance} duration={duration}/>}
+        {/* {distance && <div>Distance: {distance}</div>}
+        {duration && <div >Duration: {duration}</div>} */}
+      </GoogleMap>
   );
 });
