@@ -21,6 +21,7 @@ import { AdminCreateTicket } from "./pages/admin/admin-create-ticket";
 // import { CreateCustomer } from "./pages/customer/customer-create.js";
 import { LoadingData } from "./pages/common/loading_data";
 import { EmployeeTicketAssistance } from "./pages/common/employee_ticket_assistance";
+import {CapturePhoto} from "./pages/customer/capture_photo";
 
 const Layout = () => {
     const basename = process.env.BASENAME || "";
