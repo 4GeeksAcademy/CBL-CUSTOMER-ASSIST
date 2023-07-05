@@ -1,17 +1,22 @@
-import React from "react";
+import React, {useContext} from "react";
+import { Context } from "../../store/appContext";
+import equipmentPhoto from "../../../assets/img/dm160.jpg";
 
-export const EquipmentInfoCard = (props) => {
-  const data = props.data;
+export const EquipmentInfoCard = () => {
+  const { actions, store } = useContext(Context);
+  const data = store.assignedTicket.equipment;
 
+  // TODO: get photo url from database retrived by Cloudinary
+  data.equipment_photo = equipmentPhoto;
   return (
     <div className="mb-3">
       <h4 className="border-bottom">Equipment Information</h4>
       <div className="card mb-3 px-3 py-2">
         <div className="row g-0">
-          {data.photo ?
+          {data.equipment_photo ?
           <div className="col-12 col-sm-4">
-            <div className="img d-block d-sm-none w-100 rounded-top" style={{ "backgroundImage": `url('${data.photo}')` }}></div>
-            <div className="img d-none d-sm-block w-100 rounded-start" style={{ "backgroundImage": `url('${data.photo}')` }}></div>
+            <div className="img d-block d-sm-none w-100 rounded-top" style={{ "backgroundImage": `url('${data.equipment_photo}')` }}></div>
+            <div className="img d-none d-sm-block w-100 rounded-start" style={{ "backgroundImage": `url('${data.equipment_photo}')` }}></div>
           </div>:
           null
           }
@@ -36,9 +41,9 @@ export const EquipmentInfoCard = (props) => {
                 <li className="list-group-item text-center text-sm-end">
                   {data.knowledge.length > 0 ?
                     <button type="button" className="btn btn-primary"
-                      data-bs-toggle="modal" data-bs-target="#modalEquipmentHistorical"
+                      data-bs-toggle="modal" data-bs-target="#modalEquipmentHistory"
                       style={{ "--bs-btn-padding-y": ".25rem", "--bs-btn-padding-x": ".5rem", "--bs-btn-font-size": ".75rem" }}>
-                      Equipment Historical
+                      Equipment History
                     </button> :
                     <div>
                       <span className="badge text-bg-info">No historical available for this equipment!</span>

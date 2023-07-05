@@ -1,12 +1,20 @@
 [
     {
-        "license_plate": "71-50-XC",
+        "license_plate": "85-68-JN",
         "model": "Megane",
-        "maker": "Renault"
+        "maker": "Renault",
+        "vehicle_photo": "../../assets/img/8568jn.jpeg"
     },
     {
-        "license_plate": "57-39-IP",
-        "model": "Partner",
-        "maker": "Citroen"
+        "license_plate": "31-22-RC",
+        "model": "Berlingo",
+        "maker": "Citroen",
+        "vehicle_photo": "../../assets/img/3122RC.jpeg"
+    },
+    {
+        "license_plate": "33-44-IC",
+        "model": "Captur",
+        "maker": "Renault",
+        "vehicle_photo": "../../assets/img/3344IC.jpeg"
     }
 ]

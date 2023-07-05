@@ -1,18 +1,18 @@
-import React from "react";
+import React, { useContext } from "react";
+import { Context } from "../../store/appContext";
 
-export const ModalEquipmentHistorical = (props) => {
-    const data = props.data;
-
-    console.log("Modal Equipment Historical: ", data[0].malfunction)
+export const ModalEquipmentHistory = () => {
+    const { store, actions } = useContext(Context);
+    const data = store.assignedTicket.equipment.knowledge;
 
     return (
         <div>
-            {/* MODAL EQUIPMENT HISTORICAL*/}
-            <div id="modalEquipmentHistorical" className="modal fade modal-fullscreen" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            {/* MODAL EQUIPMENT HISTORY*/}
+            <div id="modalEquipmentHistory" className="modal fade modal-fullscreen" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                 <div className="modal-dialog modal-fullscreen">
                     <div className="modal-content">
                         <div className="modal-header">
-                            <h1 className="modal-title fs-5" id="staticBackdropLabel">Equipment Historical</h1>
+                            <h1 className="modal-title fs-5" id="staticBackdropLabel">Equipment History</h1>
                             <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div className="modal-body">
