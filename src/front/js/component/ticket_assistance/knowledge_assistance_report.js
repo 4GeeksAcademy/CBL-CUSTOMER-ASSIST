@@ -1,15 +1,15 @@
-import React, { useState, useEffect, useContext, useReducer } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Context } from "../../store/appContext";
 import Select from 'react-select';
 import makeAnimated from 'react-select/animated';
 import { Buffer } from "buffer";
 
-export const KnowledgeAssistanceReport = (props) => {
+export const KnowledgeAssistanceReport = () => {
     const { store, actions } = useContext(Context);
     const ticketStage = store.ticketStage;
-    const categoryOptions = props.categoryOptions;
-    const knowledges = props.knowledges;
-    const customerInfo = props.customerInfo;
+    const categoryOptions = store.categoryOptions;
+    const knowledgeList = store.knowledgeList;
+    const customerInfo = store.assignedTicket.customer;
     const animatedComponents = makeAnimated();
     const [knowledgeFilter, setKnowledgeFilter] = useState([]);
     const [editObservations, setEditObservations] = useState(false);
@@ -71,7 +71,8 @@ export const KnowledgeAssistanceReport = (props) => {
     }
 
     const handleFinishAssistance = () => {
-        actions.setTicketStage(8);
+        actions.setTicketStatus("Resolved");
+        // actions.setTicketStage(8);
     }
 
     return (
@@ -89,8 +90,8 @@ export const KnowledgeAssistanceReport = (props) => {
                     className="react-select-container w-100"
                     placeholder="Select categories..."
                     id="selectCategories"
-                    closeMenuOnSelect={false}
-                    blurInputOnSelect={false}
+                    closeMenuOnSelect={true}
+                    blurInputOnSelect={true}
                     components={animatedComponents}
                     isDisabled={ticketStage >= 5}
                     // defaultValue={[categoryOptions[0]]}
@@ -110,8 +111,8 @@ export const KnowledgeAssistanceReport = (props) => {
 
             {/* FILTERED KNOWLEDGES */}
             <div>
-                {knowledges.length > 0 ?
-                    knowledges
+                {knowledgeList.length > 0 ?
+                    knowledgeList
                         .filter(knowledge => knowledgeFilter.includes(knowledge.category))
                         .map((knowledge) => {
                             return (

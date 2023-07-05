@@ -91,82 +91,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 					]
 				},
 			},
-			categoryOptions: [ // TODO
-				{
-					"label": "Electrical",
-					"value": "Electrical"
-				},
-				{
-					"label": "Mechanical",
-					"value": "Mechanical"
-				},
-				{
-					"label": "Software",
-					"value": "Software"
-				}
-			],
-			knowledges: [ // TODO
-				{
-					"category": "Electrical",
-					"id": 1,
-					"malfunction": "Malfunction lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum      1",
-					"solution": "Solution lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lolorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lolorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lolorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lolorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lolorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lolorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lolorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lolorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lolorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum  1"
-				},
-				{
-					"category": "Electrical",
-					"id": 2,
-					"malfunction": "Malfunction 2",
-					"solution": "Solution 2"
-				},
-				{
-					"category": "Mechanical",
-					"id": 3,
-					"malfunction": "Malfunction 3",
-					"solution": "Solution 3"
-				},
-				{
-					"category": "Software",
-					"id": 4,
-					"malfunction": "Malfunction 4",
-					"solution": "Solution 4"
-				},
-				{
-					"category": "Mechanical",
-					"id": 5,
-					"malfunction": "Malfunction 5",
-					"solution": "Solution 5"
-				},
-				{
-					"category": "Mechanical",
-					"id": 6,
-					"malfunction": "Malfunction 6",
-					"solution": "Solution 6"
-				},
-				{
-					"category": "Software",
-					"id": 7,
-					"malfunction": "Malfunction 7",
-					"solution": "Solution 7"
-				},
-				{
-					"category": "Electrical",
-					"id": 8,
-					"malfunction": "Malfunction 8",
-					"solution": "Solution 8"
-				},
-				{
-					"category": "Software",
-					"id": 9,
-					"malfunction": "Malfunction 9",
-					"solution": "Solution 9"
-				},
-				{
-					"category": "Mechanical",
-					"id": 10,
-					"malfunction": "Malfunction 10",
-					"solution": "Solution 10"
-				}
-			],
+			categoryOptions: [],
+			knowledgeList: [],
 			userProfile: { user_info: {}, customer_info: {}, employee_info: {} },
 			customerEquipmentTickets: [],
 			user: null,
@@ -210,6 +136,13 @@ const getState = ({ getStore, getActions, setStore }) => {
 				if (sessionStorage.getItem('availableVehicles')) return setStore({ availableVehicles: JSON.parse(sessionStorage.getItem('availableVehicles')) });
 			},
 
+			syncCategoryOptionsFromSessionStorage: () => {
+				if (sessionStorage.getItem('categoryOptions')) return setStore({ categoryOptions: JSON.parse(sessionStorage.getItem('categoryOptions')) });
+			},
+
+			syncKnowledgeListFromSessionStorage: () => {
+				if (sessionStorage.getItem('knowledgeList')) return setStore({ knowledgeList: JSON.parse(sessionStorage.getItem('knowledgeList')) });
+			},
 
 			syncAssignedTicketFromLocalStorage: () => {
 				console.log('estou aqui')
@@ -217,6 +150,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 
 			sessionStorageAndSetStoreDataSave: (key, data) => {
+				console.log("key", key)
 				sessionStorage.setItem([key], JSON.stringify(data));
 				setStore({ [key]: data });
 				return true;
@@ -229,9 +163,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 				return true;
 			},
 
-			setTicketStage: (value) => {
+			setTicketStage: (value, local = true) => {
+				console.log('debug')
 				setStore({ ticketStage: value });
-				localStorage.setItem('ticketStage', JSON.stringify(value));
+				if (local) localStorage.setItem('ticketStage', JSON.stringify(value));
 			},
 
 			login: async (email, password) => {
@@ -851,6 +786,62 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 
 				return [response.status, data.msg];
+			},
+
+			getCategories: async () => {
+				console.log("action: getCategories");
+				const token = getStore().token;
+				const opts = {
+					method: "GET",
+					headers: {
+						"Content-Type": "application/json",
+						"Authorization": "Bearer " + token
+					}
+				};
+				try {
+					const response = await fetch(process.env.BACKEND_URL + "api/employee/categories", opts);
+					const data = await response.json();
+
+					if (response.status !== 200) {
+						console.log(response.status, data.msg);
+						return [response.status, data.msg];
+					}
+
+					getActions().sessionStorageAndSetStoreDataSave('categoryOptions', data.categories);
+					return true;
+				}
+				catch (error) {
+					console.log("There has been an error login in!", error)
+					return false;
+				}
+			},
+
+			getKnowledgeList: async () => {
+				console.log("action: getKnowledgeList");
+				const token = getStore().token;
+				const opts = {
+					method: "GET",
+					headers: {
+						"Content-Type": "application/json",
+						"Authorization": "Bearer " + token
+					}
+				};
+				try {
+					const response = await fetch(process.env.BACKEND_URL + "api/knowledge/list", opts);
+					const data = await response.json();
+
+					if (response.status !== 200) {
+						console.log(response.status, data.msg);
+						return [response.status, data.msg];
+					}
+
+					getActions().sessionStorageAndSetStoreDataSave('knowledgeList', data.knowledge_list);
+					return true;
+				}
+				catch (error) {
+					console.log("There has been an error login in!", error)
+					return false;
+				}
 			},
 		}
 	};

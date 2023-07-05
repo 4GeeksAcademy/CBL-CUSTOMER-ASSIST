@@ -13,59 +13,24 @@ import { KnowledgeAssistanceReport } from "../../component/ticket_assistance/kno
 export const EmployeeTicketAssistance = () => {
     const { store, actions } = useContext(Context);
     const ticketStage = store.ticketStage;
-
+    const cat = store.categoryOptions;
+    console.log("cat",cat);
     // localStorage to be able to technician/engineer work offline
     // initialization
     // MAYBE WE NEED TO CHANGE THIS LINE TO ANOTHER PLACE (APPCONTEXT???)
-    // useEffect(() => {
-    //     localStorage.getItem('ticketStage') ? actions.setTicketStage(JSON.parse(localStorage.getItem('ticketStage'))) : localStorage.setItem('ticketStage', 0);
-    // }, [])
+    useEffect(() => {
+        localStorage.getItem('ticketStage') ? actions.setTicketStage(JSON.parse(localStorage.getItem('ticketStage'))) 
+            : actions.setTicketStage(JSON.parse(0), false);
+    }, [])
 
-
-    // const ticket = store.assignedTicket;
-    // const mapInfo = {
-        //     manufacturerAddress: store.manufacturerAddress,
-        //     customerAddress:
-        //         customerInfo.address_1 +
-        //         ", " +
-        //         customerInfo.address_2 +
-        //         " " +
-        //         customerInfo.zipcode +
-        //         " " +
-        //         customerInfo.city,
-        // };
-        // const ticketInfo = {
-            //     id: ticket.id,
-            //     interventionType: ticket.intervention_type
-            //         ? InterventionTypes.ASSISTANCE
-            //         : InterventionTypes.MAINTENANCE,
-            //     subject: ticket.subject,
-            //     description: ticket.description,
-            //     customerMedia: [
-                //         "https://picsum.photos/1040/500",
-                //         "https://picsum.photos/1040/500",
-                //         "https://picsum.photos/1040/500",
-                //     ],
-                // };
-                
-                // const modalEquipmentHistorical = ticket.equipment.knowledge;
-                // const categoryOptions = store.categoryOptions;
-                // const knowledges = store.knowledges;
-                
-                // const customerInfo = store.assignedTicket.customer;
-                // const ticketInfo = store.assignedTicket.ticket;
-                // const equipmentInfo = store.assignedTicket.equipment;
-                // const vehicleInfo = store.assignedTicket.vehicle_assigned;
-                
     const customerInfo = store.assignedTicket.customer;
     const mapInfo = {
-        manufacturerAddress: store.manufacturerAddress,
-        customerAddress: customerInfo.address_1 + ", " + customerInfo.address_2 + " " + customerInfo.zipcode + " " + customerInfo.city,
+        origin: store.manufacturerAddress,
+        destination: customerInfo.address_1 + ", " + customerInfo.address_2 + " " + customerInfo.zipcode + " " + customerInfo.city,
     };
 
     // interventionType: ticket.intervention_type ? InterventionTypes.ASSISTANCE : InterventionTypes.MAINTENANCE,
 
-    // const categoryOptions = store.categoryOptions;
     // const knowledges = store.knowledges;
 
     return (
@@ -75,15 +40,17 @@ export const EmployeeTicketAssistance = () => {
                     <CustomerInfo />
                     <TicketInfo />
                     <EquipmentInfoCard />
-                    <MapInfo destination={mapInfo.customerAddress} isMarkerShown />
+                    <div className="mb-3">
+                        <MapInfo addresses={mapInfo} isMarkerShown />
+                    </div>
                     <VehicleInfoCard />
                 </>
                 : null
             }
-            {/* {ticketStage >= 3 ?
-                <KnowledgeAssistanceReport categoryOptions={categoryOptions} knowledges={knowledges} customerInfo={customerInfo} />
+            {ticketStage >= 3 ?
+                <KnowledgeAssistanceReport />
                 : null
-            } */}
+            }
             <ModalEquipmentHistory /> {/* this one needs to be the last element of <main> */}
         </main>
     );

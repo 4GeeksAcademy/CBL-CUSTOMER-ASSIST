@@ -31,6 +31,8 @@ export const Login = () => {
             }
             if (userType === "technician" || userType === 'engineer') {
                 await actions.getEmployeeAssignedTicket();
+                await actions.getCategories();
+                await actions.getKnowledgeList();
                 navigate("/employee/dashboard");
             }
         } else if (!response[0]) {

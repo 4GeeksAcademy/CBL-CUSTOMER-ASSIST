@@ -59,7 +59,8 @@ export const CapturePhoto = () => {
     } finally {
       setPrevURL("");
       setId("");
-      setCameraOpened(true);
+      // setCameraOpened(false);
+      setLoading(false);
     }
   };
 

@@ -33,7 +33,7 @@ export const TicketSmallEmployee = (props) => {
 
     const handleTicketAssistance = async () => {
         toast('Navigate', "Let's go to ticket assistance page!");
-        await actions.setTicketStage(1);
+        if (ticketStage <= 1) await actions.setTicketStage(1);
         navigate("/employee/ticket/assistance");
     }
 

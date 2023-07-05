@@ -6,8 +6,8 @@ export const MapInfo = compose(
   withProps({
     googleMapURL: "https://maps.googleapis.com/maps/api/js?key=AIzaSyCOcxTSXvSDDWIP9DyVSDLqMYEApldW_yQ&v=3.exp&libraries=geometry,drawing,places",
     loadingElement: <div style={{ height: "100%" }} />,
-    containerElement: <div style={{ height: "400px" }} />,
-    mapElement: <div style={{ height: "100%" }} />,
+    containerElement: <div style={{ height: "400px", marginBottom: "50px" }} />,
+    mapElement: <div style={{ height: "100%", borderRadius: "0.375rem" }} />,
   }),
   withScriptjs,
   withGoogleMap
@@ -19,8 +19,8 @@ export const MapInfo = compose(
   useEffect(() => {
     const directionsService = new window.google.maps.DirectionsService();
 
-    const origin = "Lisbon";
-    const destination = props.destination;
+    const origin = props.addresses.origin;
+    const destination = props.addresses.destination;
     const isAddress = typeof destination === "string";
 
     const request = {
@@ -47,10 +47,10 @@ export const MapInfo = compose(
   }, [props.destination]);
 
   return (
-      <GoogleMap className="mb-3" defaultZoom={8} defaultCenter={{ lat: -34.397, lng: 150.644 }}>
-        {directions && <DirectionsRenderer directions={directions} distance={distance} duration={duration}/>}
-        {/* {distance && <div>Distance: {distance}</div>}
-        {duration && <div >Duration: {duration}</div>} */}
-      </GoogleMap>
+    <GoogleMap className="mb-3" defaultZoom={8} defaultCenter={{ lat: -34.397, lng: 150.644 }}>
+      {directions && <DirectionsRenderer directions={directions} />}
+        {distance && <div><strong>Distance: </strong>{distance}</div>}
+        {duration && <div><strong>Duration: </strong>{duration}</div>}
+    </GoogleMap>
   );
 });

@@ -789,7 +789,7 @@ def get_categories():
 
     categories = Category.query.all()
 
-    return jsonify({"categories": [categorie.serialize_options() for categorie in categories]}), 200
+    return jsonify({"msg": "All categories retrieved.", "categories": [categorie.serialize_options() for categorie in categories]}), 200
 
 
 @api.route('/knowledge/list', methods=['GET'])
@@ -806,7 +806,7 @@ def get_all_knowledges():
 
     knowledges = Knowledge.query.all()
 
-    return jsonify({"knowledges": [knowledge.serialize() for knowledge in knowledges]}), 200
+    return jsonify({"msg": "All knowledges retrieved.", "knowledge_list": [knowledge.serialize() for knowledge in knowledges]}), 200
 
 
 @api.route('/employee/toggle/available', methods=['PUT'])
