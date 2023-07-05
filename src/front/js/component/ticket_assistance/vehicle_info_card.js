@@ -1,10 +1,14 @@
 import React, { useState, useContext, useEffect } from "react";
 import { Context } from "../../store/appContext";
+import vehiclePhoto from "../../../assets/img/8568jn.jpg";
 
 export const VehicleInfoCard = (props) => {
     const { store, actions } = useContext(Context);
-    const data = props.data;
     const ticketStage = store.ticketStage;
+    const data = store.assignedTicket.vehicle_assigned;
+
+    data.vehicle_photo = vehiclePhoto;
+
     const [editKilometers, setEditKilometers] = useState(false);
     const [editKilometersOnLeave, setEditKilometersOnLeave] = useState(false);
     const [editKilometersOnArrival, setEditKilometersOnArrival] = useState(false);
@@ -82,10 +86,10 @@ export const VehicleInfoCard = (props) => {
             <h4 className="border-bottom">Vehicle Information</h4>
             <div className="card mb-3 px-3 py-2">
                 <div className="row g-0">
-                    {data.photo ?
+                    {data.vehicle_photo ?
                         <div className="col-12 col-sm-4">
-                            <div className="img d-block d-sm-none w-100 rounded-top" style={{ "backgroundImage": `url('${data.photo}')` }}></div>
-                            <div className="img d-none d-sm-block w-100 rounded-start" style={{ "backgroundImage": `url('${data.photo}')` }}></div>
+                            <div className="img d-block d-sm-none w-100 rounded-top" style={{ "backgroundImage": `url('${data.vehicle_photo}')` }}></div>
+                            <div className="img d-none d-sm-block w-100 rounded-start" style={{ "backgroundImage": `url('${data.vehicle_photo}')` }}></div>
                         </div> :
                         null
                     }

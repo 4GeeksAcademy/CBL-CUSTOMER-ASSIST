@@ -12,55 +12,47 @@ import { KnowledgeAssistanceReport } from "../../component/ticket_assistance/kno
 
 export const EmployeeTicketAssistance = () => {
     const { store, actions } = useContext(Context);
-    
+
     // localStorage to be able to technician/engineer work offline
     // initialization
     // MAYBE WE NEED TO CHANGE THIS LINE TO ANOTHER PLACE (APPCONTEXT???)
-    useEffect(()=>{
-        localStorage.getItem('ticketStage') ? actions.setTicketStage(JSON.parse(localStorage.getItem('ticketStage'))) : localStorage.setItem('ticketStage', 1);
-    }, [])
-
-    const ticket = store.assignedTicket;
-    const customerInfo = ticket.customer;
-    const mapInfo = {
-        manufacturerAddress: store.manufacturerAddress,
-        customerAddress: customerInfo.address_1 + ", " + customerInfo.address_2 + " " + customerInfo.zipcode + " " + customerInfo.city,
-    };
-    const ticketInfo = {
-        id: ticket.id,
-        interventionType: ticket.intervention_type ? InterventionTypes.ASSISTANCE : InterventionTypes.MAINTENANCE,
-        subject: ticket.subject,
-        description: ticket.description,
-        customerMedia: [
-            "https://picsum.photos/1040/500",
-            "https://picsum.photos/1040/500",
-            "https://picsum.photos/1040/500"
-        ]
-    };
-    const equipmentInfo = ticket.equipment;
-    const modalEquipmentHistorical = ticket.equipment.knowledge;
-    const vehicleInfo = ticket.vehicle;
-    const categoryOptions = store.categoryOptions;
-    const knowledges = store.knowledges;
+    // useEffect(() => {
+    //     localStorage.getItem('ticketStage') ? actions.setTicketStage(JSON.parse(localStorage.getItem('ticketStage'))) : localStorage.setItem('ticketStage', 0);
+    // }, [])
     const ticketStage = store.ticketStage;
+
+    const customerInfo = store.assignedTicket.customer;
+    const ticketInfo = store.assignedTicket.ticket;
+    const equipmentInfo = store.assignedTicket.equipment;
+    const vehicleInfo = store.assignedTicket.vehicle_assigned;
+
+    // const mapInfo = {
+    //     manufacturerAddress: store.manufacturerAddress,
+    //     customerAddress: customerInfo.address_1 + ", " + customerInfo.address_2 + " " + customerInfo.zipcode + " " + customerInfo.city,
+    // };
+
+    // interventionType: ticket.intervention_type ? InterventionTypes.ASSISTANCE : InterventionTypes.MAINTENANCE,
+
+    // const categoryOptions = store.categoryOptions;
+    // const knowledges = store.knowledges;
 
     return (
         <main className="bd-main">
             {ticketStage > 0 ?
                 <>
-                    <CustomerInfo data={customerInfo} />
-                    <TicketInfo data={ticketInfo} />
-                    <EquipmentInfoCard data={equipmentInfo} />
-                    <MapInfo data={mapInfo} />
-                    <VehicleInfoCard data={vehicleInfo} />
+                    <CustomerInfo />
+                    <TicketInfo />
+                    <EquipmentInfoCard />
+                    {/* <MapInfo data={mapInfo} /> */}
+                    <VehicleInfoCard />
                 </>
                 : null
             }
-            {ticketStage >= 3 ?
+            {/* {ticketStage >= 3 ?
                 <KnowledgeAssistanceReport categoryOptions={categoryOptions} knowledges={knowledges} customerInfo={customerInfo} />
                 : null
-            }
-            <ModalEquipmentHistory data={modalEquipmentHistorical} /> {/* this one needs to be the last element of <main> */}
+            } */}
+            <ModalEquipmentHistory /> {/* this one needs to be the last element of <main> */}
         </main>
     );
 };

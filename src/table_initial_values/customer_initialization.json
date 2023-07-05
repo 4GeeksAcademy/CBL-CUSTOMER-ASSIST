@@ -1,29 +1,31 @@
 [
-    {
-        
+    {   
         "company_name": "Automotive Parts",
         "phone": 5551234567,
-        "address_1": "123 Main Street",
-        "address_2": "Building 789, 2nd Floor",
-        "zipcode": 12345,
-        "city": "New York"
+        "address_1": "R. Vale do Grou",
+        "address_2": "1378",
+        "zipcode": "3754-908",
+        "city": "Águeda",
+        "company_email": "info-parts@automotive.com",
+        "contact_person": "Benjamin Bowers"
     },
-    {
-        
+    {   
         "company_name": "Forks and Knifes",
         "phone": 5559876543,
-        "address_1": "456 Elm Avenue",
-        "address_2": "Suite 100, 5th Floor",
-        "zipcode": 54321,
-        "city": "Los Angeles"
+        "address_1": "Estrada Nacional 4",
+        "zipcode": "7080-096",
+        "city": "Vendas Novas",
+        "company_email": "info-forks@knifes.com",
+        "contact_person": "Muhammed Francis"
     },
     {
-        
         "company_name": "Animal Pills",
         "phone": 5552468139,
-        "address_1": "789 Oak Street",
-        "address_2": "Unit 456, 3rd Floor",
-        "zipcode": 98765,
-        "city": "Chicago"
+        "address_1": "R. Nova",
+        "address_2": "nº 70",
+        "zipcode": "4700-565",
+        "city": "Braga",
+        "company_email": "info-pills@animal.com",
+        "contact_person": "Albert Stark"
     }
 ]

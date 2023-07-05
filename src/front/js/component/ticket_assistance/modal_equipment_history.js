@@ -1,9 +1,9 @@
-import React from "react";
+import React, { useContext } from "react";
+import { Context } from "../../store/appContext";
 
-export const ModalEquipmentHistory = (props) => {
-    const data = props.data;
-
-    console.log("Modal Equipment History: ", data[0].malfunction)
+export const ModalEquipmentHistory = () => {
+    const { store, actions } = useContext(Context);
+    const data = store.assignedTicket.equipment.knowledge;
 
     return (
         <div>

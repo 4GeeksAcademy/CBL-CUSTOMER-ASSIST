@@ -1,10 +1,20 @@
-import React from "react";
+import React, {useContext} from "react";
+import { Context } from "../../store/appContext";
 import { CarouselItem } from "./carousel_item";
+import { InterventionTypes } from "../../constants/intervention_types";
 
 import "../../../styles/carousel.css"
 
-export const TicketInfo = (props) => {
-    const data = props.data;
+export const TicketInfo = () => {
+    const { actions, store} = useContext(Context);
+    const data = store.assignedTicket.ticket;
+
+    // TODO: substitute with url's from cloudinary retrieved from database
+    data.customer_media = [
+        "https://picsum.photos/1040/500",
+        "https://picsum.photos/1040/500",
+        "https://picsum.photos/1040/500"
+    ];
 
     return (
         <div className="mb-3">
@@ -23,7 +33,7 @@ export const TicketInfo = (props) => {
                     {/* INTERVENTION TYPE */}
                     <div className="col-6">
                         <div className="text-end">
-                            <h6><i className="fa-solid fa-screwdriver-wrench me-1"></i>{data.interventionType}</h6>
+                            <h6><i className="fa-solid fa-screwdriver-wrench me-1"></i>{data.interventionType ? InterventionTypes.ASSISTANCE : InterventionTypes.MAINTENANCE }</h6>
                         </div>
                     </div>
                 </div>
@@ -49,9 +59,9 @@ export const TicketInfo = (props) => {
                         <p className="card-title"><i className="fa-solid fa-photo-film me-1" style={{ color: "#689ffd" }}></i><strong>Photos from Customer</strong></p>
                         <div id="carouselExample" className="carousel slide pointer-event">
                             <div className="carousel-inner rounded-bottom">
-                                {data.customerMedia.length > 0 ?
-                                    data.customerMedia.map((url, i) => {
-                                        return <CarouselItem key={i} url={data.customerMedia[i]} index={i} />
+                                {data.customer_media.length > 0 ?
+                                    data.customer_media.map((url, i) => {
+                                        return <CarouselItem key={i} url={data.customer_media[i]} index={i} />
                                     }) :
                                     null
                                 }

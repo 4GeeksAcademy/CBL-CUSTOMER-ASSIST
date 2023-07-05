@@ -209,7 +209,7 @@ def get_employee_assigned_tickets():
     tickets_serialized = [ticket.serialize_employee() for ticket in assigned_tickets]
 
     # filter the ticket with status 'Opened'
-    filtered_list_of_tickets = [ticket for ticket in tickets_serialized if ticket['ticket']['status'] in ['Opened']]
+    filtered_list_of_tickets = [ticket for ticket in tickets_serialized if ticket['ticket']['status'] in ['Opened', 'In Progress']]
     if not filtered_list_of_tickets:
         return '', 204
     
