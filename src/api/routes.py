@@ -340,6 +340,33 @@ def set_ticket_status():
 
     return jsonify({'msg': 'Ticket status updated is done!'}), 200
 
+
+@api.route('/set/start/intervention/date', methods=['PUT'])
+@jwt_required()
+def set_start_intervention_date():
+    user_email = get_jwt_identity()
+    user = User.query.filter_by(email=user_email).one_or_none()
+
+    if not user:
+        return jsonify({"msg": "No user exist with that email"}), 400
+
+    allowed_employees = ('admin, technician, engineer')
+    if not user.user_type.type in allowed_employees:
+        return jsonify({"msg": "Only employees from manufacturer have access to this endpoint!"}), 403
+
+    data = request.json
+
+    record = TicketEmployeeRelation.query.get(data['ticket_employee_id'])
+
+    if not record:
+        return jsonify({'msg': 'No ticket/employee relation found.'}), 400
+
+    record.start_intervention_date = datetime.datetime.now()
+    db.session.commit()
+
+    return jsonify({'msg': 'Start assistance time got registered.'}), 200
+
+
 @api.route('/admin/equipment', methods=['POST'])
 @jwt_required()
 def create_equipment():

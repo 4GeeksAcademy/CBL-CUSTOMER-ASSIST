@@ -1,4 +1,3 @@
-
 import os
 from flask_admin import Admin
 from .models import db, User, Employee, TicketEmployeeRelation, Ticket, Customer, Knowledge, Equipment, Malfunction, Solution, UserType, TicketKnowledge, Category, Vehicle
