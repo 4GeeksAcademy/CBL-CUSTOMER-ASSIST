@@ -19,6 +19,32 @@ export const KnowledgeAssistanceReport = () => {
     const [actionsTaken, setActionsTaken] = useState(localStorage.getItem('actions_taken') ? JSON.parse(localStorage.getItem('actions_taken')) : []);
     const [observationsValue, setObservationsValue] = useState(localStorage.getItem('observations_value') ? JSON.parse(localStorage.getItem('observations_value')) : "");
 
+    const [isOnline, setIsOnline] = useState(navigator.onLine);
+  		
+    useEffect(() => {
+      function onlineHandler() {
+            setIsOnline(true);
+      }
+  
+      function offlineHandler() {
+            setIsOnline(false);
+      }
+  
+      window.addEventListener("online", onlineHandler);
+      window.addEventListener("offline", offlineHandler);
+
+      console.log('Online status: ', isOnline);
+  
+      return () => {
+            window.removeEventListener("online", onlineHandler);
+            window.removeEventListener("offline", offlineHandler);
+      };
+    });
+
+
+
+
+
     useEffect(() => {
         (actionsTaken.length > 0 || observationsValue.length > 0) && !editObservations ? setEnableCloseReportButton(true) : setEnableCloseReportButton(false);
     }, [actionsTaken, observationsValue])
@@ -71,8 +97,8 @@ export const KnowledgeAssistanceReport = () => {
     }
 
     const handleFinishAssistance = () => {
-        actions.setTicketStatus("Resolved");
-        // actions.setTicketStage(8);
+        actions.setTicketStage(8);
+        // actions.setTicketStatus("Resolved");
     }
 
     return (

@@ -2,11 +2,12 @@ import React, { useState, useContext, useEffect } from "react";
 import { Context } from "../../store/appContext";
 import vehiclePhoto from "../../../assets/img/8568jn.jpg";
 
-export const VehicleInfoCard = (props) => {
+export const VehicleInfoCard = () => {
     const { store, actions } = useContext(Context);
     const ticketStage = store.ticketStage;
     const data = store.assignedTicket.vehicle_assigned;
 
+    // TODO: change this for URL from database
     data.vehicle_photo = vehiclePhoto;
 
     const [editKilometers, setEditKilometers] = useState(false);
@@ -26,10 +27,10 @@ export const VehicleInfoCard = (props) => {
         setEditKilometers(!editKilometers);
 
         // conditions to enable input to insert kilometers on leave
-        /*valueKilometersOnArrival === "" && */ticketStage === 1 ? setEditKilometersOnLeave(!editKilometersOnLeave) : setEditKilometersOnLeave(false);
+        ticketStage === 1 ? setEditKilometersOnLeave(!editKilometersOnLeave) : setEditKilometersOnLeave(false);
 
         // conditions to enable input to insert kilometers on arrival
-        valueKilometersOnLeave !== "" && /*valueKilometersOnArrival === "" && */ticketStage === 6 ? setEditKilometersOnArrival(!editKilometersOnArrival) : setEditKilometersOnArrival(false);
+        valueKilometersOnLeave !== "" && ticketStage === 6 ? setEditKilometersOnArrival(!editKilometersOnArrival) : setEditKilometersOnArrival(false);
 
         // conditions to enable button to proceed to stage 2
         valueKilometersOnLeave !== "" && valueKilometersOnArrival === "" && ticketStage === 1 ? handleProceedToStage2(true) : handleProceedToStage2(false);

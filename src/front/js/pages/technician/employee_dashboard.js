@@ -12,7 +12,7 @@ export const EmployeeDashboard = () => {
                 <h1 className="border-bottom">Dashboard</h1>
             </div>
             <div className="bd-content">
-                {Object.keys(ticket).length > 0 ? <TicketSmallEmployee data={ticket} />
+                {Object.keys(ticket).length > 0 ? <TicketSmallEmployee />
                     : <div className="alert alert-info" role="alert">
                         There is no ticket assigned!
                     </div>
