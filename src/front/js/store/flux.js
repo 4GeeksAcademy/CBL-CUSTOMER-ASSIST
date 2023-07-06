@@ -869,6 +869,118 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 				return [response.status, data.msg];
 			},
+
+			setEndInterventionDate: async (ticketEmployeeID, endInterventionDate) => {
+				console.log('action: setEndInterventionDate');
+				console.log('t_e_id', ticketEmployeeID)
+				console.log('end', endInterventionDate)
+				const token = getStore().token;
+				const opts = {
+					method: "PUT",
+					headers: {
+						"Content-Type": "application/json",
+						"Authorization": "Bearer " + token
+					},
+					body: JSON.stringify({
+						'ticket_employee_id': ticketEmployeeID,
+						'end_intervention_date': endInterventionDate
+					})
+				}
+				const response = await fetch(process.env.BACKEND_URL + "api/set/end/intervention/date", opts);
+				const data = await response.json();
+
+				if (response.status !== 200) {
+					console.log(response.status, data.msg);
+					return [response.status, data.msg];
+				}
+
+				return [response.status, data.msg];
+			},
+
+			saveKilometers: async (ticketID, kilometersOnLeave, kilometersOnArrival) => {
+				console.log('action: saveKilometers');
+				const token = getStore().token;
+				const opts = {
+					method: "PUT",
+					headers: {
+						"Content-Type": "application/json",
+						"Authorization": "Bearer " + token
+					},
+					body: JSON.stringify({
+						'ticket_id': ticketID,
+						'km_on_leave': kilometersOnLeave,
+						'km_on_arrival': kilometersOnArrival
+					})
+				}
+				const response = await fetch(process.env.BACKEND_URL + "api/save/kilometers", opts);
+				const data = await response.json();
+
+				if (response.status !== 200) {
+					console.log(response.status, data.msg);
+					return [response.status, data.msg];
+				}
+
+				return [response.status, data.msg];
+			},
+
+			saveActionsTaken: async (ticketID, equipmentID, knowledges) => {
+				console.log('action: saveActionsTaken');
+
+				// object creation to bulk save on database
+				const ticketKnowledges = knowledges.map(knowledge => 
+					({
+						"ticket_id": ticketID,
+						"equipment_id": equipmentID,
+						"knowledge_id": knowledge.id
+					})
+				);
+
+				const token = getStore().token;
+				const opts = {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+						"Authorization": "Bearer " + token
+					},
+					body: JSON.stringify({
+						'ticket_knowledges': ticketKnowledges
+					})
+				}
+				const response = await fetch(process.env.BACKEND_URL + "api/save/actions/taken", opts);
+				const data = await response.json();
+
+				if (response.status !== 201) {
+					console.log(response.status, data.msg);
+					return [response.status, data.msg];
+				}
+
+				return [response.status, data.msg];
+			},
+
+			saveObservationsValue: async (ticketEmployeeID, observations) => {
+				console.log('action: saveObservations');
+				const token = getStore().token;
+				const opts = {
+					method: "PUT",
+					headers: {
+						"Content-Type": "application/json",
+						"Authorization": "Bearer " + token
+					},
+					body: JSON.stringify({
+						'ticket_employee_id': ticketEmployeeID,
+						'observations': observations,
+					})
+				}
+				const response = await fetch(process.env.BACKEND_URL + "api/save/observations", opts);
+				const data = await response.json();
+
+				if (response.status !== 200) {
+					console.log(response.status, data.msg);
+					return [response.status, data.msg];
+				}
+
+				return [response.status, data.msg];
+			},
 		}
 	};
 };

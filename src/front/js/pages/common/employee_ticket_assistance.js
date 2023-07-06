@@ -12,16 +12,16 @@ import { KnowledgeAssistanceReport } from "../../component/ticket_assistance/kno
 
 export const EmployeeTicketAssistance = () => {
     const { store, actions } = useContext(Context);
-    const ticketStage = store.ticketStage;
+    const ticketStage = localStorage.getItem('ticketStage') ? JSON.parse(localStorage.getItem('ticketStage')) : 0;
     const cat = store.categoryOptions;
-    console.log("cat",cat);
+
     // localStorage to be able to technician/engineer work offline
     // initialization
     // MAYBE WE NEED TO CHANGE THIS LINE TO ANOTHER PLACE (APPCONTEXT???)
-    useEffect(() => {
-        localStorage.getItem('ticketStage') ? actions.setTicketStage(JSON.parse(localStorage.getItem('ticketStage'))) 
-            : actions.setTicketStage(JSON.parse(0), false);
-    }, [])
+    // useEffect(() => {
+    //     localStorage.getItem('ticketStage') ? actions.setTicketStage(JSON.parse(localStorage.getItem('ticketStage'))) 
+    //         : actions.setTicketStage(JSON.parse(0), false);
+    // }, [])
 
     const customerInfo = store.assignedTicket.customer;
     const mapInfo = {

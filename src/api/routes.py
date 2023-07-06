@@ -361,11 +361,110 @@ def set_start_intervention_date():
     if not record:
         return jsonify({'msg': 'No ticket/employee relation found.'}), 400
 
-    date = datetime.datetime.now()
     record.start_intervention_date = data['start_intervention_date']
     db.session.commit()
 
-    return jsonify({'msg': 'Registered Start Intervention Date.', "date": date}), 200
+    return jsonify({'msg': 'Registered Start Intervention Date.'}), 200
+
+
+@api.route('/set/end/intervention/date', methods=['PUT'])
+@jwt_required()
+def set_end_intervention_date():
+    user_email = get_jwt_identity()
+    user = User.query.filter_by(email=user_email).one_or_none()
+
+    if not user:
+        return jsonify({"msg": "No user exist with that email"}), 400
+
+    allowed_employees = ('admin, technician, engineer')
+    if not user.user_type.type in allowed_employees:
+        return jsonify({"msg": "Only employees from manufacturer have access to this endpoint!"}), 403
+
+    data = request.json
+
+    record = TicketEmployeeRelation.query.get(data['ticket_employee_id'])
+
+    if not record:
+        return jsonify({'msg': 'No ticket/employee relation found.'}), 400
+
+    record.end_intervention_date = data['end_intervention_date']
+    db.session.commit()
+
+    return jsonify({'msg': 'Registered End Intervention Date.'}), 200
+
+
+@api.route('/save/kilometers', methods=['PUT'])
+@jwt_required()
+def save_kilometers():
+    user_email = get_jwt_identity()
+    user = User.query.filter_by(email=user_email).one_or_none()
+
+    if not user:
+        return jsonify({"msg": "No user exist with that email"}), 400
+
+    allowed_employees = ('admin, technician, engineer')
+    if not user.user_type.type in allowed_employees:
+        return jsonify({"msg": "Only employees from manufacturer have access to this endpoint!"}), 403
+
+    data = request.json
+
+    ticket = Ticket.query.get(data['ticket_id'])
+    if not ticket:
+        return jsonify({'msg': 'Ticket not found.'}), 400
+
+    ticket.km_on_leave = data['km_on_leave']
+    ticket.km_on_arrival = data['km_on_arrival']
+    db.session.commit()
+
+    return jsonify({'msg': 'Registered End Intervention Date.'}), 200
+
+
+@api.route('/save/actions/taken', methods=['POST'])
+@jwt_required()
+def save_actions_taken():
+    user_email = get_jwt_identity()
+    user = User.query.filter_by(email=user_email).one_or_none()
+
+    if not user:
+        return jsonify({"msg": "No user exist with that email"}), 400
+
+    allowed_employees = ('admin, technician, engineer')
+    if not user.user_type.type in allowed_employees:
+        return jsonify({"msg": "Only employees from manufacturer have access to this endpoint!"}), 403
+
+    data = request.json
+
+    knowledges = [TicketKnowledge(**knowledge) for knowledge in data['ticket_knowledges']]
+    db.session.bulk_save_objects(knowledges)
+    db.session.commit()
+
+    return jsonify({"msg": "Actions taken were successfully saved"}), 201
+
+
+@api.route('/save/observations', methods=['PUT'])
+@jwt_required()
+def save_observations():
+    user_email = get_jwt_identity()
+    user = User.query.filter_by(email=user_email).one_or_none()
+
+    if not user:
+        return jsonify({"msg": "No user exist with that email"}), 400
+
+    allowed_employees = ('admin, technician, engineer')
+    if not user.user_type.type in allowed_employees:
+        return jsonify({"msg": "Only employees from manufacturer have access to this endpoint!"}), 403
+
+    data = request.json
+
+    record = TicketEmployeeRelation.query.get(data['ticket_employee_id'])
+
+    if not record:
+        return jsonify({'msg': 'No ticket/employee relation found.'}), 400
+
+    record.observations = data['observations']
+    db.session.commit()
+
+    return jsonify({'msg': 'Observations were succefully saved.'}), 200
 
 
 @api.route('/admin/equipment', methods=['POST'])

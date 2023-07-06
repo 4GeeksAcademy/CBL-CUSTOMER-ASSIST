@@ -7,7 +7,7 @@ import { padTo2Digits, formatDate } from "../../utils/my-functions";
 export const TicketSmallEmployee = (props) => {
     const { actions, store } = useContext(Context);
     const navigate = useNavigate();
-    const ticketStage = store.ticketStage;
+    const ticketStage = localStorage.getItem('ticketStage') ? JSON.parse(localStorage.getItem('ticketStage')) : 0;
     const ticket = store.assignedTicket.ticket;
     const customer = store.assignedTicket.customer;
     const equipment = store.assignedTicket.equipment;
