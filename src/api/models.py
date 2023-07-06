@@ -152,7 +152,8 @@ class TicketEmployeeRelation(db.Model):
             "ticket_id": self.ticket_id,
             "employee_id": self.employee_id,
             "start_intervention_date": self.start_intervention_date,
-            "end_intervention_date": self.end_intervention_date
+            "end_intervention_date": self.end_intervention_date,
+            "observations": self.observation
         }
 
     def serialize_employee(self):
@@ -160,9 +161,7 @@ class TicketEmployeeRelation(db.Model):
     
     def serialize_employee_assigned(self):
         employee = self.employee.serialize_available()
-        print("#######################X")
-        print(employee)
-        print("#######################X")
+
         return employee
 
 
@@ -209,6 +208,7 @@ class Ticket(db.Model):
             "company_name": self.customer.company_name,
             "knowledge": [knowledge.serialize() for knowledge in self.ticket_knowledge] if self.ticket_knowledge else [],
             "employees_assigned": [employees.serialize_employee_assigned() for employees in self.ticket_employees] if self.ticket_employees else [],
+            "ticket_employee": [employee.serialize() for employee in self.ticket_employees] if self.ticket_employees else [],
             "vehicle_assigned": self.vehicle.serialize() if self.vehicle else {}
             # "employees_assigned": self.ticket_employees.serialize_employee_assigned() if self.ticket_employees else None
         }
@@ -227,7 +227,7 @@ class Ticket(db.Model):
             "customer": self.customer.serialize_employee(),
             "equipment": self.equipment.serialize_employee(),
             "vehicle_assigned": self.vehicle.serialize() if self.vehicle else {},
-            "ticket_employee": self.ticket_employees.serialize() if self.ticket_employees else {}
+            "ticket_employee": [employee.serialize() for employee in self.ticket_employees] if self.ticket_employees else []
         }
 
     def serialize_equipment_knowledge(self):

@@ -208,7 +208,7 @@ def get_employee_assigned_tickets():
 
     tickets_serialized = [ticket.serialize_employee() for ticket in assigned_tickets]
 
-    # filter the ticket with status 'Opened'
+    # filter the ticket with status 'Opened' and 'In Progress'
     filtered_list_of_tickets = [ticket for ticket in tickets_serialized if ticket['ticket']['status'] in ['Opened', 'In Progress']]
     if not filtered_list_of_tickets:
         return '', 204
@@ -361,10 +361,11 @@ def set_start_intervention_date():
     if not record:
         return jsonify({'msg': 'No ticket/employee relation found.'}), 400
 
-    record.start_intervention_date = datetime.datetime.now()
+    date = datetime.datetime.now()
+    record.start_intervention_date = data['start_intervention_date']
     db.session.commit()
 
-    return jsonify({'msg': 'Start assistance time got registered.'}), 200
+    return jsonify({'msg': 'Registered Start Intervention Date.', "date": date}), 200
 
 
 @api.route('/admin/equipment', methods=['POST'])

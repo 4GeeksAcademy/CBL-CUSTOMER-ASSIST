@@ -2,16 +2,17 @@ import React, { useContext, useState, useEffect } from "react";
 import { Context } from "../store/appContext";
 import { TicketStatusColor } from '../constants/ticket_status_color';
 import { useNavigate } from "react-router-dom";
-
+import { padTo2Digits, formatDate } from "../../utils/my-functions";
 
 export const TicketSmallEmployee = (props) => {
     const { actions, store } = useContext(Context);
     const navigate = useNavigate();
     const ticketStage = store.ticketStage;
-    const ticket = props.data.ticket;
-    const customer = props.data.customer;
-    const equipment = props.data.equipment;
-    const vehicleAssigned = props.data.vehicle_assigned;
+    const ticket = store.assignedTicket.ticket;
+    const customer = store.assignedTicket.customer;
+    const equipment = store.assignedTicket.equipment;
+    const vehicleAssigned = store.assignedTicket.vehicle_assigned;
+    const ticketEmployee = store.assignedTicket.ticket_employee[0];
 
     const toast = (title, data) => actions.userToastAlert(title, data);
 
@@ -19,12 +20,34 @@ export const TicketSmallEmployee = (props) => {
         actions.updateShowModal(ticket.subject, ticket.description, equipment.knowledge);
     }
 
-    const handleBtnSetTicketStatus = async (ticketID, status) => {
-        console.log('btnStartAssistance');
-        const response = await actions.setTicketStatus(ticketID, status);
+    const handleStartIntervention = async (ticketID, status) => {
+        console.log('btnStartIntervention');
+        
+        const title = 'Start Intervention';
+        
+        // ##################################################
+        // SAVE START INTERVENTION DATE LOCALY
+        const currentDate = formatDate(new Date());
+        const newAssignedTicket = {...store.assignedTicket}; 
 
-        if (response) {
-            toast('Ticket Status', `Updated ticket number ${ticketID} to ${status}`);
+        //update start_intervention_date
+        newAssignedTicket.ticket_employee[0].start_intervention_date = currentDate;
+
+        //update assignedTicket in store + localStorage
+        actions.localStorageAndSetStoreDataSave('assignedTicket', newAssignedTicket);
+        // ##################################################
+
+        // SAVE TICKET STATUS AND INTERVENTION DATE ON BACKEND
+        const response = await actions.setTicketStatus(ticketID, status);
+        if (response[0] === 200) {
+            toast(title, `Updated ticket number ${ticketID} to ${status}`);
+            
+            const startDate = await actions.setStartInterventionDate(ticketEmployee.id, currentDate);
+            if (startDate[0] === 200) {
+                toast(title, startDate[1]);
+            }else{
+                toast(title, startDate[1]);
+            }
         }
         else {
             toast('Warning', 'There was some problem trying to set ticket status.');
@@ -77,14 +100,14 @@ export const TicketSmallEmployee = (props) => {
                     </div>
                 </div>
 
-                {/* BUTTON TO SET TICKET TO 'IN PROGRESS' STATE*/}
+                {/* BUTTON TO START INTERVENTION*/}
                 {ticket.status === 'Opened' ? <>
                     <hr></hr>
                     <div className="mt-3">
                         <button type="button"
                             className="btn btn-primary shadow-sm fw-medium btn-sm w-100"
-                            onClick={() => handleBtnSetTicketStatus(ticket.id, 'In Progress')}
-                        >»» Start Assistance »»</button>
+                            onClick={() => handleStartIntervention(ticket.id, 'In Progress')}
+                        >»» Start Intervention »»</button>
                     </div></>
                     : null
                 }

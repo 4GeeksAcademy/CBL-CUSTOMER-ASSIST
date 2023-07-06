@@ -21,7 +21,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 				ticket: {
 					customer_media: [],
 				},
-				vehicle_assigned: {}
+				vehicle_assigned: {},
+				ticket_employee: []
 			},
 			assignedTicket___: {
 				"id": 11,
@@ -150,14 +151,14 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 
 			sessionStorageAndSetStoreDataSave: (key, data) => {
-				console.log("key", key)
+				console.log("sessionStorage", data)
 				sessionStorage.setItem([key], JSON.stringify(data));
 				setStore({ [key]: data });
 				return true;
 			},
 
 			localStorageAndSetStoreDataSave: (key, data) => {
-				console.log('data', data)
+				console.log('localStorage', data)
 				localStorage.setItem([key], JSON.stringify(data));
 				setStore({ [key]: data });
 				return true;
@@ -374,7 +375,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 						// update tickets
 						getActions().localStorageAndSetStoreDataSave('assignedTicket', newAssignedTicket);
 
-						return true;
+						return [response.status, data.msg];
 					}
 
 					// Admin updating ticket status
@@ -842,6 +843,31 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.log("There has been an error login in!", error)
 					return false;
 				}
+			},
+
+			setStartInterventionDate: async (ticketEmployeeID, startInterventionDate) => {
+				console.log('action: setStartInterventionDate');
+				const token = getStore().token;
+				const opts = {
+					method: "PUT",
+					headers: {
+						"Content-Type": "application/json",
+						"Authorization": "Bearer " + token
+					},
+					body: JSON.stringify({
+						'ticket_employee_id': ticketEmployeeID,
+						'start_intervention_date': startInterventionDate
+					})
+				}
+				const response = await fetch(process.env.BACKEND_URL + "api/set/start/intervention/date", opts);
+				const data = await response.json();
+
+				if (response.status !== 200) {
+					console.log(response.status, data.msg);
+					return [response.status, data.msg];
+				}
+
+				return [response.status, data.msg];
 			},
 		}
 	};
