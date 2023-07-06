@@ -142,7 +142,7 @@ class TicketEmployeeRelation(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     ticket_id = db.Column(db.Integer, db.ForeignKey('ticket.id'), nullable=False)
     employee_id = db.Column(db.Integer, db.ForeignKey('employee.id'), nullable=False)
-    observation = db.Column(db.String(1024), nullable=True)
+    observations = db.Column(db.String(1024), nullable=True)
     start_intervention_date = db.Column(db.DateTime)
     end_intervention_date = db.Column(db.DateTime)
 
@@ -153,7 +153,7 @@ class TicketEmployeeRelation(db.Model):
             "employee_id": self.employee_id,
             "start_intervention_date": self.start_intervention_date,
             "end_intervention_date": self.end_intervention_date,
-            "observations": self.observation
+            "observations": self.observations
         }
 
     def serialize_employee(self):
