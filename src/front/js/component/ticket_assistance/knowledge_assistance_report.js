@@ -24,7 +24,12 @@ export const KnowledgeAssistanceReport = () => {
     const [actionsTaken, setActionsTaken] = useState(localStorage.getItem('actions_taken') ? JSON.parse(localStorage.getItem('actions_taken')) : []);
     const [observationsValue, setObservationsValue] = useState(localStorage.getItem('observations_value') ? JSON.parse(localStorage.getItem('observations_value')) : "");
 
-    const [isOnline, setIsOnline] = useState(navigator.onLine);
+    useEffect(() => {
+        const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+        const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
+    }, [])
+    
+    const [isOnline, setIsOnline] = useState(navigator.onLine)
 
     // check online status
     useEffect(() => {
@@ -150,6 +155,7 @@ export const KnowledgeAssistanceReport = () => {
             {/* MULTISELECT CATEGORIES */}
             <div className="d-flex mb-3">
                 <div
+                    data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Select categories to filter knowledge base history"
                     className="input-group-text rounded-end-0"
                     style={{ background: "var(--bs-primary-bg-subtle)", color: "var(--bs-primary-text-emphasis)", borderColor: "var(--bs-primary-border-subtle)" }}>
                     Knowledge base
@@ -317,7 +323,7 @@ export const KnowledgeAssistanceReport = () => {
                 <button type="button" className="btn btn-primary"
                     data-bs-toggle="modal" data-bs-target="#homeFacilitiesArrivalConfirmation"
                     style={{ "--bs-btn-padding-y": ".25rem", "--bs-btn-padding-x": ".5rem", "--bs-btn-font-size": ".75rem" }}>
-                    Arrived Home Facilities
+                    Arrival to Home Facilities
                 </button> :
                 null
             }
@@ -405,7 +411,7 @@ export const KnowledgeAssistanceReport = () => {
                             <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div className="modal-body">
-                            Did you arrived to home facilities?
+                            Do you confirm your arrival to home facilities?
                         </div>
                         <div className="modal-footer">
                             <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">No</button>
