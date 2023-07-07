@@ -7,6 +7,7 @@ export const Login = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
+    const toast = (title, data) => actions.userToastAlert(title, data);
 
     const userLogin = async () => {
         const response = await actions.login(email, password);
@@ -30,7 +31,11 @@ export const Login = () => {
                 navigate("/admin/dashboard");
             }
             if (userType === "technician" || userType === 'engineer') {
-                await actions.getEmployeeAssignedTicket();
+                const checkTicketAvailable = await actions.getEmployeeAssignedTicket();
+                if (checkTicketAvailable[0] === 204) {
+                    toast('Login', checkTicketAvailable[1]);
+                    store.assignedTicket = {};
+                }
                 await actions.getCategories();
                 await actions.getKnowledgeList();
                 navigate("/employee/dashboard");
