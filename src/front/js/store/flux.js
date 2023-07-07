@@ -549,12 +549,15 @@ const getState = ({ getStore, getActions, setStore }) => {
 						"Authorization": "Bearer " + token
 					}
 				};
-				try {
+				// try {
 					const response = await fetch(process.env.BACKEND_URL + "api/employee/assigned/ticket", opts);
+					if(response.status === 204) return [204, 'No tickets assigned or in progress.']
 
 					const data = await response.json();
+					
 
 					if (response.status !== 200) {
+
 						console.log(response.status, data.msg);
 						return [response.status, data.msg];
 					}
@@ -563,10 +566,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 					if ('assigned_ticket' in data) await getActions().localStorageAndSetStoreDataSave('assignedTicket', data.assigned_ticket);
 					return true;
-				}
-				catch (error) {
-					console.log("There has been an error login in!", error)
-				}
+				// }
+				// catch (error) {
+				// 	console.log("There has been an error login in!", error)
+				// }
 			},
 
 			getCustomerEquipmentTickets: (data) => {
