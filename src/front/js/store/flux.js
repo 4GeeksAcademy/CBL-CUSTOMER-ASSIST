@@ -551,7 +551,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 				};
 				// try {
 					const response = await fetch(process.env.BACKEND_URL + "api/employee/assigned/ticket", opts);
-					if(response.status === 204) return [204, 'No tickets assigned or in progress.']
+					if(response.status === 204) {
+						getActions().localStorageAndSetStoreDataSave('assignedTicket', {});
+						return [204, 'No tickets assigned or in progress.']
+					}
 
 					const data = await response.json();
 					

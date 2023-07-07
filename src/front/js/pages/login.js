@@ -31,11 +31,7 @@ export const Login = () => {
                 navigate("/admin/dashboard");
             }
             if (userType === "technician" || userType === 'engineer') {
-                const checkTicketAvailable = await actions.getEmployeeAssignedTicket();
-                if (checkTicketAvailable[0] === 204) {
-                    toast('Login', checkTicketAvailable[1]);
-                    store.assignedTicket = {};
-                }
+                await actions.getEmployeeAssignedTicket();
                 await actions.getCategories();
                 await actions.getKnowledgeList();
                 navigate("/employee/dashboard");
