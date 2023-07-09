@@ -843,3 +843,27 @@ def employee_toggle_available():
         employee_to_update.available = True
         db.session.commit()
         return jsonify({'msg': 'User set to available'}), 200
+    
+
+@api.route('/admin/contact/list', methods=['GET'])
+@jwt_required()
+def get_contact_list():
+    current_user_email = get_jwt_identity()
+    user = User.query.filter_by(email=current_user_email).one_or_none()
+
+    if not user: 
+        return jsonify({"msg": "Unauthorized access!"}), 401
+
+    customers = User.query.filter_by(user_type_id = 4).all()
+    employees = User.query.filter(User.user_type_id != 4).all()
+    
+    
+    user_serialised = [customer.serialise_contact() for customer in customers] + [employee.serialise_contact() for employee in employees]
+    
+    user_serialised_filtered = [user for user in user_serialised if "customer" or "employee" in user] 
+
+    response_body = user_serialised_filtered
+    
+    
+    return jsonify(response_body), 200  
+

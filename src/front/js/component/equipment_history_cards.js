@@ -8,8 +8,7 @@ export const EquipmentHistoryCard = (props) => {
     const data = props.data;
     // const myModal = document.querySelector('#modalTicketInfo');
     const solutions = Object.values(data.knowledge).map(e => e.knowledge)
-    console.log("solutions")
-    console.log(solutions.map(e => e.malfunction))
+    
     return (
         <div className="card w-100 mb-3">
             <div className="card-body d-flex justify-content-between">

@@ -25,6 +25,7 @@ export const Login = () => {
                 await actions.getAdminEquipment();
                 await actions.getAvailableEmployees();
                 await actions.getAvailableVehicles();
+                await actions.getContactList();
                 navigate("/admin/dashboard");
             }
         }

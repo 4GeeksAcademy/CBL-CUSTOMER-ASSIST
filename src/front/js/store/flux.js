@@ -166,7 +166,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 			userList: [],
 			ticketStage: 1,
 			availableEmployees: [],
-			availableVehicles: []
+			availableVehicles: [],
+			contactList: []
 		},
 
 		actions: {
@@ -197,6 +198,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 			syncAvailableVehiclesFromSessionStorage: () => {
 				console.log('estou aqui')
 				if (sessionStorage.getItem('availableVehicles')) return setStore({ availableVehicles: JSON.parse(sessionStorage.getItem('availableVehicles')) });
+			},
+			
+			syncContactListFromSessionStorage: () => {
+				if (sessionStorage.getItem('contactList')) return setStore({ contactList: JSON.parse(sessionStorage.getItem('contactList')) });
 			},
 
 			sessionStorageAndSetStoreDataSave: (key, data) => {
@@ -776,6 +781,29 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 
 				return [response.status, data.msg];
+			},
+
+			getContactList: async () => {
+				console.log('action: getContactList');
+				const token = getStore().token;
+				const opts = {
+					method: "GET",
+					headers: {
+						"Authorization": "Bearer " + token
+					}
+				}
+				const response = await fetch(process.env.BACKEND_URL + "api/admin/contact/list", opts);
+				const data = await response.json();
+
+				console.log("contactList: ", data)
+
+				if (response.status !== 200) {
+					console.log(response.status, data.msg);
+					return [response.status, data.msg];
+				}
+
+				getActions().sessionStorageAndSetStoreDataSave('contactList', data);
+				// needs to have error handle
 			},
 		}
 	};

@@ -1,0 +1,20 @@
+/* .table .cell-padding {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+  } */
+  
+  /* .table .cell-padding-right {
+    padding-right: 1rem;
+  }
+  
+  .table .cell-padding-left {
+    padding-left: 1rem;
+  } */
+  
+  /* .table>:not(caption)>*>* {
+    padding: 0px;
+  } */
+
+.table {
+    border-color: rgba(239, 239, 239, 0.563);
+}
