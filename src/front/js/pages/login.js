@@ -48,13 +48,13 @@ export const Login = () => {
 
     return (
         <main className="bd-main">
-            <div className="border mt-5 p-5 col-sm-12 col-md-6 mx-auto shadow">
+            <div className="border mt-5 p-5 col-sm-12 col-md-6 mx-auto shadow rounded">
                 <h2 className="mb-5 text-center fw-bold">LOGIN</h2>
 
                 {/* EMAIL */}
-                <div className="form-floating mb-3">
+                <div className="form-floating">
                     <input type="email"
-                        className="form-control text-center fw-semibold fs-4"
+                        className="form-control text-center fw-semibold fs-4  border-bottom-0"
                         id="emailInput"
                         placeholder="Email"
                         onChange={(e) => {
