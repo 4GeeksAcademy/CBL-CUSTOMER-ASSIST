@@ -48,27 +48,36 @@ export const Login = () => {
 
     return (
         <main className="bd-main">
-            {/* <div className="d-flex col-6 justify-content-center mx-auto mb-4">
-                <h1>Welcome back</h1>
-            </div> */}
-            <div className="border p-5 col-sm-12 col-md-8 col-lg-8 mx-auto ">
-                <h2 className="mb-3 text-center">Login into your account</h2>
+            <div className="border mt-5 p-5 col-sm-12 col-md-6 mx-auto shadow">
+                <h2 className="mb-5 text-center fw-bold">LOGIN</h2>
 
-                <div className="mb-3">
-                    <label htmlFor="formGroupExampleInput" className="form-label">Email</label>
-                    <input type="text" className="form-control" id="formGroupExampleInput" placeholder="Email"
+                {/* EMAIL */}
+                <div className="form-floating mb-3">
+                    <input type="email"
+                        className="form-control text-center fw-semibold fs-4"
+                        id="emailInput"
+                        placeholder="Email"
                         onChange={(e) => {
                             setEmail(e.target.value)
                         }} />
+                    <label className="text-secondary" htmlFor="emailInput"><i className="fa-solid fa-envelope me-2"></i>Email</label>
                 </div>
-                <div className="mb-3">
-                    <label htmlFor="formGroupExampleInput2" className="form-label">Password</label>
-                    <input type="password" className="form-control" id="formGroupExampleInput2" placeholder="Password"
+
+                {/* PASSWORD */}
+                <div className="form-floating">
+                    <input type="password"
+                        className="form-control text-center fw-semibold"
+                        id="passwordInput"
+                        placeholder="Password"
                         onChange={(e) => {
                             setPassword(e.target.value)
                         }} />
+                    <label className="text-secondary" htmlFor="passwordInput"><i className="fa-solid fa-lock me-2"></i>Password</label>
                 </div>
-                <button className="btn btn-primary" onClick={() => userLogin()}>Submit</button>
+
+                <div className="mt-4 text-center">
+                    <button className="btn btn-primary btn-lg w-100" onClick={() => userLogin()}>Submit</button>
+                </div>
             </div>
         </main>
     );
