@@ -549,27 +549,26 @@ const getState = ({ getStore, getActions, setStore }) => {
 						"Authorization": "Bearer " + token
 					}
 				};
-				// try {
-					const response = await fetch(process.env.BACKEND_URL + "api/employee/assigned/ticket", opts);
-					if(response.status === 204) return [204, 'No tickets assigned or in progress.']
+				const response = await fetch(process.env.BACKEND_URL + "api/employee/assigned/ticket", opts);
+				if (response.status === 204) {
+					getActions().localStorageAndSetStoreDataSave('assignedTicket', {});
+					return [204, 'No tickets assigned or in progress.']
+				}
 
-					const data = await response.json();
-					
+				const data = await response.json();
 
-					if (response.status !== 200) {
 
-						console.log(response.status, data.msg);
-						return [response.status, data.msg];
-					}
-					console.log("Getting to response Employee assigned ticket");
-					console.log("This came from the backend", data);
+				if (response.status !== 200) {
 
-					if ('assigned_ticket' in data) await getActions().localStorageAndSetStoreDataSave('assignedTicket', data.assigned_ticket);
-					return true;
-				// }
-				// catch (error) {
-				// 	console.log("There has been an error login in!", error)
-				// }
+					console.log(response.status, data.msg);
+					return [response.status, data.msg];
+				}
+				
+				console.log("Getting to response Employee assigned ticket");
+				console.log("This came from the backend", data);
+
+				if ('assigned_ticket' in data) await getActions().localStorageAndSetStoreDataSave('assignedTicket', data.assigned_ticket);
+				return true;
 			},
 
 			getCustomerEquipmentTickets: (data) => {
@@ -930,12 +929,12 @@ const getState = ({ getStore, getActions, setStore }) => {
 				console.log('action: saveActionsTaken');
 
 				// object creation to bulk save on database
-				const ticketKnowledges = knowledges.map(knowledge => 
-					({
-						"ticket_id": ticketID,
-						"equipment_id": equipmentID,
-						"knowledge_id": knowledge.id
-					})
+				const ticketKnowledges = knowledges.map(knowledge =>
+				({
+					"ticket_id": ticketID,
+					"equipment_id": equipmentID,
+					"knowledge_id": knowledge.id
+				})
 				);
 
 				const token = getStore().token;
