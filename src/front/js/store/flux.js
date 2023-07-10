@@ -151,6 +151,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 				if (localStorage.getItem('assignedTicket')) return setStore({ assignedTicket: JSON.parse(localStorage.getItem('assignedTicket')) });
 			},
 
+			syncContactListFromSessionStorage: () => {
+				if (sessionStorage.getItem('contactList')) return setStore({ contactList: JSON.parse(sessionStorage.getItem('contactList')) })
+			},
+
 			sessionStorageAndSetStoreDataSave: (key, data) => {
 				console.log("sessionStorage", data)
 				sessionStorage.setItem([key], JSON.stringify(data));
