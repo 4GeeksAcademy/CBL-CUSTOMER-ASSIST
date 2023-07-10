@@ -7,11 +7,11 @@ export const EquipmentHistoryCard = (props) => {
 
     const data = props.data;
     // const myModal = document.querySelector('#modalTicketInfo');
-    const solutions = Object.values(data.knowledge).map(e => e.knowledge)
+    const solutions = data.knowledge
     
     return (
-        <div className="card w-100 mb-3">
-            <div className="card-body d-flex justify-content-between">
+        <div className="card w-100 mb-3 shadow rounded">
+            <div className="card-body d-flex justify-content-between ">
                 <div className="text-start">
                     <h5 className="card-text">Ticket ID: {data.id}</h5>
                     <p className="card-text">Subject: {data.subject} </p>
@@ -37,7 +37,7 @@ export const EquipmentHistoryCard = (props) => {
                 <div className="modal-dialog modal-fullscreen">
                     <div className="modal-content">
                         <div className="modal-header">
-                            <h1 className="modal-title fs-5" id={"exampleModalLabel" + data.id}>{button ? "Description" : "Solution"}</h1>
+                            <h1 className="modal-title fs-5" id={"exampleModalLabel" + data.id}>{button ? <div className="fs-3">Description</div> : <div className="fs-3">Solution</div>}</h1>
                             <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div className="modal-body">

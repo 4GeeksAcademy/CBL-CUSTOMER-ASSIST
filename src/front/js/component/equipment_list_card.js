@@ -19,8 +19,8 @@ export const EquipmentListCard = (props) => {
    
 
     return (
-        <div className="card w-100 mb-3">
-            <div className="card-body d-flex justify-content-between">
+        <div className="card w-100 mb-3 ">
+            <div className="card-body d-flex justify-content-between shadow-sm rounded">
                 <div className="text-start">
                     <h5 className="card-text">Model: {data.model}</h5>
                     <p className="card-text">Serial Number: {data.serial_number} </p>
@@ -31,7 +31,7 @@ export const EquipmentListCard = (props) => {
                 </div>
             </div>
             <Link to={'/customer/equipment/history'} style={{ textDecoration: 'none' }}>
-                <div onClick={handleAllTickets} className="card-footer text-body-secondary d-flex justify-content-center btn btn-secondary border border-0 border-top">
+                <div onClick={handleAllTickets} className="card-footer text-body-secondary d-flex justify-content-center btn btn-secondary border border-0 border-top shadow rounded">
                     <h6 className="card-subtitle my-1 text-body-secondary">View Equipment History</h6>
                 </div>
             </Link>
