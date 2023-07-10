@@ -42,7 +42,7 @@ export const CustomerSidebar = () => {
 						<li className="bd-links-group py-2" data-bs-target="#bdSidebar" data-bs-dismiss="offcanvas">
 							<Link to={'customer/equipment/list'}>
 								<strong className="bd-links-heading d-flex w-100 align-items-center fw-semibold">
-									<i className="fa-solid fa-gears bi me-2" style={{ color: "var(--bs-gray-800)"}}></i>My Equipments
+									<i className="fa-solid fa-gears bi me-2" style={{ color: "var(--bs-gray-800)"}}></i>My Equipment
 								</strong>
 							</Link>
 							{/* <ul className="list-unstyled fw-normal pb-2 small">
