@@ -60,7 +60,7 @@ export const AdminSidebar = () => {
 								</strong>
 							</Link>
 							<ul className="list-unstyled fw-normal pb-2 small">
-                                <Link to={'get/allusers'}>
+                                <Link to={'admin/contact/list'}>
     								<li><span className="bd-links-link d-inline-block rounded">All Users</span></li>
                                 </Link>
                                 <Link to={'create/customer'}>

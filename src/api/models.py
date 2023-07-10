@@ -62,6 +62,32 @@ class User(db.Model):
             "password": base64_password
         }
         
+    def serialise_contact(self):
+        data = {}
+
+        if self.customer:
+            data = {
+                "id": self.customer.id,
+                "company_name": self.customer.company_name,
+                "phone": self.customer.phone,
+                "contact_person": self.customer.contact_person,
+                "address_1": self.customer.address_1,
+                "address_2": self.customer.address_2,
+                "zipcode": self.customer.zipcode,
+                "city": self.customer.city,
+                "company_email": self.customer.company_email
+            }
+
+        if self.employee:
+            data = {
+                "id": self.employee.id,
+                "first_name": self.employee.first_name,
+                "last_name": self.employee.last_name,
+                "available": self.employee.available
+            }
+
+        return data
+        
 
 
 class UserType(db.Model):

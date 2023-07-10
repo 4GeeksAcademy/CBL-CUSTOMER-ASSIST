@@ -14,7 +14,7 @@ export const AdminDashboard = () => {
     const openedTickets = store.tickets.filter((ticket) => ticket.status === 'Opened');
     const inProgressTickets = store.tickets.filter((ticket) => ticket.status === 'In Progress');
     const resolvedTickets = store.tickets.filter((ticket) => ticket.status === 'Resolved');
-
+    
     return (
         <main className="bd-main order-1">
             <div className="bd-intro">

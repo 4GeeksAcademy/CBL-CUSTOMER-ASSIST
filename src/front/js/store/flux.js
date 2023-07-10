@@ -105,7 +105,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 			userList: [],
 			ticketStage: 0,
 			availableEmployees: [],
-			availableVehicles: []
+			availableVehicles: [],
+      contactList: {customer: [], employee: []}
 		},
 
 		actions: {
@@ -983,6 +984,30 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 				return [response.status, data.msg];
 			},
+      
+      getContactList: async () => {
+				console.log('action: getContactList');
+				const token = getStore().token;
+				const opts = {
+					method: "GET",
+					headers: {
+						"Authorization": "Bearer " + token
+					}
+				}
+				const response = await fetch(process.env.BACKEND_URL + "api/admin/contact/list", opts);
+				const data = await response.json();
+
+				console.log("contactList: ", data)
+
+				if (response.status !== 200) {
+					console.log(response.status, data.msg);
+					return [response.status, data.msg];
+				}
+
+				getActions().sessionStorageAndSetStoreDataSave('contactList', data);
+				// needs to have error handle
+			},
+      
 		}
 	};
 };
