@@ -50,7 +50,7 @@ export const Login = () => {
                 {/* EMAIL */}
                 <div className="form-floating">
                     <input type="email"
-                        className="form-control text-center fw-semibold fs-4  border-bottom-0"
+                        className="form-control text-center fw-semibold fs-4 mb-2"
                         id="emailInput"
                         placeholder="Email"
                         onChange={(e) => {
@@ -71,7 +71,7 @@ export const Login = () => {
                     <label className="text-secondary" htmlFor="passwordInput"><i className="fa-solid fa-lock me-2"></i>Password</label>
                 </div>
 
-                <div className="mt-4 text-center">
+                <div className="mt-5 text-center">
                     <button className="btn btn-primary btn-lg w-100" onClick={() => userLogin()}>Submit</button>
                 </div>
             </div>
