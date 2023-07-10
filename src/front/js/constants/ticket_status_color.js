@@ -1,4 +1,4 @@
-export const TicketStatus = {
+export const TicketStatusColor = {
     NEW: 'danger',
     OPENED: 'warning',
     IN_PROGRESS: 'primary',

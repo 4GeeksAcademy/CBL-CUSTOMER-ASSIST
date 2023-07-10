@@ -12,7 +12,6 @@ export const MainBdLayout = ({ children }) => {
         setPathname(currentLocation.pathname);
     });
 
-
     return (
         <div className={pathname === '/' || pathname === '/loading' ? "container-xxl bd-gutter mt-3 my-md-4 vh-100" : "container-xxl bd-gutter mt-3 my-md-4 bd-layout"} style={{ position: "relative" }}>
             {children}
@@ -29,23 +28,23 @@ export const MainBdLayout = ({ children }) => {
                             <div className="border rounded p-2 mb-3 shadow-sm">
                                 <h5 className=" mb-3">Description</h5>
                                 <div>{store.modalBody}</div>
-                                </div>
-                            <div>{store.modalEquipment != null ? (
+                            </div>
+                            <div>{store.modalEquipment !== null ? (
                                 store.modalEquipment.map((item, index) => {
                                     return (
                                         <ul className="list-group mb-3" key={item.id}>
                                             <li className="list-group-item d-flex justify-content-between align-items-center list-group-item-danger">
-                                                Malfunction {item.knowledge.malfunction.id}
-                                                <span className="badge text-warning bg-dark rounded-pill">{item.knowledge.category.description}</span>
+                                                Malfunction {item.malfunction.id}
+                                                <span className="badge text-warning bg-dark rounded-pill">{item.category.description}</span>
                                             </li>
                                             <li className="list-group-item d-flex justify-content-between align-items-center list-group-item-danger">
-                                                {item.knowledge.malfunction.description}
+                                                {item.malfunction.description}
                                             </li>
                                             <li className="list-group-item d-flex justify-content-between align-items-center list-group-item-success">
-                                                Solution {item.knowledge.solution.id}
+                                                Solution {item.solution.id}
                                             </li>
                                             <li className="list-group-item d-flex justify-content-between align-items-center list-group-item-success">
-                                                {item.knowledge.solution.description}
+                                                {item.solution.description}
                                             </li>
                                         </ul>
                                     );

@@ -22,6 +22,9 @@ import { AdminCreateTicket } from "./pages/admin/admin-create-ticket";
 import { LoadingData } from "./pages/common/loading_data";
 import { EmployeeTicketAssistance } from "./pages/common/employee_ticket_assistance";
 import { AdminContactList } from "./pages/admin/admin_contact_list";
+import {CapturePhoto} from "./pages/customer/capture_photo";
+import { EmployeeDashboard } from "./pages/technician/employee_dashboard";
+
 
 const Layout = () => {
     const basename = process.env.BASENAME || "";
@@ -46,7 +49,9 @@ const Layout = () => {
                         <Route element={<AdminDashboard />} path="/admin/dashboard" />
                         <Route element={<AdminTickets />} path="/admin/tickets" />
                         <Route element={<AdminTickets />} path="/admin/tickets/:filter" />
+                        <Route element={<EmployeeDashboard />} path="/employee/dashboard" />
                         <Route element={<EmployeeEditProfile />} path="/admin/edit/profile" />
+                        <Route element={<EmployeeTicketAssistance />} path="/employee/ticket/assistance" />
                         <Route element={<CustomerDashboard />} path="/customer/dashboard" />
                         <Route element={<CustomerEditProfile />} path="/customer/edit/profile" />
                         <Route element={<CustomerCreateTicket />} path="/customer/create/ticket" />

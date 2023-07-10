@@ -201,15 +201,15 @@ def get_employee_assigned_tickets():
     if not user:
         return jsonify({"msg": "No user exist with that email"}), 401
 
-    # get tickets assigned to employee
+    # get all tickets assigned to employee
     assigned_tickets = TicketEmployeeRelation.query.filter_by(employee_id=user.employee_id).all()
     if not assigned_tickets:
         return jsonify({"msg": "No tickets assigned!"}), 401
 
     tickets_serialized = [ticket.serialize_employee() for ticket in assigned_tickets]
 
-    # filter the ticket 'Opened'
-    filtered_list_of_tickets = [ticket for ticket in tickets_serialized if ticket['ticket']['status'] in ['Opened']]
+    # filter the ticket with status 'Opened' and 'In Progress'
+    filtered_list_of_tickets = [ticket for ticket in tickets_serialized if ticket['ticket']['status'] in ['Opened', 'In Progress']]
     if not filtered_list_of_tickets:
         return '', 204
     
@@ -220,7 +220,7 @@ def get_employee_assigned_tickets():
     tickets = Ticket.query.filter_by(equipment_id=equipment_id).all()
     tickets_id = [tickets_id.serialize_equipment_knowledge() for tickets_id in tickets] if tickets else []
 
-    # get TicketKnowledges that contains tickets id from tickets_id
+    # get TicketKnowledges that contains tickets id with tickets_id
     knowledges = TicketKnowledge.query.filter(TicketKnowledge.ticket_id.in_(tickets_id)).all()
 
     # serialize Knowledges 
@@ -236,7 +236,7 @@ def get_employee_assigned_tickets():
     # add authentication customer data to final dictionary
     filtered_list_of_tickets[0]['customer']['authentication'] = authentication_data
 
-    return jsonify(filtered_list_of_tickets[0]), 200
+    return jsonify({"assigned_ticket": filtered_list_of_tickets[0]}), 200
 
 
 @api.route('/assign/employee/ticket', methods=['POST'])
@@ -339,6 +339,133 @@ def set_ticket_status():
     db.session.commit()
 
     return jsonify({'msg': 'Ticket status updated is done!'}), 200
+
+
+@api.route('/set/start/intervention/date', methods=['PUT'])
+@jwt_required()
+def set_start_intervention_date():
+    user_email = get_jwt_identity()
+    user = User.query.filter_by(email=user_email).one_or_none()
+
+    if not user:
+        return jsonify({"msg": "No user exist with that email"}), 400
+
+    allowed_employees = ('admin, technician, engineer')
+    if not user.user_type.type in allowed_employees:
+        return jsonify({"msg": "Only employees from manufacturer have access to this endpoint!"}), 403
+
+    data = request.json
+
+    record = TicketEmployeeRelation.query.get(data['ticket_employee_id'])
+
+    if not record:
+        return jsonify({'msg': 'No ticket/employee relation found.'}), 400
+
+    record.start_intervention_date = data['start_intervention_date']
+    db.session.commit()
+
+    return jsonify({'msg': 'Registered Start Intervention Date.'}), 200
+
+
+@api.route('/set/end/intervention/date', methods=['PUT'])
+@jwt_required()
+def set_end_intervention_date():
+    user_email = get_jwt_identity()
+    user = User.query.filter_by(email=user_email).one_or_none()
+
+    if not user:
+        return jsonify({"msg": "No user exist with that email"}), 400
+
+    allowed_employees = ('admin, technician, engineer')
+    if not user.user_type.type in allowed_employees:
+        return jsonify({"msg": "Only employees from manufacturer have access to this endpoint!"}), 403
+
+    data = request.json
+
+    record = TicketEmployeeRelation.query.get(data['ticket_employee_id'])
+
+    if not record:
+        return jsonify({'msg': 'No ticket/employee relation found.'}), 400
+
+    record.end_intervention_date = data['end_intervention_date']
+    db.session.commit()
+
+    return jsonify({'msg': 'Registered End Intervention Date.'}), 200
+
+
+@api.route('/save/kilometers', methods=['PUT'])
+@jwt_required()
+def save_kilometers():
+    user_email = get_jwt_identity()
+    user = User.query.filter_by(email=user_email).one_or_none()
+
+    if not user:
+        return jsonify({"msg": "No user exist with that email"}), 400
+
+    allowed_employees = ('admin, technician, engineer')
+    if not user.user_type.type in allowed_employees:
+        return jsonify({"msg": "Only employees from manufacturer have access to this endpoint!"}), 403
+
+    data = request.json
+
+    ticket = Ticket.query.get(data['ticket_id'])
+    if not ticket:
+        return jsonify({'msg': 'Ticket not found.'}), 400
+
+    ticket.km_on_leave = data['km_on_leave']
+    ticket.km_on_arrival = data['km_on_arrival']
+    db.session.commit()
+
+    return jsonify({'msg': 'Registered End Intervention Date.'}), 200
+
+
+@api.route('/save/actions/taken', methods=['POST'])
+@jwt_required()
+def save_actions_taken():
+    user_email = get_jwt_identity()
+    user = User.query.filter_by(email=user_email).one_or_none()
+
+    if not user:
+        return jsonify({"msg": "No user exist with that email"}), 400
+
+    allowed_employees = ('admin, technician, engineer')
+    if not user.user_type.type in allowed_employees:
+        return jsonify({"msg": "Only employees from manufacturer have access to this endpoint!"}), 403
+
+    data = request.json
+
+    knowledges = [TicketKnowledge(**knowledge) for knowledge in data['ticket_knowledges']]
+    db.session.bulk_save_objects(knowledges)
+    db.session.commit()
+
+    return jsonify({"msg": "Actions taken were successfully saved"}), 201
+
+
+@api.route('/save/observations', methods=['PUT'])
+@jwt_required()
+def save_observations():
+    user_email = get_jwt_identity()
+    user = User.query.filter_by(email=user_email).one_or_none()
+
+    if not user:
+        return jsonify({"msg": "No user exist with that email"}), 400
+
+    allowed_employees = ('admin, technician, engineer')
+    if not user.user_type.type in allowed_employees:
+        return jsonify({"msg": "Only employees from manufacturer have access to this endpoint!"}), 403
+
+    data = request.json
+
+    record = TicketEmployeeRelation.query.get(data['ticket_employee_id'])
+
+    if not record:
+        return jsonify({'msg': 'No ticket/employee relation found.'}), 400
+
+    record.observations = data['observations']
+    db.session.commit()
+
+    return jsonify({'msg': 'Observations were succefully saved.'}), 200
+
 
 @api.route('/admin/equipment', methods=['POST'])
 @jwt_required()
@@ -789,7 +916,7 @@ def get_categories():
 
     categories = Category.query.all()
 
-    return jsonify({"categories": [categorie.serialize_options() for categorie in categories]}), 200
+    return jsonify({"msg": "All categories retrieved.", "categories": [categorie.serialize_options() for categorie in categories]}), 200
 
 
 @api.route('/knowledge/list', methods=['GET'])
@@ -806,7 +933,7 @@ def get_all_knowledges():
 
     knowledges = Knowledge.query.all()
 
-    return jsonify({"knowledges": [knowledge.serialize() for knowledge in knowledges]}), 200
+    return jsonify({"msg": "All knowledges retrieved.", "knowledge_list": [knowledge.serialize() for knowledge in knowledges]}), 200
 
 
 @api.route('/employee/toggle/available', methods=['PUT'])

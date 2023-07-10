@@ -142,7 +142,7 @@
     {
         "customer_id": 1,
         "equipment_id": 2,
-        "intervention_type": false,
+        "intervention_type": true,
         "subject": "Main motor fail",
         "description": "Main motor doesn't run after first switch on and all safetys validated.",
         "status": "New",

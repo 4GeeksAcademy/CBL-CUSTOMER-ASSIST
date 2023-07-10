@@ -7,13 +7,16 @@ export const Login = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
+    const toast = (title, data) => actions.userToastAlert(title, data);
 
     const userLogin = async () => {
         const response = await actions.login(email, password);
-        if (response) {
+        if (response[0]) {
+            const userType = response[1];
+
             // navigate("/loading");
             await actions.getUserProfile();
-            
+
             if (store.userProfile.user_info.user_type === "customer") {
                 await actions.getCustomerEquipment();
                 await actions.getCustomerTickets();
@@ -28,32 +31,50 @@ export const Login = () => {
                 await actions.getContactList();
                 navigate("/admin/dashboard");
             }
+            if (userType === "technician" || userType === 'engineer') {
+                await actions.getEmployeeAssignedTicket();
+                await actions.getCategories();
+                await actions.getKnowledgeList();
+                navigate("/employee/dashboard");
+            }
+        } else if (!response[0]) {
+            actions.logout();
+            navigate("/");
         }
     }
 
     return (
         <main className="bd-main">
-            {/* <div className="d-flex col-6 justify-content-center mx-auto mb-4">
-                <h1>Welcome back</h1>
-            </div> */}
-            <div className="border p-5 col-sm-12 col-md-8 col-lg-8 mx-auto ">
-                <h2 className="mb-3 text-center">Login into your account</h2>
+            <div className="border mt-5 p-5 col-sm-12 col-md-6 mx-auto shadow rounded">
+                <h2 className="mb-5 text-center fw-bold">LOGIN</h2>
 
-                <div className="mb-3">
-                    <label htmlFor="formGroupExampleInput" className="form-label">Email</label>
-                    <input type="text" className="form-control" id="formGroupExampleInput" placeholder="Email"
+                {/* EMAIL */}
+                <div className="form-floating">
+                    <input type="email"
+                        className="form-control text-center fw-semibold fs-4 mb-2"
+                        id="emailInput"
+                        placeholder="Email"
                         onChange={(e) => {
                             setEmail(e.target.value)
                         }} />
+                    <label className="text-secondary" htmlFor="emailInput"><i className="fa-solid fa-envelope me-2"></i>Email</label>
                 </div>
-                <div className="mb-3">
-                    <label htmlFor="formGroupExampleInput2" className="form-label">Password</label>
-                    <input type="password" className="form-control" id="formGroupExampleInput2" placeholder="Password"
+
+                {/* PASSWORD */}
+                <div className="form-floating">
+                    <input type="password"
+                        className="form-control text-center fw-semibold"
+                        id="passwordInput"
+                        placeholder="Password"
                         onChange={(e) => {
                             setPassword(e.target.value)
                         }} />
+                    <label className="text-secondary" htmlFor="passwordInput"><i className="fa-solid fa-lock me-2"></i>Password</label>
                 </div>
-                <button className="btn btn-primary" onClick={() => userLogin()}>Submit</button>
+
+                <div className="mt-5 text-center">
+                    <button className="btn btn-primary btn-lg w-100" onClick={() => userLogin()}>Submit</button>
+                </div>
             </div>
         </main>
     );

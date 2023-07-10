@@ -1,49 +1,56 @@
-import React from "react";
-// import { Loader } from "@googlemaps/js-api-loader"
+import React, { useEffect, useState } from "react";
+import { compose, withProps } from "recompose";
+import { withScriptjs, withGoogleMap, GoogleMap, Marker, DirectionsRenderer } from "react-google-maps";
 
-import "../../../styles/map.css"
+export const MapInfo = compose(
+  withProps({
+    googleMapURL: "https://maps.googleapis.com/maps/api/js?key=AIzaSyCOcxTSXvSDDWIP9DyVSDLqMYEApldW_yQ&v=3.exp&libraries=geometry,drawing,places",
+    loadingElement: <div style={{ height: "100%" }} />,
+    containerElement: <div style={{ height: "400px", marginBottom: "50px" }} />,
+    mapElement: <div style={{ height: "100%", borderRadius: "0.375rem" }} />,
+  }),
+  withScriptjs,
+  withGoogleMap
+)((props) => {
+  const [directions, setDirections] = useState(null);
+  const [distance, setDistance] = useState(null);
+  const [duration, setDuration] = useState(null);
 
-export const MapInfo = (props) => {
-    const data = props.data;
+  useEffect(() => {
+    const directionsService = new window.google.maps.DirectionsService();
 
-    // const loader = new Loader({
-    //     apiKey: "AIzaSyCOcxTSXvSDDWIP9DyVSDLqMYEApldW_yQ",
-    //     version: "weekly"
-    // });
+    const origin = props.addresses.origin;
+    const destination = props.addresses.destination;
+    const isAddress = typeof destination === "string";
 
-    // loader.load().then(async () => {
-    //     const { Map } = await google.maps.importLibrary("maps");
+    const request = {
+      origin,
+      [isAddress ? "destination" : "destinationLatLng"]: isAddress
+        ? { query: destination }
+        : destination,
+      travelMode: window.google.maps.TravelMode.DRIVING,
+    };
 
-    //     const map = new Map(document.getElementById("map"), {
-    //         center: { lat: -34.397, lng: 150.644 },
-    //         zoom: 8,
-    //     });
-    // });
+    directionsService.route(request, (result, status) => {
+      if (status === window.google.maps.DirectionsStatus.OK) {
+        setDirections(result);
 
-    // const directionsService = new DirectionsService();
+        const route = result.routes[0];
+        const legs = route.legs[0];
 
-    // directionsService.route(
-    //     {
-    //         origin: data.manufacturerAddress,
-    //         destination: data.customerAddress,
-    //         travelMode: "DRIVING"
-    //     }
-    // )
+        setDistance(legs.distance.text);
+        setDuration(legs.duration.text);
+      } else {
+        console.error("Error fetching directions:", status);
+      }
+    });
+  }, [props.destination]);
 
-    return (
-        <div className="mb-3">
-            <h4 className="border-bottom">Directions</h4>
-            {/* <div id="map"></div> */}
-            <iframe
-                className="rounded"
-                width="100%"
-                height="350"
-                frameBorder="0" style={{"border":0}}
-                referrerPolicy="no-referrer-when-downgrade"
-                src={`https://www.google.com/maps/embed/v1/directions?key=AIzaSyCOcxTSXvSDDWIP9DyVSDLqMYEApldW_yQ&origin=${data.manufacturerAddress}&destination=${data.customerAddress}&avoid=tolls|highways`}
-                allowFullScreen>
-
-            </iframe>
-        </div>
-    );
-}
+  return (
+    <GoogleMap className="mb-3" defaultZoom={8} defaultCenter={{ lat: -34.397, lng: 150.644 }}>
+      {directions && <DirectionsRenderer directions={directions} />}
+        {distance && <div><strong>Distance: </strong>{distance}</div>}
+        {duration && <div><strong>Duration: </strong>{duration}</div>}
+    </GoogleMap>
+  );
+});

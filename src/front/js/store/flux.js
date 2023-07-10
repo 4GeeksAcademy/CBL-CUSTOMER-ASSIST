@@ -1,5 +1,5 @@
 import equipmentPhotoUrl from "../../assets/img/dm160.jpg";
-import vehiclePhotoUrl from "../../assets/img/8568jn.jpeg";
+import vehiclePhotoUrl from "../../assets/img/8568jn.jpg";
 
 const getState = ({ getStore, getActions, setStore }) => {
 	return {
@@ -12,6 +12,19 @@ const getState = ({ getStore, getActions, setStore }) => {
 			tickets: [],
 			manufacturerAddress: "Mecânica Exacta, S.A., Rua António Gomes da Cruz, São Paio de Oleiros", // TODO
 			assignedTicket: {
+				customer: {
+					authentication: {},
+				},
+				equipment: {
+					knowledge: [],
+				},
+				ticket: {
+					customer_media: [],
+				},
+				vehicle_assigned: {},
+				ticket_employee: []
+			},
+			assignedTicket___: {
 				"id": 11,
 				"status": "Opened",
 				"intervention_type": true,
@@ -79,82 +92,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 					]
 				},
 			},
-			categoryOptions: [ // TODO
-				{
-					"label": "Electrical",
-					"value": "Electrical"
-				},
-				{
-					"label": "Mechanical",
-					"value": "Mechanical"
-				},
-				{
-					"label": "Software",
-					"value": "Software"
-				}
-			],
-			knowledges: [ // TODO
-				{
-					"category": "Electrical",
-					"id": 1,
-					"malfunction": "Malfunction lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum      1",
-					"solution": "Solution lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lolorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lolorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lolorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lolorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lolorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lolorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lolorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lolorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lolorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum  1"
-				},
-				{
-					"category": "Electrical",
-					"id": 2,
-					"malfunction": "Malfunction 2",
-					"solution": "Solution 2"
-				},
-				{
-					"category": "Mechanical",
-					"id": 3,
-					"malfunction": "Malfunction 3",
-					"solution": "Solution 3"
-				},
-				{
-					"category": "Software",
-					"id": 4,
-					"malfunction": "Malfunction 4",
-					"solution": "Solution 4"
-				},
-				{
-					"category": "Mechanical",
-					"id": 5,
-					"malfunction": "Malfunction 5",
-					"solution": "Solution 5"
-				},
-				{
-					"category": "Mechanical",
-					"id": 6,
-					"malfunction": "Malfunction 6",
-					"solution": "Solution 6"
-				},
-				{
-					"category": "Software",
-					"id": 7,
-					"malfunction": "Malfunction 7",
-					"solution": "Solution 7"
-				},
-				{
-					"category": "Electrical",
-					"id": 8,
-					"malfunction": "Malfunction 8",
-					"solution": "Solution 8"
-				},
-				{
-					"category": "Software",
-					"id": 9,
-					"malfunction": "Malfunction 9",
-					"solution": "Solution 9"
-				},
-				{
-					"category": "Mechanical",
-					"id": 10,
-					"malfunction": "Malfunction 10",
-					"solution": "Solution 10"
-				}
-			],
+			categoryOptions: [],
+			knowledgeList: [],
 			userProfile: { user_info: {}, customer_info: {}, employee_info: {} },
 			customerEquipmentTickets: [],
 			user: null,
@@ -164,10 +103,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 			liveToastHeader: null,
 			liveToastBody: null,
 			userList: [],
-			ticketStage: 1,
+			ticketStage: 0,
 			availableEmployees: [],
 			availableVehicles: [],
-			contactList: {customer: [], employee: []}
+      contactList: {customer: [], employee: []}
 		},
 
 		actions: {
@@ -196,23 +135,40 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 
 			syncAvailableVehiclesFromSessionStorage: () => {
-				console.log('estou aqui')
 				if (sessionStorage.getItem('availableVehicles')) return setStore({ availableVehicles: JSON.parse(sessionStorage.getItem('availableVehicles')) });
 			},
-			
-			syncContactListFromSessionStorage: () => {
-				if (sessionStorage.getItem('contactList')) return setStore({ contactList: JSON.parse(sessionStorage.getItem('contactList')) });
+
+			syncCategoryOptionsFromSessionStorage: () => {
+				if (sessionStorage.getItem('categoryOptions')) return setStore({ categoryOptions: JSON.parse(sessionStorage.getItem('categoryOptions')) });
+			},
+
+			syncKnowledgeListFromSessionStorage: () => {
+				if (sessionStorage.getItem('knowledgeList')) return setStore({ knowledgeList: JSON.parse(sessionStorage.getItem('knowledgeList')) });
+			},
+
+			syncAssignedTicketFromLocalStorage: () => {
+				console.log('estou aqui')
+				if (localStorage.getItem('assignedTicket')) return setStore({ assignedTicket: JSON.parse(localStorage.getItem('assignedTicket')) });
 			},
 
 			sessionStorageAndSetStoreDataSave: (key, data) => {
+				console.log("sessionStorage", data)
 				sessionStorage.setItem([key], JSON.stringify(data));
 				setStore({ [key]: data });
 				return true;
 			},
 
-			setTicketStage: (value) => {
+			localStorageAndSetStoreDataSave: (key, data) => {
+				console.log('localStorage', data)
+				localStorage.setItem([key], JSON.stringify(data));
+				setStore({ [key]: data });
+				return true;
+			},
+
+			setTicketStage: (value, local = true) => {
+				console.log('debug')
 				setStore({ ticketStage: value });
-				localStorage.setItem('ticketStage', JSON.stringify(value));
+				if (local) localStorage.setItem('ticketStage', JSON.stringify(value));
 			},
 
 			login: async (email, password) => {
@@ -232,12 +188,12 @@ const getState = ({ getStore, getActions, setStore }) => {
 					const data = await response.json();
 
 					if (response.status !== 200) {
-						return false;
+						return ([false, 'There was a problem with login']);
 					}
 
 
 					await getActions().sessionStorageAndSetStoreDataSave('token', data.access_token);
-					return true;
+					return ([true, data.user_type]);
 				}
 				catch (error) {
 					console.log("Contact service support", error);
@@ -407,21 +363,41 @@ const getState = ({ getStore, getActions, setStore }) => {
 						return [response.status, data.msg];
 					}
 
-					// create a copy of tickets
-					const newTickets = [...getStore().tickets];
+					// Technician/Engineer updating ticket status
+					const employeesSetStatus = ['technician', 'engineer'];
+					if (employeesSetStatus.includes(getStore().userProfile.user_info.user_type)) {
+						console.log('assignedTicket')
+						// create a copy of assignedTicket
+						const newAssignedTicket = { ...getStore().assignedTicket };
 
-					// update ticket status
-					newTickets.map(ticket => {
-						if (ticket.id === ticketID) ticket.status = status; 
-					});
+						// update ticket status value
+						newAssignedTicket.ticket.status = status;
 
-					// update tickets
-					getActions().sessionStorageAndSetStoreDataSave('tickets', newTickets);
+						// update tickets
+						getActions().localStorageAndSetStoreDataSave('assignedTicket', newAssignedTicket);
 
-					return true;
+						return [response.status, data.msg];
+					}
+
+					// Admin updating ticket status
+					const adminSetStatus = ['admin'];
+					if (adminSetStatus.includes(getStore().userProfile.user_info.user_type)) {
+						// create a copy of tickets
+						const newTickets = [...getStore().tickets];
+
+						// update ticket status
+						newTickets.map(ticket => {
+							if (ticket.id === ticketID) ticket.status = status;
+						});
+
+						// update tickets
+						getActions().sessionStorageAndSetStoreDataSave('tickets', newTickets);
+
+						return true;
+					}
 				}
 				catch (error) {
-					console.log("There has been an error login in!", error)
+					console.log("There has been an error!", error)
 				}
 			},
 
@@ -476,10 +452,11 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 
 					getActions().sessionStorageAndSetStoreDataSave('userProfile', data.user_profile);
-					// return true;
+					return true;
 				}
 				catch (error) {
 					console.log("There has been an error login in!", error)
+					return false;
 				}
 			},
 
@@ -563,6 +540,38 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			},
 
+			getEmployeeAssignedTicket: async () => {
+				console.log("action: getEmployeeAssignedTicket");
+				const token = getStore().token;
+				const opts = {
+					method: "GET",
+					headers: {
+						"Content-Type": "application/json",
+						"Authorization": "Bearer " + token
+					}
+				};
+				const response = await fetch(process.env.BACKEND_URL + "api/employee/assigned/ticket", opts);
+				if (response.status === 204) {
+					getActions().localStorageAndSetStoreDataSave('assignedTicket', {});
+					return [204, 'No tickets assigned or in progress.']
+				}
+
+				const data = await response.json();
+
+
+				if (response.status !== 200) {
+
+					console.log(response.status, data.msg);
+					return [response.status, data.msg];
+				}
+				
+				console.log("Getting to response Employee assigned ticket");
+				console.log("This came from the backend", data);
+
+				if ('assigned_ticket' in data) await getActions().localStorageAndSetStoreDataSave('assignedTicket', data.assigned_ticket);
+				return true;
+			},
+
 			getCustomerEquipmentTickets: (data) => {
 				setStore({ customerEquipmentTickets: data })
 			},
@@ -581,7 +590,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				toastBootstrap.show();
 			},
 
-			updateShowModal: (subject, description, knowledgeArray) => {
+			updateShowModal: (subject, description, knowledgeArray = null) => {
 				const myModal = document.querySelector('#modalTicketInfo');
 
 				setStore(
@@ -783,7 +792,200 @@ const getState = ({ getStore, getActions, setStore }) => {
 				return [response.status, data.msg];
 			},
 
-			getContactList: async () => {
+			getCategories: async () => {
+				console.log("action: getCategories");
+				const token = getStore().token;
+				const opts = {
+					method: "GET",
+					headers: {
+						"Content-Type": "application/json",
+						"Authorization": "Bearer " + token
+					}
+				};
+				try {
+					const response = await fetch(process.env.BACKEND_URL + "api/employee/categories", opts);
+					const data = await response.json();
+
+					if (response.status !== 200) {
+						console.log(response.status, data.msg);
+						return [response.status, data.msg];
+					}
+
+					getActions().sessionStorageAndSetStoreDataSave('categoryOptions', data.categories);
+					return true;
+				}
+				catch (error) {
+					console.log("There has been an error login in!", error)
+					return false;
+				}
+			},
+
+			getKnowledgeList: async () => {
+				console.log("action: getKnowledgeList");
+				const token = getStore().token;
+				const opts = {
+					method: "GET",
+					headers: {
+						"Content-Type": "application/json",
+						"Authorization": "Bearer " + token
+					}
+				};
+				try {
+					const response = await fetch(process.env.BACKEND_URL + "api/knowledge/list", opts);
+					const data = await response.json();
+
+					if (response.status !== 200) {
+						console.log(response.status, data.msg);
+						return [response.status, data.msg];
+					}
+
+					getActions().sessionStorageAndSetStoreDataSave('knowledgeList', data.knowledge_list);
+					return true;
+				}
+				catch (error) {
+					console.log("There has been an error login in!", error)
+					return false;
+				}
+			},
+
+			setStartInterventionDate: async (ticketEmployeeID, startInterventionDate) => {
+				console.log('action: setStartInterventionDate');
+				const token = getStore().token;
+				const opts = {
+					method: "PUT",
+					headers: {
+						"Content-Type": "application/json",
+						"Authorization": "Bearer " + token
+					},
+					body: JSON.stringify({
+						'ticket_employee_id': ticketEmployeeID,
+						'start_intervention_date': startInterventionDate
+					})
+				}
+				const response = await fetch(process.env.BACKEND_URL + "api/set/start/intervention/date", opts);
+				const data = await response.json();
+
+				if (response.status !== 200) {
+					console.log(response.status, data.msg);
+					return [response.status, data.msg];
+				}
+
+				return [response.status, data.msg];
+			},
+
+			setEndInterventionDate: async (ticketEmployeeID, endInterventionDate) => {
+				console.log('action: setEndInterventionDate');
+				console.log('t_e_id', ticketEmployeeID)
+				console.log('end', endInterventionDate)
+				const token = getStore().token;
+				const opts = {
+					method: "PUT",
+					headers: {
+						"Content-Type": "application/json",
+						"Authorization": "Bearer " + token
+					},
+					body: JSON.stringify({
+						'ticket_employee_id': ticketEmployeeID,
+						'end_intervention_date': endInterventionDate
+					})
+				}
+				const response = await fetch(process.env.BACKEND_URL + "api/set/end/intervention/date", opts);
+				const data = await response.json();
+
+				if (response.status !== 200) {
+					console.log(response.status, data.msg);
+					return [response.status, data.msg];
+				}
+
+				return [response.status, data.msg];
+			},
+
+			saveKilometers: async (ticketID, kilometersOnLeave, kilometersOnArrival) => {
+				console.log('action: saveKilometers');
+				const token = getStore().token;
+				const opts = {
+					method: "PUT",
+					headers: {
+						"Content-Type": "application/json",
+						"Authorization": "Bearer " + token
+					},
+					body: JSON.stringify({
+						'ticket_id': ticketID,
+						'km_on_leave': kilometersOnLeave,
+						'km_on_arrival': kilometersOnArrival
+					})
+				}
+				const response = await fetch(process.env.BACKEND_URL + "api/save/kilometers", opts);
+				const data = await response.json();
+
+				if (response.status !== 200) {
+					console.log(response.status, data.msg);
+					return [response.status, data.msg];
+				}
+
+				return [response.status, data.msg];
+			},
+
+			saveActionsTaken: async (ticketID, equipmentID, knowledges) => {
+				console.log('action: saveActionsTaken');
+
+				// object creation to bulk save on database
+				const ticketKnowledges = knowledges.map(knowledge =>
+				({
+					"ticket_id": ticketID,
+					"equipment_id": equipmentID,
+					"knowledge_id": knowledge.id
+				})
+				);
+
+				const token = getStore().token;
+				const opts = {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+						"Authorization": "Bearer " + token
+					},
+					body: JSON.stringify({
+						'ticket_knowledges': ticketKnowledges
+					})
+				}
+				const response = await fetch(process.env.BACKEND_URL + "api/save/actions/taken", opts);
+				const data = await response.json();
+
+				if (response.status !== 201) {
+					console.log(response.status, data.msg);
+					return [response.status, data.msg];
+				}
+
+				return [response.status, data.msg];
+			},
+
+			saveObservationsValue: async (ticketEmployeeID, observations) => {
+				console.log('action: saveObservations');
+				const token = getStore().token;
+				const opts = {
+					method: "PUT",
+					headers: {
+						"Content-Type": "application/json",
+						"Authorization": "Bearer " + token
+					},
+					body: JSON.stringify({
+						'ticket_employee_id': ticketEmployeeID,
+						'observations': observations,
+					})
+				}
+				const response = await fetch(process.env.BACKEND_URL + "api/save/observations", opts);
+				const data = await response.json();
+
+				if (response.status !== 200) {
+					console.log(response.status, data.msg);
+					return [response.status, data.msg];
+				}
+
+				return [response.status, data.msg];
+			},
+      
+      getContactList: async () => {
 				console.log('action: getContactList');
 				const token = getStore().token;
 				const opts = {
@@ -805,6 +1007,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				getActions().sessionStorageAndSetStoreDataSave('contactList', data);
 				// needs to have error handle
 			},
+      
 		}
 	};
 };

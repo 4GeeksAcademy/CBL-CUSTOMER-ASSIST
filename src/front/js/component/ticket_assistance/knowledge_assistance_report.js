@@ -1,30 +1,66 @@
-import React, { useState, useEffect, useContext, useReducer } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Context } from "../../store/appContext";
 import Select from 'react-select';
 import makeAnimated from 'react-select/animated';
 import { Buffer } from "buffer";
+import { padTo2Digits, formatDate } from "../../../utils/my-functions";
 
-export const KnowledgeAssistanceReport = (props) => {
+export const KnowledgeAssistanceReport = () => {
     const { store, actions } = useContext(Context);
-    const ticketStage = store.ticketStage;
-    const categoryOptions = props.categoryOptions;
-    const knowledges = props.knowledges;
-    const customerInfo = props.customerInfo;
+    const ticket = store.assignedTicket.ticket;
+    const toast = (title, data) => actions.userToastAlert(title, data);
+    const toastTitle = 'Assistance Report';
+    const ticketStage = localStorage.getItem('ticketStage') ? JSON.parse(localStorage.getItem('ticketStage')) : + ("");
+    const categoryOptions = store.categoryOptions;
+    const equipment = store.assignedTicket.equipment;
+    const knowledgeList = store.knowledgeList;
+    const customerInfo = store.assignedTicket.customer;
+    const ticketEmployee = store.assignedTicket.ticket_employee[0];
     const animatedComponents = makeAnimated();
     const [knowledgeFilter, setKnowledgeFilter] = useState([]);
     const [editObservations, setEditObservations] = useState(false);
     const [enableCloseReportButton, setEnableCloseReportButton] = useState(false);
     const [customerUserPassword, setCustomerUserPassword] = useState("");
-
     const [actionsTaken, setActionsTaken] = useState(localStorage.getItem('actions_taken') ? JSON.parse(localStorage.getItem('actions_taken')) : []);
     const [observationsValue, setObservationsValue] = useState(localStorage.getItem('observations_value') ? JSON.parse(localStorage.getItem('observations_value')) : "");
 
     useEffect(() => {
+        const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+        const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
+    }, [])
+    
+    const [isOnline, setIsOnline] = useState(navigator.onLine)
+
+    // check online status
+    useEffect(() => {
+        function onlineHandler() {
+            setIsOnline(true);
+        }
+
+        function offlineHandler() {
+            setIsOnline(false);
+        }
+
+        window.addEventListener("online", onlineHandler);
+        window.addEventListener("offline", offlineHandler);
+
+        console.log('Online status: ', isOnline);
+
+        return () => {
+            console.log('return online status');
+            window.removeEventListener("online", onlineHandler);
+            window.removeEventListener("offline", offlineHandler);
+        };
+    });
+
+    // handle enable close report button
+    useEffect(() => {
         (actionsTaken.length > 0 || observationsValue.length > 0) && !editObservations ? setEnableCloseReportButton(true) : setEnableCloseReportButton(false);
     }, [actionsTaken, observationsValue])
 
+    // localStorage cleaning
     useEffect(() => {
-        if (ticketStage === 8) localStorage.clear();
+        if (ticketStage === 10) localStorage.clear();
     }, [ticketStage])
 
     const handleFilters = (options) => {
@@ -70,8 +106,46 @@ export const KnowledgeAssistanceReport = (props) => {
         actions.setTicketStage(6);
     }
 
-    const handleFinishAssistance = () => {
-        actions.setTicketStage(8);
+    const handleFinishAssistance = async () => {
+        if (isOnline) {
+            const response = await handleReportSaveDataToBackend();
+            if (response) {
+                toast(toastTitle, 'saved');
+                try {
+                    actions.setTicketStage(9);
+                    actions.setTicketStatus(ticket.id, "Resolved");
+                    localStorage.clear;
+                } catch (error) {
+                    console.log(error);
+                }
+            } else {
+                console.log("response", response);
+                toast(toastTitle, 'not saved');
+            }
+
+        } else {
+            toast(toastTitle, "Not able to finish report. You're offline!");
+        }
+    }
+
+    const handleReportSaveDataToBackend = async () => {
+        console.log("handleReportSaveDataToBackend");
+        const currentDate = formatDate(new Date());
+        const kilometersOnLeave = JSON.parse(localStorage.getItem('value_kilometers_on_leave'));
+        const kilometersOnArrival = JSON.parse(localStorage.getItem('value_kilometers_on_arrival'));
+        try {
+            toast(toastTitle, "saving data");
+            const saveEndInterventionDate = await actions.setEndInterventionDate(ticketEmployee.id, currentDate);
+            const saveKilometers = await actions.saveKilometers(ticket.id, kilometersOnLeave, kilometersOnArrival);
+            const saveActionsTaken = await actions.saveActionsTaken(ticket.id, equipment.id, actionsTaken);
+            const saveObservations = await actions.saveObservationsValue(ticketEmployee.id, observationsValue);
+
+            if (saveEndInterventionDate && saveKilometers && saveActionsTaken && saveObservations) { return true } else { return false };
+
+        } catch (error) {
+            toast(toastTitle, "Warning: " + error);
+        }
+
     }
 
     return (
@@ -81,6 +155,7 @@ export const KnowledgeAssistanceReport = (props) => {
             {/* MULTISELECT CATEGORIES */}
             <div className="d-flex mb-3">
                 <div
+                    data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Select categories to filter knowledge base history"
                     className="input-group-text rounded-end-0"
                     style={{ background: "var(--bs-primary-bg-subtle)", color: "var(--bs-primary-text-emphasis)", borderColor: "var(--bs-primary-border-subtle)" }}>
                     Knowledge base
@@ -89,8 +164,8 @@ export const KnowledgeAssistanceReport = (props) => {
                     className="react-select-container w-100"
                     placeholder="Select categories..."
                     id="selectCategories"
-                    closeMenuOnSelect={false}
-                    blurInputOnSelect={false}
+                    closeMenuOnSelect={true}
+                    blurInputOnSelect={true}
                     components={animatedComponents}
                     isDisabled={ticketStage >= 5}
                     // defaultValue={[categoryOptions[0]]}
@@ -110,8 +185,8 @@ export const KnowledgeAssistanceReport = (props) => {
 
             {/* FILTERED KNOWLEDGES */}
             <div>
-                {knowledges.length > 0 ?
-                    knowledges
+                {knowledgeList.length > 0 ?
+                    knowledgeList
                         .filter(knowledge => knowledgeFilter.includes(knowledge.category))
                         .map((knowledge) => {
                             return (
@@ -195,7 +270,7 @@ export const KnowledgeAssistanceReport = (props) => {
                 </div>
                 : null
             }
-            
+
             {/* ALERTS ABOUT CUSTOMER APROVAL SUCCESS */}
             {ticketStage === 5 ?
                 <div className="alert alert-success" role="alert">
@@ -248,7 +323,7 @@ export const KnowledgeAssistanceReport = (props) => {
                 <button type="button" className="btn btn-primary"
                     data-bs-toggle="modal" data-bs-target="#homeFacilitiesArrivalConfirmation"
                     style={{ "--bs-btn-padding-y": ".25rem", "--bs-btn-padding-x": ".5rem", "--bs-btn-font-size": ".75rem" }}>
-                    Arrived Home Facilities
+                    Arrival to Home Facilities
                 </button> :
                 null
             }
@@ -294,36 +369,28 @@ export const KnowledgeAssistanceReport = (props) => {
                             <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div className="modal-body">
-                        <form className="was-validated">
-
                             {/* CUSTOMER USER EMAIL */}
-                            <div className="form-floating mb-3">
-                                <input type="email"
-                                    className="form-control"
-                                    id="customerUserEmail"
-                                    placeholder="name@example.com"
-                                    value={customerInfo.authentication.user_email}
-                                    disabled
-                                />
-                                <label htmlFor="customerUserEmail">Customer User Email</label>
-                            </div>
+                            <div>Customer User Email</div>
+                            <div className="form-floating mb-3">{customerInfo.authentication.user_email}</div>
+                            <form className="was-validated">
 
-                            {/* CUSTOMER USER PASSWORD */}
-                            <div className="form-floating">
-                                <input type="password"
-                                    className="form-control"
-                                    id="floatingPassword"
-                                    placeholder="Password required"
-                                    value={customerUserPassword}
-                                    onChange={(e) => setCustomerUserPassword(e.target.value)}
-                                    required
-                                />
-                                <label className="form-label" htmlFor="floatingPassword">Password</label>
-                                <div className="invalid-feedback">
-                                    Please enter your password.
+
+                                {/* CUSTOMER USER PASSWORD */}
+                                <div className="form-floating">
+                                    <input type="password"
+                                        className="form-control"
+                                        id="floatingPassword"
+                                        placeholder="Password required"
+                                        value={customerUserPassword}
+                                        onChange={(e) => setCustomerUserPassword(e.target.value)}
+                                        required
+                                    />
+                                    <label className="form-label" htmlFor="floatingPassword">Password</label>
+                                    <div className="invalid-feedback">
+                                        Please enter your password.
+                                    </div>
                                 </div>
-                            </div>
-                        </form>
+                            </form>
                         </div>
                         <div className="modal-footer">
                             <button type="button" className="btn btn-success flex-grow-1" data-bs-dismiss="modal"
@@ -344,7 +411,7 @@ export const KnowledgeAssistanceReport = (props) => {
                             <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div className="modal-body">
-                            Did you arrived to home facilities?
+                            Do you confirm your arrival to home facilities?
                         </div>
                         <div className="modal-footer">
                             <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">No</button>

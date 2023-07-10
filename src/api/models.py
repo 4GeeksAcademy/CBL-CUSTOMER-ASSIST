@@ -103,7 +103,6 @@ class Employee(db.Model):
     available = db.Column(db.Boolean, nullable=False)
     user = db.relationship('User', backref='employee', uselist=False)
     tickets = db.relationship('TicketEmployeeRelation', backref='employee', uselist=False)
-    observations = db.relationship('EmployeeTicketObservation', backref='employee', uselist=False)
 
     def serialize(self):
         return {
@@ -129,8 +128,8 @@ class Customer(db.Model):
     phone = db.Column(db.String(20), nullable=False)
     contact_person = db.Column(db.String(20), nullable=True)
     address_1 = db.Column(db.String(100), nullable=False)
-    address_2 = db.Column(db.String(100))
-    zipcode = db.Column(db.Integer)
+    address_2 = db.Column(db.String(100), nullable=True)
+    zipcode = db.Column(db.String(10))
     company_email = db.Column(db.String(25), nullable=True)
     city = db.Column(db.String(50), nullable=False)
     user = db.relationship('User', backref='customer', uselist=False)
@@ -160,8 +159,8 @@ class Customer(db.Model):
             "address_2": self.address_2,
             "zipcode": self.zipcode,
             "city": self.city,
-            # "company_email": self.company_email,
-            "customer_email": self.user.email
+            "company_email": self.company_email,
+            "customer_email": self.user.email,
         }
 
 
@@ -169,6 +168,7 @@ class TicketEmployeeRelation(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     ticket_id = db.Column(db.Integer, db.ForeignKey('ticket.id'), nullable=False)
     employee_id = db.Column(db.Integer, db.ForeignKey('employee.id'), nullable=False)
+    observations = db.Column(db.String(1024), nullable=True)
     start_intervention_date = db.Column(db.DateTime)
     end_intervention_date = db.Column(db.DateTime)
 
@@ -178,7 +178,8 @@ class TicketEmployeeRelation(db.Model):
             "ticket_id": self.ticket_id,
             "employee_id": self.employee_id,
             "start_intervention_date": self.start_intervention_date,
-            "end_intervention_date": self.end_intervention_date
+            "end_intervention_date": self.end_intervention_date,
+            "observations": self.observations
         }
 
     def serialize_employee(self):
@@ -186,9 +187,7 @@ class TicketEmployeeRelation(db.Model):
     
     def serialize_employee_assigned(self):
         employee = self.employee.serialize_available()
-        print("#######################X")
-        print(employee)
-        print("#######################X")
+
         return employee
 
 
@@ -208,7 +207,6 @@ class Ticket(db.Model):
     vehicle_id = db.Column(db.Integer, db.ForeignKey('vehicle.id'), nullable=True)
     ticket_knowledge = db.relationship('TicketKnowledge', backref='ticket')
     ticket_employees = db.relationship('TicketEmployeeRelation', backref='ticket')
-    observations = db.relationship('EmployeeTicketObservation', backref='ticket', uselist=False)
 
     def serialize(self):
         return {
@@ -236,6 +234,7 @@ class Ticket(db.Model):
             "company_name": self.customer.company_name,
             "knowledge": [knowledge.serialize() for knowledge in self.ticket_knowledge] if self.ticket_knowledge else [],
             "employees_assigned": [employees.serialize_employee_assigned() for employees in self.ticket_employees] if self.ticket_employees else [],
+            "ticket_employee": [employee.serialize() for employee in self.ticket_employees] if self.ticket_employees else [],
             "vehicle_assigned": self.vehicle.serialize() if self.vehicle else {}
             # "employees_assigned": self.ticket_employees.serialize_employee_assigned() if self.ticket_employees else None
         }
@@ -244,13 +243,17 @@ class Ticket(db.Model):
         return {
             "ticket": {
                 "id": self.id,
+                "open_ticket_time": self.open_ticket_time,
                 "status": self.status,
                 "intervention_type": self.intervention_type,
                 "subject": self.subject,
-                "description": self.description
+                "description": self.description,
+                "customer_media": [] #TODO: photos uploaded from customer
             },
             "customer": self.customer.serialize_employee(),
-            "equipment": self.equipment.serialize_employee()
+            "equipment": self.equipment.serialize_employee(),
+            "vehicle_assigned": self.vehicle.serialize() if self.vehicle else {},
+            "ticket_employee": [employee.serialize() for employee in self.ticket_employees] if self.ticket_employees else []
         }
 
     def serialize_equipment_knowledge(self):
@@ -268,7 +271,10 @@ class TicketKnowledge(db.Model):
         knowledge = Knowledge.query.get(self.knowledge_id)
         return {
             "id": self.id,
-            "knowledge": knowledge.serialize_full() if knowledge else None
+            # "knowledge": knowledge.serialize_full() if knowledge else None
+            "category": self.knowledge.category.serialize() if self.knowledge.category else None,
+            "malfunction": self.knowledge.malfunction.serialize() if self.knowledge.malfunction else None,
+            "solution": self.knowledge.solution.serialize() if self.knowledge.solution else None
         }
 
     def serialize_employee(self):
@@ -341,7 +347,8 @@ class Equipment(db.Model):
             "id": self.id,
             "serial_number": self.serial_number,
             "model": self.model,
-            "im109": self.im109
+            "im109": self.im109,
+            "equipment_photo": self.equipment_photo
         }
 
 
@@ -403,24 +410,7 @@ class Vehicle(db.Model):
             "license_plate": self.license_plate,
             "model": self.model,
             "maker": self.maker,
-            "vehicle_photo": self.vehicle_photo,
+            "vehicle_photo": "../../assets/img/8568jn.jpeg", # TODO: change to self.vehicle_photo
             "value": self.id,
             "label": self.license_plate + " - " + self.maker + " " + self.model
-        }
-
-
-class EmployeeTicketObservation(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    employee_id = db.Column(db.Integer, db.ForeignKey(
-        'employee.id'), nullable=False)
-    ticket_id = db.Column(db.Integer, db.ForeignKey(
-        'ticket.id'), nullable=False)
-    observation = db.Column(db.String(1024), nullable=False)
-
-    def serialize(self):
-        return {
-            "id": self.id,
-            "employee_id": self.employee_id,
-            "ticket_id": self.ticket_id,
-            "observation": self.observation
         }
