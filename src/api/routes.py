@@ -857,13 +857,10 @@ def get_contact_list():
     customers = User.query.filter_by(user_type_id = 4).all()
     employees = User.query.filter(User.user_type_id != 4).all()
     
-    
-    user_serialised = [customer.serialise_contact() for customer in customers] + [employee.serialise_contact() for employee in employees]
-    
-    user_serialised_filtered = [user for user in user_serialised if "customer" or "employee" in user] 
-
-    response_body = user_serialised_filtered
-    
+    response_body = {
+        "customer": [customer.serialise_contact() for customer in customers] if customers else [],
+        "employee": [employee.serialise_contact() for employee in employees] if employees else []
+    }
     
     return jsonify(response_body), 200  
 

@@ -167,7 +167,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			ticketStage: 1,
 			availableEmployees: [],
 			availableVehicles: [],
-			contactList: []
+			contactList: {customer: [], employee: []}
 		},
 
 		actions: {

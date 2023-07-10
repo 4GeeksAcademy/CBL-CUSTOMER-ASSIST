@@ -9,7 +9,9 @@ export const AdminContactList = () => {
     const { store, actions } = useContext(Context)
     // const [loopedList, setLoopedList] = useState([])
     // const navigate = useNavigate();
-    console.log(store.contactList.filter(e => e.employee).map(e => e.employee.available))
+    const customer = store.contactList.customer
+    const employee = store.contactList.employee
+    
 
     return (
         <main className="bd-main order-1">
@@ -27,9 +29,8 @@ export const AdminContactList = () => {
                 <div className="tab-content" id="nav-tabContent">
                     {/* Customers Below */}
                     <div className="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="customer" tabIndex="0">
-                        <div className="my-4"><h2>Customers</h2></div>
                         <div className="shadow px-4 mb-5 rounded" >
-                            {store.contactList.length > 0 ? <table className="table table-hover ">
+                            {customer.length > 0 ? <table className="table table-hover ">
                                 <thead>
                                     <tr>
                                         <th scope="col">ID</th>
@@ -43,19 +44,18 @@ export const AdminContactList = () => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {store.contactList
-                                        .filter(e => e.customer)
-                                        .map((item, i) => {
+                                    {customer.map((item, i) => {
+                                        {console.log(customer)}
                                             return (
                                                 <tr key={i} className="row-height nowrap">
-                                                    <th scope="row">{item.customer.id}</th>
-                                                    <td className="cell-padding cell-padding-left">{item.customer.company_name}</td>
-                                                    <td className="cell-padding">{item.customer.phone}</td>
-                                                    <td className="cell-padding">{item.customer.contact_person}</td>
-                                                    <td className="cell-padding">{item.customer.company_email}</td>
-                                                    <td className="cell-padding">{item.customer.address_1 + " " + item.customer.address_2}</td>
-                                                    <td className="cell-padding">{item.customer.city}</td>
-                                                    <td className="cell-padding cell-padding-right">{item.customer.zipcode}</td>
+                                                    <th scope="row">{item.id}</th>
+                                                    <td className="cell-padding cell-padding-left">{item.company_name}</td>
+                                                    <td className="cell-padding">{item.phone}</td>
+                                                    <td className="cell-padding">{item.contact_person}</td>
+                                                    <td className="cell-padding">{item.company_email}</td>
+                                                    <td className="cell-padding">{item.address_1 + " " + item.address_2}</td>
+                                                    <td className="cell-padding">{item.city}</td>
+                                                    <td className="cell-padding cell-padding-right">{item.zipcode}</td>
                                                 </tr>)
                                         })}
                                 </tbody>
@@ -64,10 +64,9 @@ export const AdminContactList = () => {
                     </div>
                     {/* Employees Below */}
                     <div className="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="employee" tabIndex="0">
-
-                    <div className="my-4"><h2>Employees</h2></div>
+                    
                         <div className="shadow px-4 mb-5 rounded" >
-                            {store.contactList.length > 0 ? <table className="table table-hover ">
+                            {employee.length > 0 ? <table className="table table-hover ">
                                 <thead>
                                     <tr>
                                         <th scope="col">ID</th>
@@ -77,15 +76,14 @@ export const AdminContactList = () => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {store.contactList
-                                        .filter(e => e.employee)
+                                    {employee
                                         .map((item, i) => {
                                             return (
                                                 <tr key={i} className="row-height nowrap">
-                                                    <th scope="row">{item.employee.id}</th>
-                                                    <td className="cell-padding cell-padding-left">{item.employee.first_name}</td>
-                                                    <td className="cell-padding">{item.employee.last_name}</td>
-                                                    <td className="cell-padding cell-padding-right">{item.employee.available ? "Yes" : "No"}</td>
+                                                    <th scope="row">{item.id}</th>
+                                                    <td className="cell-padding cell-padding-left">{item.first_name}</td>
+                                                    <td className="cell-padding">{item.last_name}</td>
+                                                    <td className="cell-padding cell-padding-right">{item.available ? "Yes" : "No"}</td>
                                                 </tr>)
                                         })}
                                 </tbody>
