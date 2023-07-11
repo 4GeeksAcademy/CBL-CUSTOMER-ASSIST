@@ -28,7 +28,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 				customer_info: {},
 				equipment: {
 					knowledge: []
-				}
+				},
+				vehicle_assigned: {}
 			},
 			assignedTicket___: {
 				"id": 11,

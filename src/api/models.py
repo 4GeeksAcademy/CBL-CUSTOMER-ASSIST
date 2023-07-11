@@ -240,7 +240,9 @@ class Ticket(db.Model):
             "employees_assigned": [employees.serialize_employee_assigned() for employees in self.ticket_employees] if self.ticket_employees else [],
             "ticket_employee": [employee.serialize() for employee in self.ticket_employees] if self.ticket_employees else [],
             "vehicle_assigned": self.vehicle.serialize() if self.vehicle else {},
-            "customer_info": self.customer.serialize() if self.customer else {}
+            "customer_info": self.customer.serialize() if self.customer else {},
+            "km_on_leave": self.km_on_leave,
+            "km_on_arrival": self.km_on_arrival
             # "employees_assigned": self.ticket_employees.serialize_employee_assigned() if self.ticket_employees else None
         }
 
@@ -417,5 +419,5 @@ class Vehicle(db.Model):
             "maker": self.maker,
             "vehicle_photo": "../../assets/img/8568jn.jpeg", # TODO: change to self.vehicle_photo
             "value": self.id,
-            "label": self.license_plate + " - " + self.maker + " " + self.model
+            "label": self.license_plate + " - " + self.maker + " " + self.model,
         }
