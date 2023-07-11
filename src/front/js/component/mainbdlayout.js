@@ -103,10 +103,30 @@ export const MainBdLayout = ({ children }) => {
                             <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div className="modal-body">
-
+                                {store.processTicket.equipment.knowledge.length > 0 ?
+                                    store.processTicket.equipment.knowledge.map((item, i) => {
+                                        return (
+                                            <ul className="list-group mb-3" key={'k'+i}>
+                                            <li className="list-group-item d-flex justify-content-between align-items-center list-group-item-danger">
+                                                Malfunction {item.malfunction.id}
+                                                <span className="badge text-warning bg-dark rounded-pill">{item.category.description}</span>
+                                            </li>
+                                            <li className="list-group-item d-flex justify-content-between align-items-center list-group-item-danger">
+                                                {item.malfunction.description}
+                                            </li>
+                                            <li className="list-group-item d-flex justify-content-between align-items-center list-group-item-success">
+                                                Solution {item.solution.id}
+                                            </li>
+                                            <li className="list-group-item d-flex justify-content-between align-items-center list-group-item-success">
+                                                {item.solution.description}  
+                                            </li>
+                                        </ul>
+                                        )
+                                    })
+                                :<p>Not hello</p>}
                         </div>
                         <div className="modal-footer">
-                            <button type="button" className="btn btn-secondary" onClick={() => switchModal()} data-bs-dismiss="modal">Close</button>
+                            <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                             {/* <button type="button" className="btn btn-primary">Understood</button> */}
                         </div>
                     </div>
