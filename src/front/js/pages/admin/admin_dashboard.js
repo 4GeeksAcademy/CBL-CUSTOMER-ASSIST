@@ -5,6 +5,8 @@ import { Link, useNavigate } from "react-router-dom";
 
 //include your index.scss file into the bundle
 import "../../../styles/info_card.css";
+import "../../../styles/sidebar.css"
+
 
 export const AdminDashboard = () => {
     const { store, actions } = useContext(Context)
@@ -18,8 +20,7 @@ export const AdminDashboard = () => {
     return (
         <main className="bd-main order-1">
             <div className="bd-intro">
-                <h1 className="border-bottom">Admin Dashboard</h1>
-                {/* <h3>Tickets:</h3> */}
+                <h2 className="border-bottom">Dashboard</h2>
             </div>
             <div className="bd-content">
                 <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">

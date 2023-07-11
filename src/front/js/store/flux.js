@@ -24,6 +24,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 				vehicle_assigned: {},
 				ticket_employee: []
 			},
+			processTicket: {
+				customer_info: {}
+			},
 			assignedTicket___: {
 				"id": 11,
 				"status": "Opened",
@@ -106,7 +109,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			ticketStage: 0,
 			availableEmployees: [],
 			availableVehicles: [],
-      contactList: {customer: [], employee: []}
+			contactList: { customer: [], employee: [] }
 		},
 
 		actions: {
@@ -173,6 +176,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 				console.log('debug')
 				setStore({ ticketStage: value });
 				if (local) localStorage.setItem('ticketStage', JSON.stringify(value));
+			},
+
+			resetAssignedTicket: () => {
+				setStore({ assignedTicket: {} });
 			},
 
 			login: async (email, password) => {
@@ -568,7 +575,39 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.log(response.status, data.msg);
 					return [response.status, data.msg];
 				}
-				
+
+				console.log("Getting to response Employee assigned ticket");
+				console.log("This came from the backend", data);
+
+				if ('assigned_ticket' in data) await getActions().localStorageAndSetStoreDataSave('assignedTicket', data.assigned_ticket);
+				return true;
+			},
+
+			getEmployeeResolvedTicket: async () => {
+				console.log("action: getEmployeeResolvedTicket");
+				const token = getStore().token;
+				const opts = {
+					method: "GET",
+					headers: {
+						"Content-Type": "application/json",
+						"Authorization": "Bearer " + token
+					}
+				};
+				const response = await fetch(process.env.BACKEND_URL + "api/employee/resolved/ticket", opts);
+				if (response.status === 204) {
+					getActions().sessionStorageAndSetStoreDataSave('resolvedTicket', {});
+					return [204, 'No tickets assigned or in progress.']
+				}
+
+				const data = await response.json();
+
+
+				if (response.status !== 200) {
+
+					console.log(response.status, data.msg);
+					return [response.status, data.msg];
+				}
+
 				console.log("Getting to response Employee assigned ticket");
 				console.log("This came from the backend", data);
 
@@ -606,6 +645,14 @@ const getState = ({ getStore, getActions, setStore }) => {
 				);
 
 				new bootstrap.Modal(myModal).toggle();
+			},
+
+			showModalProcessTicket: (data) => {
+				const processTicketModal = document.querySelector('#processTicketModal');
+
+				setStore({ processTicket: data });
+
+				new bootstrap.Modal(processTicketModal).toggle();
 			},
 
 			getAdminUserList: async () => {
@@ -988,8 +1035,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 				return [response.status, data.msg];
 			},
-      
-      getContactList: async () => {
+
+			getContactList: async () => {
 				console.log('action: getContactList');
 				const token = getStore().token;
 				const opts = {
@@ -1011,7 +1058,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				getActions().sessionStorageAndSetStoreDataSave('contactList', data);
 				// needs to have error handle
 			},
-      
+
 		}
 	};
 };

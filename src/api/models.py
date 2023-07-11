@@ -235,7 +235,8 @@ class Ticket(db.Model):
             "knowledge": [knowledge.serialize() for knowledge in self.ticket_knowledge] if self.ticket_knowledge else [],
             "employees_assigned": [employees.serialize_employee_assigned() for employees in self.ticket_employees] if self.ticket_employees else [],
             "ticket_employee": [employee.serialize() for employee in self.ticket_employees] if self.ticket_employees else [],
-            "vehicle_assigned": self.vehicle.serialize() if self.vehicle else {}
+            "vehicle_assigned": self.vehicle.serialize() if self.vehicle else {},
+            "customer_info": self.customer.serialize() if self.customer else {}
             # "employees_assigned": self.ticket_employees.serialize_employee_assigned() if self.ticket_employees else None
         }
 

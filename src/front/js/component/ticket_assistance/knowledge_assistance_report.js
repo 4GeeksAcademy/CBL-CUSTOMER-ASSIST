@@ -4,9 +4,11 @@ import Select from 'react-select';
 import makeAnimated from 'react-select/animated';
 import { Buffer } from "buffer";
 import { padTo2Digits, formatDate } from "../../../utils/my-functions";
+import { useNavigate } from "react-router-dom";
 
 export const KnowledgeAssistanceReport = () => {
     const { store, actions } = useContext(Context);
+    const navigate = useNavigate();
     const ticket = store.assignedTicket.ticket;
     const toast = (title, data) => actions.userToastAlert(title, data);
     const toastTitle = 'Assistance Report';
@@ -28,7 +30,7 @@ export const KnowledgeAssistanceReport = () => {
         const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
         const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
     }, [])
-    
+
     const [isOnline, setIsOnline] = useState(navigator.onLine)
 
     // check online status
@@ -69,6 +71,7 @@ export const KnowledgeAssistanceReport = () => {
     }
 
     const handleAddKnowledgeToReport = (knowledge) => {
+        console.log(knowledge)
         if (!actionsTaken.includes(knowledge)) {
             setActionsTaken(actionsTaken => [...actionsTaken, knowledge]);
 
@@ -114,7 +117,9 @@ export const KnowledgeAssistanceReport = () => {
                 try {
                     actions.setTicketStage(9);
                     actions.setTicketStatus(ticket.id, "Resolved");
-                    localStorage.clear;
+                    localStorage.clear();
+                    // actions.resetAssignedTicket();
+                    navigate("/employee/dashboard");
                 } catch (error) {
                     console.log(error);
                 }
@@ -124,7 +129,7 @@ export const KnowledgeAssistanceReport = () => {
             }
 
         } else {
-            toast(toastTitle, "Not able to finish report. You're offline!");
+            toast(toastTitle, "Not able to finish assistance. You're offline!");
         }
     }
 
@@ -433,7 +438,7 @@ export const KnowledgeAssistanceReport = () => {
                             <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div className="modal-body">
-                            Do you confirm assistance finishing?
+                            Do you confirm finish assistance?
                         </div>
                         <div className="modal-footer">
                             <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">No</button>

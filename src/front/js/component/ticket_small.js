@@ -2,13 +2,16 @@ import React, { useContext, useState, useEffect } from "react";
 import { Context } from "../store/appContext";
 import Select from 'react-select';
 import makeAnimated from 'react-select/animated';
-import { TicketStatusColor } from '../constants/ticket_status_color'
+import { TicketStatusColor } from '../constants/ticket_status_color';
+import { useNavigate } from "react-router-dom";
 
 export const TicketSmall = (props) => {
     const { actions, store } = useContext(Context);
+    const navigate = useNavigate();
     const data = props.data;
     const ticketID = data.id;
     const isDisabledStatus = ['New'];
+    const isDisabledProcessingTicket = ['Resolved']
     const isDisabled = !isDisabledStatus.includes(data.status) ? true : false;
     const animatedComponents = makeAnimated();
 
@@ -170,12 +173,18 @@ export const TicketSmall = (props) => {
 
         if (response) {
             toast('Ticket Status', `Updated ticket number ${ticketID} to ${status}`);
+            navigate("/admin/dashboard")
             // setSelectedVehicle(vehicle);
             // updateVehicleAssignedStoreSessionStorage(vehicle, ticketID);
         }
         else {
             toast('Warning', 'There was some problem trying to set ticket status.');
         }
+    }
+
+    const handleProcessTicket = () => {
+        console.log(data);
+        actions.showModalProcessTicket(data);
     }
 
     return (
@@ -264,6 +273,16 @@ export const TicketSmall = (props) => {
                                     disabled={btnOpenTicketDisabled}
                                     onClick={() => handleBtnSetTicketStatus('Opened')}
                                 >»» Open ticket »»</button>
+                            </div>
+                            : null}
+
+                            {/* BUTTON TO START PROCESSING TICKET */}
+                        {isDisabledProcessingTicket.includes(data.status) ?
+                            <div className="mt-3">
+                                <button type="button"
+                                    className={`btn btn-warning shadow-sm fw-medium btn-sm w-100`}
+                                    onClick={() => handleProcessTicket()}
+                                >»» Process ticket »»</button>
                             </div>
                             : null}
                     </div>
