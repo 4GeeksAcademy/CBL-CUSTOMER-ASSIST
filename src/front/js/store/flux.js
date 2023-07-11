@@ -25,7 +25,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 				ticket_employee: []
 			},
 			processTicket: {
-				customer_info: {}
+				customer_info: {},
+				equipment: {
+					knowledge: []
+				}
 			},
 			assignedTicket___: {
 				"id": 11,

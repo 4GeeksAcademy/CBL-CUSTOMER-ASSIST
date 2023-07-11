@@ -222,10 +222,14 @@ class Ticket(db.Model):
         }
 
     def serialize_cus(self):
+        equipment = self.equipment.serialize()
+        equipment_knowledge = TicketKnowledge.query.filter_by(equipment_id=self.equipment_id).all()
+        equipment['knowledge'] = [knowledge.serialize() for knowledge in equipment_knowledge] if equipment_knowledge else []
+
         return {
             "id": self.id,
             "open_ticket_time": self.open_ticket_time,
-            "equipment": self.equipment.serialize(),
+            "equipment": equipment,
             "status": self.status,
             "intervention_type": self.intervention_type,
             "subject": self.subject,

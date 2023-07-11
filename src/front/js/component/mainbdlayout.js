@@ -5,6 +5,7 @@ import { useLocation } from "react-router-dom";
 import smallLogo from "../../assets/img/logo.png"
 import { ProcessTicketInfo } from "./process_ticket/process_ticket_info";
 import { ProcessCustomerInfo } from "./process_ticket/process_customer_info";
+import { ProcessEquipmentInfoCard } from "./process_ticket/process_equipment_info_card";
 
 
 export const MainBdLayout = ({ children }) => {
@@ -15,6 +16,12 @@ export const MainBdLayout = ({ children }) => {
     useEffect(() => {
         setPathname(currentLocation.pathname);
     });
+
+    const switchModal = () => {
+        const processTicketModal = document.querySelector('#processTicketModal');
+
+        new bootstrap.Modal(processTicketModal).toggle();
+    }
 
     return (
         <div className={pathname === '/' || pathname === '/loading' ? "container-xxl bd-gutter mt-3 my-md-4 vh-100" : "container-xxl bd-gutter mt-3 my-md-4 bd-layout"} style={{ position: "relative" }}>
@@ -77,9 +84,29 @@ export const MainBdLayout = ({ children }) => {
                         <div className="modal-body">
                             <ProcessCustomerInfo />
                             <ProcessTicketInfo />
+                            <ProcessEquipmentInfoCard />
                         </div>
                         <div className="modal-footer">
                             <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            {/* <button type="button" className="btn btn-primary">Understood</button> */}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {/* MODAL PROCESS TICKET EQUIPMENT HISTORY */}
+            <div id="processEquipmentHistoryModal" className="modal fade modal-fullscreen" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div className="modal-dialog modal-fullscreen">
+                    <div className="modal-content">
+                        <div className="modal-header">
+                            <h3 className="modal-title" id="staticBackdropLabel">Equipment History</h3>
+                            <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div className="modal-body">
+
+                        </div>
+                        <div className="modal-footer">
+                            <button type="button" className="btn btn-secondary" onClick={() => switchModal()} data-bs-dismiss="modal">Close</button>
                             {/* <button type="button" className="btn btn-primary">Understood</button> */}
                         </div>
                     </div>
