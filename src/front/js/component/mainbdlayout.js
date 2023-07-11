@@ -7,6 +7,7 @@ import { ProcessTicketInfo } from "./process_ticket/process_ticket_info";
 import { ProcessCustomerInfo } from "./process_ticket/process_customer_info";
 import { ProcessEquipmentInfoCard } from "./process_ticket/process_equipment_info_card";
 import { ProcessVehicleInfoCard } from "./process_ticket/process_vehicle_info_card";
+import { ProcessKnowledgeAssistanceReport } from "./process_ticket/process_knowledge_assistance_report";
 
 
 export const MainBdLayout = ({ children }) => {
@@ -87,6 +88,7 @@ export const MainBdLayout = ({ children }) => {
                             <ProcessTicketInfo />
                             <ProcessEquipmentInfoCard />
                             <ProcessVehicleInfoCard />
+                            <ProcessKnowledgeAssistanceReport />
                         </div>
                         <div className="modal-footer">
                             <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>

@@ -29,7 +29,11 @@ const getState = ({ getStore, getActions, setStore }) => {
 				equipment: {
 					knowledge: []
 				},
-				vehicle_assigned: {}
+				vehicle_assigned: {},
+				knowledge: [],
+				ticket_employee: [
+					{observations: null}
+				]
 			},
 			assignedTicket___: {
 				"id": 11,
