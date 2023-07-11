@@ -25,9 +25,7 @@ export const EmployeeTicketAssistance = () => {
         const localStorageTicketStage = localStorage.getItem('ticketStage') ? JSON.parse(localStorage.getItem('ticketStage')) : null;
         localStorageTicketStage ? actions.setTicketStage(localStorageTicketStage) : actions.setTicketStage(0);
     }, [])
-    // interventionType: ticket.intervention_type ? InterventionTypes.ASSISTANCE : InterventionTypes.MAINTENANCE,
 
-    // const knowledges = store.knowledges;
 
     return (
         <main className="bd-main">
