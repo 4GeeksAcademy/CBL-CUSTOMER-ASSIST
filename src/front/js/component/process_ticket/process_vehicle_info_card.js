@@ -19,8 +19,8 @@ export const ProcessVehicleInfoCard = () => {
                 <div className="row g-0">
                     {data.vehicle_photo ?
                         <div className="col-12 col-sm-4">
-                            <div className="img d-block d-sm-none w-100 rounded-top" style={{ "backgroundImage": `url('${data.vehicle_photo}')` }}></div>
-                            <div className="img d-none d-sm-block w-100 rounded-start" style={{ "backgroundImage": `url('${data.vehicle_photo}')` }}></div>
+                            <div className="img d-block d-sm-none w-100 h-100 rounded-top" style={{ "backgroundImage": `url('${data.vehicle_photo}')` }}></div>
+                            <div className="img d-none d-sm-block w-100 h-100 rounded-start" style={{ "backgroundImage": `url('${data.vehicle_photo}')` }}></div>
                         </div> :
                         null
                     }
@@ -46,6 +46,11 @@ export const ProcessVehicleInfoCard = () => {
                                 {/* KMS ON ARRIVAL */}
                                 <li className="list-group-item">
                                     <p className="card-title"><strong>Km's on arrival:</strong>: {kmOnArrival}</p>
+                                </li>
+
+                                {/* TOTAL KMS */}
+                                <li className="list-group-item">
+                                    <p className="card-title"><strong>Total km's traveled:</strong>: {kmOnArrival - kmOnLeave}</p>
                                 </li>
                             </ul>
                         </div>
