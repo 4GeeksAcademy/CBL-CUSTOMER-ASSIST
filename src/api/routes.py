@@ -2,7 +2,7 @@
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
 from flask import Flask, request, jsonify, url_for, Blueprint
-from api.models import db, User, Customer, Employee, Ticket, Equipment, Malfunction, Knowledge, TicketKnowledge, TicketEmployeeRelation, Vehicle, Category
+from api.models import db, User, Customer, Employee, Ticket, Equipment, Malfunction, Solution, Knowledge, TicketKnowledge, TicketEmployeeRelation, Vehicle, Category
 from api.utils import generate_sitemap, APIException
 from flask_jwt_extended import create_access_token
 from flask_jwt_extended import get_jwt_identity
@@ -991,3 +991,56 @@ def get_contact_list():
     
     return jsonify(response_body), 200  
 
+
+@api.route('/admin/create/knowledge', methods=['POST'])
+@jwt_required()
+def admin_create_knowledge():
+    try:
+        user_email = get_jwt_identity()
+        user = User.query.filter_by(email=user_email).one_or_none()
+
+        if not user:
+            return jsonify({"msg": "No user exist with that email"}), 401
+
+        if user.user_type.type != "admin":
+            return jsonify({"msg": "Only admins have access to this endpoint!"}), 403
+
+        data = request.json
+
+        malfunction_description = data['malfunction_description']
+        solution_description = data["solution_description"]
+        category_id = data["category_id"]
+        equipment_id = data["equipment_id"]
+        ticket_id = data["ticket_id"]
+
+        malfunction = Malfunction()
+        malfunction.description = malfunction_description
+        db.session.add(malfunction)
+        db.session.flush()
+
+        solution = Solution()
+        solution.description = solution_description
+        db.session.add(solution)
+        db.session.flush()
+
+        knowledge = Knowledge()
+        knowledge.category_id = category_id
+        knowledge.malfunction_id = malfunction.id
+        knowledge.solution_id = solution.id
+        db.session.add(knowledge)
+        db.session.flush()
+
+        ticket_knowledge = TicketKnowledge()
+        ticket_knowledge.knowledge_id = knowledge.id
+        ticket_knowledge.ticket_id = ticket_id
+        ticket_knowledge.equipment_id = equipment_id
+        db.session.add(ticket_knowledge)
+        db.session.flush()
+
+        db.session.commit()
+
+        return jsonify({"msg": "Knowledge created successfully"}), 201
+
+    except Exception as e:
+        print(e)
+        return jsonify({"msg": "Exception"}), 400
