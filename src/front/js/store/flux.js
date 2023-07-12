@@ -656,13 +656,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 				new bootstrap.Modal(myModal).toggle();
 			},
 
-			// showModalProcessTicket: (data) => {
 			startProcessTicket: (data) => {
-				// const processTicketModal = document.querySelector('#processTicketModal');
-
 				setStore({ processTicket: data });
-
-				// new bootstrap.Modal(processTicketModal).toggle();
 			},
 
 			getAdminUserList: async () => {
@@ -1068,6 +1063,35 @@ const getState = ({ getStore, getActions, setStore }) => {
 				getActions().sessionStorageAndSetStoreDataSave('contactList', data);
 				// needs to have error handle
 			},
+
+			adminCreateProcessTicketKnowledge: async (malfunctionDescription, solutionDescription, categoryID, ticketID, equipmentID) => {
+				console.log('action: adminCreateProcessTicketKnowledge');
+
+				const token = getStore().token;
+				const opts = {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+						"Authorization": "Bearer " + token
+					},
+					body: JSON.stringify({
+						"malfunction_description": malfunctionDescription,
+						"solution_description": solutionDescription,
+						"category_id": categoryID,
+						"ticket_id": ticketID,
+						"equipment_id": equipmentID
+					})
+				}
+				const response = await fetch(process.env.BACKEND_URL + "api/admin/create/knowledge", opts);
+				const data = await response.json();
+
+				if (response.status !== 201) {
+					console.log(response.status, data.msg);
+					return [response.status, data.msg];
+				}
+
+				return [response.status, data.msg];
+			}
 
 		}
 	};

@@ -26,6 +26,7 @@ export const Login = () => {
                 await actions.getAdminUserList();
                 await actions.getAdminTickets();
                 await actions.getAdminEquipment();
+                await actions.getCategories();
                 await actions.getAvailableEmployees();
                 await actions.getAvailableVehicles();
                 await actions.getContactList();
