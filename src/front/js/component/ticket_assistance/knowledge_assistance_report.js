@@ -352,7 +352,7 @@ export const KnowledgeAssistanceReport = () => {
                             <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div className="modal-body">
-                            All filled in information in report is correct?
+                            Do you wish to close the report?
                         </div>
                         <div className="modal-footer">
                             <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">No</button>
@@ -438,7 +438,7 @@ export const KnowledgeAssistanceReport = () => {
                             <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div className="modal-body">
-                            Do you confirm finish assistance?
+                            Do you wish to finish assistance?
                         </div>
                         <div className="modal-footer">
                             <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">No</button>
