@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Context } from "../../store/appContext";
 import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
+import Select from 'react-select';
 
 import { ProcessCustomerInfo } from "../../component/process_ticket/process_customer_info";
 import { ProcessTicketInfo } from "../../component/process_ticket/process_ticket_info";
@@ -11,13 +12,28 @@ import { ProcessKnowledgeAssistanceReport } from "../../component/process_ticket
 export const AdminProcessTicket = () => {
     const { actions, store } = useContext(Context);
     const location = useLocation();
-    const data = store.processTicket?.customer_info;
+    const ticket = store.processTicket;
+    const categoryOptions = store.categoryOptions;
+    const [selectedCategoryID, setSelectedCategoryID] = useState(+(""));
+    // const data = store.processTicket?.customer_info;
     const [newMalfunction, setNewMalfuntion] = useState("");
     const [newSolution, setNewSolution] = useState("");
     const [newKnowledgeDisabled, setNewKnowledgeDisabled] = useState(true);
 
-    const handleCreateNewKnowledge = () => {
-        actions.adminCreateProcessTicketKnowledge()
+    const toast = (title, data) => actions.userToastAlert(title, data);
+
+    const handleCreateNewKnowledge = async () => {
+        let ticketBool = !!(ticket.id && ticket.id !== "" && ticket.id !== undefined);
+        let selectedCategoryBool = !!(selectedCategoryID && selectedCategoryID !== "" && selectedCategoryID !== undefined);
+        let equipmentBool = !!(ticket.equipment.id && ticket.equipment.id !== "" && ticket.equipment.id !== undefined);
+
+        if (ticketBool && selectedCategoryBool && equipmentBool) {
+            const response = await actions.adminCreateProcessTicketKnowledge(newMalfunction, newSolution, selectedCategoryID, ticket.id, ticket.equipment.id);
+            if(response[0] === 201){
+                toast('Process Ticket', "New knowledge created successfully!");
+                setNewKnowledgeDisabled(true);
+            }
+        }
     }
 
     return (
@@ -34,6 +50,30 @@ export const AdminProcessTicket = () => {
             {!newKnowledgeDisabled &&
                 <div>
                     <h4 className="border-bottom">Create new knowledge</h4>
+                    {/* ASSIGN VEHICLES */}
+                    <div className="d-flex flex-column">
+                        <h6>Select category</h6>
+                        <Select
+                            id="selectCategory"
+                            className="basic-single mb-2"
+                            classNamePrefix="select"
+                            isSearchable={false}
+                            isClearable={true}
+                            isDisabled={false}
+                            // components={animatedComponents}
+                            options={categoryOptions}
+                            // defaultValue={assignedVehicle}
+                            styles={{
+                                control: (baseStyles, state) => ({
+                                    ...baseStyles,
+                                }),
+                            }}
+                            onChange={(newValue, actionMeta) => {
+                                if (actionMeta.action === 'select-option') setSelectedCategoryID(newValue.id);
+                                // if (actionMeta.action === 'clear') handleDismissVehicleFromTicket();
+                            }}
+                        />
+                    </div>
                     <div className="form-floating mb-1">
                         <textarea className="form-control border-danger focus-ring focus-ring-danger"
                             id="newMalfunction"
@@ -43,7 +83,7 @@ export const AdminProcessTicket = () => {
                             onChange={(e) => setNewMalfuntion(e.target.value)}
                         ></textarea>
                         <label htmlFor="newMalfunction"
-                            className="text-danger fst-italic"
+                            className="text-danger fst-italic  z-0"
                         >Malfunction</label>
                     </div>
                     <div className="form-floating mb-1">
@@ -60,14 +100,28 @@ export const AdminProcessTicket = () => {
                     </div>
                 </div>
             }
-            <div className="">
-                <Link to={"/admin/tickets/resolved"}>
+            <div className="mt-2 mb-5">
+                {/* <Link to={"/admin/tickets/resolved"}>
                     <button type="button" className="btn btn-secondary">Go back</button>
-                </Link>
-                <button type="button"
-                    className="btn btn-primary"
-                    onClick={() => setNewKnowledgeDisabled(!newKnowledgeDisabled)}
-                >Create Knowledge</button>
+                </Link> */}
+                {newKnowledgeDisabled ?
+                    <button type="button"
+                        className="btn btn-primary btn-sm "
+                        onClick={() => setNewKnowledgeDisabled(!newKnowledgeDisabled)}
+                    >Edit New Knowledge</button>
+                    :
+                    <div className="d-flex gap-3">
+                        <button type="button"
+                            className="btn btn-secondary btn-sm"
+                            onClick={() => setNewKnowledgeDisabled(!newKnowledgeDisabled)}
+                        >Cancel</button>
+                        <button type="button"
+                            className="btn btn-primary btn-sm"
+                            disabled={!(newSolution !== "" && newMalfunction !== "")}
+                            onClick={() => handleCreateNewKnowledge()}
+                        >Create Knowledge</button>
+                    </div>
+                }
             </div>
         </main>
     );

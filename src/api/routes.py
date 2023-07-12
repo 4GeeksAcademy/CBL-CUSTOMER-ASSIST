@@ -1013,6 +1013,14 @@ def admin_create_knowledge():
         equipment_id = data["equipment_id"]
         ticket_id = data["ticket_id"]
 
+        print("##########################################")
+        print(malfunction_description)
+        print(solution_description)
+        print(category_id)
+        print(equipment_id)
+        print(ticket_id)
+        print("##########################################")
+
         malfunction = Malfunction()
         malfunction.description = malfunction_description
         db.session.add(malfunction)
