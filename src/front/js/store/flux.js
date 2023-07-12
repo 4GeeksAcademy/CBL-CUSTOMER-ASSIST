@@ -163,6 +163,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 				if (localStorage.getItem('assignedTicket')) return setStore({ assignedTicket: JSON.parse(localStorage.getItem('assignedTicket')) });
 			},
 
+			syncProcessTicketFromSessionStorage: () => {
+				if (sessionStorage.getItem('processTicket')) return setStore({ processTicket: JSON.parse(sessionStorage.getItem('processTicket')) })
+			},
+
 			syncContactListFromSessionStorage: () => {
 				if (sessionStorage.getItem('contactList')) return setStore({ contactList: JSON.parse(sessionStorage.getItem('contactList')) })
 			},
@@ -413,7 +417,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 						// update tickets
 						getActions().sessionStorageAndSetStoreDataSave('tickets', newTickets);
 
-						return true;
+						return [response.status, data.msg];
 					}
 				}
 				catch (error) {
@@ -658,6 +662,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 			startProcessTicket: (data) => {
 				setStore({ processTicket: data });
+				getActions().sessionStorageAndSetStoreDataSave('processTicket', data);
 			},
 
 			getAdminUserList: async () => {
@@ -1089,6 +1094,11 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.log(response.status, data.msg);
 					return [response.status, data.msg];
 				}
+
+				const NewProcessTicket = {...getStore().processTicket};
+				NewProcessTicket.knowledge.push(data.new_knowledge);
+
+				getActions().sessionStorageAndSetStoreDataSave('processTicket', NewProcessTicket);
 
 				return [response.status, data.msg];
 			}

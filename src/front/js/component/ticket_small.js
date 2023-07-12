@@ -171,7 +171,7 @@ export const TicketSmall = (props) => {
         console.log('btnOpenTicket');
         const response = await actions.setTicketStatus(ticketID, status);
 
-        if (response) {
+        if (response[0] === 200) {
             toast('Ticket Status', `Updated ticket number ${ticketID} to ${status}`);
             navigate("/admin/dashboard")
             // setSelectedVehicle(vehicle);

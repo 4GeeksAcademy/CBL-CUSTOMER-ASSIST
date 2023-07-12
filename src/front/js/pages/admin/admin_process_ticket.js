@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Context } from "../../store/appContext";
-import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import Select from 'react-select';
 
 import { ProcessCustomerInfo } from "../../component/process_ticket/process_customer_info";
@@ -11,16 +11,20 @@ import { ProcessKnowledgeAssistanceReport } from "../../component/process_ticket
 
 export const AdminProcessTicket = () => {
     const { actions, store } = useContext(Context);
-    const location = useLocation();
+    const navigate = useNavigate();
+    // const location = useLocation();
     const ticket = store.processTicket;
+    const ticketEmployee = store.processTicket.ticket_employee[0];
     const categoryOptions = store.categoryOptions;
     const [selectedCategoryID, setSelectedCategoryID] = useState(+(""));
     // const data = store.processTicket?.customer_info;
     const [newMalfunction, setNewMalfuntion] = useState("");
     const [newSolution, setNewSolution] = useState("");
     const [newKnowledgeDisabled, setNewKnowledgeDisabled] = useState(true);
+    // const [optionCloseTicket, setOptionCloseTicket] = useState(false);
 
     const toast = (title, data) => actions.userToastAlert(title, data);
+    const toastTitle = "Process Ticket";
 
     const handleCreateNewKnowledge = async () => {
         let ticketBool = !!(ticket.id && ticket.id !== "" && ticket.id !== undefined);
@@ -29,10 +33,21 @@ export const AdminProcessTicket = () => {
 
         if (ticketBool && selectedCategoryBool && equipmentBool) {
             const response = await actions.adminCreateProcessTicketKnowledge(newMalfunction, newSolution, selectedCategoryID, ticket.id, ticket.equipment.id);
-            if(response[0] === 201){
-                toast('Process Ticket', "New knowledge created successfully!");
+            if (response[0] === 201) {
+                toast(toastTitle, "New knowledge created successfully!");
                 setNewKnowledgeDisabled(true);
+                setNewMalfuntion("");
+                setNewSolution("");
             }
+        }
+    }
+
+    const handleCloseTicket = async () => {
+        // if(ticketEmployee.observations !== "") toast(toastTitle, "Are you sure you want to close ticket?");
+        // toast(toastTitle, "Closing ticket...");
+        const response = await actions.setTicketStatus(ticket.id, 'closed');
+        if(response[0]=== 200) {
+            navigate('/admin/tickets/resolved');
         }
     }
 
@@ -100,15 +115,19 @@ export const AdminProcessTicket = () => {
                     </div>
                 </div>
             }
-            <div className="mt-2 mb-5">
+            <div className="d-flex gap-3 mt-2 mb-5">
                 {/* <Link to={"/admin/tickets/resolved"}>
                     <button type="button" className="btn btn-secondary">Go back</button>
                 </Link> */}
-                {newKnowledgeDisabled ?
+                {newKnowledgeDisabled ? <>
                     <button type="button"
                         className="btn btn-primary btn-sm "
                         onClick={() => setNewKnowledgeDisabled(!newKnowledgeDisabled)}
                     >Edit New Knowledge</button>
+                    <button type="button"
+                        className="btn btn-danger btn-sm"
+                        onClick={() => handleCloseTicket()}
+                    >Close Ticket</button></>
                     :
                     <div className="d-flex gap-3">
                         <button type="button"
@@ -120,6 +139,7 @@ export const AdminProcessTicket = () => {
                             disabled={!(newSolution !== "" && newMalfunction !== "")}
                             onClick={() => handleCreateNewKnowledge()}
                         >Create Knowledge</button>
+
                     </div>
                 }
             </div>
