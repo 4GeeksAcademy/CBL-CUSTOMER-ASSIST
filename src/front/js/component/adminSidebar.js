@@ -19,7 +19,7 @@ export const AdminSidebar = () => {
 
 						{/* DASHBOARD */}
 						<li className="bd-links-group py-2" data-bs-target="#bdSidebar" data-bs-dismiss="offcanvas">
-							<Link to={'admin/dashboard'}>
+							<Link className="text-decoration-none" to={'admin/dashboard'}>
 								<strong className="bd-links-heading d-flex w-100 align-items-center fw-semibold">
 									<i className="fa-solid fa-gauge-high bi me-2" style={{ color: "var(--bs-indigo)"}}></i>Dashboard
 								</strong>
@@ -28,7 +28,7 @@ export const AdminSidebar = () => {
 
 						{/* TICKETS */}
 						<li className="bd-links-group py-2" data-bs-target="#bdSidebar" data-bs-dismiss="offcanvas">
-							<Link to={'admin/tickets'}>
+							<Link className="text-decoration-none" to={'admin/tickets'}>
 								<strong className="bd-links-heading d-flex w-100 align-items-center fw-semibold">
 									<i className="fa-solid fa-ticket bi me-2" style={{ color: "var(--bs-teal)"}}></i>Tickets
 								</strong>
@@ -54,7 +54,7 @@ export const AdminSidebar = () => {
 
 						{/* USERS */}
 						<li className="bd-links-group py-2" data-bs-target="#bdSidebar" data-bs-dismiss="offcanvas">
-							<Link to={'get/allusers'}>
+							<Link className="text-decoration-none" to={'get/allusers'}>
 								<strong className="bd-links-heading d-flex w-100 align-items-center fw-semibold">
                                     <i className="fa-solid fa-users bi me-2" style={{ color: "var(--bs-cyan)"}}></i>Users
 								</strong>

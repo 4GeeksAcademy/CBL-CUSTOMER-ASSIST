@@ -1,5 +1,6 @@
 import equipmentPhotoUrl from "../../assets/img/dm160.jpg";
 import vehiclePhotoUrl from "../../assets/img/8568jn.jpg";
+import { Navigate } from "react-router-dom";
 
 const getState = ({ getStore, getActions, setStore }) => {
 	return {
@@ -160,6 +161,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 			syncAssignedTicketFromLocalStorage: () => {
 				console.log('estou aqui')
 				if (localStorage.getItem('assignedTicket')) return setStore({ assignedTicket: JSON.parse(localStorage.getItem('assignedTicket')) });
+			},
+
+			syncProcessTicketFromSessionStorage: () => {
+				if (sessionStorage.getItem('processTicket')) return setStore({ processTicket: JSON.parse(sessionStorage.getItem('processTicket')) })
 			},
 
 			syncContactListFromSessionStorage: () => {
@@ -412,7 +417,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 						// update tickets
 						getActions().sessionStorageAndSetStoreDataSave('tickets', newTickets);
 
-						return true;
+						return [response.status, data.msg];
 					}
 				}
 				catch (error) {
@@ -655,12 +660,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 				new bootstrap.Modal(myModal).toggle();
 			},
 
-			showModalProcessTicket: (data) => {
-				const processTicketModal = document.querySelector('#processTicketModal');
-
+			startProcessTicket: (data) => {
 				setStore({ processTicket: data });
-
-				new bootstrap.Modal(processTicketModal).toggle();
+				getActions().sessionStorageAndSetStoreDataSave('processTicket', data);
 			},
 
 			getAdminUserList: async () => {
@@ -1066,6 +1068,40 @@ const getState = ({ getStore, getActions, setStore }) => {
 				getActions().sessionStorageAndSetStoreDataSave('contactList', data);
 				// needs to have error handle
 			},
+
+			adminCreateProcessTicketKnowledge: async (malfunctionDescription, solutionDescription, categoryID, ticketID, equipmentID) => {
+				console.log('action: adminCreateProcessTicketKnowledge');
+
+				const token = getStore().token;
+				const opts = {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+						"Authorization": "Bearer " + token
+					},
+					body: JSON.stringify({
+						"malfunction_description": malfunctionDescription,
+						"solution_description": solutionDescription,
+						"category_id": categoryID,
+						"ticket_id": ticketID,
+						"equipment_id": equipmentID
+					})
+				}
+				const response = await fetch(process.env.BACKEND_URL + "api/admin/create/knowledge", opts);
+				const data = await response.json();
+
+				if (response.status !== 201) {
+					console.log(response.status, data.msg);
+					return [response.status, data.msg];
+				}
+
+				const NewProcessTicket = {...getStore().processTicket};
+				NewProcessTicket.knowledge.push(data.new_knowledge);
+
+				getActions().sessionStorageAndSetStoreDataSave('processTicket', NewProcessTicket);
+
+				return [response.status, data.msg];
+			}
 
 		}
 	};

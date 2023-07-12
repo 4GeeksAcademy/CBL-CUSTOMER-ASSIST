@@ -171,7 +171,7 @@ export const TicketSmall = (props) => {
         console.log('btnOpenTicket');
         const response = await actions.setTicketStatus(ticketID, status);
 
-        if (response) {
+        if (response[0] === 200) {
             toast('Ticket Status', `Updated ticket number ${ticketID} to ${status}`);
             navigate("/admin/dashboard")
             // setSelectedVehicle(vehicle);
@@ -182,9 +182,12 @@ export const TicketSmall = (props) => {
         }
     }
 
-    const handleProcessTicket = () => {
+    const handleProcessTicket = async () => {
         console.log(data);
-        actions.showModalProcessTicket(data);
+        // actions.showModalProcessTicket(data);
+        await actions.startProcessTicket(data);
+        navigate("/admin/process/ticket")
+
     }
 
     return (
@@ -276,7 +279,7 @@ export const TicketSmall = (props) => {
                             </div>
                             : null}
 
-                            {/* BUTTON TO START PROCESSING TICKET */}
+                        {/* BUTTON TO START PROCESSING TICKET */}
                         {isDisabledProcessingTicket.includes(data.status) ?
                             <div className="mt-3">
                                 <button type="button"
@@ -289,7 +292,7 @@ export const TicketSmall = (props) => {
                 </div>
             </div>
             <div className="card-footer text-body-secondary d-flex flex-column flex-sm-row align-items-center justify-content-between">
-            <h6 className="card-subtitle text-body-secondary col-sm-3">Ticket #{data.id}</h6>
+                <h6 className="card-subtitle text-body-secondary col-sm-3">Ticket #{data.id}</h6>
                 <div className="vr d-none d-sm-inline-block"></div>
                 <h6 className="card-subtitle text-body-secondary text-center col-sm-3">{data.intervention_type ? 'Assistance' : 'Maintenance'}</h6>
                 <div className="vr d-none d-sm-inline-block"></div>

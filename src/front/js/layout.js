@@ -2,28 +2,29 @@ import React, {useState, useEffect} from "react";
 import injectContext from "./store/appContext";
 import { BrowserRouter, Route, Router, Routes, useLocation } from "react-router-dom";
 import { Login } from "./pages/login";
-import { CustomerDashboard } from "./pages/customer/customer-dashboard";
 import { Navbar } from "./component/navbar";
 import { Sidebar } from "./component/sidebar";
+import { MainBdLayout } from "./component/mainbdlayout";
+import { AdminTickets } from "./pages/admin/admin_tickets";
 import { AdminDashboard } from "./pages/admin/admin_dashboard";
+import { AdminContactList } from "./pages/admin/admin_contact_list";
+import { AdminCreateTicket } from "./pages/admin/admin-create-ticket";
+import { AdminProcessTicket } from "./pages/admin/admin_process_ticket";
+import { CustomerDashboard } from "./pages/customer/customer-dashboard";
+import { CustomerEditProfile } from "./pages/customer/customer_edit_profile";
 import { CustomerCreateTicket } from "./pages/customer/customer-create-ticket";
 import { CustomerEquipmentList } from "./pages/customer/customer_equipment_list";
-import { CustomerEditProfile } from "./pages/customer/customer_edit_profile";
-import { MainBdLayout } from "./component/mainbdlayout";
 import { CustomerEquipmentHistory } from "./pages/customer/customer_equipment_history";
-import { AdminTickets } from "./pages/admin/admin_tickets";
+import { EmployeeDashboard } from "./pages/technician/employee_dashboard";
 import { EmployeeEditProfile } from "./pages/common/employee_edit_profile";
+import { EmployeeTicketAssistance } from "./pages/common/employee_ticket_assistance";
+import { LoadingData } from "./pages/common/loading_data";
 // import { Home } from "./pages/home";
 // import { Single } from "./pages/single";
-import { AdminCreateTicket } from "./pages/admin/admin-create-ticket";
 // import { CreateAdmin } from "./pages/admin/admin-create";
 // import { CreateTech } from "./pages/technician/tech-create";
 // import { CreateCustomer } from "./pages/customer/customer-create.js";
-import { LoadingData } from "./pages/common/loading_data";
-import { EmployeeTicketAssistance } from "./pages/common/employee_ticket_assistance";
-import { AdminContactList } from "./pages/admin/admin_contact_list";
 import {CapturePhoto} from "./pages/customer/capture_photo";
-import { EmployeeDashboard } from "./pages/technician/employee_dashboard";
 
 
 const Layout = () => {
@@ -49,6 +50,7 @@ const Layout = () => {
                         <Route element={<AdminDashboard />} path="/admin/dashboard" />
                         <Route element={<AdminTickets />} path="/admin/tickets" />
                         <Route element={<AdminTickets />} path="/admin/tickets/:filter" />
+                        <Route element={<AdminProcessTicket />} path="/admin/process/ticket" />
                         <Route element={<EmployeeDashboard />} path="/employee/dashboard" />
                         <Route element={<EmployeeEditProfile />} path="/admin/edit/profile" />
                         <Route element={<EmployeeTicketAssistance />} path="/employee/ticket/assistance" />

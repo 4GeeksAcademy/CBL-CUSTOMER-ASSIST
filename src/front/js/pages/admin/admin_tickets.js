@@ -21,7 +21,7 @@ export const AdminTickets = () => {
     return (
         <main className="bd-main order-1">
             <div className="bd-intro">
-                <h1 className="border-bottom">Admin Dashboard</h1>
+                <h2 className="border-bottom">Tickets {filter}</h2>
                 {/* <h3>Tickets:</h3> */}
             </div>
             <div className="bd-content">

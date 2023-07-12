@@ -2,7 +2,7 @@
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
 from flask import Flask, request, jsonify, url_for, Blueprint
-from api.models import db, User, Customer, Employee, Ticket, Equipment, Malfunction, Knowledge, TicketKnowledge, TicketEmployeeRelation, Vehicle, Category
+from api.models import db, User, Customer, Employee, Ticket, Equipment, Malfunction, Solution, Knowledge, TicketKnowledge, TicketEmployeeRelation, Vehicle, Category
 from api.utils import generate_sitemap, APIException
 from flask_jwt_extended import create_access_token
 from flask_jwt_extended import get_jwt_identity
@@ -111,8 +111,6 @@ def create_ticket():
     except Exception as e:
         print(e.args)
         return jsonify({"msg": "Exception"}), 400
-    
-
 
 
 @api.route('/user/profile', methods=['GET'])
@@ -202,36 +200,43 @@ def get_employee_assigned_tickets():
         return jsonify({"msg": "No user exist with that email"}), 401
 
     # get all tickets assigned to employee
-    assigned_tickets = TicketEmployeeRelation.query.filter_by(employee_id=user.employee_id).all()
+    assigned_tickets = TicketEmployeeRelation.query.filter_by(
+        employee_id=user.employee_id).all()
     if not assigned_tickets:
         return jsonify({"msg": "No tickets assigned!"}), 401
 
-    tickets_serialized = [ticket.serialize_employee() for ticket in assigned_tickets]
+    tickets_serialized = [ticket.serialize_employee()
+                          for ticket in assigned_tickets]
 
     # filter the ticket with status 'Opened' and 'In Progress'
-    filtered_list_of_tickets = [ticket for ticket in tickets_serialized if ticket['ticket']['status'] in ['Opened', 'In Progress']]
+    filtered_list_of_tickets = [
+        ticket for ticket in tickets_serialized if ticket['ticket']['status'] in ['Opened', 'In Progress']]
     if not filtered_list_of_tickets:
         return '', 204
-    
+
     # get equipment id to get tickets created for this equipment
     equipment_id = filtered_list_of_tickets[0]['equipment']['id']
 
     # get tickets id by equipment_id
     tickets = Ticket.query.filter_by(equipment_id=equipment_id).all()
-    tickets_id = [tickets_id.serialize_equipment_knowledge() for tickets_id in tickets] if tickets else []
+    tickets_id = [tickets_id.serialize_equipment_knowledge()
+                  for tickets_id in tickets] if tickets else []
 
     # get TicketKnowledges that contains tickets id with tickets_id
-    knowledges = TicketKnowledge.query.filter(TicketKnowledge.ticket_id.in_(tickets_id)).all()
+    knowledges = TicketKnowledge.query.filter(
+        TicketKnowledge.ticket_id.in_(tickets_id)).all()
 
-    # serialize Knowledges 
-    serialized_knowledges = [knowledge.serialize_employee() for knowledge in knowledges]
+    # serialize Knowledges
+    serialized_knowledges = [knowledge.serialize_employee()
+                             for knowledge in knowledges]
 
     # add serialized_knowledges to final dictionary
     filtered_list_of_tickets[0]['equipment']['knowledge'] = serialized_knowledges
 
-    # get customer authentication data 
-    customer_info = User.query.filter_by(customer_id = filtered_list_of_tickets[0]['customer']['id']).one_or_none();
-    authentication_data = customer_info.serialize_employee();
+    # get customer authentication data
+    customer_info = User.query.filter_by(
+        customer_id=filtered_list_of_tickets[0]['customer']['id']).one_or_none()
+    authentication_data = customer_info.serialize_employee()
 
     # add authentication customer data to final dictionary
     filtered_list_of_tickets[0]['customer']['authentication'] = authentication_data
@@ -251,13 +256,14 @@ def assign_employee_ticket():
     if user.user_type.type != "admin":
         return jsonify({"msg": "Only admins have access to this endpoint!"}), 403
 
-    data = request.get_json() 
+    data = request.get_json()
 
     ticket = Ticket.query.get(data['ticket_id'])
     if not ticket:
         return jsonify({'msg': 'Ticket not found'}), 401
 
-    employees = Employee.query.filter(Employee.id.in_(data['employee_ids'])).all()
+    employees = Employee.query.filter(
+        Employee.id.in_(data['employee_ids'])).all()
     # employee = Employee.query.get(data['employee_id'])
     if not employees:
         return jsonify({'msg': 'Employee(s) not found'}), 401
@@ -296,7 +302,8 @@ def dismiss_employees_ticket():
     if not ticket:
         return jsonify({'msg': 'Ticket not found'}), 401
 
-    employees = Employee.query.filter(Employee.id.in_(data['employee_ids'])).all()
+    employees = Employee.query.filter(
+        Employee.id.in_(data['employee_ids'])).all()
     # employee = Employee.query.get(data['employee_id'])
     if not employees:
         return jsonify({'msg': 'Employee(s) not found'}), 401
@@ -434,7 +441,8 @@ def save_actions_taken():
 
     data = request.json
 
-    knowledges = [TicketKnowledge(**knowledge) for knowledge in data['ticket_knowledges']]
+    knowledges = [TicketKnowledge(**knowledge)
+                  for knowledge in data['ticket_knowledges']]
     db.session.bulk_save_objects(knowledges)
     db.session.commit()
 
@@ -646,7 +654,7 @@ def assign_vehicle_ticket():
     if user.user_type.type != "admin":
         return jsonify({"msg": "Only admins have access to this endpoint!"}), 403
 
-    data = request.get_json() 
+    data = request.get_json()
 
     ticket = Ticket.query.get(data['ticket_id'])
     if not ticket:
@@ -667,7 +675,7 @@ def assign_vehicle_ticket():
 
     # assign assing_vehicle to ticket
     ticket.vehicle_id = assign_vehicle.id
-    
+
     db.session.commit()
 
     return jsonify({'msg': 'Vehicle assigned successfully to ticket'}), 200
@@ -685,7 +693,7 @@ def dismiss_vehicle_ticket():
     if user.user_type.type != "admin":
         return jsonify({"msg": "Only admins have access to this endpoint!"}), 403
 
-    data = request.get_json() 
+    data = request.get_json()
 
     ticket = Ticket.query.get(data['ticket_id'])
     if not ticket:
@@ -700,10 +708,11 @@ def dismiss_vehicle_ticket():
 
     # dismiss dismiss_vehicle from ticket
     ticket.vehicle_id = None
-    
+
     db.session.commit()
 
     return jsonify({'msg': 'Vehicle assigned successfully to ticket'}), 200
+
 
 @api.route('/user/active/state', methods=['PUT'])
 @jwt_required()
@@ -901,7 +910,6 @@ def admin_update_ticket():
         return jsonify({"msg": "Something went wrong when updating the ticket"}), 400
 
 
-
 @api.route('/employee/categories', methods=['GET'])
 @jwt_required()
 def get_categories():
@@ -970,7 +978,7 @@ def employee_toggle_available():
         employee_to_update.available = True
         db.session.commit()
         return jsonify({'msg': 'User set to available'}), 200
-    
+
 
 @api.route('/admin/contact/list', methods=['GET'])
 @jwt_required()
@@ -978,16 +986,86 @@ def get_contact_list():
     current_user_email = get_jwt_identity()
     user = User.query.filter_by(email=current_user_email).one_or_none()
 
-    if not user: 
+    if not user:
         return jsonify({"msg": "Unauthorized access!"}), 401
 
-    customers = User.query.filter_by(user_type_id = 4).all()
+    customers = User.query.filter_by(user_type_id=4).all()
     employees = User.query.filter(User.user_type_id != 4).all()
-    
+
     response_body = {
         "customer": [customer.serialise_contact() for customer in customers] if customers else [],
         "employee": [employee.serialise_contact() for employee in employees] if employees else []
     }
-    
-    return jsonify(response_body), 200  
 
+    return jsonify(response_body), 200
+
+
+@api.route('/admin/create/knowledge', methods=['POST'])
+@jwt_required()
+def admin_create_knowledge():
+    try:
+        user_email = get_jwt_identity()
+        user = User.query.filter_by(email=user_email).one_or_none()
+
+        if not user:
+            return jsonify({"msg": "No user exist with that email"}), 401
+
+        if user.user_type.type != "admin":
+            return jsonify({"msg": "Only admins have access to this endpoint!"}), 403
+
+        data = request.json
+
+        malfunction_description = data['malfunction_description']
+        solution_description = data["solution_description"]
+        category_id = data["category_id"]
+        equipment_id = data["equipment_id"]
+        ticket_id = data["ticket_id"]
+
+        print("##########################################")
+        print(malfunction_description)
+        print(solution_description)
+        print(category_id)
+        print(equipment_id)
+        print(ticket_id)
+        print("##########################################")
+
+        malfunction = Malfunction()
+        malfunction.description = malfunction_description
+        db.session.add(malfunction)
+        db.session.flush()
+
+        solution = Solution()
+        solution.description = solution_description
+        db.session.add(solution)
+        db.session.flush()
+
+        knowledge = Knowledge()
+        knowledge.category_id = category_id
+        knowledge.malfunction_id = malfunction.id
+        knowledge.solution_id = solution.id
+        db.session.add(knowledge)
+        db.session.flush()
+
+        ticket_knowledge = TicketKnowledge()
+        ticket_knowledge.knowledge_id = knowledge.id
+        ticket_knowledge.ticket_id = ticket_id
+        ticket_knowledge.equipment_id = equipment_id
+        db.session.add(ticket_knowledge)
+        db.session.flush()
+
+        db.session.commit()
+
+        new_knowledge = Knowledge.query.get(knowledge.id)
+
+        print("##########################################")
+        print(new_knowledge.serialize_full())
+        print("##########################################")
+
+        return jsonify({
+            "msg": "Knowledge created successfully",
+            "new_knowledge": new_knowledge.serialize_full()
+        }), 201
+
+    except Exception as e:
+        print(e)
+        return jsonify({"msg": "Exception"}), 400

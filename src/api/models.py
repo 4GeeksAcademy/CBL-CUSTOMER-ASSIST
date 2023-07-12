@@ -397,6 +397,7 @@ class Category(db.Model):
 
     def serialize_options(self):
         return {
+            "id": self.id,
             "value": self.description,
             "label": self.description
         }
