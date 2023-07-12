@@ -1,5 +1,6 @@
 import equipmentPhotoUrl from "../../assets/img/dm160.jpg";
 import vehiclePhotoUrl from "../../assets/img/8568jn.jpg";
+import { Navigate } from "react-router-dom";
 
 const getState = ({ getStore, getActions, setStore }) => {
 	return {
@@ -655,12 +656,13 @@ const getState = ({ getStore, getActions, setStore }) => {
 				new bootstrap.Modal(myModal).toggle();
 			},
 
-			showModalProcessTicket: (data) => {
-				const processTicketModal = document.querySelector('#processTicketModal');
+			// showModalProcessTicket: (data) => {
+			startProcessTicket: (data) => {
+				// const processTicketModal = document.querySelector('#processTicketModal');
 
 				setStore({ processTicket: data });
 
-				new bootstrap.Modal(processTicketModal).toggle();
+				// new bootstrap.Modal(processTicketModal).toggle();
 			},
 
 			getAdminUserList: async () => {
