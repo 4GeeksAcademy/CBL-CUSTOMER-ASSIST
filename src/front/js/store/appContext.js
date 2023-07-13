@@ -33,6 +33,7 @@ const injectContext = PassedComponent => {
 			state.actions.syncAssignedTicketFromLocalStorage();
 			state.actions.syncCategoryOptionsFromSessionStorage();
 			state.actions.syncKnowledgeListFromSessionStorage();
+			state.actions.syncContactListFromSessionStorage();
 		}, []);
 
 

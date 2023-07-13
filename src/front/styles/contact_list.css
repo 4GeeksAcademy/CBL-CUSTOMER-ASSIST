@@ -18,3 +18,26 @@
 .table {
     border-color: rgba(239, 239, 239, 0.563);
 }
+
+/* .table-parent {
+  position: fixed;
+} */
+
+/* .fixed-height {
+  height: 300px; 
+  overflow-y: auto; 
+} */
+
+ /* .table-parent {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  height: 100%; 
+} */
+
+/* .table-container {
+  flex: 1;
+  overflow-y: auto;
+}  */
+
+
