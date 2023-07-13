@@ -48,101 +48,100 @@ export const EmployeeEditProfile = () => {
     return (
         <main className="bd-main order-1">
             <div className="bd-intro">
-                <h1 className="border-bottom">{!editProfile? title : 'Edit ' + title }</h1>
-                {/* <h3>Tickets:</h3> */}
+                <h3 className="border-bottom">{!editProfile ? title : 'Edit ' + title}</h3>
             </div>
             <div className="bd-content">
-            <form onSubmit={e => e.preventDefault()} noValidate>
+                <form onSubmit={e => e.preventDefault()} noValidate>
 
-                {/* AUTHENTICATION INFO */}
-                <h5 className="mt-1 mb-0">Authentication Info</h5>
-                <hr className="mt-0"></hr>
-                <div className="row g-2">
+                    {/* AUTHENTICATION INFO */}
+                    <h5 className="mt-1 mb-0">Authentication Info</h5>
+                    <hr className="mt-0"></hr>
+                    <div className="row g-2">
 
-                    {/* EMAIL */}
-                    <div className="col-12 col-md-6">
-                        <div className="form-floating">
-                            <input type="email" className="form-control" id="emailInput" placeholder="your.email@adress.com"
-                               disabled={!editProfile}
-                               value={updateProfile.user_info.hasOwnProperty('email') ? updateProfile.user_info.email : userInfo.email}
-                               onChange={handleInput('user_info', 'email')}/>
-                            <label htmlFor="emailInput">Email address</label>
+                        {/* EMAIL */}
+                        <div className="col-12 col-md-6">
+                            <div className="form-floating">
+                                <input type="email" className="form-control" id="emailInput" placeholder="your.email@adress.com"
+                                    disabled={!editProfile}
+                                    value={updateProfile.user_info.hasOwnProperty('email') ? updateProfile.user_info.email : userInfo.email}
+                                    onChange={handleInput('user_info', 'email')} />
+                                <label htmlFor="emailInput">Email address</label>
+                            </div>
+                        </div>
+
+                        {/* PASSWORD */}
+                        <div className="col-12 col-md-6">
+                            <div className="form-floating">
+                                <input type="password" className="form-control" id="passwordInput" placeholder="your.password"
+                                    disabled={!editProfile}
+                                    value={updateProfile.user_info.hasOwnProperty('password') ? updateProfile.user_info.password : userInfo.password}
+                                    onChange={handleInput('user_info', 'password')} />
+                                <label htmlFor="passwordInput">Password</label>
+                            </div>
+                        </div>
+
+                        {/* USER TYPE */}
+                        {userInfo.user_type !== 'admin'
+                            ?
+                            <div className="col-12 col-md-6">
+                                <div className="form-floating">
+                                    <select className="form-select" id="userTypeSelect" disabled={!editProfile}>
+                                        <option defaultValue={true}>Select a type for this user</option>
+                                        <option value="1">Admin</option>
+                                        <option value="2">Engineer</option>
+                                        <option value="3">Technician</option>
+                                    </select>
+                                    <label htmlFor="userTypeSelect">User type</label>
+                                </div>
+                            </div>
+                            : null}
+                    </div>
+
+                    {/* PERSONAL INFO */}
+                    <h5 className="mt-5 mb-0">Personal Info</h5>
+                    <hr className="mt-0"></hr>
+                    <div className="row g-2">
+
+                        {/* FIRST NAME */}
+                        <div className="col-12 col-md-6">
+                            <div className="form-floating">
+                                <input type="text" className="form-control" id="firstNameInput" placeholder="your first name"
+                                    disabled={!editProfile}
+                                    value={updateProfile.employee_info.hasOwnProperty('first_name') ? updateProfile.employee_info.first_name : employeeInfo.first_name}
+                                    onChange={handleInput('employee_info', 'first_name')}
+                                    required />
+                                <label htmlFor="firstNameInput">First Name</label>
+                            </div>
+                        </div>
+
+                        {/* LAST NAME */}
+                        <div className="col-12 col-md-6">
+                            <div className="form-floating">
+                                <input type="text" className="form-control" id="lastNameInput" placeholder="your last name"
+                                    disabled={!editProfile}
+                                    value={updateProfile.employee_info.hasOwnProperty('last_name') ? updateProfile.employee_info.last_name : employeeInfo.last_name}
+                                    onChange={handleInput('employee_info', 'last_name')}
+                                    required />
+                                <label htmlFor="lastNameInput">Last Name</label>
+                            </div>
                         </div>
                     </div>
 
-                    {/* PASSWORD */}
-                    <div className="col-12 col-md-6">
-                        <div className="form-floating">
-                            <input type="password" className="form-control" id="passwordInput" placeholder="your.password"
-                               disabled={!editProfile}
-                               value={updateProfile.user_info.hasOwnProperty('password') ? updateProfile.user_info.password : userInfo.password}
-                               onChange={handleInput('user_info', 'password')}/>
-                            <label htmlFor="passwordInput">Password</label>
+                    {/* ENABLE INPUTS + SUBMIT BUTTON*/}
+                    <div className="row g-2">
+                        {/* <div className="col-md"> */}
+
+                        <div className="d-flex align-items-end flex-column mt-3">
+                            <div className="form-check">
+                                <input className="form-check-input me-2" checked={editProfile} onChange={() => setEditProfile(!editProfile)} type="checkbox" id="flexCheckDefault" />
+                                <label className="form-check-label" htmlFor="flexCheckDefault">Edit Profile</label>
+                            </div>
+                            <div className="mt-2 ">
+                                <button disabled={!editProfile} className="btn btn-primary" style={{ width: "100px" }} onClick={() => handleUpdateProfile()}>Save</button>
+                            </div>
                         </div>
                     </div>
-
-                    {/* USER TYPE */}
-                    { userInfo.user_type !== 'admin'
-                    ?
-                    <div className="col-12 col-md-6">
-                        <div className="form-floating">
-                            <select className="form-select" id="userTypeSelect" disabled={!editProfile}>
-                                <option defaultValue={true}>Select a type for this user</option>
-                                <option value="1">Admin</option>
-                                <option value="2">Engineer</option>
-                                <option value="3">Technician</option>
-                            </select>
-                            <label htmlFor="userTypeSelect">User type</label>
-                        </div>
-                    </div>
-                    : null}
-                </div>
-
-                {/* PERSONAL INFO */}
-                <h5 className="mt-5 mb-0">Personal Info</h5>
-                <hr className="mt-0"></hr>
-                <div className="row g-2">
-
-                    {/* FIRST NAME */}
-                    <div className="col-12 col-md-6">
-                        <div className="form-floating">
-                            <input type="text" className="form-control" id="firstNameInput" placeholder="your first name"
-                            disabled={!editProfile}
-                            value={updateProfile.employee_info.hasOwnProperty('first_name') ? updateProfile.employee_info.first_name : employeeInfo.first_name}
-                            onChange={handleInput('employee_info', 'first_name')}
-                            required/>
-                            <label htmlFor="firstNameInput">First Name</label>
-                        </div>
-                    </div>
-
-                    {/* LAST NAME */}
-                    <div className="col-12 col-md-6">
-                        <div className="form-floating">
-                            <input type="text" className="form-control" id="lastNameInput" placeholder="your last name"
-                            disabled={!editProfile}
-                            value={updateProfile.employee_info.hasOwnProperty('last_name') ? updateProfile.employee_info.last_name : employeeInfo.last_name}
-                            onChange={handleInput('employee_info', 'last_name')}
-                            required/>
-                            <label htmlFor="lastNameInput">Last Name</label>
-                        </div>
-                    </div>
-                </div>
-                
-                {/* ENABLE INPUTS + SUBMIT BUTTON*/}
-                <div className="row g-2">
-                    {/* <div className="col-md"> */}
-
-                    <div className="d-flex align-items-end flex-column mt-3">
-                        <div className="form-check">
-                            <input className="form-check-input me-2" checked={editProfile} onChange={() => setEditProfile(!editProfile)} type="checkbox" id="flexCheckDefault" />
-                            <label className="form-check-label" htmlFor="flexCheckDefault">Edit Profile</label>
-                        </div>
-                        <div className="mt-2 ">
-                            <button disabled={!editProfile} className="btn btn-primary" style={{ width: "100px" }} onClick={() => handleUpdateProfile()}>Save</button>
-                        </div>
-                    </div>
-                </div>
-            </form>
+                </form>
             </div>
         </main>
     );
