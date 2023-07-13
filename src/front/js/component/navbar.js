@@ -13,9 +13,9 @@ export const Navbar = () => {
 	const [display, setDisplay] = useState("");
 
 	useEffect(() => {
-		if(userType !== "" && userType !== undefined){
+		if (userType !== "" && userType !== undefined) {
 			if (userType === "customer") setUserName(store.userProfile.customer_info.company_name)
-			else setUserName(`${store.userProfile.employee_info.first_name} ${store.userProfile.employee_info.last_name}`  )
+			else setUserName(`${store.userProfile.employee_info.first_name} ${store.userProfile.employee_info.last_name}`)
 		}
 	}, [userType])
 
@@ -65,18 +65,23 @@ export const Navbar = () => {
 								<button className="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
 									<i className="fs-4 fa-regular fa-circle-user"></i>
 								</button>
-								<ul className="dropdown-menu dropdown-menu-end">
+								<ul className="dropdown-menu dropdown-menu-end mx-0 shadow w-220px">
 									<li>
-										<Link to={`${userType === 'admin' ? '/admin/edit/profile' : userType === 'engineer' || userType === 'technician' ? '/employee/edit/profile' : '/customer/edit/profile'}`}>
-											<button className="dropdown-item">Edit Profile</button>
+										<Link className="dropdown-item d-flex gap-2 align-items-center" to={`${userType === 'admin' ? '/admin/edit/profile' : userType === 'engineer' || userType === 'technician' ? '/employee/edit/profile' : '/customer/edit/profile'}`}>
+											<i className="fa-solid fa-user-pen"></i>Edit Profile
 										</Link>
 									</li>
-									<li><button onClick={() => {
-										setUserName("");
-										actions.logout();
-										setDisplay("")
-										navigate("/")
-									}} className="btn btn-light me-3">Logout</button></li>
+									<li><hr className="dropdown-divider" /></li>
+									<li> 
+									<div className="dropdown-item d-flex gap-2 align-items-center btn align-items-center"
+										onClick={() => {
+											setUserName("");
+											actions.logout();
+											setDisplay("")
+											navigate("/")
+										}}><i className="fa-solid fa-circle-xmark"></i>Logout
+										</div>
+									</li>
 								</ul>
 							</div>
 						</div>
