@@ -72,6 +72,7 @@ export const Navbar = () => {
 										</Link>
 									</li>
 									<li><button onClick={() => {
+										setUserName("");
 										actions.logout();
 										setDisplay("")
 										navigate("/")
