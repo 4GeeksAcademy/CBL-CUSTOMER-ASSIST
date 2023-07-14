@@ -1,7 +1,3 @@
-import equipmentPhotoUrl from "../../assets/img/dm160.jpg";
-import vehiclePhotoUrl from "../../assets/img/8568jn.jpg";
-import { Navigate } from "react-router-dom";
-
 const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {

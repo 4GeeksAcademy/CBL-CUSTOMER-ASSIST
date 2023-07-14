@@ -1,16 +1,11 @@
 import React, { useState, useContext, useEffect } from "react";
 import { Context } from "../../store/appContext";
-import vehiclePhoto from "../../../assets/img/8568jn.jpg";
 
 export const ProcessVehicleInfoCard = () => {
     const { store, actions } = useContext(Context);
     const kmOnLeave = store.processTicket.km_on_leave;
     const kmOnArrival = store.processTicket.km_on_arrival;
     const data = store.processTicket.vehicle_assigned;
-
-
-    // TODO: change this for URL from database
-    data.vehicle_photo = vehiclePhoto;
 
     return (
         <div className="mb-3">

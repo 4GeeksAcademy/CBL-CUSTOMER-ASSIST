@@ -138,14 +138,5 @@
         "vehicle_id": 2,
         "km_on_leave": 37700,
         "km_on_arrival": 37800
-    },
-    {
-        "customer_id": 1,
-        "equipment_id": 2,
-        "intervention_type": true,
-        "subject": "Main motor fail",
-        "description": "Main motor doesn't run after first switch on and all safetys validated.",
-        "status": "New",
-        "open_ticket_time": "2023-06-20 07:38:00"
     }
 ]

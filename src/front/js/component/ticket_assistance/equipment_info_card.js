@@ -1,13 +1,10 @@
 import React, {useContext} from "react";
 import { Context } from "../../store/appContext";
-import equipmentPhoto from "../../../assets/img/dm160.jpg";
 
 export const EquipmentInfoCard = () => {
   const { actions, store } = useContext(Context);
   const data = store.assignedTicket.equipment;
 
-  // TODO: get photo url from database retrived by Cloudinary
-  data.equipment_photo = equipmentPhoto;
   return (
     <div className="mb-3">
       <h4 className="border-bottom">Equipment Information</h4>

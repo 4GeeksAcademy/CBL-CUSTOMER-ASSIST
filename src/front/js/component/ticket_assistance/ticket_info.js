@@ -9,8 +9,7 @@ export const TicketInfo = () => {
     const { actions, store} = useContext(Context);
     const data = store.assignedTicket.ticket;
 
-    // TODO: substitute with url's from cloudinary retrieved from database
-    data.customer_media = [];
+    data.customer_media = store.assignedTicket.ticket.customer_media;
 
     return (
         <div className="mb-3">

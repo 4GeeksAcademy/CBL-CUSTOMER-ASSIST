@@ -11,9 +11,6 @@ export const VehicleInfoCard = () => {
         const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
     }, [])
 
-    // TODO: change this for URL from database
-    data.vehicle_photo = data.vehicle_photo;
-
     const [editKilometers, setEditKilometers] = useState(false);
     const [editKilometersOnLeave, setEditKilometersOnLeave] = useState(false);
     const [editKilometersOnArrival, setEditKilometersOnArrival] = useState(false);
