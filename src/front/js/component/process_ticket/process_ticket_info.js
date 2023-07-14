@@ -10,11 +10,7 @@ export const ProcessTicketInfo = () => {
     const ticket = store.processTicket;
 
     // TODO: substitute with url's from cloudinary retrieved from database
-    ticket.customer_media = [
-        "https://picsum.photos/1040/500",
-        "https://picsum.photos/1040/500",
-        "https://picsum.photos/1040/500"
-    ];
+    ticket.customer_media = store.processTicket.customer_media;
 
     return (
         <div className="mb-3">

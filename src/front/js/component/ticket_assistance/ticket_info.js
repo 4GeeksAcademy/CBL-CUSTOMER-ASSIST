@@ -10,11 +10,7 @@ export const TicketInfo = () => {
     const data = store.assignedTicket.ticket;
 
     // TODO: substitute with url's from cloudinary retrieved from database
-    data.customer_media = [
-        "https://picsum.photos/1040/500",
-        "https://picsum.photos/1040/500",
-        "https://picsum.photos/1040/500"
-    ];
+    data.customer_media = [];
 
     return (
         <div className="mb-3">

@@ -1,6 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
 import { Context } from "../../store/appContext";
-import vehiclePhoto from "../../../assets/img/8568jn.jpg";
 
 export const VehicleInfoCard = () => {
     const { store, actions } = useContext(Context);
@@ -13,7 +12,7 @@ export const VehicleInfoCard = () => {
     }, [])
 
     // TODO: change this for URL from database
-    data.vehicle_photo = vehiclePhoto;
+    data.vehicle_photo = data.vehicle_photo;
 
     const [editKilometers, setEditKilometers] = useState(false);
     const [editKilometersOnLeave, setEditKilometersOnLeave] = useState(false);

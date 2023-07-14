@@ -10,6 +10,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			message: null,
 			customerTickets: [],
 			equipmentList: [],
+			customer_media: [],
 			tickets: [],
 			manufacturerAddress: "Mecânica Exacta, S.A., Rua António Gomes da Cruz, São Paio de Oleiros", // TODO
 			assignedTicket: {
@@ -27,6 +28,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 			processTicket: {
 				customer_info: {},
+				customer_media: [],
 				equipment: {
 					knowledge: []
 				},
@@ -35,74 +37,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 				ticket_employee: [
 					{observations: null}
 				]
-			},
-			assignedTicket___: {
-				"id": 11,
-				"status": "Opened",
-				"intervention_type": true,
-				"subject": "Main motor doesn't start",
-				"description": "After main switch turned on and after all safety validations, the main motor doesn't start!",
-				"vehicle": { // TODO
-					licence_plate: "85-68-JN",
-					model: "Megane",
-					maker: "Renault",
-					photo: vehiclePhotoUrl
-				},
-				"customer": {
-					id: 1,
-					company_name: "Automotive Parts",
-					phone: 5551234567,
-					contact_person: "Abe Lashtar",
-					address_1: "R. Vale do Grou",
-					address_2: "1378",
-					zipcode: "3754-908",
-					city: "Águeda",
-					company_email: "automotive.parts@email.com",
-					customer_email: "customer1@email.com",
-					authentication: {
-						user_email: "customer1@email.com",
-						password: "Y3VzdG9tZXIx"
-					}
-				},
-				"equipment": {
-					"id": 4,
-					"serial_number": "AA0101",
-					"model": "CC63",
-					"im109": 101,
-					"photo": equipmentPhotoUrl, // TODO: IMPROVEMENT
-					"knowledge": [
-						{
-							"id": 16,
-							"category": {
-								"id": 2,
-								"description": "Mechanical"
-							},
-							"malfunction": {
-								"id": 3,
-								"description": "Malfunction 3"
-							},
-							"solution": {
-								"id": 3,
-								"description": "Solution 3"
-							}
-						},
-						{
-							"id": 17,
-							"category": {
-								"id": 2,
-								"description": "Mechanical"
-							},
-							"malfunction": {
-								"id": 6,
-								"description": "Malfunction 6"
-							},
-							"solution": {
-								"id": 6,
-								"description": "Solution 6"
-							}
-						}
-					]
-				},
 			},
 			categoryOptions: [],
 			knowledgeList: [],
@@ -285,7 +219,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				// needs to have error handle
 			},
 
-			customerCreateTicket: async (equipmentId, interventionType, subject, description) => {
+			customerCreateTicket: async (equipmentId, interventionType, subject, description, customerMedia) => {
 				console.log("action: createCustomerTicket");
 				const token = getStore().token;
 				const opts = {
@@ -298,7 +232,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 						equipment_id: equipmentId,
 						intervention_type: interventionType,
 						subject: subject,
-						description: description
+						description: description,
+						customer_media: customerMedia
 					})
 				};
 				try {
@@ -1108,7 +1043,36 @@ const getState = ({ getStore, getActions, setStore }) => {
 				getActions().sessionStorageAndSetStoreDataSave('processTicket', NewProcessTicket);
 
 				return [response.status, data.msg];
-			}
+			},
+
+			setCustomerMedia: (customerMedia) => {
+				setStore({customer_media: customerMedia});
+			},
+
+			saveCustomerMedia: async (ticketID, customerMediaURLS) => {
+				console.log('action: saveCustomerMedia');
+				const token = getStore().token;
+				const opts = {
+					method: "PUT",
+					headers: {
+						"Content-Type": "application/json",
+						"Authorization": "Bearer " + token
+					},
+					body: JSON.stringify({
+						'ticket_id': ticketID,
+						'customer_media': customerMediaURLS
+					})
+				}
+				const response = await fetch(process.env.BACKEND_URL + "api/save/customer/media", opts);
+				const data = await response.json();
+
+				if (response.status !== 200) {
+					console.log(response.status, data.msg);
+					return [response.status, data.msg];
+				}
+
+				return [response.status, data.msg];
+			},
 
 		}
 	};
