@@ -31,7 +31,7 @@ export const CustomerEquipmentList = () => {
         <main className="bd-main order-1">
            <div className="bd-intro">
                 <div className="border-bottom mb-4 mt-3">
-                    <h1>Equipment List</h1>
+                    <h3>Equipment List</h3>
                 </div>
                 <div>
                     <div className="mb-3 p-3 col-sm-12 col-md-8 col-lg-8 mx-auto d-flex ">

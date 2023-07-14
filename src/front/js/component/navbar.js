@@ -23,7 +23,7 @@ export const Navbar = () => {
 
 	return (
 		<header className="navbar navbar-expand-lg bd-navbar sticky-top bg-secondary" style={{minHeight: "65px"}}>
-			<nav className="container-xxl bd-gutter flex-wrap flex-lg-nowrap align-items-center" aria-label="Main navigation">
+			<nav className="container-xxl flex-wrap flex-lg-nowrap align-items-center" aria-label="Main navigation">
 				<div className="d-flex align-items-center me-auto">
 
 					{/* HAMBURGER FOR SIDEBAR */}
@@ -38,7 +38,7 @@ export const Navbar = () => {
 
 					{/* LOGO */}
 					<div>
-						<span className="navbar-brand p-0 me-0 me-lg-2" aria-label="CBL Desk">CBL Desk</span>
+						<span className="navbar-brand p-0 me-auto" aria-label="CBL Desk">CBL Desk</span>
 					</div>
 				</div>
 				{userName !== "" || userName !== undefined ?

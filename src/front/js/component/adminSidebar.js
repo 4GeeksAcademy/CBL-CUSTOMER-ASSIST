@@ -46,9 +46,9 @@ export const AdminSidebar = () => {
 								<Link to={'/admin/tickets/resolved'}>
 									<li><span className="bd-links-link d-inline-block rounded">Resolved</span></li>
 								</Link>
-								<Link to={'/admin/create/ticket'}>
+								{/* <Link to={'/admin/create/ticket'}>
 									<li><strong><span className="bd-links-link d-inline-block rounded">Create Ticket</span></strong></li>
-								</Link>
+								</Link> */}
 							</ul>
 						</li>
 

@@ -18,10 +18,21 @@ export const AdminTickets = () => {
     const availableEmployees = store.availableEmployees;
     const availableVehicles = store.availableVehicles;
 
+    const formatTitle = (value) => {
+        // const str = value;
+        // const str2 = str.charAt(0).toUpperCase() + str.slice(1);
+        // return str2;
+        if (value === "new") return "New";
+        if (value === "opened") return "Opened";
+        if (value === "inprogress") return "In Progress";
+        if (value === "resolved") return "Resolved";
+        if (value === "closed") return "Closed";
+    }
+
     return (
         <main className="bd-main order-1">
             <div className="bd-intro">
-                <h2 className="border-bottom">Tickets {filter}</h2>
+                <h2 className="border-bottom">Tickets {formatTitle(filter)}</h2>
                 {/* <h3>Tickets:</h3> */}
             </div>
             <div className="bd-content">
