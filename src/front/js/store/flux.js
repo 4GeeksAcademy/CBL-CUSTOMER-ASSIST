@@ -158,6 +158,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 				if (sessionStorage.getItem('knowledgeList')) return setStore({ knowledgeList: JSON.parse(sessionStorage.getItem('knowledgeList')) });
 			},
 
+			syncContactListFromSessionStorage: () => {
+				if (sessionStorage.getItem('contactList')) return setStore({ contactList: JSON.parse(sessionStorage.getItem('contactList')) })
+			},
+
 			syncAssignedTicketFromLocalStorage: () => {
 				console.log('estou aqui')
 				if (localStorage.getItem('assignedTicket')) return setStore({ assignedTicket: JSON.parse(localStorage.getItem('assignedTicket')) });

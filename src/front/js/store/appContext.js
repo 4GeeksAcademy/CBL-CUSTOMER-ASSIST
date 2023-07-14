@@ -34,6 +34,7 @@ const injectContext = PassedComponent => {
 			state.actions.syncProcessTicketFromSessionStorage();
 			state.actions.syncCategoryOptionsFromSessionStorage();
 			state.actions.syncKnowledgeListFromSessionStorage();
+			state.actions.syncContactListFromSessionStorage();
 		}, []);
 
 
