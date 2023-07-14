@@ -3,13 +3,15 @@ import { Context } from "../../store/appContext";
 import Select from 'react-select';
 import { useNavigate } from "react-router-dom";
 import { CapturePhoto } from "./capture_photo";
+import UploadWidget from "../../component/upload_widget";
 
 export const CustomerCreateTicket = () => {
     const { store, actions } = useContext(Context);
     const [subject, setSubject] = useState("");
     const [description, setDescription] = useState("");
     const [equipmentID, setEquipmentID] = useState(null);
-    const [interventionType, setInterventionType] = useState(true)
+    const [interventionType, setInterventionType] = useState(true);
+    const customerMedia = store.customer_media;
     const navigate = useNavigate();
     const interventionOptions = [{
         value: true,
@@ -21,7 +23,7 @@ export const CustomerCreateTicket = () => {
     }];
 
     const createTicket = async () => {
-        const response = await actions.customerCreateTicket(equipmentID, interventionType, subject, description);
+        const response = await actions.customerCreateTicket(equipmentID, interventionType, subject, description, customerMedia );
         if (response) {
             actions.userToastAlert("New Customer Ticket", "Ticket created successfully!");
             // alert("Ticket created!");
@@ -121,7 +123,13 @@ export const CustomerCreateTicket = () => {
                         </div>
                     </div>
                 </div>
-                <div className="d-flex justify-content-center mt-3">
+
+                <div className="d-flex justify-content-center mt-3 gap-3">
+                    
+                    {/* CLOUDINARY */}
+                    <UploadWidget />
+                    
+                    {/* CREATE TICKET */}
                     <button className="btn btn-primary col-4" onClick={() => createTicket()}>Create Ticket</button>
                 </div>
             </div>

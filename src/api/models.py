@@ -202,6 +202,7 @@ class Ticket(db.Model):
     km_on_arrival = db.Column(db.Integer, nullable=True)
     subject = db.Column(db.String(30), nullable=False)
     description = db.Column(db.String(1024), nullable=False)
+    customer_media = db.Column(db.String, nullable=True)
     customer_id = db.Column(db.Integer, db.ForeignKey('customer.id'), nullable=False)
     equipment_id = db.Column(db.Integer, db.ForeignKey('equipment.id'), nullable=False)
     vehicle_id = db.Column(db.Integer, db.ForeignKey('vehicle.id'), nullable=True)
@@ -218,7 +219,8 @@ class Ticket(db.Model):
             "subject": self.subject,
             "description": self.description,
             "customer_id": self.customer_id,
-            "company_name": self.customer.company_name
+            "company_name": self.customer.company_name,
+            "customer_media": self.customer_media.split(',') if self.customer_media else ""
         }
 
     def serialize_cus(self):
@@ -235,6 +237,7 @@ class Ticket(db.Model):
             "subject": self.subject,
             "description": self.description,
             "customer_id": self.customer_id,
+            "customer_media": self.customer_media.split(',') if self.customer_media else "",
             "company_name": self.customer.company_name,
             "knowledge": [knowledge.serialize() for knowledge in self.ticket_knowledge] if self.ticket_knowledge else [],
             "employees_assigned": [employees.serialize_employee_assigned() for employees in self.ticket_employees] if self.ticket_employees else [],
@@ -255,12 +258,12 @@ class Ticket(db.Model):
                 "intervention_type": self.intervention_type,
                 "subject": self.subject,
                 "description": self.description,
-                "customer_media": [] #TODO: photos uploaded from customer
+                "customer_media": self.customer_media.split(',') if self.customer_media else ""
             },
             "customer": self.customer.serialize_employee(),
             "equipment": self.equipment.serialize_employee(),
             "vehicle_assigned": self.vehicle.serialize() if self.vehicle else {},
-            "ticket_employee": [employee.serialize() for employee in self.ticket_employees] if self.ticket_employees else []
+            "ticket_employee": [employee.serialize() for employee in self.ticket_employees] if self.ticket_employees else [],
         }
 
     def serialize_equipment_knowledge(self):
@@ -326,7 +329,7 @@ class Equipment(db.Model):
     serial_number = db.Column(db.String(50), nullable=False)
     model = db.Column(db.String(50), nullable=False)
     im109 = db.Column(db.String(50), nullable=True)
-    equipment_photo = db.Column(db.String(50), nullable=True)
+    equipment_photo = db.Column(db.String, nullable=True)
     customer_id = db.Column(db.Integer, db.ForeignKey('customer.id'), nullable=True)
     tickets = db.relationship('Ticket', backref='equipment', uselist=False)
     ticket_knowledge = db.relationship('TicketKnowledge', backref='equipment', uselist=False)
@@ -409,7 +412,7 @@ class Vehicle(db.Model):
     available = db.Column(db.Boolean, default=True, nullable=False)
     model = db.Column(db.String(50), nullable=True)
     maker = db.Column(db.String(50), nullable=True)
-    vehicle_photo = db.Column(db.String(50), nullable=True)
+    vehicle_photo = db.Column(db.String, nullable=True)
     tickets = db.relationship('Ticket', backref='vehicle', uselist=False)
 
     def serialize(self):
@@ -418,7 +421,7 @@ class Vehicle(db.Model):
             "license_plate": self.license_plate,
             "model": self.model,
             "maker": self.maker,
-            "vehicle_photo": "../../assets/img/8568jn.jpeg", # TODO: change to self.vehicle_photo
+            "vehicle_photo": self.vehicle_photo,
             "value": self.id,
             "label": self.license_plate + " - " + self.maker + " " + self.model,
         }

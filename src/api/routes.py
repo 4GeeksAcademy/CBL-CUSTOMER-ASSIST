@@ -90,6 +90,12 @@ def create_ticket():
         intervention_type = data["intervention_type"]
         subject = data['subject']
         description = data["description"]
+        customer_media = data['customer_media']
+
+        if len(customer_media) > 0:
+            customer_media = ','.join(customer_media)
+        else:
+            customer_media = ""
 
         ticket = Ticket()
         ticket.customer_id = user.customer_id
@@ -97,6 +103,7 @@ def create_ticket():
         ticket.intervention_type = intervention_type
         ticket.subject = subject
         ticket.description = description
+        ticket.customer_media = customer_media
         ticket.status = "New"
         ticket.open_ticket_time = datetime.datetime.now()
         db.session.add(ticket)
@@ -190,6 +197,10 @@ def get_tickets_not_closed():
     response_body = {
         "tickets": [ticket.serialize_cus() for ticket in tickets]
     }
+
+    print("##########################")
+    print(response_body)
+    print("##########################")
     return jsonify(response_body), 200
 
 
@@ -1070,3 +1081,22 @@ def admin_create_knowledge():
     except Exception as e:
         print(e)
         return jsonify({"msg": "Exception"}), 400
+
+
+@api.route('/save/customer/media', methods=['PUT'])
+@jwt_required()
+def save_customer_media():
+    current_user_email = get_jwt_identity()
+    user = User.query.filter_by(email=current_user_email).one_or_none()
+
+    if not user:
+        return jsonify({"msg": "No user exist with that email"}), 401
+
+    data = request.json
+
+    ticket = Ticket.query.get(data['ticket_id'])
+    ticket.customer_media = data['customer_media']
+
+    db.session.commit()
+
+    return jsonify({'msg': 'Customer media successfully saved'}), 200
