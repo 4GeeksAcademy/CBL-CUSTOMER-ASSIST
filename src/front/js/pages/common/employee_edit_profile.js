@@ -30,18 +30,24 @@ export const EmployeeEditProfile = () => {
     const handleUpdateProfile = async () => {
         let newData = { ...updateProfile };
 
-        // // check for empty keys and delete them
-        // for (const key of Object.keys(newData)) {
-        //     if (Object.keys(newData[key]).length === 0) delete newData[key];
-        // }
+        // check for empty keys and delete them
+        for (const key of Object.keys(newData)) {
+            if (Object.keys(newData[key]).length === 0) delete newData[key];
+        }
 
-        // // only submits data if the object is not empty
-        // if (Object.keys(newData).length !== 0) {
-        //     const response = await actions.updateUserProfile(newData);
-        //     response[0] === 200 ? navigate('/') : alert(response[1]);
-        // } else {
-        //     alert('No data to update');
-        // }
+        // only submits data if the object is not empty
+        if (Object.keys(newData).length !== 0) {
+            const response = await actions.updateUserProfile(newData);
+            if (response[0] === 200) {
+                await actions.updateUserProfileLocally(newData);
+                actions.userToastAlert("Profile", "Profile updated successfully!");
+                navigate(userInfo.user_type === "admin" ? '/admin/dashboard' : "/employee/dashboard");
+                return;
+            }
+            alert(response[1]);
+        } else {
+            alert('No data to update');
+        }
 
     }
 
@@ -81,7 +87,7 @@ export const EmployeeEditProfile = () => {
                         </div>
 
                         {/* USER TYPE */}
-                        {userInfo.user_type !== 'admin'
+                        {/* {userInfo.user_type === 'admin'
                             ?
                             <div className="col-12 col-md-6">
                                 <div className="form-floating">
@@ -94,7 +100,7 @@ export const EmployeeEditProfile = () => {
                                     <label htmlFor="userTypeSelect">User type</label>
                                 </div>
                             </div>
-                            : null}
+                            : null} */}
                     </div>
 
                     {/* PERSONAL INFO */}

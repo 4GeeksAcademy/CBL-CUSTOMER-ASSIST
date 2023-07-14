@@ -8,19 +8,21 @@ import "../../styles/navbar.css";
 export const Navbar = () => {
 	const { store, actions } = useContext(Context);
 	const navigate = useNavigate();
-	const [userName, setUserName] = useState("");
+	// const [userName, setUserName] = useState("");
+	const employees = ['admin', 'technician', 'engineer'];
+	const userName = employees.includes(store.userProfile.user_info.user_type) ? `${store.userProfile.employee_info.first_name} ${store.userProfile.employee_info.last_name}` : store.userProfile.customer_info.company_name;
 	const userType = store.userProfile.user_info ? store.userProfile.user_info.user_type : "";
 	const [display, setDisplay] = useState("");
 
-	useEffect(() => {
-		if (userType !== "" && userType !== undefined) {
-			if (userType === "customer") setUserName(store.userProfile.customer_info.company_name)
-			else setUserName(`${store.userProfile.employee_info.first_name} ${store.userProfile.employee_info.last_name}`)
-		}
-	}, [userType])
+	// useEffect(() => {
+	// 	if (userType !== "" && userType !== undefined) {
+	// 		if (userType === "customer") setUserName(store.userProfile.customer_info.company_name)
+	// 		else setUserName(`${store.userProfile.employee_info.first_name} ${store.userProfile.employee_info.last_name}`)
+	// 	}
+	// }, [userType, store.userProfile.employee_info.first_name])
 
 	return (
-		<header className="navbar navbar-expand-lg bd-navbar sticky-top bg-secondary">
+		<header className="navbar navbar-expand-lg bd-navbar sticky-top bg-secondary" style={{minHeight: "65px"}}>
 			<nav className="container-xxl bd-gutter flex-wrap flex-lg-nowrap align-items-center" aria-label="Main navigation">
 				<div className="d-flex align-items-center me-auto">
 
@@ -39,10 +41,6 @@ export const Navbar = () => {
 						<span className="navbar-brand p-0 me-0 me-lg-2" aria-label="CBL Desk">CBL Desk</span>
 					</div>
 				</div>
-				{/* User Name & Type */}
-				{/* <div >
-					<div>{renderUserType()}</div>
-				</div> */}
 				{userName !== "" || userName !== undefined ?
 					<div className="text-white me-2 text-end  lh-1">
 						<p className="m-0 fw-semibold">{userName}</p>
@@ -67,7 +65,7 @@ export const Navbar = () => {
 								</button>
 								<ul className="dropdown-menu dropdown-menu-end mx-0 shadow w-220px">
 									<li>
-										<Link className="dropdown-item d-flex gap-2 align-items-center" to={`${userType === 'admin' ? '/admin/edit/profile' : userType === 'engineer' || userType === 'technician' ? '/employee/edit/profile' : '/customer/edit/profile'}`}>
+										<Link className="dropdown-item d-flex gap-2 align-items-center" to={`${employees.includes(userType) ? '/employee/edit/profile' : '/customer/edit/profile'}`}>
 											<i className="fa-solid fa-user-pen"></i>Edit Profile
 										</Link>
 									</li>
@@ -75,7 +73,7 @@ export const Navbar = () => {
 									<li> 
 									<div className="dropdown-item d-flex gap-2 align-items-center btn align-items-center"
 										onClick={() => {
-											setUserName("");
+											// setUserName("");
 											actions.logout();
 											setDisplay("")
 											navigate("/")

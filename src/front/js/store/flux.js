@@ -106,7 +106,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 			categoryOptions: [],
 			knowledgeList: [],
-			userProfile: { user_info: {}, customer_info: {}, employee_info: {} },
+			userProfile: { user_info: {user_type: ""}, customer_info: {company_name: ""}, employee_info: {first_name: "", last_name: ""} },
 			customerEquipmentTickets: [],
 			user: null,
 			modalTitle: null,
@@ -234,7 +234,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				setStore({ equipmentList: [] });
 				setStore({ interventionType: [] });
 				setStore({ tickets: [] });
-				setStore({ userProfile: { user_info: {}, customer_info: {}, employee_info: {} } });
+				setStore({ userProfile: { user_info: {user_type: ""}, customer_info: {company_name: ""}, employee_info: {first_name: "", last_name: ""} } });
 
 				return true;
 			},

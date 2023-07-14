@@ -155,7 +155,7 @@ def updateProfile():
                 setattr(user.customer, k, v)
 
         if 'employee_info' in data:
-            for k, v in data['employee_info'].items:
+            for k, v in data['employee_info'].items():
                 setattr(user.employee, k, v)
 
         db.session.commit()
@@ -163,6 +163,9 @@ def updateProfile():
         return jsonify({"msg": "Profile updated successfully"}), 200
 
     except Exception as e:
+        print("#################################")
+        print(e)
+        print("#################################")
         return jsonify({"msg": "Something went wrong when updating profile"}), 400
 
 
