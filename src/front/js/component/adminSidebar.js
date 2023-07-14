@@ -13,15 +13,15 @@ export const AdminSidebar = () => {
 				<button type="button" className="btn-close" data-bs-dismiss="offcanvas" aria-label="Close" data-bs-target="#bdSidebar"></button>
 			</div>
 
-        	<div className="offcanvas-body">
-          		<nav className="bd-links w-100" id="bd-docs-nav" aria-label="Docs navigation">
+			<div className="offcanvas-body">
+				<nav className="bd-links w-100" id="bd-docs-nav" aria-label="Docs navigation">
 					<ul className="bd-links-nav list-unstyled mb-0 pb-3 pb-md-2 pe-lg-2">
 
 						{/* DASHBOARD */}
 						<li className="bd-links-group py-2" data-bs-target="#bdSidebar" data-bs-dismiss="offcanvas">
 							<Link className="text-decoration-none" to={'admin/dashboard'}>
 								<strong className="bd-links-heading d-flex w-100 align-items-center fw-semibold">
-									<i className="fa-solid fa-gauge-high bi me-2" style={{ color: "var(--bs-indigo)"}}></i>Dashboard
+									<i className="fa-solid fa-gauge-high bi me-2" style={{ color: "var(--bs-indigo)" }}></i>Dashboard
 								</strong>
 							</Link>
 						</li>
@@ -30,50 +30,50 @@ export const AdminSidebar = () => {
 						<li className="bd-links-group py-2" data-bs-target="#bdSidebar" data-bs-dismiss="offcanvas">
 							<Link className="text-decoration-none" to={'admin/tickets'}>
 								<strong className="bd-links-heading d-flex w-100 align-items-center fw-semibold">
-									<i className="fa-solid fa-ticket bi me-2" style={{ color: "var(--bs-teal)"}}></i>Tickets
+									<i className="fa-solid fa-ticket bi me-2" style={{ color: "var(--bs-teal)" }}></i>Tickets
 								</strong>
 							</Link>
 							<ul className="list-unstyled fw-normal pb-2 small">
 								<Link to={'/admin/tickets/new'}>
-								<li><span className="bd-links-link d-inline-block rounded">All New</span></li>
+									<li><span className="bd-links-link d-inline-block rounded">New</span></li>
 								</Link>
 								<Link to={'/admin/tickets/opened'}>
-								<li><span className="bd-links-link d-inline-block rounded">All Opened</span></li>
+									<li><span className="bd-links-link d-inline-block rounded">Opened</span></li>
 								</Link>
 								<Link to={'/admin/tickets/inprogress'}>
-								<li><span className="bd-links-link d-inline-block rounded">All In Progress</span></li>
+									<li><span className="bd-links-link d-inline-block rounded">In Progress</span></li>
 								</Link>
 								<Link to={'/admin/tickets/resolved'}>
-								<li><span className="bd-links-link d-inline-block rounded">All In Resolved</span></li>
+									<li><span className="bd-links-link d-inline-block rounded">Resolved</span></li>
 								</Link>
 								<Link to={'/admin/create/ticket'}>
-								<li><span className="bd-links-link d-inline-block rounded">Create Ticket</span></li>
+									<li><strong><span className="bd-links-link d-inline-block rounded">Create Ticket</span></strong></li>
 								</Link>
 							</ul>
-                        </li>
+						</li>
 
 						{/* USERS */}
 						<li className="bd-links-group py-2" data-bs-target="#bdSidebar" data-bs-dismiss="offcanvas">
 							<Link className="text-decoration-none" to={'get/allusers'}>
 								<strong className="bd-links-heading d-flex w-100 align-items-center fw-semibold">
-                                    <i className="fa-solid fa-users bi me-2" style={{ color: "var(--bs-cyan)"}}></i>Users
+									<i className="fa-solid fa-users bi me-2" style={{ color: "var(--bs-cyan)" }}></i>Users
 								</strong>
 							</Link>
 							<ul className="list-unstyled fw-normal pb-2 small">
-                                <Link to={'admin/contact/list'}>
-    								<li><span className="bd-links-link d-inline-block rounded">All Users</span></li>
-                                </Link>
-                                <Link to={'create/customer'}>
-								    <li><span className="bd-links-link d-inline-block rounded">Create Customer</span></li>
-                                </Link>
-                                <Link to={'create/employee'}>
-    								<li><span className="bd-links-link d-inline-block rounded">Create Employee</span></li>
-                                </Link>
+								<Link to={'admin/contact/list'}>
+									<li><span className="bd-links-link d-inline-block rounded">All Users</span></li>
+								</Link>
+								{/* <Link to={'create/customer'}>
+									<li><span className="bd-links-link d-inline-block rounded">Create Customer</span></li>
+								</Link>
+								<Link to={'create/employee'}>
+									<li><span className="bd-links-link d-inline-block rounded">Create Employee</span></li>
+								</Link> */}
 							</ul>
 						</li>
 					</ul>
 				</nav>
-        	</div>
-    	</div>
+			</div>
+		</div>
 	);
 };
