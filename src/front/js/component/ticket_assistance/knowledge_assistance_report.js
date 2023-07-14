@@ -70,16 +70,55 @@ export const KnowledgeAssistanceReport = () => {
         setKnowledgeFilter(filter);
     }
 
-    const handleAddKnowledgeToReport = (knowledge) => {
-        console.log(knowledge)
-        if (!actionsTaken.includes(knowledge)) {
-            setActionsTaken(actionsTaken => [...actionsTaken, knowledge]);
+    const handleAddKnowledgeToReport = (action) => {
+        const checkActionsTaken = actionsTaken.filter(item => {
+            if (item.id === action.id && item.category === action.category) return true;
+            return false;
+        });
 
-            let actions = [...actionsTaken];
-            actions.push(knowledge);
-            localStorage.setItem('actions_taken', JSON.stringify(actions))
+        const newKnowledgeList = knowledgeList.filter(item => {
+            if (item.id === action.id && item.category === action.category) return false;
+            return true;
+        });
+
+
+        if (checkActionsTaken.length === 0) {
+            const newActionsTaken = [...actionsTaken];
+            newActionsTaken.push(action);
+
+            // updates actions taken added to report
+            localStorage.setItem('actions_taken', JSON.stringify(newActionsTaken))
+            setActionsTaken(newActionsTaken);
+
+            // updates knowledge list select
+            actions.sessionStorageAndSetStoreDataSave('knowledgeList', newKnowledgeList);
+            // setActionsTaken(actionsTaken => [...actionsTaken, knowledge]);
         }
+    }
 
+    const handleRemoveKnowledgeFromReport = (actionToHandle) => {
+        // removes action from report
+        const newActionsTaken = actionsTaken.filter(action => {
+            if (action.id === actionToHandle.id && action.category === actionToHandle.category) return false;
+            return true;
+        });
+
+        // saves actions taken on localStorage and state
+        localStorage.setItem('actions_taken', JSON.stringify(newActionsTaken));
+        setActionsTaken(newActionsTaken);
+        
+        // get removed action
+        const actionToAddToKnowledgeList = actionsTaken.filter(action => {
+            if (action.id === actionToHandle.id && action.category === actionToHandle.category) return true;
+            return false;
+        });
+        
+        // add removed action to knowledgeList
+        const newKnowledgeList = [...knowledgeList];
+        newKnowledgeList.push(actionToAddToKnowledgeList[0]);
+
+        // updates knowledgeList
+        actions.sessionStorageAndSetStoreDataSave('knowledgeList', newKnowledgeList);
     }
 
     const handleEditObservations = () => {
@@ -110,12 +149,15 @@ export const KnowledgeAssistanceReport = () => {
     }
 
     const handleFinishAssistance = async () => {
+        const employeeID = ticketEmployee.employee_id;
+        const vehicleID = store.assignedTicket.vehicle_assigned.id;
         if (isOnline) {
             const response = await handleReportSaveDataToBackend();
             if (response) {
                 toast(toastTitle, 'saved');
                 try {
                     actions.setTicketStage(9);
+                    actions.setEmployeeVehicleAvailable(employeeID, vehicleID);
                     actions.setTicketStatus(ticket.id, "Resolved");
                     localStorage.clear();
                     // actions.resetAssignedTicket();
@@ -231,7 +273,7 @@ export const KnowledgeAssistanceReport = () => {
             {actionsTaken.length > 0 ?
                 actionsTaken.map((action, i) => {
                     return (
-                        <ul className={`list-group mb-3 ${knowledgeFilter.length > 0 ? "opacity-50" : null}`} key={action.id}>
+                        <ul className={`list-group mb-3 ${knowledgeFilter.length > 0 ? "opacity-50" : null}`} key={action.category + action.id}>
 
                             {/* MALFUNCTION */}
                             <li className="list-group-item d-flex justify-content-between align-items-center list-group-item-danger lh-1 fw-medium p-1">
@@ -248,6 +290,10 @@ export const KnowledgeAssistanceReport = () => {
                             </li>
                             <li className="list-group-item d-flex justify-content-between align-items-center list-group-item-success lh-1 fst-italic p-1">
                                 {action.solution}
+                                <span
+                                    className="btn badge text-bg-danger"
+                                    onClick={() => handleRemoveKnowledgeFromReport(action)}
+                                >Remove from report</span>
                             </li>
                         </ul>
                     )

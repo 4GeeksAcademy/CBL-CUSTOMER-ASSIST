@@ -707,7 +707,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				// needs to have error handle
 			},
 
-			toggleEmployeeAvailable: async (id) => {
+			setEmployeeVehicleAvailable: async (employeeID, vehicleID) => {
 				console.log('action: toggleEmployeeAvailable');
 				const token = getStore().token;
 				const opts = {
@@ -716,9 +716,12 @@ const getState = ({ getStore, getActions, setStore }) => {
 						"Content-Type": "application/json",
 						"Authorization": "Bearer " + token
 					},
-					body: JSON.stringify({ 'id': id })
+					body: JSON.stringify({
+						"employee_id": employeeID,
+						"vehicle_id":  vehicleID
+					})
 				}
-				const response = await fetch(process.env.BACKEND_URL + "api/employee/toggle/available", opts);
+				const response = await fetch(process.env.BACKEND_URL + "api/set/employee/vehicle/available", opts);
 				const data = await response.json();
 
 				if (response.status !== 200) {

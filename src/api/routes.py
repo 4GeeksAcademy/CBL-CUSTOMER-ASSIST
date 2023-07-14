@@ -947,7 +947,7 @@ def get_all_knowledges():
     return jsonify({"msg": "All knowledges retrieved.", "knowledge_list": [knowledge.serialize() for knowledge in knowledges]}), 200
 
 
-@api.route('/employee/toggle/available', methods=['PUT'])
+@api.route('/set/employee/vehicle/available', methods=['PUT'])
 @jwt_required()
 def employee_toggle_available():
     current_user_email = get_jwt_identity()
@@ -956,31 +956,29 @@ def employee_toggle_available():
     if not user:
         return jsonify({"msg": "No user exist with that email"}), 401
 
-    if user.user_type.type != "admin":
-        return jsonify({"msg": "Only admins have access to this endpoint!"}), 403
+    allowed_users = ('admin', 'engineer', 'technician')
+    if not user.user_type.type in allowed_users:
+        return jsonify({"msg": "You don't have permission to access to this endpoint!"}), 403
 
     data = request.json
 
-    employee_to_update = Employee.query.get(data['id'])
+    employee_to_update = Employee.query.get(data['employee_id'])
+    vehicle_to_update = Vehicle.query.get(data['vehicle_id'])
 
     print("#######################")
     print(employee_to_update)
+    print(vehicle_to_update)
     print("#######################")
 
-    if not employee_to_update:
-        return jsonify({'msg': 'No employee found to update'}), 404
+    if not employee_to_update and not vehicle_to_update:
+        return jsonify({'msg': 'No employee or vehicle found to update'}), 404
 
-    if employee_to_update.id == user.id:
-        return jsonify({'msg': 'You can not set yourself to inactive'})
+    employee_to_update.available = True
+    vehicle_to_update.available = True
 
-    if employee_to_update.available:
-        employee_to_update.available = False
-        db.session.commit()
-        return jsonify({'msg': 'User set to unavailable'}), 200
-    else:
-        employee_to_update.available = True
-        db.session.commit()
-        return jsonify({'msg': 'User set to available'}), 200
+    db.session.commit()
+
+    return jsonify({'msg': 'User and vehicle set to available'}), 200
 
 
 @api.route('/admin/contact/list', methods=['GET'])
