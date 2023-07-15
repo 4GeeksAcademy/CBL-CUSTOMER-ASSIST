@@ -18,24 +18,12 @@ export const Login = () => {
             await actions.getUserProfile();
 
             if (store.userProfile.user_info.user_type === "customer") {
-                await actions.getCustomerEquipment();
-                await actions.getCustomerTickets();
                 navigate("/customer/dashboard");
             }
             if (store.userProfile.user_info.user_type === "admin") {
-                await actions.getAdminUserList();
-                await actions.getAdminTickets();
-                await actions.getAdminEquipment();
-                await actions.getCategories();
-                await actions.getAvailableEmployees();
-                await actions.getAvailableVehicles();
-                await actions.getContactList();
                 navigate("/admin/dashboard");
             }
             if (userType === "technician" || userType === 'engineer') {
-                await actions.getEmployeeAssignedTicket();
-                await actions.getCategories();
-                await actions.getKnowledgeList();
                 navigate("/employee/dashboard");
             }
         } else if (!response[0]) {

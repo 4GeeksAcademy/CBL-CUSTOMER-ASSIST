@@ -1,6 +1,7 @@
 import React, { useState, useContext, useEffect } from "react";
 import { Context } from "../../store/appContext";
 import { EquipmentHistoryCard } from "../../component/equipment_history_cards";
+import { PageTitle } from "../../component/page_title";
 
 
 export const CustomerEquipmentHistory = () => {
@@ -10,7 +11,7 @@ export const CustomerEquipmentHistory = () => {
     return (
         <main className="bd-main order-1">
             <div className="bd-intro">
-                <h1 className="border-bottom">Equipment History</h1>
+                <PageTitle title={"Equipment History"} />
             </div>
             <div className="bd-content">
                 <div>

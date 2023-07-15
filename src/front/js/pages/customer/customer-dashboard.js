@@ -1,16 +1,20 @@
 import React, { useState, useContext, useEffect } from "react";
 import { Context } from "../../store/appContext";
 import { TicketSmallCustomer } from "../../component/ticket_small_customer";
+import {PageTitle} from "../../component/page_title";
 
 export const CustomerDashboard = () => {
     const { store, actions } = useContext(Context);
     const customerAllowedTicketStatus = ['New', 'Opened', 'In Progress', 'Resolved'];
 
+    useEffect(()=>{
+        actions.getCustomerTickets();
+    }, []);
+
     return (
         <main className="bd-main order-1">
             <div className="bd-intro">
-                <h3 className="border-bottom">Dashboard</h3>
-                {/* <h3>Tickets:</h3> */}
+                <PageTitle title={"Dashboard"} />
             </div>
             <div className="bd-content">
                 {store.tickets != null || undefined ? store.tickets
