@@ -28,6 +28,12 @@ export const AdminCreateTicket = () => {
             alert("Error");
         } 
     }
+
+    useEffect(()=>{
+        actions.getAdminEquipment();
+        actions.getAdminUserList();
+        actions.getAdminEquipment();
+    }, []);
     
     useEffect(() => {
         const equipment = store.equipmentList.filter(item => item.customer_id === companyName);   

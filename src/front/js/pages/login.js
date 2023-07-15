@@ -23,12 +23,12 @@ export const Login = () => {
                 navigate("/customer/dashboard");
             }
             if (store.userProfile.user_info.user_type === "admin") {
-                // await actions.getAdminUserList();
-                // await actions.getAdminTickets();
+                // await actions.getAdminUserList();        #
+                // await actions.getAdminTickets();         #
                 // await actions.getAdminEquipment();
                 // await actions.getCategories();
-                // await actions.getAvailableEmployees();
-                // await actions.getAvailableVehicles();
+                // await actions.getAvailableEmployees();   #
+                // await actions.getAvailableVehicles();    #
                 // await actions.getContactList();
                 navigate("/admin/dashboard");
             }

@@ -93,7 +93,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 
 			syncAssignedTicketFromLocalStorage: () => {
-				console.log('estou aqui')
 				if (localStorage.getItem('assignedTicket')) return setStore({ assignedTicket: JSON.parse(localStorage.getItem('assignedTicket')) });
 			},
 
@@ -106,7 +105,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 
 			sessionStorageAndSetStoreDataSave: (key, data) => {
-				console.log("sessionStorage", data)
 				sessionStorage.setItem([key], JSON.stringify(data));
 				setStore({ [key]: data });
 				return true;
@@ -489,8 +487,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 						console.log(response.status, data.msg);
 						return [response.status, data.msg];
 					}
-					console.log("Getting to response Admin tickets");
-					console.log("This came from the backend", data);
 
 					if ('tickets' in data) await getActions().sessionStorageAndSetStoreDataSave('tickets', data.tickets);
 					return true;
