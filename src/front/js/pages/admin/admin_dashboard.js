@@ -17,6 +17,10 @@ export const AdminDashboard = () => {
     const inProgressTickets = store.tickets.filter((ticket) => ticket.status === 'In Progress');
     const resolvedTickets = store.tickets.filter((ticket) => ticket.status === 'Resolved');
     
+    useEffect(()=>{
+        actions.getAdminTickets();
+    }, [])
+
     return (
         <main className="bd-main order-1">
             <div className="bd-intro">

@@ -469,7 +469,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 			getAdminTickets: async () => {
 				console.log("action: getAdminTickets");
-				const token = getStore().token;
+				const token = JSON.parse(sessionStorage.getItem('token'));
 				const opts = {
 					method: "GET",
 					headers: {

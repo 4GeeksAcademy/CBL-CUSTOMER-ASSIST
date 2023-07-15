@@ -18,6 +18,12 @@ export const AdminTickets = () => {
     const availableEmployees = store.availableEmployees;
     const availableVehicles = store.availableVehicles;
 
+    useEffect(()=>{
+        actions.getAdminTickets();
+        actions.getAvailableEmployees();
+        actions.getAvailableVehicles();
+    }, [])
+
     const formatTitle = (value) => {
         // const str = value;
         // const str2 = str.charAt(0).toUpperCase() + str.slice(1);
