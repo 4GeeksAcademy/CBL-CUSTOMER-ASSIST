@@ -376,7 +376,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 						// return [response.status, data.msg];
 						return false;
 					}
-					console.log("This came from the backend", data);
 
 					// TODO: instead of store.tickets change to store.customerTickets
 					if ('tickets' in data) await getActions().sessionStorageAndSetStoreDataSave('tickets', data.tickets);

@@ -4,6 +4,7 @@ import Select from 'react-select';
 import { useNavigate } from "react-router-dom";
 import { CapturePhoto } from "./capture_photo";
 import UploadWidget from "../../component/upload_widget";
+import { PageTitle } from "../../component/page_title";
 
 export const CustomerCreateTicket = () => {
     const { store, actions } = useContext(Context);
@@ -21,6 +22,10 @@ export const CustomerCreateTicket = () => {
         value: false,
         label: "Maintenance"
     }];
+
+    useEffect(()=>{
+        actions.getCustomerEquipment();
+    }, []);
 
     const createTicket = async () => {
         const response = await actions.customerCreateTicket(equipmentID, interventionType, subject, description, customerMedia );
@@ -40,7 +45,7 @@ export const CustomerCreateTicket = () => {
         // <div className="container">
         <main className="bd-main order-1">
             <div className="bd-intro">
-                <h3 className="border-bottom" id="content">Create Ticket</h3>
+                <PageTitle title={"Create Ticket"} />
             </div>
             <div className="bd-content">
 
