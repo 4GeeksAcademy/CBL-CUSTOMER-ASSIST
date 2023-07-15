@@ -1028,10 +1028,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 					return [response.status, data.msg];
 				}
 
-				const NewProcessTicket = {...getStore().processTicket};
-				NewProcessTicket.knowledge.push(data.new_knowledge);
+				const newProcessTicket = {...getStore().processTicket};
+				newProcessTicket.knowledge.push(data.new_knowledge);
 
-				getActions().sessionStorageAndSetStoreDataSave('processTicket', NewProcessTicket);
+				getActions().sessionStorageAndSetStoreDataSave('processTicket', newProcessTicket);
 
 				return [response.status, data.msg];
 			},

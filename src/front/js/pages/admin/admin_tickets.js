@@ -3,6 +3,7 @@ import { Context } from "../../store/appContext";
 import { TicketSmall } from "../../component/ticket_small";
 import { InfoCard } from "../../component/info_card";
 import { useParams } from "react-router-dom";
+import { PageTitle } from "../../component/page_title";
 
 export const AdminTickets = () => {
     const { store, actions } = useContext(Context)
@@ -28,6 +29,7 @@ export const AdminTickets = () => {
         // const str = value;
         // const str2 = str.charAt(0).toUpperCase() + str.slice(1);
         // return str2;
+        if (value === undefined || value === "") return "All";
         if (value === "new") return "New";
         if (value === "opened") return "Opened";
         if (value === "inprogress") return "In Progress";
@@ -38,8 +40,7 @@ export const AdminTickets = () => {
     return (
         <main className="bd-main order-1">
             <div className="bd-intro">
-                <h2 className="border-bottom">Tickets {formatTitle(filter)}</h2>
-                {/* <h3>Tickets:</h3> */}
+                <PageTitle title={formatTitle(filter) + " Tickets"} />
             </div>
             <div className="bd-content">
                 {!filter || filter === '' || filter === undefined && allTickets.length > 0 ? allTickets.map((item, i) => {
@@ -57,7 +58,7 @@ export const AdminTickets = () => {
                                 : filter === 'resolved' ? resolvedTickets.map((item, i) => {
                                     return <TicketSmall key={item.id} data={item} userType={userType} availableEmployees={availableEmployees} availableVehicles={availableVehicles} />
                                 })
-                                    : <span>All customers equipements are working!</span>}
+                                    : <span>All customers equipments are working!</span>}
             </div>
         </main>
     );
