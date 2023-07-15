@@ -111,7 +111,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 
 			localStorageAndSetStoreDataSave: (key, data) => {
-				console.log('localStorage', data)
 				localStorage.setItem([key], JSON.stringify(data));
 				setStore({ [key]: data });
 				return true;
@@ -520,9 +519,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.log(response.status, data.msg);
 					return [response.status, data.msg];
 				}
-
-				console.log("Getting to response Employee assigned ticket");
-				console.log("This came from the backend", data);
 
 				if ('assigned_ticket' in data) await getActions().localStorageAndSetStoreDataSave('assignedTicket', data.assigned_ticket);
 				return true;
