@@ -55,22 +55,22 @@ export const AdminSidebar = () => {
 						
 						{/* USERS */}
 						<li className="bd-links-group py-2" data-bs-target="#bdSidebar" data-bs-dismiss="offcanvas">
-							<Link className="text-decoration-none" to={'get/allusers'}>
+							<Link className="text-decoration-none" to={'admin/contact/list'}>
 								<strong className="bd-links-heading d-flex w-100 align-items-center fw-semibold">
 									<i className="fa-solid fa-users bi me-2" style={{ color: "var(--bs-cyan)" }}></i>Users
 								</strong>
 							</Link>
-							<ul className="list-unstyled fw-normal pb-2 small">
+							{/* <ul className="list-unstyled fw-normal pb-2 small">
 								<Link to={'admin/contact/list'}>
 									<li><span className="bd-links-link d-inline-block rounded">All Users</span></li>
-								</Link>
+								</Link> */}
 								{/* <Link to={'create/customer'}>
 									<li><span className="bd-links-link d-inline-block rounded">Create Customer</span></li>
 								</Link>
 								<Link to={'create/employee'}>
 									<li><span className="bd-links-link d-inline-block rounded">Create Employee</span></li>
 								</Link> */}
-							</ul>
+							{/* </ul> */}
 						</li>
 					</ul>
 				</nav>

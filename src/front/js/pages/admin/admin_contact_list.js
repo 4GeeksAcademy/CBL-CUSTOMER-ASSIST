@@ -1,5 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
 import { Context } from "../../store/appContext";
+import { PageTitle } from "../../component/page_title";
 import { Link, useNavigate } from "react-router-dom";
 
 //include your index.scss file into the bundle
@@ -20,13 +21,17 @@ export const AdminContactList = () => {
     
     const filterEmployees = employee.filter(item =>
         item.first_name.toLowerCase().includes(searchName.toLowerCase()));
+    
+    useEffect(()=>{
+        actions.getContactList();
+    }, []);
 
 
-    console.log(filterEmployees)
+    // console.log(filterEmployees)
     return (
         <main className="bd-main order-1">
             <div className="bd-intro">
-                <h1 className="border-bottom">All Users</h1>
+                <PageTitle title={"All Users"} />
             </div>
             <div className="bd-content">
                 <div className="d-flex justify-content-center">

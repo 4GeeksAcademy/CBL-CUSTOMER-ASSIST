@@ -993,8 +993,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 				const response = await fetch(process.env.BACKEND_URL + "api/admin/contact/list", opts);
 				const data = await response.json();
 
-				console.log("contactList: ", data)
-
 				if (response.status !== 200) {
 					console.log(response.status, data.msg);
 					return [response.status, data.msg];
