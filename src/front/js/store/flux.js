@@ -175,7 +175,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 			getCustomerEquipment: async () => {
 				console.log('action: getCustomerEquipment');
-				const token = getStore().token;
+				const token = JSON.parse(sessionStorage.getItem('token'));
 				const opts = {
 					method: "GET",
 					headers: {
@@ -196,7 +196,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 			getAdminEquipment: async () => {
 				console.log('action: getAdminEquipment');
-				const token = getStore().token;
+				const token = JSON.parse(sessionStorage.getItem('token'));
 				const opts = {
 					method: "GET",
 					headers: {
@@ -217,7 +217,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 			customerCreateTicket: async (equipmentId, interventionType, subject, description, customerMedia) => {
 				console.log("action: createCustomerTicket");
-				const token = getStore().token;
+				const token = JSON.parse(sessionStorage.getItem('token'));
 				const opts = {
 					method: "POST",
 					headers: {
@@ -259,7 +259,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 			adminCreateTicket: async (equipmentId, interventionType, subject, description, customerId) => {
 				console.log("action: adminCreateTicket");
-				const token = getStore().token;
+				const token = JSON.parse(sessionStorage.getItem('token'));
 				const opts = {
 					method: "POST",
 					headers: {
@@ -301,7 +301,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 			setTicketStatus: async (ticketID, status) => {
 				console.log("action: setTicketStatus");
-				const token = getStore().token;
+				const token = JSON.parse(sessionStorage.getItem('token'));
 				const opts = {
 					method: "PUT",
 					headers: {
@@ -362,7 +362,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 			getCustomerTickets: async () => {
 				console.log("action: getCustomerTickets");
-				const token = getStore().token;
+				const token = JSON.parse(sessionStorage.getItem('token'));
 				const opts = {
 					method: "GET",
 					headers: {
@@ -392,7 +392,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 			getUserProfile: async () => {
 				console.log("action: getUserProfile");
-				const token = getStore().token;
+				const token = JSON.parse(sessionStorage.getItem('token'));
+
 				const opts = {
 					method: "GET",
 					headers: {
@@ -421,7 +422,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 			updateUserProfile: async (data) => {
 				console.log("action: updateUserProfile");
-				const token = getStore().token;
+				const token = JSON.parse(sessionStorage.getItem('token'));
 				const opts = {
 					method: "PUT",
 					headers: {
@@ -501,7 +502,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 			getEmployeeAssignedTicket: async () => {
 				console.log("action: getEmployeeAssignedTicket");
-				const token = getStore().token;
+				const token = JSON.parse(sessionStorage.getItem('token'));
 				const opts = {
 					method: "GET",
 					headers: {
@@ -533,7 +534,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 			getEmployeeResolvedTicket: async () => {
 				console.log("action: getEmployeeResolvedTicket");
-				const token = getStore().token;
+				const token = JSON.parse(sessionStorage.getItem('token'));
 				const opts = {
 					method: "GET",
 					headers: {
@@ -602,7 +603,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 			getAdminUserList: async () => {
 				console.log('action: getAdminUserList');
-				const token = getStore().token;
+				const token = JSON.parse(sessionStorage.getItem('token'));
 				const opts = {
 					method: "GET",
 					headers: {
@@ -623,7 +624,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 			getAvailableEmployees: async () => {
 				console.log('action: getAvailableEmployees');
-				const token = getStore().token;
+				const token = JSON.parse(sessionStorage.getItem('token'));
 				const opts = {
 					method: "GET",
 					headers: {
@@ -644,7 +645,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 			setEmployeeVehicleAvailable: async (employeeID, vehicleID) => {
 				console.log('action: toggleEmployeeAvailable');
-				const token = getStore().token;
+				const token = JSON.parse(sessionStorage.getItem('token'));
 				const opts = {
 					method: "PUT",
 					headers: {
@@ -669,7 +670,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 			assignEmployeeToTicket: async (employeeID, ticketID) => {
 				console.log('action: assignEmployeeToTicket');
-				const token = getStore().token;
+				const token = JSON.parse(sessionStorage.getItem('token'));
 				const opts = {
 					method: "POST",
 					headers: {
@@ -694,7 +695,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 			dismissEmployeeFromTicket: async (employeeIDs, ticketID) => {
 				console.log('action: dismissEmployeeFromTicket');
-				const token = getStore().token;
+				const token = JSON.parse(sessionStorage.getItem('token'));
 				const opts = {
 					method: "DELETE",
 					headers: {
@@ -719,7 +720,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 			getAvailableVehicles: async () => {
 				console.log('action: getAvailableVehicles');
-				const token = getStore().token;
+				const token = JSON.parse(sessionStorage.getItem('token'));
 				const opts = {
 					method: "GET",
 					headers: {
@@ -742,7 +743,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 			assignVehicleToTicket: async (assignVehicleID, dismissVehicleID, ticketID) => {
 				console.log('action: assignVehicleToTicket');
-				const token = getStore().token;
+				const token = JSON.parse(sessionStorage.getItem('token'));
 				const opts = {
 					method: "PUT",
 					headers: {
@@ -768,7 +769,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 			dismissVehicleFromTicket: async (dismissVehicleID, ticketID) => {
 				console.log('action: dismissVehicleFromTicket');
-				const token = getStore().token;
+				const token = JSON.parse(sessionStorage.getItem('token'));
 				const opts = {
 					method: "PUT",
 					headers: {
@@ -793,7 +794,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 			getCategories: async () => {
 				console.log("action: getCategories");
-				const token = getStore().token;
+				const token = JSON.parse(sessionStorage.getItem('token'));
 				const opts = {
 					method: "GET",
 					headers: {
@@ -821,7 +822,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 			getKnowledgeList: async () => {
 				console.log("action: getKnowledgeList");
-				const token = getStore().token;
+				const token = JSON.parse(sessionStorage.getItem('token'));
 				const opts = {
 					method: "GET",
 					headers: {
@@ -849,7 +850,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 			setStartInterventionDate: async (ticketEmployeeID, startInterventionDate) => {
 				console.log('action: setStartInterventionDate');
-				const token = getStore().token;
+				const token = JSON.parse(sessionStorage.getItem('token'));
 				const opts = {
 					method: "PUT",
 					headers: {
@@ -876,7 +877,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				console.log('action: setEndInterventionDate');
 				console.log('t_e_id', ticketEmployeeID)
 				console.log('end', endInterventionDate)
-				const token = getStore().token;
+				const token = JSON.parse(sessionStorage.getItem('token'));
 				const opts = {
 					method: "PUT",
 					headers: {
@@ -901,7 +902,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 			saveKilometers: async (ticketID, kilometersOnLeave, kilometersOnArrival) => {
 				console.log('action: saveKilometers');
-				const token = getStore().token;
+				const token = JSON.parse(sessionStorage.getItem('token'));
 				const opts = {
 					method: "PUT",
 					headers: {
@@ -937,7 +938,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				})
 				);
 
-				const token = getStore().token;
+				const token = JSON.parse(sessionStorage.getItem('token'));
 				const opts = {
 					method: "POST",
 					headers: {
@@ -961,7 +962,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 			saveObservationsValue: async (ticketEmployeeID, observations) => {
 				console.log('action: saveObservations');
-				const token = getStore().token;
+				const token = JSON.parse(sessionStorage.getItem('token'));
 				const opts = {
 					method: "PUT",
 					headers: {
@@ -986,7 +987,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 			getContactList: async () => {
 				console.log('action: getContactList');
-				const token = getStore().token;
+				const token = JSON.parse(sessionStorage.getItem('token'));
 				const opts = {
 					method: "GET",
 					headers: {
@@ -1010,7 +1011,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			adminCreateProcessTicketKnowledge: async (malfunctionDescription, solutionDescription, categoryID, ticketID, equipmentID) => {
 				console.log('action: adminCreateProcessTicketKnowledge');
 
-				const token = getStore().token;
+				const token = JSON.parse(sessionStorage.getItem('token'));
 				const opts = {
 					method: "POST",
 					headers: {
@@ -1047,7 +1048,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 			saveCustomerMedia: async (ticketID, customerMediaURLS) => {
 				console.log('action: saveCustomerMedia');
-				const token = getStore().token;
+				const token = JSON.parse(sessionStorage.getItem('token'));
 				const opts = {
 					method: "PUT",
 					headers: {
