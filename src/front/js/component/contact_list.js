@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
 import { Context } from "../store/appContext";
 
-
+// BUILT THE COMPONET IN THE CONTACT LIST PAGE. MOVE BACK HERE ASAP
 
 export const ContactList = (props) => {
     const { store, actions } = useContext(Context);
