@@ -143,16 +143,16 @@ const getState = ({ getStore, getActions, setStore }) => {
 					const data = await response.json();
 
 					if (response.status !== 200) {
-						return ([false, 'There was a problem with login']);
+						return ([response.status, 'Bad user email or password!']);
 					}
 
 
 					await getActions().sessionStorageAndSetStoreDataSave('token', data.access_token);
-					return ([true, data.user_type]);
+					return ([response.status, data.user_type]);
 				}
 				catch (error) {
-					console.log("Contact service support", error);
-					return "error";
+					// console.log("Contact service support", error);
+					return (["error", error]);
 				}
 			},
 

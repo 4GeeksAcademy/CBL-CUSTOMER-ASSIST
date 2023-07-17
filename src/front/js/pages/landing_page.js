@@ -7,14 +7,17 @@ export const LandingPage = () => {
     const { store, actions } = useContext(Context);
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [showAlert, setShowAlert] = useState(false);
+    const [alertMessage, setAlertMessage] = useState("Alert");
     const navigate = useNavigate();
     const toast = (title, data) => actions.userToastAlert(title, data);
 
     const userLogin = async (e) => {
         e.preventDefault();
         const response = await actions.login(email, password);
-        if (response[0]) {
+        if (response[0] === 200) {
             const userType = response[1];
+            if (!!showAlert) setShowAlert(false);
 
             // navigate("/loading");
             await actions.getUserProfile();
@@ -28,9 +31,14 @@ export const LandingPage = () => {
             if (userType === "technician" || userType === 'engineer') {
                 navigate("/employee/dashboard");
             }
-        } else if (!response[0]) {
-            actions.logout();
-            navigate("/");
+        } else if (!response[0] === "error") {
+            setAlertMessage("We are unable to satisfy your request. Please, contact service support by phone or email.");
+            setShowAlert(true);
+            // actions.logout();
+            // navigate("/");
+        } else {
+            setAlertMessage(response[1]);
+            setShowAlert(true);
         }
     }
 
@@ -78,6 +86,11 @@ export const LandingPage = () => {
                             type="submit"
                             onClick={userLogin}
                         >Login</button>
+
+                        <div className={`alert alert-danger text-center col-5 ${showAlert ? "" : "invisible"}`} role="alert">
+                            <i className="fa-solid fa-circle-exclamation fa-fade"></i> {alertMessage}
+                        </div>
+
                         <figure className="mt-5 mb-3 text-white">
                             <blockquote className="blockquote">
                                 <p>© 2023 - powered by CBL Desk</p>
