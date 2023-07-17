@@ -26,11 +26,7 @@ export const MainBdLayout = ({ children }) => {
     }
 
     return (
-<<<<<<< Updated upstream
-        <div className={pathname === '/' || pathname === '/loading' ? "container-xxl bd-gutter mt-3 my-md-4 vh-100" : "container-xxl bd-gutter mt-3 my-md-4 bd-layout"} style={{ position: "relative" }}>
-=======
         <div className={pathname === '/' || pathname === '/loading' || pathname === '/landing' ? "container-xxl vh-100" : "container-xxl bd-gutter vh-100 bd-layout"} style={{ position: "relative" }}>
->>>>>>> Stashed changes
             {children}
 
             {/* MODAL TICKET INFO*/}

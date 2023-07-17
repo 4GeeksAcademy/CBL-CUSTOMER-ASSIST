@@ -33,8 +33,8 @@ export const Login = () => {
     }
 
     return (
-        <main className="bd-main">
-            <div className="border mt-5 p-5 col-sm-12 col-md-4 mx-auto shadow rounded">
+        <main className="bd-main h-100 main-login">
+            <div className="d-flex flex-column border bg-light mt-5 p-5 col-sm-12 col-sm-6 col-md-4 mx-auto shadow rounded">
                 <h2 className="mb-5 text-center fw-bold">LOGIN</h2>
 
                 {/* EMAIL */}

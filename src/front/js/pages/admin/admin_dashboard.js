@@ -22,7 +22,7 @@ export const AdminDashboard = () => {
     useEffect(()=>{
         actions.getAdminTickets();
     }, [])
-
+    
     return (
         <main className="bd-main order-1">
             <div className="bd-intro">
