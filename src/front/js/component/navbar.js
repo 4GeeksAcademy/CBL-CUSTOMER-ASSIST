@@ -22,7 +22,7 @@ export const Navbar = () => {
 	// }, [userType, store.userProfile.employee_info.first_name])
 
 	return (
-		<header className="navbar navbar-expand-lg bd-navbar sticky-top bg-secondary" style={{minHeight: "65px"}}>
+		<header className="navbar navbar-expand-lg bd-navbar sticky-top bg-cbl" style={{minHeight: "65px"}}>
 			<nav className="container-xxl flex-wrap flex-lg-nowrap align-items-center" aria-label="Main navigation">
 				<div className="d-flex align-items-center me-auto">
 
