@@ -1,3 +1,7 @@
-.link {
-    text-decoration: none !important;
+.sidebar-main-option {
+   font-size: calc(1.1rem + .3vw) !important;
+}
+
+.active a{
+   background-color: blue !important;
 }

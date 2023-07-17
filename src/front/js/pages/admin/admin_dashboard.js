@@ -5,7 +5,8 @@ import { Link, useNavigate } from "react-router-dom";
 
 //include your index.scss file into the bundle
 import "../../../styles/info_card.css";
-import "../../../styles/sidebar.css"
+import "../../../styles/sidebar.css";
+import "../../../styles/dashboard.css";
 import { PageTitle } from "../../component/page_title";
 
 
@@ -28,7 +29,7 @@ export const AdminDashboard = () => {
                 <PageTitle title={"Dashboard"} />
             </div>
             <div className="bd-content">
-                <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+                <div className="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
                     
                     {/* NEW TICKETS */}
                     {newTickets.length > 0

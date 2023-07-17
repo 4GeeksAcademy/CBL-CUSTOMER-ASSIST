@@ -18,7 +18,7 @@ export const CustomerSidebar = () => {
 					<ul className="bd-links-nav list-unstyled mb-0 pb-3 pb-md-2 pe-lg-2">
 
 						{/* DASHBOARD */}
-						<li className="bd-links-group py-2" data-bs-target="#bdSidebar" data-bs-dismiss="offcanvas">
+						<li className="bd-links-group py-2 sidebar-main-option" data-bs-target="#bdSidebar" data-bs-dismiss="offcanvas">
 							<Link className="link" to={'customer/dashboard'}>
 								<strong className="bd-links-heading d-flex w-100 align-items-center fw-semibold">
 									<i className="fa-solid fa-gauge-high bi me-2" style={{ color: "var(--bs-indigo)"}}></i>Dashboard
@@ -27,7 +27,7 @@ export const CustomerSidebar = () => {
 						</li>
 
 						{/* TICKETS */}
-						<li className="bd-links-group py-2" data-bs-target="#bdSidebar" data-bs-dismiss="offcanvas">
+						<li className="bd-links-group py-2 sidebar-main-option" data-bs-target="#bdSidebar" data-bs-dismiss="offcanvas">
 							<Link className="link" to={'customer/create/ticket'}>
 								<strong className="bd-links-heading d-flex w-100 align-items-center fw-semibold">
 									<i className="fa-solid fa-ticket bi me-2" style={{ color: "var(--bs-teal)"}}></i>Create Ticket
@@ -39,7 +39,7 @@ export const CustomerSidebar = () => {
 						</li>
 
 						{/* EQUIPMENTS */}
-						<li className="bd-links-group py-2" data-bs-target="#bdSidebar" data-bs-dismiss="offcanvas">
+						<li className="bd-links-group py-2 sidebar-main-option" data-bs-target="#bdSidebar" data-bs-dismiss="offcanvas">
 							<Link className="link" to={'customer/equipment/list'}>
 								<strong className="bd-links-heading d-flex w-100 align-items-center fw-semibold">
 									<i className="fa-solid fa-gears bi me-2" style={{ color: "var(--bs-gray-800)"}}></i>My Equipment
