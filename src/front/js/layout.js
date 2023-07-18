@@ -42,7 +42,7 @@ const Layout = () => {
     // TODO: NEED TO REMOVE THIS LINE
     // if(!process.env.BACKEND_URL || process.env.BACKEND_URL == "") return <BackendURL/ >;
     return (
-        <div>
+        <div className="h-100">
             {/* <BrowserRouter basename={basename}> */}
                 {pathname !== "/" && <Navbar />}
                 <MainBdLayout>
