@@ -50,7 +50,7 @@ export const AdminTickets = () => {
         if (value === "closed") return "Closed";
     }
 
-    // 👇️ check if element contains class on click
+    // 👇️ check if element contains class on click 👇️
     // const handleClick = event => {
     //     if (event.currentTarget.classList.contains('active')) {
     //         (event.currentTarget).firstElementChild.style.backgroundColor = handleStatusColor(filter);
