@@ -46,7 +46,7 @@ export const LandingPage = () => {
     return (
         <main className="d-flex flex-row vh-100 main-landing align-items-center">
             <div className="w-100 bg-dark p-5 pb-2" style={{ "--bs-bg-opacity": ".75" }}>
-                <div className="description d-flex flex-column align-items-center col-12 mb-5">
+                <div className="description d-flex flex-column align-items-center text-center col-12 mb-5">
                     <h1 className="fw-bold">Mecânica Exacta, S.A.</h1>
                     <h3>Ticketing Customer Support</h3>
                 </div>
@@ -54,7 +54,7 @@ export const LandingPage = () => {
                     <form className="d-flex flex-column align-items-center col-12">
                         <h1 className="h3 mb-3 fw-normal text-warning">Please login</h1>
 
-                        <div className="form-floating col-5">
+                        <div className="form-floating col-12 col-sm-8 col-lg-5">
                             <input type="email"
                                 className="form-control"
                                 id="emailInput" placeholder="name@example.com"
@@ -64,7 +64,7 @@ export const LandingPage = () => {
                                 }} />
                             <label htmlFor="emailInput">Email address</label>
                         </div>
-                        <div className="form-floating col-5">
+                        <div className="form-floating col-12 col-sm-8 col-lg-5">
                             <input type="password"
                                 className="form-control"
                                 id="passwordInput"
@@ -82,20 +82,20 @@ export const LandingPage = () => {
                                 Remember me
                             </label>
                         </div> */}
-                        <button className="btn btn-primary col-5 mt-3 mb-4 py-2"
+                        <button className="btn btn-primary col-12 col-sm-8 col-lg-5 mt-3 mb-4 py-2"
                             type="submit"
                             onClick={userLogin}
                         >Login</button>
 
-                        <div className={`alert alert-danger text-center col-5 ${showAlert ? "" : "invisible"}`} role="alert">
+                        <div className={`alert alert-danger text-center col-12 col-sm-8 col-lg-5 ${showAlert ? "" : "invisible"}`} role="alert">
                             <i className="fa-solid fa-circle-exclamation fa-fade"></i> {alertMessage}
                         </div>
 
-                        <figure className="mt-5 mb-3 text-white">
+                        <figure className="mt-5 mb-3 text-white text-center">
                             <blockquote className="blockquote">
                                 <p>© 2023 - powered by CBL Desk</p>
                             </blockquote>
-                            <figcaption className="blockquote-footer text-white">
+                            <figcaption className="blockquote-footer text-white fst-italic">
                                 For Makers - To Customers
                             </figcaption>
                         </figure>
