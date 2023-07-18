@@ -4,6 +4,7 @@ import Select from 'react-select';
 import { useNavigate } from "react-router-dom";
 import { CapturePhoto } from "./capture_photo";
 import UploadWidget from "../../component/upload_widget";
+import { PageTitle } from "../../component/page_title";
 
 export const CustomerCreateTicket = () => {
     const { store, actions } = useContext(Context);
@@ -22,6 +23,10 @@ export const CustomerCreateTicket = () => {
         label: "Maintenance"
     }];
 
+    useEffect(()=>{
+        actions.getCustomerEquipment();
+    }, []);
+
     const createTicket = async () => {
         const response = await actions.customerCreateTicket(equipmentID, interventionType, subject, description, customerMedia);
         if (response) {
@@ -39,8 +44,9 @@ export const CustomerCreateTicket = () => {
     return (
         // <div className="container">
         <main className="bd-main order-1">
+
             <div className="bd-intro d-flex border-bottom justify-content-between">
-                <h3 id="content">Create Ticket</h3>
+                {/*<h3 id="content">Create Ticket</h3>*/}
                 {/* <!-- Button trigger modal --> */}
                 <div>
                     <strong typeof="button" className="bd-links-heading btn d-flex w-100 align-items-center fw-semibold" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
@@ -65,6 +71,7 @@ export const CustomerCreateTicket = () => {
                     </div>
                 </div>
             </div>
+
             <div className="bd-content">
 
                 <div className="d-flex flex-column gap-3">

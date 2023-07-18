@@ -1,3 +1,32 @@
-.link {
-    text-decoration: none !important;
+.sidebar-main-option {
+   font-size: calc(1.1rem + .3vw) !important;
+   color: #210b61 !important;
+   transition: background-color 0.5s ease;
+   padding-left: 10px;
+}
+
+.sidebar-main-option:hover {
+   background: #8dccff;
+}
+
+li.sidebar-main-option.active {
+   background-color: #210b61 !important;
+   color: white !important;
+}
+
+.sidebar-main-option > a {
+   color: inherit;
+}
+
+.bg-sidebar {
+   background-color: #210b61 !important;
+   color: white !important;
+}
+
+.bg-button-white {
+   background-color: white !important;
+}
+
+.sidebar-icon {
+   color: #ffc71b;
 }

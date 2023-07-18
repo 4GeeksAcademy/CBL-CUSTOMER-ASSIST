@@ -18,24 +18,12 @@ export const Login = () => {
             await actions.getUserProfile();
 
             if (store.userProfile.user_info.user_type === "customer") {
-                await actions.getCustomerEquipment();
-                await actions.getCustomerTickets();
                 navigate("/customer/dashboard");
             }
             if (store.userProfile.user_info.user_type === "admin") {
-                await actions.getAdminUserList();
-                await actions.getAdminTickets();
-                await actions.getAdminEquipment();
-                await actions.getCategories();
-                await actions.getAvailableEmployees();
-                await actions.getAvailableVehicles();
-                await actions.getContactList();
                 navigate("/admin/dashboard");
             }
             if (userType === "technician" || userType === 'engineer') {
-                await actions.getEmployeeAssignedTicket();
-                await actions.getCategories();
-                await actions.getKnowledgeList();
                 navigate("/employee/dashboard");
             }
         } else if (!response[0]) {
@@ -45,14 +33,14 @@ export const Login = () => {
     }
 
     return (
-        <main className="bd-main">
-            <div className="border mt-5 p-5 col-sm-12 col-md-6 mx-auto shadow rounded">
+        <main className="bd-main h-100 main-login">
+            <div className="d-flex flex-column border bg-light mt-5 p-5 col-sm-12 col-sm-6 col-md-4 mx-auto shadow rounded">
                 <h2 className="mb-5 text-center fw-bold">LOGIN</h2>
 
                 {/* EMAIL */}
                 <div className="form-floating">
                     <input type="email"
-                        className="form-control text-center fw-semibold fs-4 mb-2"
+                        className="form-control text-center fw-semibold fs-5 mb-2"
                         id="emailInput"
                         placeholder="Email"
                         onChange={(e) => {
@@ -64,7 +52,7 @@ export const Login = () => {
                 {/* PASSWORD */}
                 <div className="form-floating">
                     <input type="password"
-                        className="form-control text-center fw-semibold"
+                        className="form-control text-center fs-5 fw-semibold"
                         id="passwordInput"
                         placeholder="Password"
                         onChange={(e) => {

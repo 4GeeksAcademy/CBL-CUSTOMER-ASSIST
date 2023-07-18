@@ -1,0 +1,33 @@
+/* .form-signin {
+  max-width: 330px;
+  padding: 1rem;
+  margin: auto;
+} */
+.main-landing, .main-login {
+    background-image: url('https://res.cloudinary.com/dsonpr8ip/image/upload/v1689530816/landing_ajxw8p.jpg');
+    /* background-size: cover; */
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+  
+  .description {
+    /* background-color: darkblue; */
+    color: white;
+  }
+  
+  .form-signin .form-floating:focus-within {
+    z-index: 2;
+  }
+  
+  .form-signin input[type="email"] {
+    margin-bottom: -1px;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+  
+  .form-signin input[type="password"] {
+    margin-bottom: 10px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+  }
+  

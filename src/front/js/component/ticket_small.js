@@ -183,11 +183,8 @@ export const TicketSmall = (props) => {
     }
 
     const handleProcessTicket = async () => {
-        console.log(data);
-        // actions.showModalProcessTicket(data);
         await actions.startProcessTicket(data);
         navigate("/admin/process/ticket")
-
     }
 
     return (

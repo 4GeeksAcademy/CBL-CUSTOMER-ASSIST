@@ -5,7 +5,6 @@ export const ProcessKnowledgeAssistanceReport = () => {
     const { store, actions } = useContext(Context);
     const actionsTaken = store.processTicket.knowledge;
     const ticketEmployee = store.processTicket.ticket_employee[0];
-    console.log(ticketEmployee)
 
     return (
         <div className="mb-3">

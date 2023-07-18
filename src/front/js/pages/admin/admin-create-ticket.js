@@ -1,6 +1,7 @@
 import React, { useContext, useState, useEffect } from "react";
 import { Context } from "../../store/appContext";
 import { useNavigate } from "react-router-dom";
+import { PageTitle } from "../../component/page_title"
 import { object } from "prop-types";
 
 export const AdminCreateTicket = () => {
@@ -28,6 +29,12 @@ export const AdminCreateTicket = () => {
             alert("Error");
         } 
     }
+
+    useEffect(()=>{
+        actions.getAdminEquipment();
+        actions.getAdminUserList();
+        actions.getAdminEquipment();
+    }, []);
     
     useEffect(() => {
         const equipment = store.equipmentList.filter(item => item.customer_id === companyName);   
@@ -39,8 +46,8 @@ export const AdminCreateTicket = () => {
     return (
         // <div className="container">
         <main className="bd-main order-1">
-            <div className="bd-intro pt-2 ps-lg-2">
-                <h1 className="bd-title mb-0" id="content">Create Ticket</h1>
+            <div className="bd-intro">
+                <PageTitle title={"Create Ticket"} />
             </div>  
             <div className="bd-content ps-lg-2">  
 

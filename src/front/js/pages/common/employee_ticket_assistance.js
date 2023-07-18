@@ -22,6 +22,8 @@ export const EmployeeTicketAssistance = () => {
     };
     
     useEffect(()=>{
+        actions.getCategories();
+        actions.getKnowledgeList();
         const localStorageTicketStage = localStorage.getItem('ticketStage') ? JSON.parse(localStorage.getItem('ticketStage')) : null;
         localStorageTicketStage ? actions.setTicketStage(localStorageTicketStage) : actions.setTicketStage(0);
     }, [])

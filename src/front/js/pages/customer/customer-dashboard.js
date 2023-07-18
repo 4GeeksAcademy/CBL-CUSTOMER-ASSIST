@@ -2,15 +2,20 @@ import React, { useState, useContext, useEffect } from "react";
 import { Context } from "../../store/appContext";
 import { TicketSmallCustomer } from "../../component/ticket_small_customer";
 import DashboardExplained from "../../../assets/img/help_description/Dashboard-Google-Docs.png"
+import {PageTitle} from "../../component/page_title";
 
 export const CustomerDashboard = () => {
     const { store, actions } = useContext(Context);
     const customerAllowedTicketStatus = ['New', 'Opened', 'In Progress', 'Resolved'];
 
+    useEffect(()=>{
+        actions.getCustomerTickets();
+    }, []);
+
     return (
         <main className="bd-main order-1">
             <div className="bd-intro  d-flex border-bottom justify-content-between">
-                <h1 className="">Dashboard</h1>
+                {/* <h1 className="">Dashboard</h1> */}
                 {/* <!-- Button trigger modal --> */}
                 <div>
                     <strong typeof="button" className="bd-links-heading btn d-flex w-100 align-items-center fw-semibold" data-bs-toggle="modal" data-bs-target="#staticBackdrop">

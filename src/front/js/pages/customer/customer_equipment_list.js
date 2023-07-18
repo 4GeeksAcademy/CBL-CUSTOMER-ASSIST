@@ -2,11 +2,14 @@ import React, { useState, useContext, useEffect } from "react";
 import { Multiselect } from 'multiselect-react-dropdown';
 import { Context } from "../../store/appContext";
 import { EquipmentListCard } from "../../component/equipment_list_card";
+import { PageTitle } from "../../component/page_title";
+import { useLocation } from "react-router-dom";
 
 export const CustomerEquipmentList = () => {
-    const { store } = useContext(Context)
+    const { actions, store } = useContext(Context);
+    const location = useLocation();
     const [equipmentSelected, setEquipmentSelected] = useState(store.equipmentList);
-    const [equipmentVar, setEquipmentVar] = useState([])
+    const [equipmentVar, setEquipmentVar] = useState([]);
 
     useEffect(() => {
         if (Object.keys(equipmentSelected).length === 0) setEquipmentVar(store.equipmentList)
@@ -14,6 +17,7 @@ export const CustomerEquipmentList = () => {
     }, [equipmentSelected])
 
     useEffect(() => {
+        actions.getCustomerEquipment();
         const storedEquipmentVar = sessionStorage.getItem('equipmentVar');
         if (storedEquipmentVar) setEquipmentVar(JSON.parse(storedEquipmentVar))
     }, []);
@@ -30,15 +34,19 @@ export const CustomerEquipmentList = () => {
     return (
         <main className="bd-main order-1">
             <div className="bd-intro border-bottom mb-4 mt-3 d-flex justify-content-between">
-                <h2>Equipment List</h2>
-                {/* <!-- Button trigger modal --> */}
+               {/* <h2>Equipment List</h2> */}
+            {/* <div className="bd-intro">
+                <PageTitle title={"Equipment List"} />
+            </div> */}
+               {/* <!-- Button trigger modal --> */}
                 <div>
                     <strong typeof="button" className="bd-links-heading btn d-flex w-100 align-items-center fw-semibold" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
                         <i className="fa-solid fa-circle-question me-1" style={{ color: "blue" }}></i>Help
                     </strong> 
                 </div>
             </div>
-            {/* <!-- Modal --> */}
+            <div className="bd-content">
+             {/* <!-- Modal --> */}
             <div className="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                 <div className="modal-dialog modal-fullscreen">
                     <div className="modal-content">

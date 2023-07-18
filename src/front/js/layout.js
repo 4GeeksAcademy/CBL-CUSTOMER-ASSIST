@@ -26,6 +26,7 @@ import { LoadingData } from "./pages/common/loading_data";
 // import { CreateTech } from "./pages/technician/tech-create";
 // import { CreateCustomer } from "./pages/customer/customer-create.js";
 import {CapturePhoto} from "./pages/customer/capture_photo";
+import { LandingPage } from "./pages/landing_page";
 
 
 const Layout = () => {
@@ -42,11 +43,12 @@ const Layout = () => {
     return (
         <div>
             {/* <BrowserRouter basename={basename}> */}
-                <Navbar />
+                {pathname !== "/" && <Navbar />}
                 <MainBdLayout>
                     <Sidebar />
                     <Routes>
-                        <Route element={<Login />} path="/" />
+                        {/* <Route element={<Login />} path="/" /> */}
+                        <Route element={<LandingPage />} path="/" />
                         {/* <Route element={<Home />} path="/" /> */}
                         <Route element={<AdminDashboard />} path="/admin/dashboard" />
                         <Route element={<AdminTickets />} path="/admin/tickets" />
