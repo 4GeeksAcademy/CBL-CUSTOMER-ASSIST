@@ -15,7 +15,7 @@ import { CustomerEditProfile } from "./pages/customer/customer_edit_profile";
 import { CustomerCreateTicket } from "./pages/customer/customer-create-ticket";
 import { CustomerEquipmentList } from "./pages/customer/customer_equipment_list";
 import { CustomerEquipmentHistory } from "./pages/customer/customer_equipment_history";
-import { EmployeeDashboard } from "./pages/technician/employee_dashboard";
+import { EmployeeDashboard } from "./pages/common/employee_dashboard"
 import { EmployeeEditProfile } from "./pages/common/employee_edit_profile";
 import { EmployeeTicketAssistance } from "./pages/common/employee_ticket_assistance";
 import { LoadingData } from "./pages/common/loading_data";

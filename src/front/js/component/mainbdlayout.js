@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import { Context } from "../store/appContext";
 import { useLocation } from "react-router-dom";
 
-import smallLogo from "../../assets/img/logo.png"
+import smallLogo from "../../assets/img/logo.png";
 import { ProcessTicketInfo } from "./process_ticket/process_ticket_info";
 import { ProcessCustomerInfo } from "./process_ticket/process_customer_info";
 import { ProcessEquipmentInfoCard } from "./process_ticket/process_equipment_info_card";
