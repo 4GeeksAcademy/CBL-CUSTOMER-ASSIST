@@ -74,7 +74,7 @@ export const TicketSmallEmployee = (props) => {
             style={{
                 borderColor: handleStatusColor(ticket.status),
             }}>
-            <div className="card-header btn"
+            <div className="card-header btn text-white"
                 style={{
                     backgroundColor: handleStatusColor(ticket.status),
                 }}
@@ -136,7 +136,7 @@ export const TicketSmallEmployee = (props) => {
                     : null
                 }
             </div>
-            <div className="card-footer d-flex flex-column flex-sm-row align-items-center justify-content-between"
+            <div className="card-footer d-flex flex-column flex-sm-row align-items-center justify-content-between text-white"
                 style={{
                     backgroundColor: handleStatusColor(ticket.status),
                 }}>

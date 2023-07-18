@@ -60,7 +60,7 @@ export const Navbar = () => {
 						:
 						<div>
 							<div className="dropdown">
-								<button className="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+								<button className="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
 									<i className="fs-4 fa-regular fa-circle-user"></i>
 								</button>
 								<ul className="dropdown-menu dropdown-menu-end mx-0 shadow w-220px">
