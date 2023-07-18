@@ -19,6 +19,7 @@ import { EmployeeDashboard } from "./pages/technician/employee_dashboard";
 import { EmployeeEditProfile } from "./pages/common/employee_edit_profile";
 import { EmployeeTicketAssistance } from "./pages/common/employee_ticket_assistance";
 import { LoadingData } from "./pages/common/loading_data";
+// import { CustomerHelpGuide } from "./pages/customer/customer_help_guide"
 // import { Home } from "./pages/home";
 // import { Single } from "./pages/single";
 // import { CreateAdmin } from "./pages/admin/admin-create";

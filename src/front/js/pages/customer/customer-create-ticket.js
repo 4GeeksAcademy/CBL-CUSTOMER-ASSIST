@@ -28,7 +28,7 @@ export const CustomerCreateTicket = () => {
     }, []);
 
     const createTicket = async () => {
-        const response = await actions.customerCreateTicket(equipmentID, interventionType, subject, description, customerMedia );
+        const response = await actions.customerCreateTicket(equipmentID, interventionType, subject, description, customerMedia);
         if (response) {
             actions.userToastAlert("New Customer Ticket", "Ticket created successfully!");
             // alert("Ticket created!");
@@ -44,9 +44,34 @@ export const CustomerCreateTicket = () => {
     return (
         // <div className="container">
         <main className="bd-main order-1">
-            {/* <div className="bd-intro">
-                <PageTitle title={"Create Ticket"} />
-            </div> */}
+
+            <div className="bd-intro d-flex border-bottom justify-content-between">
+                {/*<h3 id="content">Create Ticket</h3>*/}
+                {/* <!-- Button trigger modal --> */}
+                <div>
+                    <strong typeof="button" className="bd-links-heading btn d-flex w-100 align-items-center fw-semibold" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                        <i className="fa-solid fa-circle-question me-1" style={{ color: "blue" }}></i>Help
+                    </strong>
+                </div>
+            </div>
+            {/* <!-- Modal --> */}
+            <div className="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div className="modal-dialog modal-fullscreen">
+                    <div className="modal-content">
+                        <div className="modal-header">
+                            <h1 className="modal-title fs-5" id="staticBackdropLabel">Ticket Creation Explained</h1>
+                            <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div className="modal-body">
+                            "IMAGES GO HERE"
+                        </div>
+                        <div className="modal-footer">
+                            <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div className="bd-content">
 
                 <div className="d-flex flex-column gap-3">
@@ -130,10 +155,10 @@ export const CustomerCreateTicket = () => {
                 </div>
 
                 <div className="d-flex justify-content-center mt-3 gap-3">
-                    
+
                     {/* CLOUDINARY */}
                     <UploadWidget />
-                    
+
                     {/* CREATE TICKET */}
                     <button className="btn btn-primary col-4" onClick={() => createTicket()}>Create Ticket</button>
                 </div>
