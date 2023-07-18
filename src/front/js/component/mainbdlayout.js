@@ -26,7 +26,7 @@ export const MainBdLayout = ({ children }) => {
     }
 
     return (
-        <div className={pathname === '/' || pathname === '/loading' || pathname === '/landing' ? "container-xxl gx-0 shadow vh-100" : "container-xxl gx-0 shadow vh-100 bd-layout"} style={{ position: "relative" }}>
+        <div className={pathname === '/' || pathname === '/loading' || pathname === '/landing' ? "container-xxl gx-0 shadow h-100" : "container-xxl gx-0 shadow h-100 bd-layout"} style={{ position: "relative" }}>
             {children}
 
             {/* MODAL TICKET INFO*/}
