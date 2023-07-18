@@ -30,9 +30,9 @@ export const AdminContactList = () => {
     // console.log(filterEmployees)
     return (
         <main className="bd-main order-1">
-            <div className="bd-intro">
+            {/* <div className="bd-intro">
                 <PageTitle title={"All Users"} />
-            </div>
+            </div> */}
             <div className="bd-content">
                 <div className="d-flex justify-content-center">
                     <div className="input-group mb-2 w-25">

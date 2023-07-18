@@ -21,15 +21,15 @@ export const AdminDashboard = () => {
     
     useEffect(()=>{
         actions.getAdminTickets();
-    }, [])
+    }, []);
     
     return (
         <main className="bd-main order-1">
-            <div className="bd-intro">
+            {/* <div className="bd-intro">
                 <PageTitle title={"Dashboard"} />
-            </div>
+            </div> */}
             <div className="bd-content">
-                <div className="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4 m-0">
+                <div className="row row-cols-1 row-cols-md-2 row-cols-lg-4 m-0">
                     
                     {/* NEW TICKETS */}
                     {newTickets.length > 0
