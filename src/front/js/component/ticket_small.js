@@ -187,18 +187,30 @@ export const TicketSmall = (props) => {
         navigate("/admin/process/ticket")
     }
 
+    const handleStatusColor = (status) => {
+        if (status === "New") return TicketStatusColor.NEW;
+        if (status === "Opened") return TicketStatusColor.OPENED;
+        if (status === "In Progress") return TicketStatusColor.IN_PROGRESS;
+        if (status === "Resolved") return TicketStatusColor.RESOLVED;
+        if (status === "Closed") return TicketStatusColor.CLOSED;
+    }
+
+
     return (
-        <div className="card w-100 mb-3">
-            <div className="card-header btn btn-light" onClick={handleModal}>
+        <div className="card w-100 mb-5"
+            style={{
+                borderColor: handleStatusColor(data.status),
+            }}>
+            <div className="card-header btn text-white"
+                style={{
+                    backgroundColor: handleStatusColor(data.status),
+                }}
+                onClick={handleModal}>
                 <div className="d-flex flex-row justify-content-between align-items-center">
                     <div className="text-start flex-grow-1 p-0">
                         <h5 className="card-title m-0">{data.subject}</h5>
                     </div>
-                    <p className={`badge m-0 text-bg-${data.status === 'New' ? TicketStatusColor.NEW
-                        : data.status === 'Opened' ? TicketStatusColor.OPENED
-                            : data.status === 'In Progress' ? TicketStatusColor.IN_PROGRESS
-                                : data.status === 'Resolved' ? TicketStatusColor.RESOLVED
-                                    : TicketStatusColor.CLOSED}`}
+                    <p className={`badge m-0 text-warning bg-dark`}
                         role="alert">{data.status}
                     </p>
                 </div>
@@ -288,10 +300,13 @@ export const TicketSmall = (props) => {
                     </div>
                 </div>
             </div>
-            <div className="card-footer text-body-secondary d-flex flex-column flex-sm-row align-items-center justify-content-between">
-                <h6 className="card-subtitle text-body-secondary col-sm-3">Ticket #{data.id}</h6>
+            <div className="card-footer text-white d-flex flex-column flex-sm-row align-items-center justify-content-between"
+                style={{
+                    backgroundColor: handleStatusColor(data.status),
+                }}>
+                <h6 className="card-subtitle col-sm-3">Ticket #{data.id}</h6>
                 <div className="vr d-none d-sm-inline-block"></div>
-                <h6 className="card-subtitle text-body-secondary text-center col-sm-3">{data.intervention_type ? 'Assistance' : 'Maintenance'}</h6>
+                <h6 className="card-subtitle text-center col-sm-3">{data.intervention_type ? 'Assistance' : 'Maintenance'}</h6>
                 <div className="vr d-none d-sm-inline-block"></div>
                 <h6 className="card-text col-sm-3">{data.open_ticket_time}</h6>
             </div>
