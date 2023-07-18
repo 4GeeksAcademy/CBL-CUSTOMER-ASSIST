@@ -19,6 +19,7 @@ import { EmployeeDashboard } from "./pages/common/employee_dashboard"
 import { EmployeeEditProfile } from "./pages/common/employee_edit_profile";
 import { EmployeeTicketAssistance } from "./pages/common/employee_ticket_assistance";
 import { LoadingData } from "./pages/common/loading_data";
+import { Footer } from "./component/footer"
 // import { CustomerHelpGuide } from "./pages/customer/customer_help_guide"
 // import { Home } from "./pages/home";
 // import { Single } from "./pages/single";
@@ -73,6 +74,7 @@ const Layout = () => {
                         {/* <Route element={<CreateCustomer/>} path="/customer/create"/> */}
                     </Routes>
                 </MainBdLayout>
+                <Footer />
             {/* </BrowserRouter> */}
         </div>
     );
