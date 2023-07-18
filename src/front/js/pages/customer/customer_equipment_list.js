@@ -3,11 +3,15 @@ import { Multiselect } from 'multiselect-react-dropdown';
 import { Context } from "../../store/appContext";
 import { EquipmentListCard } from "../../component/equipment_list_card";
 import { PageTitle } from "../../component/page_title";
+import { useLocation } from "react-router-dom";
 
 export const CustomerEquipmentList = () => {
     const { actions, store } = useContext(Context);
+    const location = useLocation();
     const [equipmentSelected, setEquipmentSelected] = useState(store.equipmentList);
     const [equipmentVar, setEquipmentVar] = useState([]);
+
+    console.log(location)
 
     useEffect(() => {
         if (Object.keys(equipmentSelected).length === 0) setEquipmentVar(store.equipmentList)
@@ -31,9 +35,9 @@ export const CustomerEquipmentList = () => {
 
     return (
         <main className="bd-main order-1">
-            <div className="bd-intro">
+            {/* <div className="bd-intro">
                 <PageTitle title={"Equipment List"} />
-            </div>
+            </div> */}
             <div className="bd-content">
                 <div>
                     <div className="mb-3 p-3 col-sm-12 col-md-8 col-lg-8 mx-auto d-flex ">

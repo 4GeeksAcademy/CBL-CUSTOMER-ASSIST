@@ -13,9 +13,9 @@ export const CustomerDashboard = () => {
 
     return (
         <main className="bd-main order-1">
-            <div className="bd-intro">
+            {/* <div className="bd-intro">
                 <PageTitle title={"Dashboard"} />
-            </div>
+            </div> */}
             <div className="bd-content">
                 {store.tickets != null || undefined ? store.tickets
                     .filter(ticket => customerAllowedTicketStatus.includes(ticket.status))

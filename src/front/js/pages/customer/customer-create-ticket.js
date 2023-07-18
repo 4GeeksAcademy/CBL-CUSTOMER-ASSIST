@@ -44,9 +44,9 @@ export const CustomerCreateTicket = () => {
     return (
         // <div className="container">
         <main className="bd-main order-1">
-            <div className="bd-intro">
+            {/* <div className="bd-intro">
                 <PageTitle title={"Create Ticket"} />
-            </div>
+            </div> */}
             <div className="bd-content">
 
                 <div className="d-flex flex-column gap-3">
