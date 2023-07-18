@@ -50,13 +50,13 @@ export const CustomerSidebar = () => {
 							</ul> */}
 						</li>
 						{/* Help */}
-						<li className="bd-links-group py-2" data-bs-target="#bdSidebar" data-bs-dismiss="offcanvas">
+						{/* <li className="bd-links-group py-2" data-bs-target="#bdSidebar" data-bs-dismiss="offcanvas">
 							<Link className="link" to={'/customer/help/guide'}>
 								<strong className="bd-links-heading d-flex w-100 align-items-center fw-semibold">
 									<i className="fa-solid fa-circle-question me-1" style={{ color: "blue" }}></i>Help
 								</strong>
 							</Link>
-						</li>
+						</li> */}
 					</ul>
 				</nav>
         	</div>

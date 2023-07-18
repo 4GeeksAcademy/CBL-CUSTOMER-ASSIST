@@ -19,7 +19,7 @@ import { EmployeeDashboard } from "./pages/technician/employee_dashboard";
 import { EmployeeEditProfile } from "./pages/common/employee_edit_profile";
 import { EmployeeTicketAssistance } from "./pages/common/employee_ticket_assistance";
 import { LoadingData } from "./pages/common/loading_data";
-import { CustomerHelpGuide } from "./pages/customer/customer_help_guide"
+// import { CustomerHelpGuide } from "./pages/customer/customer_help_guide"
 // import { Home } from "./pages/home";
 // import { Single } from "./pages/single";
 // import { CreateAdmin } from "./pages/admin/admin-create";
@@ -61,7 +61,6 @@ const Layout = () => {
                         <Route element={<CustomerCreateTicket />} path="/customer/create/ticket" />
                         <Route element={<CustomerEquipmentList />} path="/customer/equipment/list" />
                         <Route element={<CustomerEquipmentHistory />} path="/customer/equipment/history" />
-                        <Route element={<CustomerHelpGuide />} path="/customer/help/guide" />
                         <Route element={<AdminContactList />} path="/admin/contact/list" />
                         <Route element={<LoadingData />} path="/loading" />
                         <Route element={<h1>Not found!</h1>} path="*" />
