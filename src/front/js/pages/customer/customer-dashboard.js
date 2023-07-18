@@ -13,7 +13,7 @@ export const CustomerDashboard = () => {
     }, []);
 
     return (
-        <main className="bd-main order-1">
+        <main className="bd-main order-1 pe-4">
             <div className="bd-intro  d-flex border-bottom justify-content-between">
                 {/* <h1 className="">Dashboard</h1> */}
                 {/* <!-- Button trigger modal --> */}

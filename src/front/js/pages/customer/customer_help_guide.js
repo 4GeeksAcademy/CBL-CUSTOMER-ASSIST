@@ -4,7 +4,7 @@ import { HelpGuide } from "../../component/help_guide";
 export const CustomerHelpGuide = () => {
     
     return (
-        <main className="bd-main order-1">
+        <main className="bd-main order-1 pe-4">
            <div className="bd-intro">
                 <div className="border-bottom mb-4 mt-3">
                     <h1>Help Guide</h1>

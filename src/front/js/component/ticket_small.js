@@ -210,7 +210,7 @@ export const TicketSmall = (props) => {
                     <div className="text-start flex-grow-1 p-0">
                         <h5 className="card-title m-0">{data.subject}</h5>
                     </div>
-                    <p className={`badge m-0 text-warning bg-dark`}
+                    <p className="badge m-0 text-warning bg-dark"
                         role="alert">{data.status}
                     </p>
                 </div>

@@ -60,7 +60,7 @@ export const AdminTickets = () => {
     // };
 
     return (
-        <main className="bd-main order-1">
+        <main className="bd-main order-1 pe-4">
             <div className="bd-intro">
                 {/* <PageTitle title={formatTitle(filter) + " Tickets"} /> */}
                 <div className="filter-nav border rounded mt-2 d-flex gap-1 align-items-center">

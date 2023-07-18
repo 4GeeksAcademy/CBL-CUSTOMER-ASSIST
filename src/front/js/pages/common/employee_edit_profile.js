@@ -52,7 +52,7 @@ export const EmployeeEditProfile = () => {
     }
 
     return (
-        <main className="bd-main order-1">
+        <main className="bd-main order-1 pe-4">
             <div className="bd-intro">
                 <h3 className="border-bottom">{!editProfile ? title : 'Edit ' + title}</h3>
             </div>

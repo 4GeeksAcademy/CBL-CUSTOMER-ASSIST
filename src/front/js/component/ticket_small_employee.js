@@ -22,13 +22,13 @@ export const TicketSmallEmployee = (props) => {
 
     const handleStartIntervention = async (ticketID, status) => {
         console.log('btnStartIntervention');
-        
+
         const title = 'Start Intervention';
-        
+
         // ##################################################
         // SAVE START INTERVENTION DATE LOCALY
         const currentDate = formatDate(new Date());
-        const newAssignedTicket = {...store.assignedTicket}; 
+        const newAssignedTicket = { ...store.assignedTicket };
 
         //update start_intervention_date
         newAssignedTicket.ticket_employee[0].start_intervention_date = currentDate;
@@ -41,11 +41,11 @@ export const TicketSmallEmployee = (props) => {
         const response = await actions.setTicketStatus(ticketID, status);
         if (response[0] === 200) {
             toast(title, `Updated ticket number ${ticketID} to ${status}`);
-            
+
             const startDate = await actions.setStartInterventionDate(ticketEmployee.id, currentDate);
             if (startDate[0] === 200) {
                 toast(title, startDate[1]);
-            }else{
+            } else {
                 toast(title, startDate[1]);
             }
         }
@@ -60,18 +60,30 @@ export const TicketSmallEmployee = (props) => {
         navigate("/employee/ticket/assistance");
     }
 
+    const handleStatusColor = (status) => {
+        if (status === "New") return TicketStatusColor.NEW;
+        if (status === "Opened") return TicketStatusColor.OPENED;
+        if (status === "In Progress") return TicketStatusColor.IN_PROGRESS;
+        if (status === "Resolved") return TicketStatusColor.RESOLVED;
+        if (status === "Closed") return TicketStatusColor.CLOSED;
+    }
+
+
     return (
-        <div className="card w-100 mb-3">
-            <div className="card-header btn btn-light" onClick={() => handleModal()}>
+        <div className="card w-100 mb-5"
+            style={{
+                borderColor: handleStatusColor(ticket.status),
+            }}>
+            <div className="card-header btn"
+                style={{
+                    backgroundColor: handleStatusColor(ticket.status),
+                }}
+                onClick={() => handleModal()}>
                 <div className="d-flex flex-row justify-content-between align-items-center">
                     <div className="text-start flex-grow-1 p-0">
                         <h5 className="card-title  m-0">{ticket.subject}</h5>
                     </div>
-                    <p className={`badge m-0 text-bg-${ticket.status === 'New' ? TicketStatusColor.NEW
-                        : ticket.status === 'Opened' ? TicketStatusColor.OPENED
-                            : ticket.status === 'In Progress' ? TicketStatusColor.IN_PROGRESS
-                                : ticket.status === 'Resolved' ? TicketStatusColor.RESOLVED
-                                    : TicketStatusColor.CLOSED}`}
+                    <p className="badge m-0 text-warning bg-dark"
                         role="alert">{ticket.status}
                     </p>
                 </div>
@@ -124,10 +136,13 @@ export const TicketSmallEmployee = (props) => {
                     : null
                 }
             </div>
-            <div className="card-footer text-body-secondary d-flex flex-column flex-sm-row align-items-center justify-content-between">
-                <h6 className="card-subtitle text-body-secondary col-sm-3">Ticket #{ticket.id}</h6>
+            <div className="card-footer d-flex flex-column flex-sm-row align-items-center justify-content-between"
+                style={{
+                    backgroundColor: handleStatusColor(ticket.status),
+                }}>
+                <h6 className="card-subtitle col-sm-3">Ticket #{ticket.id}</h6>
                 <div className="vr d-none d-sm-inline-block"></div>
-                <h6 className="card-subtitle text-body-secondary text-center col-sm-3">{ticket.intervention_type ? 'Assistance' : 'Maintenance'}</h6>
+                <h6 className="card-subtitle text-center col-sm-3">{ticket.intervention_type ? 'Assistance' : 'Maintenance'}</h6>
                 <div className="vr d-none d-sm-inline-block"></div>
                 <h6 className="card-text col-sm-3">{ticket.open_ticket_time}</h6>
             </div>

@@ -32,7 +32,7 @@ export const CustomerEquipmentList = () => {
     };
 
     return (
-        <main className="bd-main order-1">
+        <main className="bd-main order-1 pe-4">
             <div className="bd-intro border-bottom d-flex justify-content-end">
                 {/* <h2>Equipment List</h2> */}
                 {/* <div className="bd-intro">
