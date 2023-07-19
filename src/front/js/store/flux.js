@@ -721,7 +721,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 				const response = await fetch(process.env.BACKEND_URL + "api/admin/available/vehicles", opts);
 				const data = await response.json();
 
-				console.log("availableVehicles: ", data.available_vehicles)
 
 				if (response.status !== 200) {
 					console.log(response.status, data.msg);

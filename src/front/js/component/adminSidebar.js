@@ -6,7 +6,6 @@ export const AdminSidebar = () => {
 	const { store, actions } = useContext(Context);
 	// const navigate = useNavigate();
 	const location = useLocation();
-	console.log(location.pathname);
 
 	return (
 		<div className="offcanvas-lg offcanvas-start border-end h-100" tabIndex="-1" id="bdSidebar" aria-labelledby="bdSidebarOffcanvasLabel">

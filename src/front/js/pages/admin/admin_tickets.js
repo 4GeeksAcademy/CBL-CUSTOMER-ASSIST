@@ -101,8 +101,7 @@ export const AdminTickets = () => {
 
                     <div className="mt-2 gap-1 px-1 align-items-center">
                         {/* CREATE NEW TICKET */}
-                        <NavLink to={"/admin/create/ticket"} data-bs-toggle="tooltip"
-                            data-bs-placement="top" data-bs-title={toolTips.createTicket}>
+                        <NavLink to={"/admin/create/ticket"}>
                             <span className="btn btn-primary"><i className="fa-solid fa-plus fa-lg"></i></span>
                         </NavLink>
                     </div>
