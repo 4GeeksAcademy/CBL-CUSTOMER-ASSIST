@@ -17,10 +17,15 @@ export const AdminTickets = () => {
     const openedTickets = store.tickets.filter((ticket) => ticket.status === 'Opened');
     const inProgressTickets = store.tickets.filter((ticket) => ticket.status === 'In Progress');
     const resolvedTickets = store.tickets.filter((ticket) => ticket.status === 'Resolved');
-    const allTickets = [...newTickets, ... openedTickets, ...inProgressTickets, ...resolvedTickets];
+    const allTickets = [...newTickets, ...openedTickets, ...inProgressTickets, ...resolvedTickets];
 
     const availableEmployees = store.availableEmployees;
     const availableVehicles = store.availableVehicles;
+
+    const toolTips = {
+        filter: "Select one of the options to filter displayed tickets.",
+        createTicket: "Click to create a new ticket for a customer."
+    }
 
     const ref = useRef(null);
 
@@ -28,6 +33,9 @@ export const AdminTickets = () => {
         actions.getAdminTickets();
         actions.getAvailableEmployees();
         actions.getAvailableVehicles();
+
+        const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+        const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
     }, [])
 
     const handleStatusColor = (filter) => {
@@ -63,30 +71,41 @@ export const AdminTickets = () => {
     return (
         <main className="bd-main order-1 pe-4">
             <div className="bd-intro">
-                {/* <PageTitle title={formatTitle(filter) + " Tickets"} /> */}
-                <div className="filter-nav border rounded mt-2 d-flex gap-1 align-items-center">
-                    <i className="fa-solid fa-filter m-2 me-1"></i>
-                    <div className="vr"></div>
+                <div className="d-flex flex-row justify-content-between">
+                    {/* <PageTitle title={formatTitle(filter) + " Tickets"} /> */}
+                    <div className="filter-nav border rounded mt-2 d-flex gap-1 pe-2 align-items-center">
+                        <i className="fa-solid fa-filter m-2 me-1"
+                            data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title={toolTips.filter}></i>
+                        <div className="vr"></div>
 
-                    {/* NEW TICKETS FILTER */}
-                    <NavLink to={"/admin/tickets/new"}>
-                        <span className="badge btn ms-1 my-2"style={{ backgroundColor: handleStatusColor("New")}}>New</span>
-                    </NavLink>
-                    
-                    {/* OPENED TICKETS FILTER */}
-                    <NavLink to={"/admin/tickets/opened"}>
-                        <span className="badge btn my-2" style={{ backgroundColor: handleStatusColor("Opened") }}>Opened</span>
-                    </NavLink>
+                        {/* NEW TICKETS FILTER */}
+                        <NavLink to={"/admin/tickets/new"}>
+                            <span className="badge btn ms-1 my-2" style={{ backgroundColor: handleStatusColor("New") }}>New</span>
+                        </NavLink>
 
-                    {/* IN PROGRESS TICKETS FILTER */}
-                    <NavLink to={"/admin/tickets/inprogress"}>
-                        <span className="badge btn my-2" style={{ backgroundColor: handleStatusColor("In Progress") }}>In Progress</span>
-                    </NavLink>
+                        {/* OPENED TICKETS FILTER */}
+                        <NavLink to={"/admin/tickets/opened"}>
+                            <span className="badge btn my-2" style={{ backgroundColor: handleStatusColor("Opened") }}>Opened</span>
+                        </NavLink>
 
-                    {/* RESOLVED TICKETS FILTER */}
-                    <NavLink to={"/admin/tickets/resolved"}>
-                        <span className="badge btn my-2" style={{ backgroundColor: handleStatusColor("Resolved") }}>Resolved</span>
-                    </NavLink>
+                        {/* IN PROGRESS TICKETS FILTER */}
+                        <NavLink to={"/admin/tickets/inprogress"}>
+                            <span className="badge btn my-2" style={{ backgroundColor: handleStatusColor("In Progress") }}>In Progress</span>
+                        </NavLink>
+
+                        {/* RESOLVED TICKETS FILTER */}
+                        <NavLink to={"/admin/tickets/resolved"}>
+                            <span className="badge btn my-2" style={{ backgroundColor: handleStatusColor("Resolved") }}>Resolved</span>
+                        </NavLink>
+                    </div>
+
+                    <div className="mt-2 gap-1 px-1 align-items-center">
+                        {/* CREATE NEW TICKET */}
+                        <NavLink to={"/admin/create/ticket"} data-bs-toggle="tooltip"
+                            data-bs-placement="top" data-bs-title={toolTips.createTicket}>
+                            <span className="btn btn-primary"><i className="fa-solid fa-plus fa-lg"></i></span>
+                        </NavLink>
+                    </div>
                 </div>
             </div>
             <div className="bd-content">
