@@ -25,7 +25,7 @@ export const EmployeeSidebar = () => {
 							data-bs-dismiss="offcanvas">
 							<NavLink className="d-flex py-2 sidebar-main-option text-decoration-none" to={'employee/dashboard'}>
 							<strong className="d-flex w-100 align-items-center fw-semibold">
-							<i className={`fa-solid fa-gauge-high bi me-2 ${location.pathname === "/employee/dashboard" ? "sidebar-icon" : ""}`}></i>Dashboard
+							<i className="fa-solid fa-gauge-high bi me-2"></i>Dashboard
 								</strong>
 							</NavLink>
 						</li>

@@ -25,7 +25,7 @@ export const AdminSidebar = () => {
 							data-bs-dismiss="offcanvas">
 							<NavLink className="d-flex py-2 sidebar-main-option text-decoration-none" to={'/admin/dashboard'}>
 								<strong className="d-flex w-100 align-items-center fw-semibold">
-									<i className={`fa-solid fa-gauge-high bi me-2 ${location.pathname === "/admin/dashboard" ? "sidebar-icon" : ""}`}></i>Dashboard
+									<i className="fa-solid fa-gauge-high bi me-2"></i>Dashboard
 								</strong>
 							</NavLink>
 						</li>
@@ -36,7 +36,7 @@ export const AdminSidebar = () => {
 							data-bs-dismiss="offcanvas">
 							<NavLink className="d-flex py-2 sidebar-main-option text-decoration-none" to={'admin/tickets'}>
 								<strong className="d-flex w-100 align-items-center fw-semibold">
-									<i className={`fa-solid fa-ticket bi me-2 ${location.pathname === "/admin/tickets" ? "sidebar-icon" : ""}`}></i>Tickets
+									<i className="fa-solid fa-ticket bi me-2"></i>Tickets
 								</strong>
 							</NavLink>
 							{/* <ul className="list-unstyled fw-normal pb-2 small">
@@ -63,9 +63,9 @@ export const AdminSidebar = () => {
 						<li className="bd-links-group"
 							data-bs-target="#bdSidebar"
 							data-bs-dismiss="offcanvas">
-							<NavLink className="d-flex py-2 sidebar-main-option text-decoration-none"	 to={'admin/contact/list'}>
+							<NavLink className="d-flex py-2 sidebar-main-option text-decoration-none" to={'admin/contact/list'}>
 								<strong className="d-flex w-100 align-items-center fw-semibold">
-									<i className={`fa-solid fa-users bi me-2 ${location.pathname === "/admin/contact/list" ? "sidebar-icon" : ""}`}></i>Users
+									<i className="fa-solid fa-gauge-high bi me-2"></i>Users
 								</strong>
 							</NavLink>
 							{/* <ul className="list-unstyled fw-normal pb-2 small">
