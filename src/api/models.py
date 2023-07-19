@@ -200,7 +200,7 @@ class Ticket(db.Model):
     closed_ticket_time = db.Column(db.DateTime, nullable=True)
     km_on_leave = db.Column(db.Integer, nullable=True)
     km_on_arrival = db.Column(db.Integer, nullable=True)
-    subject = db.Column(db.String(30), nullable=False)
+    subject = db.Column(db.String(50), nullable=False)
     description = db.Column(db.String(1024), nullable=False)
     customer_media = db.Column(db.String, nullable=True)
     customer_id = db.Column(db.Integer, db.ForeignKey('customer.id'), nullable=False)

@@ -1,32 +1,32 @@
 [
     {
-        "description": "Solution 1"
+        "description": "Electrical cable substitution."
     },
     {
-        "description": "Solution 2"
+        "description": "Check for possible broken wire."
     },
     {
-        "description": "Solution 3"
+        "description": "Traction rollers pneumatic pressure was to low."
     },
     {
-        "description": "Solution 4"
+        "description": "Adjusted camme TPP and CLP."
     },
     {
-        "description": "Solution 5"
+        "description": "Rekay K2 of Dittmer fence control switch damaged. Substitution."
     },
     {
-        "description": "Solution 6"
+        "description": "Substitution of limit switch and refurbishment of all camms."
     },
     {
-        "description": "Solution 7"
+        "description": "Parameterization of slider quotas."
     },
     {
-        "description": "Solution 8"
+        "description": "Check relay condition. Substitute if needed."
     },
     {
-        "description": "Solution 9"
+        "description": "Check software safety conditions for feeder return to safety position."
     },
     {
-        "description": "Solution 10"
+        "description": "Slider guides are tight. Relieve the guides."
     }
 ]

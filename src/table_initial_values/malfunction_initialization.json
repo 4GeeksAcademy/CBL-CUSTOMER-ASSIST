@@ -1,32 +1,32 @@
 [
     {
-        "description": "Malfunction 1"
+        "description": "Press works in Single Stroke Pedal without pressing the pedal."
     },
     {
-        "description": "Malfunction 2"
+        "description": "Controls don't work."
     },
     {
-        "description": "Malfunction 3"
+        "description": "Feeder doesn't drag metal sheet."
     },
     {
-        "description": "Malfunction 4"
+        "description": "Feeder does not step after press stroke."
     },
     {
-        "description": "Malfunction 5"
+        "description": "Press, in Open Tools, the automatic door nº1 doesn't work."
     },
     {
-        "description": "Malfunction 6"
+        "description": "Limit Switch damaged."
     },
     {
-        "description": "Malfunction 7"
+        "description": "Slider quotas doesn't match with terminal and table."
     },
     {
-        "description": "Malfunction 8"
+        "description": "Parts counter not counting."
     },
     {
-        "description": "Malfunction 9"
+        "description": "Feeder doesn't return to safety position."
     },
     {
-        "description": "Malfunction 10"
+        "description": "After working during a period of time, main motor circuit breaker trips."
     }
 ]
