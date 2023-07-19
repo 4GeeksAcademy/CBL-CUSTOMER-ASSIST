@@ -13,11 +13,11 @@ export const AdminTickets = () => {
     const userType = store.userProfile.user_info.user_type;
     const { filter } = useParams();
 
-    const allTickets = store.tickets;
     const newTickets = store.tickets.filter((ticket) => ticket.status === 'New');
     const openedTickets = store.tickets.filter((ticket) => ticket.status === 'Opened');
     const inProgressTickets = store.tickets.filter((ticket) => ticket.status === 'In Progress');
     const resolvedTickets = store.tickets.filter((ticket) => ticket.status === 'Resolved');
+    const allTickets = [...newTickets, ... openedTickets, ...inProgressTickets, ...resolvedTickets];
 
     const availableEmployees = store.availableEmployees;
     const availableVehicles = store.availableVehicles;
@@ -50,6 +50,7 @@ export const AdminTickets = () => {
         if (value === "closed") return "Closed";
     }
 
+
     // 👇️ check if element contains class on click 👇️
     // const handleClick = event => {
     //     if (event.currentTarget.classList.contains('active')) {
@@ -66,15 +67,23 @@ export const AdminTickets = () => {
                 <div className="filter-nav border rounded mt-2 d-flex gap-1 align-items-center">
                     <i className="fa-solid fa-filter m-2 me-1"></i>
                     <div className="vr"></div>
+
+                    {/* NEW TICKETS FILTER */}
                     <Link to={"/admin/tickets/new"}>
                         <span className="badge btn ms-1 my-2"style={{ backgroundColor: handleStatusColor("New") + " !important"}}>New</span>
                     </Link>
+                    
+                    {/* OPENED TICKETS FILTER */}
                     <NavLink to={"/admin/tickets/opened"}>
                         <span className="badge btn my-2" style={{ backgroundColor: handleStatusColor("Opened") }}>Opened</span>
                     </NavLink>
+
+                    {/* IN PROGRESS TICKETS FILTER */}
                     <NavLink to={"/admin/tickets/inprogress"}>
                         <span className="badge btn my-2" style={{ backgroundColor: handleStatusColor("In Progress") }}>In Progress</span>
                     </NavLink>
+
+                    {/* RESOLVED TICKETS FILTER */}
                     <NavLink to={"/admin/tickets/resolved"}>
                         <span className="badge btn my-2" style={{ backgroundColor: handleStatusColor("Resolved") }}>Resolved</span>
                     </NavLink>

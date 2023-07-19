@@ -74,8 +74,8 @@ const Layout = () => {
                         {/* <Route element={<CreateCustomer/>} path="/customer/create"/> */}
                     </Routes>
                 </MainBdLayout>
-                <Footer />
             {/* </BrowserRouter> */}
+            {/* <Footer /> */}
         </div>
     );
 };
