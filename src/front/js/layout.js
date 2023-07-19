@@ -19,6 +19,7 @@ import { EmployeeDashboard } from "./pages/common/employee_dashboard"
 import { EmployeeEditProfile } from "./pages/common/employee_edit_profile";
 import { EmployeeTicketAssistance } from "./pages/common/employee_ticket_assistance";
 import { LoadingData } from "./pages/common/loading_data";
+
 import { Footer } from "./component/footer"
 // import { CustomerHelpGuide } from "./pages/customer/customer_help_guide"
 // import { Home } from "./pages/home";
@@ -26,8 +27,9 @@ import { Footer } from "./component/footer"
 // import { CreateAdmin } from "./pages/admin/admin-create";
 // import { CreateTech } from "./pages/technician/tech-create";
 // import { CreateCustomer } from "./pages/customer/customer-create.js";
-import {CapturePhoto} from "./pages/customer/capture_photo";
+// import {CapturePhoto} from "./pages/customer/capture_photo";
 import { LandingPage } from "./pages/landing_page";
+import { AdminCreateCustomer } from "./pages/admin/admin-create-customer";
 
 
 const Layout = () => {
@@ -71,7 +73,7 @@ const Layout = () => {
                         {/* <Route element={<Single />} path="/single/:theid" /> */}
                         {/* <Route element={<CreateAdmin/>} path="/admin/create" /> */}
                         {/* <Route element={<CreateTech/>} path="/tech/create"/> */}
-                        {/* <Route element={<CreateCustomer/>} path="/customer/create"/> */}
+                        <Route element={<AdminCreateCustomer/>} path="/admin/create/customer"/> 
                     </Routes>
                 </MainBdLayout>
             {/* </BrowserRouter> */}
