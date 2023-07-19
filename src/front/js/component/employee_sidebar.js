@@ -20,10 +20,10 @@ export const EmployeeSidebar = () => {
 					<ul className="bd-links-nav d-flex flex-column list-unstyled mb-0 pb-3 pb-md-2">
 
 						{/* DASHBOARD */}
-						<li className={`bd-links-group py-2 sidebar-main-option ${location.pathname === "/employee/dashboard" ? "active" : ""}`}
+						<li className="bd-links-group"
 							data-bs-target="#bdSidebar"
 							data-bs-dismiss="offcanvas">
-							<NavLink className="text-decoration-none" to={'employee/dashboard'}>
+							<NavLink className="d-flex py-2 sidebar-main-option text-decoration-none" to={'employee/dashboard'}>
 							<strong className="d-flex w-100 align-items-center fw-semibold">
 							<i className={`fa-solid fa-gauge-high bi me-2 ${location.pathname === "/employee/dashboard" ? "sidebar-icon" : ""}`}></i>Dashboard
 								</strong>

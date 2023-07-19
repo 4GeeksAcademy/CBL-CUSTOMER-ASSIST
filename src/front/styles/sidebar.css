@@ -1,5 +1,5 @@
 .sidebar-main-option {
-   font-size: calc(1.1rem + .3vw) !important;
+   font-size: calc(1rem + .3vw) !important;
    color: #210b61 !important;
    transition: background-color 0.5s ease;
    padding-left: 10px;
@@ -9,14 +9,14 @@
    background: #8dccff;
 }
 
-li.sidebar-main-option.active {
+.sidebar-main-option.active {
    background-color: #210b61 !important;
    color: white !important;
 }
 
-.sidebar-main-option > a {
+/* .sidebar-main-option > a {
    color: inherit;
-}
+} */
 
 .bg-sidebar {
    background-color: #210b61 !important;

@@ -20,10 +20,10 @@ export const AdminSidebar = () => {
 					<ul className="bd-links-nav d-flex flex-column list-unstyled mb-0 pb-3 pb-md-2">
 
 						{/* DASHBOARD */}
-						<li className={`bd-links-group py-2 sidebar-main-option ${location.pathname === "/admin/dashboard" ? "active" : ""}`}
+						<li className="bd-links-group"
 							data-bs-target="#bdSidebar"
 							data-bs-dismiss="offcanvas">
-							<NavLink className="text-decoration-none" to={'/admin/dashboard'}>
+							<NavLink className="d-flex py-2 sidebar-main-option text-decoration-none" to={'/admin/dashboard'}>
 								<strong className="d-flex w-100 align-items-center fw-semibold">
 									<i className={`fa-solid fa-gauge-high bi me-2 ${location.pathname === "/admin/dashboard" ? "sidebar-icon" : ""}`}></i>Dashboard
 								</strong>
@@ -31,10 +31,10 @@ export const AdminSidebar = () => {
 						</li>
 
 						{/* TICKETS */}
-						<li className={`bd-links-group py-2 sidebar-main-option ${location.pathname === "/admin/tickets" ? "active" : ""}`}
+						<li className="bd-links-group"
 							data-bs-target="#bdSidebar"
 							data-bs-dismiss="offcanvas">
-							<NavLink className="text-decoration-none" to={'admin/tickets'}>
+							<NavLink className="d-flex py-2 sidebar-main-option text-decoration-none" to={'admin/tickets'}>
 								<strong className="d-flex w-100 align-items-center fw-semibold">
 									<i className={`fa-solid fa-ticket bi me-2 ${location.pathname === "/admin/tickets" ? "sidebar-icon" : ""}`}></i>Tickets
 								</strong>
@@ -60,10 +60,10 @@ export const AdminSidebar = () => {
 
 
 						{/* USERS */}
-						<li className={`bd-links-group py-2 sidebar-main-option ${location.pathname === "/admin/contact/list" ? "active" : ""}`}
+						<li className="bd-links-group"
 							data-bs-target="#bdSidebar"
 							data-bs-dismiss="offcanvas">
-							<NavLink className="text-decoration-none" to={'admin/contact/list'}>
+							<NavLink className="d-flex py-2 sidebar-main-option text-decoration-none"	 to={'admin/contact/list'}>
 								<strong className="d-flex w-100 align-items-center fw-semibold">
 									<i className={`fa-solid fa-users bi me-2 ${location.pathname === "/admin/contact/list" ? "sidebar-icon" : ""}`}></i>Users
 								</strong>
