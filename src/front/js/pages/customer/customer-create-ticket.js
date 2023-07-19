@@ -5,6 +5,8 @@ import { useNavigate } from "react-router-dom";
 import { CapturePhoto } from "./capture_photo";
 import UploadWidget from "../../component/upload_widget";
 import { PageTitle } from "../../component/page_title";
+import CreateTicketDescription from "../../../assets/img/help_description/Create-a-Ticket-Google-Docs.png";
+import CreateTicketIMG from "../../../assets/img/help_description/CreateTicketHelpIMG.png"
 
 export const CustomerCreateTicket = () => {
     const { store, actions } = useContext(Context);
@@ -23,7 +25,7 @@ export const CustomerCreateTicket = () => {
         label: "Maintenance"
     }];
 
-    useEffect(()=>{
+    useEffect(() => {
         actions.getCustomerEquipment();
     }, []);
 
@@ -45,7 +47,7 @@ export const CustomerCreateTicket = () => {
         // <div className="container">
         <main className="bd-main order-1 pe-4">
 
-            <div className="bd-intro d-flex border-bottom justify-content-between">
+            <div className="bd-intro d-flex border-bottom justify-content-end">
                 {/*<h3 id="content">Create Ticket</h3>*/}
                 {/* <!-- Button trigger modal --> */}
                 <div>
@@ -62,8 +64,13 @@ export const CustomerCreateTicket = () => {
                             <h1 className="modal-title fs-5" id="staticBackdropLabel">Ticket Creation Explained</h1>
                             <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                        <div className="modal-body">
-                            "IMAGES GO HERE"
+                        <div className="modal-body d-flex">
+                            <div >
+                                <img className="p-2 me-4 border rounded-3" src={CreateTicketDescription} />
+                            </div>
+                            <div >
+                                <img className="border rounded-3" style={{ height: "600px", width: "1200px" }} src={CreateTicketIMG} />
+                            </div>
                         </div>
                         <div className="modal-footer">
                             <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -163,7 +170,6 @@ export const CustomerCreateTicket = () => {
                     <button className="btn btn-primary col-4" onClick={() => createTicket()}>Create Ticket</button>
                 </div>
             </div>
-
         </main>
         // </div>
 

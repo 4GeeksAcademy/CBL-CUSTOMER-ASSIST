@@ -2,6 +2,7 @@ import React, { useState, useContext, useEffect } from "react";
 import { Context } from "../../store/appContext";
 import { TicketSmallCustomer } from "../../component/ticket_small_customer";
 import DashboardExplained from "../../../assets/img/help_description/Dashboard-Google-Docs.png"
+import DashboardHelpImg from "../../../assets/img/help_description/DashboardHelpImage.png"
 import {PageTitle} from "../../component/page_title";
 
 export const CustomerDashboard = () => {
@@ -19,10 +20,10 @@ export const CustomerDashboard = () => {
     }, []);
 
     return (
-        <main className="bd-main order-1 pe-4">
-            <div className="bd-intro  d-flex border-bottom justify-content-between">
+        <main className="bd-main order-1">
+            <div className="bd-intro  d-flex border-bottom justify-content-end">
                 {/* <h1 className="">Dashboard</h1> */}
-                {/* <!-- Button trigger modal --> */}
+                {/* <!-- Button trigger modal --> */} 
                 <div>
                     <strong typeof="button" className="bd-links-heading btn d-flex w-100 align-items-center fw-semibold" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
                         <i className="fa-solid fa-circle-question me-1" style={{ color: "blue" }}></i>Help
@@ -37,9 +38,12 @@ export const CustomerDashboard = () => {
                             <h1 className="modal-title fs-5" id="staticBackdropLabel">Dashboard Explained</h1>
                             <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                        <div className="modal-body">
-                            <div className="p-3 border rounded-3">
-                                <img src={DashboardExplained}/>
+                        <div className="modal-body d-flex">
+                            <div >
+                                <img className="p-2 me-4 border rounded-3" src={DashboardExplained}/>
+                            </div>
+                            <div >
+                                <img className="border rounded-3" style={{ height: "400px", width: "1200px" }} src={DashboardHelpImg}/>
                             </div>
                         </div>
                         <div className="modal-footer">
