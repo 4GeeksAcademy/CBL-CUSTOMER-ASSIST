@@ -47,8 +47,9 @@ export const LandingPage = () => {
         <main className="d-flex flex-row vh-100 main-landing align-items-center">
             <div className="w-100 bg-dark p-5 pb-2" style={{ "--bs-bg-opacity": ".75" }}>
                 <div className="description d-flex flex-column align-items-center text-center col-12 mb-5">
-                    <h1 className="fw-bold">Mecânica Exacta, S.A.</h1>
-                    <h3>Ticketing Customer Support</h3>
+                    <h1 className="fw-bold">CBL Desk</h1>
+                    <h3>Customer Support Ticket System</h3>
+                    <h4 className="fw-bold mt-3">Mecânica Exacta, S.A.</h4>
                 </div>
                 <div className="form-signin d-flex flex-column align-items-center  col-12">
                     <form className="d-flex flex-column align-items-center col-12">

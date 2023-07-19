@@ -7,9 +7,9 @@
 // };
 
 export const TicketStatusColor = {
-    NEW: '#98e4ff',
-    OPENED: '#72aadf',
-    IN_PROGRESS: '#4f74c1',
-    RESOLVED: '#2b3ca2',
+    NEW: '#5f79ce',
+    OPENED: '#485bba',
+    IN_PROGRESS: '#333fa8',
+    RESOLVED: '#1b1f93',
     CLOSED: '#060482'
 };

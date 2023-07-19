@@ -66,10 +66,10 @@ export const CustomerCreateTicket = () => {
                         </div>
                         <div className="modal-body d-flex">
                             <div >
-                                <img className="p-2 me-4 border rounded-3" src={CreateTicketDescription} />
+                                <img className="p-2 me-4 border rounded-3" src="https://res.cloudinary.com/dsonpr8ip/image/upload/v1689793288/Create-a-Ticket-Google-Docs_v3cen3.png" />
                             </div>
                             <div >
-                                <img className="border rounded-3" style={{ height: "600px", width: "1200px" }} src={CreateTicketIMG} />
+                                <img className="border rounded-3" style={{ height: "600px", width: "1200px" }} src="https://res.cloudinary.com/dsonpr8ip/image/upload/v1689793345/CreateTicketHelpIMG_mox7nw.png" />
                             </div>
                         </div>
                         <div className="modal-footer">

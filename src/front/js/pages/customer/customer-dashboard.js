@@ -40,10 +40,10 @@ export const CustomerDashboard = () => {
                         </div>
                         <div className="modal-body d-flex">
                             <div >
-                                <img className="p-2 me-4 border rounded-3" src={DashboardExplained}/>
+                                <img className="p-2 me-4 border rounded-3" src="https://res.cloudinary.com/dsonpr8ip/image/upload/v1689793345/Dashboard-Google-Docs_xnqhtr.png"/>
                             </div>
                             <div >
-                                <img className="border rounded-3" style={{ height: "400px", width: "1200px" }} src={DashboardHelpImg}/>
+                                <img className="border rounded-3" style={{ height: "400px", width: "1200px" }} src="https://res.cloudinary.com/dsonpr8ip/image/upload/v1689793345/DashboardHelpImage_lhy6mx.png"/>
                             </div>
                         </div>
                         <div className="modal-footer">
