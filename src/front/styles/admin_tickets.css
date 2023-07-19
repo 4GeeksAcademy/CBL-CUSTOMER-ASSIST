@@ -3,7 +3,7 @@
     color: #ffc71b;
 } */
 
-.filter-nav a:not(:has(.active)) span{
+.filter-nav a:not(.active) span{
     background-color: #dddddd !important;
     color: #000000;
 }

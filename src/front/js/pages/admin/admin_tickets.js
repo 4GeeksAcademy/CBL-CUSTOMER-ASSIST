@@ -69,9 +69,9 @@ export const AdminTickets = () => {
                     <div className="vr"></div>
 
                     {/* NEW TICKETS FILTER */}
-                    <Link to={"/admin/tickets/new"}>
-                        <span className="badge btn ms-1 my-2"style={{ backgroundColor: handleStatusColor("New") + " !important"}}>New</span>
-                    </Link>
+                    <NavLink to={"/admin/tickets/new"}>
+                        <span className="badge btn ms-1 my-2"style={{ backgroundColor: handleStatusColor("New")}}>New</span>
+                    </NavLink>
                     
                     {/* OPENED TICKETS FILTER */}
                     <NavLink to={"/admin/tickets/opened"}>
