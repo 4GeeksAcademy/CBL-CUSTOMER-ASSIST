@@ -27,6 +27,10 @@ export const AdminProcessTicket = () => {
     const toast = (title, data) => actions.userToastAlert(title, data);
     const toastTitle = "Process Ticket";
 
+    useEffect(() => {
+        actions.getCategories();
+    }, [])
+
     const handleCreateNewKnowledge = async () => {
         let ticketBool = !!(ticket.id && ticket.id !== "" && ticket.id !== undefined);
         let selectedCategoryBool = !!(selectedCategoryID && selectedCategoryID !== "" && selectedCategoryID !== undefined);
@@ -48,12 +52,12 @@ export const AdminProcessTicket = () => {
         // toast(toastTitle, "Closing ticket...");
         const response = await actions.setTicketStatus(ticket.id, 'closed');
         if (response[0] === 200) {
-            navigate('/admin/tickets/resolved');
+            navigate('/admin/tickets');
         }
     }
 
     return (
-        <main className="bd-main order-1">
+        <main className="bd-main order-1 pe-4">
             <div className="bd-intro">
                 <PageTitle title={"Process Ticket"} />
             </div>
@@ -127,7 +131,7 @@ export const AdminProcessTicket = () => {
                         <button type="button"
                             className="btn btn-primary btn-sm "
                             onClick={() => setNewKnowledgeDisabled(!newKnowledgeDisabled)}
-                        >Edit New Knowledge</button>
+                        >Create New Knowledge</button>
                         <button type="button"
                             className="btn btn-danger btn-sm"
                             onClick={() => handleCloseTicket()}
@@ -142,7 +146,7 @@ export const AdminProcessTicket = () => {
                                 className="btn btn-primary btn-sm"
                                 disabled={!(newSolution !== "" && newMalfunction !== "")}
                                 onClick={() => handleCreateNewKnowledge()}
-                            >Create Knowledge</button>
+                            >Create</button>
 
                         </div>
                     }

@@ -29,7 +29,7 @@ export const AdminContactList = () => {
 
     // console.log(filterEmployees)
     return (
-        <main className="bd-main order-1">
+        <main className="bd-main order-1 pe-4">
             {/* <div className="bd-intro">
                 <PageTitle title={"All Users"} />
             </div> */}

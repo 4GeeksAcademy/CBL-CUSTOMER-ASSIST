@@ -9,6 +9,12 @@ export const CustomerDashboard = () => {
     const { store, actions } = useContext(Context);
     const customerAllowedTicketStatus = ['New', 'Opened', 'In Progress', 'Resolved'];
 
+    const newTickets = store.tickets.filter((ticket) => ticket.status === 'New');
+    const openedTickets = store.tickets.filter((ticket) => ticket.status === 'Opened');
+    const inProgressTickets = store.tickets.filter((ticket) => ticket.status === 'In Progress');
+    const resolvedTickets = store.tickets.filter((ticket) => ticket.status === 'Resolved');
+    const allTickets = [...newTickets, ... openedTickets, ...inProgressTickets, ...resolvedTickets];
+
     useEffect(()=>{
         actions.getCustomerTickets();
     }, []);
@@ -47,7 +53,7 @@ export const CustomerDashboard = () => {
                 </div>
             </div>
             <div className="bd-content">
-                {store.tickets != null || undefined ? store.tickets
+                {allTickets != null || undefined ? allTickets
                     .filter(ticket => customerAllowedTicketStatus.includes(ticket.status))
                     .map((item, i) => {
                         return <TicketSmallCustomer key={i} data={item} />

@@ -76,18 +76,8 @@
     },
     {
         "ticket_id": 8,
-        "knowledge_id": 3,
+        "knowledge_id": 8,
         "equipment_id": 1
-    },
-    {
-        "ticket_id": 8,
-        "knowledge_id": 6,
-        "equipment_id": 1
-    },
-    {
-        "ticket_id": 9,
-        "knowledge_id": 10,
-        "equipment_id": 4
     },
     {
         "ticket_id": 9,

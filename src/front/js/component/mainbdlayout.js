@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import { Context } from "../store/appContext";
 import { useLocation } from "react-router-dom";
 
-import smallLogo from "../../assets/img/logo.png"
+import smallLogo from "../../assets/img/logo.png";
 import { ProcessTicketInfo } from "./process_ticket/process_ticket_info";
 import { ProcessCustomerInfo } from "./process_ticket/process_customer_info";
 import { ProcessEquipmentInfoCard } from "./process_ticket/process_equipment_info_card";
@@ -26,7 +26,7 @@ export const MainBdLayout = ({ children }) => {
     }
 
     return (
-        <div className={pathname === '/' || pathname === '/loading' || pathname === '/landing' ? "container-xxl gx-0 vh-100" : "container-xxl gx-0 vh-100 bd-layout"} style={{ position: "relative" }}>
+        <div className={pathname === '/' || pathname === '/loading' || pathname === '/landing' ? "container-xxl gx-0 h-10" : "container-xxl gx-0 h-100 bd-layout"} style={{ position: "relative" }}>
             {children}
 
             {/* MODAL TICKET INFO*/}

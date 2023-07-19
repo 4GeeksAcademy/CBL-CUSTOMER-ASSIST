@@ -1100,3 +1100,6 @@ def save_customer_media():
     db.session.commit()
 
     return jsonify({'msg': 'Customer media successfully saved'}), 200
+
+
+   

@@ -19,34 +19,34 @@ export const CustomerSidebar = () => {
 					<ul className="bd-links-nav d-flex flex-column list-unstyled mb-0 pb-3 pb-md-2">
 
 						{/* DASHBOARD */}
-						<li className={`bd-links-group py-2 sidebar-main-option ${location.pathname === "/customer/dashboard" ? "active" : ""}`}
+						<li className="bd-links-group"
 							data-bs-target="#bdSidebar"
 							data-bs-dismiss="offcanvas">
-							<NavLink className="text-decoration-none" to={'customer/dashboard'}>
+							<NavLink className="d-flex py-2 sidebar-main-option text-decoration-none" to={'customer/dashboard'}>
 								<strong className="d-flex w-100 align-items-center fw-semibold">
-									<i className={`fa-solid fa-gauge-high bi me-2 ${location.pathname === "/customer/dashboard" ? "sidebar-icon" : ""}`}></i>Dashboard
+									<i className="fa-solid fa-gauge-high bi me-2"></i>Dashboard
 								</strong>
 							</NavLink>
 						</li>
 
 						{/* TICKETS */}
-						<li className={`bd-links-group py-2 sidebar-main-option ${location.pathname === "/customer/create/ticket" ? "active" : ""}`}
+						<li className="bd-links-group"
 							data-bs-target="#bdSidebar"
 							data-bs-dismiss="offcanvas">
-							<NavLink className="text-decoration-none" to={'/customer/create/ticket'}>
+							<NavLink className="d-flex py-2 sidebar-main-option text-decoration-none" to={'/customer/create/ticket'}>
 								<strong className="d-flex w-100 align-items-center fw-semibold">
-									<i className={`fa-solid fa-ticket bi me-2 ${location.pathname === "/customer/create/ticket" ? "sidebar-icon" : ""}`}></i>Create Ticket
+									<i className="fa-solid fa-gauge-high bi me-2"></i>Create Ticket
 								</strong>
 							</NavLink>
 						</li>
 
 						{/* EQUIPMENTS */}
-						<li className={`bd-links-group py-2 sidebar-main-option ${location.pathname === "/customer/equipment/list" ? "active" : ""}`}
+						<li className="bd-links-group"
 						data-bs-target="#bdSidebar"
 						data-bs-dismiss="offcanvas">
-							<NavLink className="text-decoration-none" to={'/customer/equipment/list'}>
+							<NavLink className="d-flex py-2 sidebar-main-option text-decoration-none" to={'/customer/equipment/list'}>
 								<strong className="d-flex w-100 align-items-center fw-semibold">
-									<i className={`fa-solid fa-gears bi me-2 ${location.pathname === "/customer/equipment/list" ? "sidebar-icon" : ""}`}></i>My Equipment
+									<i className="fa-solid fa-gauge-high bi me-2"></i>My Equipment
 								</strong>
 							</NavLink>
 							{/* <ul className="list-unstyled fw-normal pb-2 small">

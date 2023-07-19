@@ -15,18 +15,21 @@ import { CustomerEditProfile } from "./pages/customer/customer_edit_profile";
 import { CustomerCreateTicket } from "./pages/customer/customer-create-ticket";
 import { CustomerEquipmentList } from "./pages/customer/customer_equipment_list";
 import { CustomerEquipmentHistory } from "./pages/customer/customer_equipment_history";
-import { EmployeeDashboard } from "./pages/technician/employee_dashboard";
+import { EmployeeDashboard } from "./pages/common/employee_dashboard"
 import { EmployeeEditProfile } from "./pages/common/employee_edit_profile";
 import { EmployeeTicketAssistance } from "./pages/common/employee_ticket_assistance";
 import { LoadingData } from "./pages/common/loading_data";
+
+import { Footer } from "./component/footer"
 // import { CustomerHelpGuide } from "./pages/customer/customer_help_guide"
 // import { Home } from "./pages/home";
 // import { Single } from "./pages/single";
 // import { CreateAdmin } from "./pages/admin/admin-create";
 // import { CreateTech } from "./pages/technician/tech-create";
 // import { CreateCustomer } from "./pages/customer/customer-create.js";
-import {CapturePhoto} from "./pages/customer/capture_photo";
+// import {CapturePhoto} from "./pages/customer/capture_photo";
 import { LandingPage } from "./pages/landing_page";
+import { AdminCreateCustomer } from "./pages/admin/admin-create-customer";
 
 
 const Layout = () => {
@@ -41,7 +44,7 @@ const Layout = () => {
     // TODO: NEED TO REMOVE THIS LINE
     // if(!process.env.BACKEND_URL || process.env.BACKEND_URL == "") return <BackendURL/ >;
     return (
-        <div>
+        <div className="h-100">
             {/* <BrowserRouter basename={basename}> */}
                 {pathname !== "/" && <Navbar />}
                 <MainBdLayout>
@@ -70,10 +73,11 @@ const Layout = () => {
                         <Route element={<AdminCreateTicket />} path="/admin/create/ticket" />
                         {/* <Route element={<CreateAdmin/>} path="/admin/create" /> */}
                         {/* <Route element={<CreateTech/>} path="/tech/create"/> */}
-                        {/* <Route element={<CreateCustomer/>} path="/customer/create"/> */}
+                        <Route element={<AdminCreateCustomer/>} path="/admin/create/customer"/> 
                     </Routes>
                 </MainBdLayout>
             {/* </BrowserRouter> */}
+            {/* <Footer /> */}
         </div>
     );
 };

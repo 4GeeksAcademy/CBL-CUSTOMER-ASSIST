@@ -5,3 +5,7 @@
 .bg-cbl {
     background-color: #210b61 !important;
 }
+
+footer {
+    grid-area: footer;
+}

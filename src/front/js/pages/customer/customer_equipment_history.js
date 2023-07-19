@@ -10,7 +10,7 @@ export const CustomerEquipmentHistory = () => {
     // console.log(store.tickets)
     console.log(location)
     return (
-        <main className="bd-main order-1">
+        <main className="bd-main order-1 pe-4">
             <div className="bd-intro">
                 <NavLink to={"/customer/equipment/list"}>
                     My Equipment

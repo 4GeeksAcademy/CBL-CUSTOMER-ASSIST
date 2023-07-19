@@ -24,7 +24,7 @@ export const AdminDashboard = () => {
     }, []);
     
     return (
-        <main className="bd-main order-1">
+        <main className="bd-main order-1 pe-4">
             {/* <div className="bd-intro">
                 <PageTitle title={"Dashboard"} />
             </div> */}

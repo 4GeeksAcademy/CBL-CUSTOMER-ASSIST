@@ -3,6 +3,9 @@ import { Context } from "../../store/appContext";
 import { useNavigate } from "react-router-dom";
 import { PageTitle } from "../../component/page_title"
 import { object } from "prop-types";
+import Select from "react-select";
+import UploadWidget from "../../component/upload_widget";
+
 
 export const AdminCreateTicket = () => {
     const { store, actions } = useContext(Context);
@@ -12,7 +15,7 @@ export const AdminCreateTicket = () => {
     const [interventionType, setInterventionType] = useState(true);
     const [companyName, setCompanyName] = useState(0);
     const [enable, setEnable] = useState(false);
-    const [filterEquipments , setFilterEquipment] = useState(null) 
+    const [filterEquipments, setFilterEquipment] = useState(null)
     const [customerId, setCustomerId] = useState(0)
     const filteredCustomers = store.userList.filter(item => item.customer_id !== null);
     const navigate = useNavigate();
@@ -27,117 +30,163 @@ export const AdminCreateTicket = () => {
         }
         if (!response) {
             alert("Error");
-        } 
+        }
     }
 
-    useEffect(()=>{
+    useEffect(() => {
         actions.getAdminEquipment();
         actions.getAdminUserList();
         actions.getAdminEquipment();
     }, []);
-    
+
     useEffect(() => {
-        const equipment = store.equipmentList.filter(item => item.customer_id === companyName);   
+        const equipment = store.equipmentList.filter(item => item.customer_id === companyName);
         setFilterEquipment(equipment);
         setEnable(change => companyName > 0 ? change = true : change = false)
         setCustomerId(equipment.map(e => e.customer_id)[0])
-    },[companyName])
-    
+    }, [companyName])
+
     return (
-        // <div className="container">
-        <main className="bd-main order-1">
-            <div className="bd-intro">
-                <PageTitle title={"Create Ticket"} />
-            </div>  
-            <div className="bd-content ps-lg-2">  
 
-                {/* Customer Name Selecet */}
+        <main className="bd-main order-1 pe-4">
+            <div className="bd-intro d-flex border-bottom justify-content-between">
+                {/* <div>
+                    <PageTitle title={"Create Ticket"} />
+                </div> */}
                 <div>
-                    <div className="mb-3 p-3 col-sm-12 col-md-8 col-lg-8 mx-auto d-flex ">
-                        <h5 className="me-3 mt-2">Customer:</h5>     
-                        <div> 
-                            <select className="form-select" onChange={e => {
-                                setCompanyName(parseInt(e.target.value))}}>
-                                <option value={0}>Select option</option>
-                                {store.equipmentList.length > 0
-                                    ?
-                                    filteredCustomers.map((user) => {
-                                        return <option key={(user.id)} value={user.customer_id} > 
-                                            {user.company_name} </option>
-                                    })
-                                    : <option>Loading equipment list...</option>
-                                }
-                            </select>
-                        </div>
-                    </div>
-                </div>
-
-                {/* Intervention type  */}
-                <div className="d-flex justify-content-evenly pb-4 border-bottom mb-4">
-                    <div>
-                        <div className="d-flex ">
-                            <div className="mt-2 me-2" ><h5>Intervention Type:</h5></div>
-                            <div>
-                                <select className="form-select" disabled={!enable} onChange={e => setInterventionType(e.target.value === "true" ? true : false)}>
-                                    <option>Select option</option>
-                                    <option value={true}>Assistance</option>
-                                    <option value={false}>Maintenance</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                {/* Select Equipment */}
-                <div>
-                    <div className="mb-3 p-3 col-sm-12 col-md-8 col-lg-8 mx-auto d-flex ">
-                        <h5 className="me-3 mt-2">Equipment:</h5>
-                        <div>
-                            <select className="form-select" disabled={!enable} style={{ width: "170px" }} onChange={e => setEquipmentID(e.target.value)}>
-                                <option>Select option</option>
-                                {filterEquipments !== null
-                                    ?
-                                    filterEquipments.map((equipment) => {
-                                        return <option key={equipment.id} value={equipment.id}>{equipment.model + " - " + equipment.serial_number}</option>
-                                    })
-                                    : <option>Loading equipment list...</option>
-                                }
-                            </select>
-                        </div>
-                    </div>
-                </div>
-                
-                {/* Subject of ticket*/}
-                <div className="d-flex justify-content-center">
-                    <div><label htmlFor="floatingTextarea1" className="me-3 "><h5>Subject:</h5></label></div>
-                    <div className="form-floating">
-                        <textarea
-                            className="form-control" disabled={!enable} id="floatingTextarea1" placeholder="Write a short sentence to describe malfunction"
-                            value={subject}
-                            onChange={(e) => {
-                                setSubject(e.target.value)
-                            }} />
-                    </div>
-                </div>
-
-                {/* Description of equipment malfunction*/}
-                <div className="d-flex justify-content-center">
-                    <div><label htmlFor="floatingTextarea2" className="me-3 "><h5>Description:</h5></label></div>
-                    <div className="form-floating">
-                        <textarea
-                            className="form-control" disabled={!enable} placeholder="Be as much detailed as you can about the equipment failure" id="floatingTextarea2"
-                            value={description}
-                            onChange={(e) => {
-                                setDescription(e.target.value)
-                            }} />
-                    </div>
-                </div>
-                <div className="d-flex justify-content-center mt-3">
-                    <button className="btn btn-primary " onClick={() => createTicket()}>Submit</button>
+                    <strong
+                        typeof="button"
+                        className="bd-links-heading btn d-flex w-100 align-items-center fw-semibold"
+                        data-bs-toggle="modal"
+                        data-bs-target="#staticBackdrop"
+                    >
+                        <i className="fa-solid fa-circle-question me-1" style={{ color: "blue" }}></i>
+                        Help
+                    </strong>
                 </div>
             </div>
 
+            {/* Customer Name Select */}
+            <div className="bd-content">
+                <div className="d-flex flex-column mt-3 gap-3">
+
+                    <div className="row">
+                        {/* CUSTOMER COMPANY NAME SELECT */}
+                        <div className="col-12 col-md-6">
+                            <h6>Customer:</h6>
+                            <Select
+                                className="react-select-container w-100"
+                                placeholder="Select Customer..."
+                                id="selectCustomer"
+                                closeMenuOnSelect={true}
+                                blurInputOnSelect={true}
+                                isDisabled={false}
+                                options={
+                                    filteredCustomers !== null
+                                        ? filteredCustomers.map((customer) => ({
+                                            value: customer.customer_id,
+                                            label: customer.company_name,
+                                        }))
+                                        : [{ value: "", label: "Loading customers list..." }]
+                                }
+                                onChange={(value) => setCompanyName(value.value)}
+                            />
+                        </div>
+                    </div>
+
+                    <div className="row">
+                        {/* INTERVENTION TYPE */}
+                        <div className="col-12 col-md-6">
+                            <h6>Intervention type:</h6>
+                            <Select
+                                className="react-select-container w-100"
+                                placeholder="Select Intervention Type..."
+                                id="selectIntervention"
+                                closeMenuOnSelect={true}
+                                blurInputOnSelect={true}
+                                isDisabled={!enable}
+                                options={[
+                                    { value: true, label: "Assistance" },
+                                    { value: false, label: "Maintenance" },
+                                ]}
+                                onChange={(value) => setInterventionType(value.value)}
+                            />
+                        </div>
+
+                        {/* SELECT EQUIPMENT */}
+                        <div className="col-12 col-md-6">
+                            <h6>Equipment:</h6>
+                            <Select
+                                className="react-select-container w-100"
+                                placeholder="Select Equipment..."
+                                id="selectEquipment"
+                                closeMenuOnSelect={true}
+                                blurInputOnSelect={true}
+                                isDisabled={!enable}
+                                options={
+                                    filterEquipments !== null
+                                        ? filterEquipments.map((equipment) => ({
+                                            value: equipment.id,
+                                            label: equipment.model + " - " + equipment.serial_number,
+                                        }))
+                                        : [{ value: "", label: "Loading equipment list..." }]
+                                }
+                                onChange={(value) => setEquipmentID(value.value)}
+                            />
+                        </div>
+                    </div>
+
+                    {/* SUBJECT */}
+                    <div className="row">
+                        <h6>Subject:</h6>
+                        <div>
+                            <input
+                                type="text"
+                                className="form-control"
+                                placeholder="Write a short sentence to describe malfunction"
+                                value={subject}
+                                onChange={(e) => {
+                                    setSubject(e.target.value);
+                                }}
+                                disabled={!enable}
+                            />
+                        </div>
+                    </div>
+
+                    {/* DESCRIPTION */}
+                    <div className="row">
+                        <h6>Description:</h6>
+                        <div>
+                            <textarea
+                                className="form-control"
+                                style={{ minHeight: "300px" }}
+                                placeholder="Be as much detailed as you can about the equipment failure"
+                                value={description}
+                                onChange={(e) => {
+                                    setDescription(e.target.value);
+                                }}
+                                disabled={!enable}
+                            />
+                        </div>
+                    </div>
+                </div>
+
+                <div className="d-flex justify-content-center mt-3 gap-3">
+                    {/* CLOUDINARY */}
+                    <UploadWidget />
+
+                    {/* CREATE TICKET */}
+                    <button className="btn btn-primary col-4" onClick={() => createTicket()}>
+                        Create Ticket
+                    </button>
+                </div>
+            </div>
         </main>
+
+
+
+
+
         // </div>
 
     )
