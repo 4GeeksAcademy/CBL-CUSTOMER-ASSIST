@@ -4,6 +4,8 @@ import { Context } from "../../store/appContext";
 import { EquipmentListCard } from "../../component/equipment_list_card";
 import { PageTitle } from "../../component/page_title";
 import { useLocation } from "react-router-dom";
+import EquipmentIMG from "../../../assets/img/help_description/Equipment-IMG.png";
+import EquipmentDescription from "../../../assets/img/help_description/Equipment-History-Google-Docs.png";
 
 export const CustomerEquipmentList = () => {
     const { actions, store } = useContext(Context);
@@ -75,8 +77,13 @@ export const CustomerEquipmentList = () => {
                                 <h1 className="modal-title fs-5" id="staticBackdropLabel">Equipment List Explained</h1>
                                 <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
-                            <div className="modal-body">
-                                "IMAGES GO HERE"
+                            <div className="modal-body d-flex">
+                            <div >
+                                <img className="p-2 me-4 border rounded-3" src={EquipmentDescription} />
+                            </div>
+                            <div >
+                                <img className="border rounded-3" style={{ height: "620px", width: "1200px" }} src={EquipmentIMG} />
+                            </div>
                             </div>
                             <div className="modal-footer">
                                 <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
