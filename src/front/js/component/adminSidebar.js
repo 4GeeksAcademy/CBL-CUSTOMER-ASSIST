@@ -39,8 +39,8 @@ export const AdminSidebar = () => {
 									<i className="fa-solid fa-ticket bi me-2"></i>Tickets
 								</strong>
 							</NavLink>
-							{/* <ul className="list-unstyled fw-normal pb-2 small">
-								<NavLink to={'/admin/tickets/new'}>
+							<ul className="list-unstyled fw-normal pb-2 small">
+								{/* <NavLink to={'/admin/tickets/new'}>
 									<li><span className="bd-links-link d-inline-block rounded">New</span></li>
 								</NavLink>
 								<NavLink to={'/admin/tickets/opened'}>
@@ -52,10 +52,10 @@ export const AdminSidebar = () => {
 								<NavLink to={'/admin/tickets/resolved'}>
 									<li><span className="bd-links-link d-inline-block rounded">Resolved</span></li>
 								</NavLink> */}
-								{/* <NavLink to={'/admin/create/ticket'}>
+								<NavLink to={'/admin/create/ticket'}>
 									<li><strong><span className="bd-links-link d-inline-block rounded">Create Ticket</span></strong></li>
-								</NavLink> */}
-							{/* </ul> */}
+								</NavLink>
+							</ul>
 						</li>
 
 

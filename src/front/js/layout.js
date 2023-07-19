@@ -54,6 +54,7 @@ const Layout = () => {
                         <Route element={<AdminDashboard />} path="/admin/dashboard" />
                         <Route element={<AdminTickets />} path="/admin/tickets" />
                         <Route element={<AdminTickets />} path="/admin/tickets/:filter" />
+                        <Route element={<AdminCreateTicket />} path="/admin/create/ticket" />
                         <Route element={<AdminProcessTicket />} path="/admin/process/ticket" />
                         <Route element={<EmployeeDashboard />} path="/employee/dashboard" />
                         <Route element={<EmployeeEditProfile />} path="/employee/edit/profile" />
@@ -68,7 +69,6 @@ const Layout = () => {
                         <Route element={<LoadingData />} path="/loading" />
                         <Route element={<h1>Not found!</h1>} path="*" />
                         {/* <Route element={<Single />} path="/single/:theid" /> */}
-                        <Route element={<AdminCreateTicket />} path="/admin/create/ticket" />
                         {/* <Route element={<CreateAdmin/>} path="/admin/create" /> */}
                         {/* <Route element={<CreateTech/>} path="/tech/create"/> */}
                         {/* <Route element={<CreateCustomer/>} path="/customer/create"/> */}
