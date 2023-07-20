@@ -30,8 +30,8 @@ export const MainBdLayout = ({ children }) => {
             {children}
 
             {/* MODAL TICKET INFO*/}
-            <div id="modalTicketInfo" className="modal fade modal-fullscreen" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                <div className="modal-dialog modal-fullscreen">
+            <div id="modalTicketInfo" className="modal fade modal-lg" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div className="modal-dialog modal-lg">
                     <div className="modal-content">
                         <div className="modal-header">
                             <h1 className="modal-title fs-5" id="staticBackdropLabel">{store.modalTitle}</h1>
@@ -99,8 +99,8 @@ export const MainBdLayout = ({ children }) => {
             </div>
 
             {/* MODAL PROCESS TICKET EQUIPMENT HISTORY */}
-            <div id="processEquipmentHistoryModal" className="modal fade modal-fullscreen" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                <div className="modal-dialog modal-fullscreen">
+            <div id="processEquipmentHistoryModal" className="modal fade modal-lg" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div className="modal-dialog modal-lg">
                     <div className="modal-content">
                         <div className="modal-header">
                             <h3 className="modal-title" id="staticBackdropLabel">Equipment History</h3>

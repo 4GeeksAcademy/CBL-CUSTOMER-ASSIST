@@ -34,7 +34,7 @@ export const EquipmentHistoryCard = (props) => {
                 </div>
             </div>
             <div className="modal fade" id={"exampleModal" + data.id} tabIndex="-1" aria-labelledby={"exampleModalLabel" + data.id} aria-hidden="true">
-                <div className="modal-dialog modal-fullscreen">
+                <div className="modal-dialog modal-lg">
                     <div className="modal-content">
                         <div className="modal-header">
                             <h1 className="modal-title fs-5" id={"exampleModalLabel" + data.id}>{button ? <div className="fs-3">Description</div> : <div className="fs-3">Solution</div>}</h1>
