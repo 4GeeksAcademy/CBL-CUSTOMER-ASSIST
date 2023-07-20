@@ -240,19 +240,19 @@ export const KnowledgeAssistanceReport = () => {
                                 <ul className="list-group mb-3 shadow" key={'filtKnow' + knowledge.id}>
 
                                     {/* MALFUNCTION */}
-                                    <li className="list-group-item d-flex justify-content-between align-items-center list-group-item-danger lh-1 fw-medium p-1">
+                                    <li className="list-group-item d-flex text-danger fw-semibold justify-content-between align-items-center list-group-item-secondary lh-1 fw-medium p-1">
                                         Malfunction
                                         <span className="badge text-warning bg-dark rounded-pill">{knowledge.category}</span>
                                     </li>
-                                    <li className="list-group-item d-flex justify-content-between align-items-center list-group-item-danger lh-1 fst-italic p-1">
+                                    <li className="list-group-item d-flex justify-content-between align-items-center list-group-item lh-1 fst-italic p-1">
                                         {knowledge.malfunction}
                                     </li>
 
                                     {/* SOLUTION */}
-                                    <li className="list-group-item d-flex justify-content-between align-items-center list-group-item-success lh-1 fw-medium p-1">
+                                    <li className="list-group-item d-flex text-success fw-semibold justify-content-between align-items-center list-group-item lh-1 fw-medium p-1">
                                         Solution
                                     </li>
-                                    <li className="list-group-item d-flex justify-content-between align-items-center list-group-item-success lh-1 fst-italic p-1">
+                                    <li className="list-group-item d-flex justify-content-between align-items-center list-group-item lh-1 fst-italic p-1">
                                         {knowledge.solution}
                                         <span
                                             className="btn badge text-bg-primary"
@@ -276,19 +276,19 @@ export const KnowledgeAssistanceReport = () => {
                         <ul className={`list-group mb-3 ${knowledgeFilter.length > 0 ? "opacity-50" : null}`} key={action.category + action.id}>
 
                             {/* MALFUNCTION */}
-                            <li className="list-group-item d-flex justify-content-between align-items-center list-group-item-danger lh-1 fw-medium p-1">
+                            <li className="list-group-item d-flex text-danger fw-semibold justify-content-between align-items-center list-group-item-secondary lh-1 fw-medium p-1">
                                 Malfunction
                                 <span className="badge text-warning bg-dark rounded-pill">{action.category}</span>
                             </li>
-                            <li className="list-group-item d-flex justify-content-between align-items-center list-group-item-danger lh-1 fst-italic p-1">
+                            <li className="list-group-item d-flex justify-content-between align-items-center list-group-item lh-1 fst-italic p-1">
                                 {action.malfunction}
                             </li>
 
                             {/* SOLUTION */}
-                            <li className="list-group-item d-flex justify-content-between align-items-center list-group-item-success lh-1 fw-medium p-1">
+                            <li className="list-group-item d-flex text-success fw-semibold justify-content-between align-items-center list-group-item lh-1 fw-medium p-1">
                                 Solution
                             </li>
-                            <li className="list-group-item d-flex justify-content-between align-items-center list-group-item-success lh-1 fst-italic p-1">
+                            <li className="list-group-item d-flex justify-content-between align-items-center list-group-item lh-1 fst-italic p-1">
                                 {action.solution}
                                 <span
                                     className="btn badge text-bg-danger"

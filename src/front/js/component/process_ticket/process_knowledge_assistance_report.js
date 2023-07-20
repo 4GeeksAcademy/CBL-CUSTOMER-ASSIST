@@ -21,19 +21,19 @@ export const ProcessKnowledgeAssistanceReport = () => {
                         <ul className="list-group mb-3" key={"ac" + i}>
 
                             {/* MALFUNCTION */}
-                            <li className="list-group-item d-flex justify-content-between align-items-center list-group-item-danger lh-1 fw-medium p-1">
+                            <li className="list-group-item d-flex text-danger fw-semibold justify-content-between align-items-center list-group-item-secondary lh-1 fw-medium p-1">
                                 Malfunction
                                 <span className="badge text-warning bg-dark rounded-pill">{action.category.description}</span>
                             </li>
-                            <li className="list-group-item d-flex justify-content-between align-items-center list-group-item-danger lh-1 fst-italic p-1">
+                            <li className="list-group-item d-flex justify-content-between align-items-center list-group-item lh-1 fst-italic p-1">
                                 {action.malfunction.description}
                             </li>
 
                             {/* SOLUTION */}
-                            <li className="list-group-item d-flex justify-content-between align-items-center list-group-item-success lh-1 fw-medium p-1">
+                            <li className="list-group-item d-flex text-success fw-semibold justify-content-between align-items-center list-group-item lh-1 fw-medium p-1">
                                 Solution
                             </li>
-                            <li className="list-group-item d-flex justify-content-between align-items-center list-group-item-success lh-1 fst-italic p-1">
+                            <li className="list-group-item d-flex justify-content-between align-items-center list-group-item lh-1 fst-italic p-1">
                                 {action.solution.description}
                             </li>
                         </ul>

@@ -43,18 +43,18 @@ export const EquipmentHistoryCard = (props) => {
                         <div className="modal-body">
                             {button ? data.description :  solutions.length > 0 ? solutions.map((item, index) => {
                                 return ( 
-                                    <ul className="list-group mb-3" key={item.id}>
-                                        <li className="list-group-item d-flex justify-content-between align-items-center list-group-item-danger">
+                                    <ul className="list-group mb-3 shadow-sm" key={item.id}>
+                                        <li className="list-group-item d-flex text-danger fw-semibold justify-content-between align-items-center list-group-item-secondary">
                                             Malfunction {item.malfunction.id}
                                             <span className="badge text-warning bg-dark rounded-pill">{item.category.description}</span>
                                         </li>
-                                        <li className="list-group-item d-flex justify-content-between align-items-center list-group-item-danger">
+                                        <li className="list-group-item d-flex justify-content-between align-items-center list-group-item">
                                             {item.malfunction.description}
                                         </li>
-                                        <li className="list-group-item d-flex justify-content-between align-items-center list-group-item-success">
+                                        <li className="list-group-item d-flex text-success fw-semibold justify-content-between align-items-center list-group-item">
                                             Solution {item.solution.id}
                                         </li>
-                                        <li className="list-group-item d-flex justify-content-between align-items-center list-group-item-success">
+                                        <li className="list-group-item d-flex justify-content-between align-items-center list-group-item">
                                             {item.solution.description}  
                                         </li>
                                     </ul>
