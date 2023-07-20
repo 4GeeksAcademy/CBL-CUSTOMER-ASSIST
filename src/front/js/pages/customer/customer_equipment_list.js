@@ -19,10 +19,17 @@ export const CustomerEquipmentList = () => {
     }, [equipmentSelected])
 
     useEffect(() => {
-        actions.getCustomerEquipment();
+        // actions.getCustomerEquipment();
+        // setEquipmentVar(store.equipmentList);
+        fetchData();
         const storedEquipmentVar = sessionStorage.getItem('equipmentVar');
         if (storedEquipmentVar) setEquipmentVar(JSON.parse(storedEquipmentVar))
     }, []);
+
+    const fetchData = async () => {
+        await actions.getCustomerEquipment();
+        setEquipmentVar(store.equipmentList);
+    }
 
     useEffect(() => {
         sessionStorage.setItem('equipmentVar', JSON.stringify(equipmentVar));
@@ -79,10 +86,10 @@ export const CustomerEquipmentList = () => {
                             </div>
                             <div className="modal-body d-flex">
                             <div >
-                                <img className="p-2 me-4 border rounded-3" src={EquipmentDescription} />
+                                <img className="p-2 me-4 border rounded-3" src="https://res.cloudinary.com/dsonpr8ip/image/upload/v1689793345/Equipment-History-Google-Docs_t62efj.png" />
                             </div>
                             <div >
-                                <img className="border rounded-3" style={{ height: "620px", width: "1200px" }} src={EquipmentIMG} />
+                                <img className="border rounded-3" style={{ height: "620px", width: "1200px" }} src="https://res.cloudinary.com/dsonpr8ip/image/upload/v1689793345/Equipment-IMG_fy2owf.png" />
                             </div>
                             </div>
                             <div className="modal-footer">
