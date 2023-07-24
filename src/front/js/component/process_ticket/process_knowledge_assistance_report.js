@@ -27,7 +27,7 @@ export const ProcessKnowledgeAssistanceReport = () => {
                             </li>
                             <li className="list-group-item d-flex justify-content-between align-items-center list-group-item lh-1 fst-italic p-1">
                                 {action.malfunction.description}
-                            </li>
+                            </li>   
 
                             {/* SOLUTION */}
                             <li className="list-group-item d-flex text-success fw-semibold justify-content-between align-items-center list-group-item lh-1 fw-medium p-1">

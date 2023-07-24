@@ -50,7 +50,7 @@ export const EquipmentHistoryCard = (props) => {
                                         </li>
                                         <li className="list-group-item d-flex justify-content-between align-items-center list-group-item">
                                             {item.malfunction.description}
-                                        </li>
+                                        </li>   
                                         <li className="list-group-item d-flex text-success fw-semibold justify-content-between align-items-center list-group-item">
                                             Solution {item.solution.id}
                                         </li>
