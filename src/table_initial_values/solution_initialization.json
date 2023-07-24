@@ -1,0 +1,32 @@
+[
+    {
+        "description": "Electrical cable substitution."
+    },
+    {
+        "description": "Check for possible broken wire."
+    },
+    {
+        "description": "Traction rollers pneumatic pressure was to low."
+    },
+    {
+        "description": "Adjusted camme TPP and CLP."
+    },
+    {
+        "description": "Rekay K2 of Dittmer fence control switch damaged. Substitution."
+    },
+    {
+        "description": "Substitution of limit switch and refurbishment of all camms."
+    },
+    {
+        "description": "Parameterization of slider quotas."
+    },
+    {
+        "description": "Check relay condition. Substitute if needed."
+    },
+    {
+        "description": "Check software safety conditions for feeder return to safety position."
+    },
+    {
+        "description": "Slider guides are tight. Relieve the guides."
+    }
+]

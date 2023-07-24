@@ -1,0 +1,10 @@
+.photo_preview {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 10px;
+}
+
+.preview_image {
+  width: 100%;
+  height: auto;
+}

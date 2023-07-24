@@ -1,0 +1,9 @@
+/* .filter-nav a.active span{
+    background-color: #210b61 !important;
+    color: #ffc71b;
+} */
+
+.filter-nav a:not(.active) span{
+    background-color: #dddddd !important;
+    color: #000000;
+}

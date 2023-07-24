@@ -1,0 +1,37 @@
+[
+    {
+        "serial_number": "AA0101",
+        "model": "CC63",
+        "im109": "101",
+        "customer_id": 1,
+        "equipment_photo": "https://res.cloudinary.com/dsonpr8ip/image/upload/v1689329278/CC_lahtwn.jpg"
+    },
+    {
+        "serial_number": "AA0102",
+        "model": "CC100",
+        "im109": "102",
+        "customer_id": 1,
+        "equipment_photo": "https://res.cloudinary.com/dsonpr8ip/image/upload/v1689329278/CC_lahtwn.jpg"
+    },
+    {
+        "serial_number": "AA0103",
+        "model": "CC160",
+        "im109": "103",
+        "customer_id": 1,
+        "equipment_photo": "https://res.cloudinary.com/dsonpr8ip/image/upload/v1689329278/CC_lahtwn.jpg"
+    },
+    {
+        "serial_number": "BB0104",
+        "model": "CC250",
+        "im109": "104",
+        "customer_id": 2,
+        "equipment_photo": "https://res.cloudinary.com/dsonpr8ip/image/upload/v1689329278/CC_lahtwn.jpg"
+    },
+    {
+        "serial_number": "CA0105",
+        "model": "DM400",
+        "im109": "356",
+        "customer_id": 3,
+        "equipment_photo": "https://res.cloudinary.com/dsonpr8ip/image/upload/v1689325053/xgpjk5m7tzadw2u6hpfx.jpg"
+    }
+]

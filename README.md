@@ -1,71 +1,45 @@
-# WebApp boilerplate with React JS and Flask API
+# Final Project
+## CBL Desk - Customer Support Ticket System
 
-Build web applications using React.js for the front end and python/flask for your backend API.
+By using this ticket system and collecting information on their equipment history, manufacturers will be able to provide a more effective and optimized support to the customer’s equipment, as they will be able to analyze the intervention history that has been carried out on the same or similar type of equipment, thus predicting with more accuracy and speed, the solutions needed to solve the problem.
 
-- Documentation can be found here: https://start.4geeksacademy.com/starters/react-flask
-- Here is a video on [how to use this template](https://www.loom.com/share/f37c6838b3f1496c95111e515e83dd9b)
-- Integrated with Pipenv for package managing.
-- Fast deployment to heroku [in just a few steps here](https://start.4geeksacademy.com/backend/deploy-heroku-posgres).
-- Use of .env file.
-- SQLAlchemy integration for database abstraction.
+## Funcionalities
+### 1) Users
 
-### 1) Installation:
+There are four default user types: Admin; Engineer; Technician; Customer.
 
-> If you use Github Codespaces (recommended) or Gitpod this template will already come with Python, Node and the Posgres Database installed. If you are working locally make sure to install Python 3.10, Node 
+### 2) Tickets
+Different ticket status for each ticket stage:
+- New (when customer creates a new ticket)
+- Opened (when admin assigns a tech/eng to the ticket)
+- In Progress (when tech/eng start assistance)
+- Resolved (when tech/eng finish assistance)
+- Closed (when admin processes the resolved ticket)
 
-It is recomended to install the backend first, make sure you have Python 3.8, Pipenv and a database engine (Posgress recomended)
+### 3) Knowledge base
+A database where collected data from assistances it's stored. It will be used for statistical data so that manufacturer could study and optimize their product/equipment production and also better optimize assistances by providing a know-how repairing equipment solutions.
 
-1. Install the python packages: `$ pipenv install`
-2. Create a .env file based on the .env.example: `$ cp .env.example .env`
-3. Install your database engine and create your database, depending on your database you have to create a DATABASE_URL variable with one of the possible values, make sure you replace the valudes with your database information:
+### 4) API's
+- Google Maps API: get routes, distance and travel time for tech/eng assistance report.
+- Cloudinary API: storage of photos added by the customer upon new ticket creation. Also for equipment and vehicle photo storage.
 
-| Engine    | DATABASE_URL                                        |
-| --------- | --------------------------------------------------- |
-| SQLite    | sqlite:////test.db                                  |
-| MySQL     | mysql://username:password@localhost:port/example    |
-| Postgress | postgres://username:password@localhost:5432/example |
+### 5) Technologies
+1. React
+2. Bootstrap
+3. Flask
 
-4. Migrate the migrations: `$ pipenv run migrate` (skip if you have not made changes to the models on the `./src/api/models.py`)
-5. Run the migrations: `$ pipenv run upgrade`
-6. Run the application: `$ pipenv run start`
+## Main flow
+1) customer create a ticket
+2) admin assigns vehicle and tech/eng
+3) tech/eng opens ticket and start assistance
+4) tech/eng fills in report with all the data needed explaining what where the malfunctions encountered and solutions implemented
+5) tech/eng closes report
+6) customer report aproval by authenticating with his credentials
+7) tech/eng finishes assistance
+8) admin processes ticket
 
-> Note: Codespaces users can connect to psql by typing: `psql -h localhost -U gitpod example`
-
-### Backend Populate Table Users
-
-To insert test users in the database execute the following command:
-
-```sh
-$ flask insert-test-users 5
-```
-
-And you will see the following message:
-
-```
-  Creating test users
-  test_user1@test.com created.
-  test_user2@test.com created.
-  test_user3@test.com created.
-  test_user4@test.com created.
-  test_user5@test.com created.
-  Users created successfully!
-```
-
-To update with all yours tables you can edit the file app.py and go to the line 80 to insert the code to populate others tables
-
-### Front-End Manual Installation:
-
--   Make sure you are using node version 14+ and that you have already successfully installed and runned the backend.
-
-1. Install the packages: `$ npm install`
-2. Start coding! start the webpack dev server `$ npm run start`
-
-## Publish your website!
-
-This boilerplate it's 100% read to deploy with Render.com and Heroku in a matter of minutes. Please read the [official documentation about it](https://start.4geeksacademy.com/deploy).
-
-### Contributors
-
-This template was built as part of the 4Geeks Academy [Coding Bootcamp](https://4geeksacademy.com/us/coding-bootcamp) by [Alejandro Sanchez](https://twitter.com/alesanchezr) and many other contributors. Find out more about our [Full Stack Developer Course](https://4geeksacademy.com/us/coding-bootcamps/part-time-full-stack-developer), and [Data Science Bootcamp](https://4geeksacademy.com/us/coding-bootcamps/datascience-machine-learning).
-
-You can find other templates and resources like this at the [school github page](https://github.com/4geeksacademy/).
+## Future features
+1. UI/UX improvement
+2. Data analyze to get statistical info about equipments to help the maker understand where they need to improve the equipments
+3. Websockets integration for realtime data update
+4. Notifications API integration for ticket stage user notification

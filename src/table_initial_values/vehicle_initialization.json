@@ -1,0 +1,20 @@
+[
+    {
+        "license_plate": "85-68-JN",
+        "model": "Megane",
+        "maker": "Renault",
+        "vehicle_photo": "https://res.cloudinary.com/dsonpr8ip/image/upload/v1689328965/8568jn_yoq43n.jpg"
+    },
+    {
+        "license_plate": "31-22-RC",
+        "model": "Berlingo",
+        "maker": "Citroen",
+        "vehicle_photo": "https://res.cloudinary.com/dsonpr8ip/image/upload/v1689328965/3122RC_ltsmhb.jpg"
+    },
+    {
+        "license_plate": "33-44-IC",
+        "model": "Captur",
+        "maker": "Renault",
+        "vehicle_photo": "https://res.cloudinary.com/dsonpr8ip/image/upload/v1689328966/3344IC_u6zlfb.jpg"
+    }
+]

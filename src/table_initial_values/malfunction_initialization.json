@@ -1,0 +1,32 @@
+[
+    {
+        "description": "Press works in Single Stroke Pedal without pressing the pedal."
+    },
+    {
+        "description": "Controls don't work."
+    },
+    {
+        "description": "Feeder doesn't drag metal sheet."
+    },
+    {
+        "description": "Feeder does not step after press stroke."
+    },
+    {
+        "description": "Press, in Open Tools, the automatic door nº1 doesn't work."
+    },
+    {
+        "description": "Limit Switch damaged."
+    },
+    {
+        "description": "Slider quotas doesn't match with terminal and table."
+    },
+    {
+        "description": "Parts counter not counting."
+    },
+    {
+        "description": "Feeder doesn't return to safety position."
+    },
+    {
+        "description": "After working during a period of time, main motor circuit breaker trips."
+    }
+]
